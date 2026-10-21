@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="cosmos" data-size="md">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tecnología — Unidad 1</title>
+<style>
+/* ════════════════════════════════════════════════
+   TEMAS DE COLOR
+   Cada tema define variables CSS en :root
+════════════════════════════════════════════════ */
+
+/* ── Tema: Cosmos (azul oscuro, por defecto) */
+[data-theme="cosmos"] {
+  --bg:        #f0f4ff;
+  --text:      #1a1a2e;
+  --hdr-from:  #1a1a2e;
+  --hdr-mid:   #16213e;
+  --hdr-to:    #0f3460;
+  --tab-bg:    #16213e;
+  --accent:    #e94560;
+  --accent2:   #6366f1;
+  --card-bg:   #ffffff;
+  --panel-bg:  #f0f4ff;
+  --opt-bg:    #f8fafc;
+  --opt-bdr:   #e2e8f0;
+  --cnt-bg:    #dce8ff;
+  --cnt-text:  #0f3460;
+  --ok-bg:     #dcfce7;
+  --ok-text:   #15803d;
+  --ko-bg:     #fee2e2;
+  --ko-text:   #991b1b;
+  --muted:     #64748b;
+  --shadow:    rgba(0,0,0,.10);
+}
+
+/* ── Tema: Sol (amarillo/naranja cálido) */
+[data-theme="sol"] {
+  --bg:        #fffbf0;
+  --text:      #3b2800;
+  --hdr-from:  #b45309;
+  --hdr-mid:   #d97706;
+  --hdr-to:    #f59e0b;
+  --tab-bg:    #92400e;
+  --accent:    #ef4444;
+  --accent2:   #f59e0b;
+  --card-bg:   #ffffff;
+  --panel-bg:  #fffbf0;
+  --opt-bg:    #fef9ec;
+  --opt-bdr:   #fcd34d;
+  --cnt-bg:    #fef3c7;
+  --cnt-text:  #92400e;
+  --ok-bg:     #dcfce7;
+  --ok-text:   #15803d;
+  --ko-bg:     #fee2e2;
+  --ko-text:   #991b1b;
+  --muted:     #78350f;
+  --shadow:    rgba(180,83,9,.12);
+}
+
+/* ── Tema: Bosque (verde) */
+[data-theme="bosque"] {
+  --bg:        #f0fdf4;
+  --text:      #14532d;
+  --hdr-from:  #14532d;
+  --hdr-mid:   #166534;
+  --hdr-to:    #15803d;
+  --tab-bg:    #166534;
+  --accent:    #16a34a;
+  --accent2:   #0d9488;
+  --card-bg:   #ffffff;
+  --panel-bg:  #f0fdf4;
+  --opt-bg:    #f0fdf4;
+  --opt-bdr:   #bbf7d0;
+  --cnt-bg:    #dcfce7;
+  --cnt-text:  #166534;
+  --ok-bg:     #dcfce7;
+  --ok-text:   #15803d;
+  --ko-bg:     #fee2e2;
+  --ko-text:   #991b1b;
+  --muted:     #4d7c4f;
+  --shadow:    rgba(22,101,52,.11);
+}
+
+/* ── Tema: Galaxia (morado) */
+[data-theme="galaxia"] {
+  --bg:        #faf5ff;
+  --text:      #3b0764;
+  --hdr-from:  #3b0764;
+  --hdr-mid:   #581c87;
+  --hdr-to:    #7c3aed;
+  --tab-bg:    #581c87;
+  --accent:    #a855f7;
+  --accent2:   #ec4899;
+  --card-bg:   #ffffff;
+  --panel-bg:  #faf5ff;
+  --opt-bg:    #fdf4ff;
+  --opt-bdr:   #e9d5ff;
+  --cnt-bg:    #ede9fe;
+  --cnt-text:  #5b21b6;
+  --ok-bg:     #dcfce7;
+  --ok-text:   #15803d;
+  --ko-bg:     #fee2e2;
+  --ko-text:   #991b1b;
+  --muted:     #7e22ce;
+  --shadow:    rgba(88,28,135,.12);
+}
+
+/* ── Tema: Alto contraste (blanco/negro) */
+[data-theme="contraste"] {
+  --bg:        #ffffff;
+  --text:      #000000;
+  --hdr-from:  #000000;
+  --hdr-mid:   #111111;
+  --hdr-to:    #222222;
+  --tab-bg:    #111111;
+  --accent:    #000000;
+  --accent2:   #333333;
+  --card-bg:   #ffffff;
+  --panel-bg:  #f5f5f5;
+  --opt-bg:    #f5f5f5;
+  --opt-bdr:   #000000;
+  --cnt-bg:    #e5e5e5;
+  --cnt-text:  #000000;
+  --ok-bg:     #d1fae5;
+  --ok-text:   #065f46;
+  --ko-bg:     #fee2e2;
+  --ko-text:   #7f1d1d;
+  --muted:     #444444;
+  --shadow:    rgba(0,0,0,.20);
+}
+
+/* ════════════════════════════════════════════════
+   TAMAÑOS DE LETRA
+════════════════════════════════════════════════ */
+[data-size="sm"] { font-size: 15px; }
+[data-size="md"] { font-size: 18px; }
+[data-size="lg"] { font-size: 21px; }
+[data-size="xl"] { font-size: 25px; }
+
+/* ════════════════════════════════════════════════
+   RESET & BASE
+════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background .3s, color .3s;
+}
+
+/* ════════════════════════════════════════════════
+   BARRA DE PERSONALIZACIÓN
+════════════════════════════════════════════════ */
+.toolbar {
+  background: var(--tab-bg);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-bottom: 2px solid var(--accent);
+}
+.toolbar-label {
+  color: rgba(255,255,255,.7);
+  font-size: .78em;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Botones de tamaño */
+.size-group, .theme-group {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.sz-btn {
+  border: 2px solid rgba(255,255,255,.3);
+  background: rgba(255,255,255,.1);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 800;
+  line-height: 1;
+  transition: all .15s;
+  padding: 5px 9px;
+  font-size: .82em;
+}
+.sz-btn:hover   { background: rgba(255,255,255,.25); }
+.sz-btn.active  { background: var(--accent); border-color: var(--accent); }
+
+/* Botones de tema (círculos de color) */
+.th-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,.25);
+  cursor: pointer;
+  transition: transform .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.th-btn:hover  { transform: scale(1.18); }
+.th-btn.active { border-color: #fff; transform: scale(1.22); }
+.th-btn.cosmos   { background: linear-gradient(135deg,#1a1a2e,#e94560); }
+.th-btn.sol      { background: linear-gradient(135deg,#d97706,#fbbf24); }
+.th-btn.bosque   { background: linear-gradient(135deg,#14532d,#22c55e); }
+.th-btn.galaxia  { background: linear-gradient(135deg,#581c87,#a855f7); }
+.th-btn.contraste{ background: linear-gradient(135deg,#000,#fff); border-color: #aaa; }
+
+/* ════════════════════════════════════════════════
+   CABECERA
+════════════════════════════════════════════════ */
+header {
+  background: linear-gradient(135deg, var(--hdr-from) 0%, var(--hdr-mid) 50%, var(--hdr-to) 100%);
+  color: white;
+  text-align: center;
+  padding: 18px 16px 13px;
+  transition: background .3s;
+}
+header h1 { font-size: 1.25em; font-weight: 800; letter-spacing: .4px; line-height: 1.3; }
+header p  { font-size: .82em; opacity: .75; margin-top: 4px; }
+
+/* ── TABS */
+.tabs {
+  display: flex;
+  background: var(--tab-bg);
+  border-bottom: 3px solid var(--accent);
+  transition: background .3s;
+}
+.tab-btn {
+  flex: 1;
+  padding: 13px 8px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.55);
+  font-size: .92em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+}
+.tab-btn.active { color: #fff; background: var(--accent); }
+.tab-btn:hover:not(.active) { color: #fff; background: rgba(255,255,255,.15); }
+
+/* ── PANEL */
+.panel { display: none; padding: 18px 16px 32px; background: var(--panel-bg); transition: background .3s; }
+.panel.active { display: block; }
+
+/* ════════════════════════════════════════════════
+   FLASH CARDS
+════════════════════════════════════════════════ */
+.fc-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.fc-counter {
+  font-size: .82em;
+  font-weight: 700;
+  color: var(--cnt-text);
+  background: var(--cnt-bg);
+  padding: 5px 13px;
+  border-radius: 20px;
+}
+.fc-badges { display: flex; gap: 8px; }
+.badge {
+  font-size: .78em;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 20px;
+}
+.badge.green { background: var(--ok-bg);  color: var(--ok-text); }
+.badge.red   { background: var(--ko-bg);  color: var(--ko-text); }
+
+/* Barra de progreso */
+.progress-bar-wrap {
+  background: var(--cnt-bg);
+  border-radius: 8px;
+  height: 9px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 8px;
+  transition: width .4s ease;
+}
+
+/* Carta */
+.card-wrap {
+  perspective: 1100px;
+  max-width: 620px;
+  margin: 0 auto 16px;
+  height: 250px;
+  cursor: pointer;
+}
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.4,0,.2,1);
+}
+.card-inner.flipped { transform: rotateY(180deg); }
+.card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 22px 26px;
+  text-align: center;
+  backface-visibility: hidden;
+  box-shadow: 0 6px 24px var(--shadow);
+}
+.card-front { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+.card-back  { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; transform: rotateY(180deg); }
+.card-tag  { font-size: .68em; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; opacity: .75; margin-bottom: 10px; }
+.card-text { font-size: 1.02em; font-weight: 700; line-height: 1.55; }
+.card-hint { font-size: .72em; opacity: .65; margin-top: 12px; font-style: italic; }
+
+/* Colores de frente por bloque */
+.card-front.b1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.card-front.b2 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+.card-front.b3 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.card-front.b4 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.card-front.b5 { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); color: #2d1a00; }
+.card-front.b6 { background: linear-gradient(135deg, #e94560 0%, #0f3460 100%); }
+
+/* Botones de acción tarjetas */
+.fc-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  max-width: 620px;
+  margin: 0 auto 16px;
+}
+.fc-btn {
+  flex: 1;
+  max-width: 185px;
+  padding: 13px 0;
+  border: none;
+  border-radius: 30px;
+  font-size: .95em;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.fc-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+.fc-btn.know    { background: #22c55e; color: #fff; }
+.fc-btn.review  { background: #ef4444; color: #fff; }
+.fc-btn.skip    { background: #e2e8f0; color: #334155; }
+.fc-btn.restart { background: var(--accent2); color: #fff; width: 100%; max-width: 250px; }
+
+.fc-flip-hint {
+  text-align: center;
+  font-size: .78em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* Fin de mazo */
+.fc-end { text-align: center; padding: 28px 20px; display: none; }
+.fc-end h2 { font-size: 1.4em; color: var(--cnt-text); margin-bottom: 12px; }
+.fc-end .score-big {
+  font-size: 2.8em;
+  font-weight: 900;
+  background: linear-gradient(135deg, #667eea, #f5576c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.fc-end p { color: var(--muted); margin: 10px 0 20px; font-size: 1em; line-height: 1.6; }
+
+/* ════════════════════════════════════════════════
+   CUESTIONARIO
+════════════════════════════════════════════════ */
+.quiz-start { text-align: center; padding: 28px 16px; }
+.quiz-start h2 { font-size: 1.25em; color: var(--cnt-text); margin-bottom: 10px; }
+.quiz-start p  { color: var(--muted); font-size: .95em; margin-bottom: 22px; line-height: 1.7; }
+
+.big-btn {
+  display: inline-block;
+  padding: 14px 38px;
+  background: linear-gradient(135deg, var(--accent), #f5576c);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.05em;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+  transition: transform .15s, box-shadow .15s;
+}
+.big-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+
+.quiz-play { display: none; }
+
+.q-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.q-num {
+  font-size: .82em; font-weight: 700;
+  color: var(--cnt-text); background: var(--cnt-bg);
+  padding: 5px 13px; border-radius: 20px;
+}
+.q-score-live {
+  font-size: .82em; font-weight: 700;
+  color: var(--ok-text); background: var(--ok-bg);
+  padding: 5px 13px; border-radius: 20px;
+}
+
+.q-progress {
+  background: var(--opt-bdr);
+  border-radius: 8px; height: 7px;
+  margin-bottom: 18px; overflow: hidden;
+}
+.q-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  border-radius: 8px; transition: width .4s;
+}
+
+.q-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 22px 20px 20px;
+  box-shadow: 0 4px 20px var(--shadow);
+  margin-bottom: 16px;
+  transition: background .3s;
+}
+.q-type-tag {
+  display: inline-block;
+  font-size: .68em; font-weight: 800;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 10px; margin-bottom: 10px;
+}
+.q-type-tag.test  { background: #ede9fe; color: #5b21b6; }
+.q-type-tag.short { background: #fef3c7; color: #92400e; }
+
+.q-text {
+  font-size: 1.05em; font-weight: 700;
+  color: var(--text); line-height: 1.6; margin-bottom: 16px;
+}
+
+.q-options { display: flex; flex-direction: column; gap: 10px; }
+.q-opt {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px;
+  border: 2px solid var(--opt-bdr);
+  border-radius: 12px; cursor: pointer;
+  transition: all .18s;
+  font-size: .95em; line-height: 1.5;
+  background: var(--opt-bg); font-weight: 500;
+  color: var(--text);
+}
+.q-opt:hover            { border-color: var(--accent2); background: var(--cnt-bg); }
+.q-opt.selected         { border-color: var(--accent2); background: var(--cnt-bg); }
+.q-opt.correct          { border-color: #22c55e; background: var(--ok-bg); color: var(--ok-text); font-weight: 700; }
+.q-opt.wrong            { border-color: #ef4444; background: var(--ko-bg); color: var(--ko-text); }
+.q-opt.show-correct     { border-color: #22c55e; background: var(--ok-bg); }
+.q-opt-letter {
+  min-width: 26px; height: 26px;
+  background: var(--opt-bdr); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78em; font-weight: 800; color: var(--muted);
+  flex-shrink: 0; margin-top: 1px;
+}
+.q-opt.correct .q-opt-letter,
+.q-opt.show-correct .q-opt-letter { background: #22c55e; color: white; }
+.q-opt.wrong   .q-opt-letter      { background: #ef4444; color: white; }
+
+.q-short-wrap { display: flex; flex-direction: column; gap: 10px; }
+.q-short-input {
+  width: 100%; padding: 13px 14px;
+  border: 2px solid var(--opt-bdr); border-radius: 12px;
+  font-size: 1em; font-family: inherit; outline: none;
+  transition: border-color .18s; background: var(--opt-bg);
+  color: var(--text);
+}
+.q-short-input:focus   { border-color: var(--accent2); background: var(--card-bg); }
+.q-short-input.correct { border-color: #22c55e; background: var(--ok-bg); color: var(--ok-text); font-weight: 700; }
+.q-short-input.wrong   { border-color: #ef4444; background: var(--ko-bg); color: var(--ko-text); }
+
+.q-feedback {
+  font-size: .9em; font-weight: 700;
+  padding: 10px 13px; border-radius: 10px;
+  display: none; line-height: 1.5;
+}
+.q-feedback.ok  { background: var(--ok-bg); color: var(--ok-text); display: block; }
+.q-feedback.err { background: var(--ko-bg); color: var(--ko-text); display: block; }
+
+.q-next-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--accent2), #8b5cf6);
+  color: white; border: none; border-radius: 12px;
+  font-size: 1em; font-weight: 800; cursor: pointer;
+  display: none; transition: transform .15s; margin-top: 6px;
+}
+.q-next-btn:hover { transform: translateY(-1px); }
+
+.q-check-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white; border: none; border-radius: 12px;
+  font-size: 1em; font-weight: 800; cursor: pointer;
+  transition: transform .15s; margin-top: 2px;
+}
+.q-check-btn:hover { transform: translateY(-1px); }
+.q-check-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+/* Resultados */
+.quiz-results { display: none; text-align: center; padding: 28px 16px; }
+.quiz-results h2 { font-size: 1.35em; color: var(--cnt-text); margin-bottom: 8px; }
+.results-score {
+  font-size: 3.2em; font-weight: 900;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin: 8px 0;
+}
+.results-msg { font-size: 1em; color: var(--muted); margin-bottom: 20px; line-height: 1.65; }
+.results-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; max-width: 320px; margin: 0 auto 24px;
+}
+.res-box { padding: 14px; border-radius: 14px; font-weight: 800; }
+.res-box.g { background: var(--ok-bg); color: var(--ok-text); }
+.res-box.r { background: var(--ko-bg); color: var(--ko-text); }
+.res-box span  { display: block; font-size: 1.8em; }
+.res-box small { font-size: .72em; font-weight: 600; opacity: .8; }
+
+.review-list { text-align: left; margin: 0 auto 24px; max-width: 560px; }
+.review-list h3 { font-size: .95em; color: var(--cnt-text); margin-bottom: 10px; font-weight: 800; }
+.review-item {
+  background: #fff7ed; border-left: 4px solid #f59e0b;
+  padding: 10px 12px; border-radius: 0 10px 10px 0;
+  margin-bottom: 8px; font-size: .88em; line-height: 1.55;
+}
+.review-item strong { color: #92400e; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ Tecnología y Digitalización — Unidad 1</h1>
+  <p>El Proceso Tecnológico · 1.º ESO</p>
+</header>
+
+<!-- ══ BARRA DE PERSONALIZACIÓN ══════════════════ -->
+<div class="toolbar">
+  <span class="toolbar-label">🎨 Tema:</span>
+  <div class="theme-group">
+    <button class="th-btn cosmos   active" title="Cosmos"        onclick="setTheme('cosmos',this)"></button>
+    <button class="th-btn sol              " title="Sol"           onclick="setTheme('sol',this)"></button>
+    <button class="th-btn bosque           " title="Bosque"        onclick="setTheme('bosque',this)"></button>
+    <button class="th-btn galaxia          " title="Galaxia"       onclick="setTheme('galaxia',this)"></button>
+    <button class="th-btn contraste        " title="Alto contraste" onclick="setTheme('contraste',this)"></button>
+  </div>
+
+  <span class="toolbar-label" style="margin-left:8px;">🔤 Letra:</span>
+  <div class="size-group">
+    <button class="sz-btn"       data-sz="sm" onclick="setSize('sm',this)">A</button>
+    <button class="sz-btn"       data-sz="md" onclick="setSize('md',this)" style="font-size:.92em;">A</button>
+    <button class="sz-btn active" data-sz="lg" onclick="setSize('lg',this)" style="font-size:1.05em;">A</button>
+    <button class="sz-btn"       data-sz="xl" onclick="setSize('xl',this)" style="font-size:1.2em;">A</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('fc',event)">🃏 Tarjetas de estudio</button>
+  <button class="tab-btn"        onclick="showTab('quiz',event)">🧠 Cuestionario</button>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PANEL TARJETAS
+══════════════════════════════════════════════ -->
+<div id="tab-fc" class="panel active">
+  <div id="fc-game">
+    <div class="fc-topbar">
+      <div class="fc-counter" id="fc-counter">Tarjeta 1 de 50</div>
+      <div class="fc-badges">
+        <span class="badge green" id="badge-know">✓ 0 me lo sé</span>
+        <span class="badge red"   id="badge-rev">✗ 0 repasar</span>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="fc-progress" style="width:0%"></div>
+    </div>
+
+    <p class="fc-flip-hint">👆 Toca la tarjeta para ver la respuesta</p>
+
+    <div class="card-wrap" id="card-wrap" onclick="flipCard()">
+      <div class="card-inner" id="card-inner">
+        <div class="card-face card-front" id="cf-front">
+          <div class="card-tag" id="cf-tag">Pregunta</div>
+          <div class="card-text" id="cf-q">…</div>
+          <div class="card-hint">Toca para ver la respuesta</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="card-tag">Respuesta</div>
+          <div class="card-text" id="cf-a">…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fc-actions">
+      <button class="fc-btn review" onclick="fcVote(false)">✗ Repasar</button>
+      <button class="fc-btn skip"   onclick="fcSkip()">→ Saltar</button>
+      <button class="fc-btn know"   onclick="fcVote(true)">✓ Me lo sé</button>
+    </div>
+  </div>
+
+  <div class="fc-end" id="fc-end">
+    <div style="font-size:2.4em; margin-bottom:8px;">🎉</div>
+    <h2>¡Terminaste todas las tarjetas!</h2>
+    <div class="score-big" id="fc-score-big">0/50</div>
+    <p id="fc-end-msg">Sigue practicando las que has marcado en rojo.</p>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:8px;">
+      <button class="fc-btn restart" onclick="fcRestart(false)">🔁 Repetir todas</button>
+      <button class="fc-btn restart" style="background:#f59e0b;" onclick="fcRestart(true)">📌 Solo las de repasar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PANEL CUESTIONARIO
+══════════════════════════════════════════════ -->
+<div id="tab-quiz" class="panel">
+  <div class="quiz-start" id="quiz-start">
+    <div style="font-size:2.4em; margin-bottom:10px;">🧠</div>
+    <h2>Cuestionario — Unidad 1</h2>
+    <p>
+      <strong>30 preguntas</strong> de toda la unidad.<br>
+      Algunas son de elegir la respuesta correcta.<br>
+      Otras son de escribir una o dos palabras.<br>
+      Las tildes y las mayúsculas no importan.
+    </p>
+    <button class="big-btn" onclick="startQuiz()">¡Empezar!</button>
+  </div>
+
+  <div class="quiz-play" id="quiz-play">
+    <div class="q-header">
+      <div class="q-num" id="q-num">Pregunta 1/30</div>
+      <div class="q-score-live" id="q-score-live">✓ 0 bien</div>
+    </div>
+    <div class="q-progress">
+      <div class="q-progress-fill" id="q-prog-fill" style="width:0%"></div>
+    </div>
+    <div class="q-card" id="q-card">
+      <span class="q-type-tag" id="q-tag">Elige la correcta</span>
+      <div class="q-text" id="q-text">Texto de la pregunta</div>
+      <div id="q-body"></div>
+      <div class="q-feedback" id="q-feedback"></div>
+      <button class="q-check-btn" id="q-check" onclick="checkAnswer()" disabled>Comprobar</button>
+      <button class="q-next-btn"  id="q-next"  onclick="nextQuestion()">Siguiente →</button>
+    </div>
+  </div>
+
+  <div class="quiz-results" id="quiz-results">
+    <div style="font-size:2.4em; margin-bottom:8px;" id="res-emoji">🏆</div>
+    <h2>¡Cuestionario terminado!</h2>
+    <div class="results-score" id="res-score">0/30</div>
+    <div class="results-msg" id="res-msg">Mensaje</div>
+    <div class="results-grid">
+      <div class="res-box g"><span id="res-ok">0</span><small>Bien</small></div>
+      <div class="res-box r"><span id="res-ko">0</span><small>Mal</small></div>
+    </div>
+    <div class="review-list" id="review-list"></div>
+    <button class="big-btn" onclick="restartQuiz()">🔁 Intentar de nuevo</button>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   PERSONALIZACIÓN
+================================================================ */
+function setTheme(t, btn){
+  document.documentElement.setAttribute('data-theme', t);
+  document.querySelectorAll('.th-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setSize(s, btn){
+  document.documentElement.setAttribute('data-size', s);
+  document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ================================================================
+   DATOS — TARJETAS (50)
+================================================================ */
+const CARDS = [
+  // ── BLOQUE 1 · ¿Qué es la tecnología?
+  { b:'b1', q:'¿Qué es la tecnología?',
+    a:'Es usar lo que sabemos para resolver problemas y hacer nuestra vida más fácil.' },
+  { b:'b1', q:'¿Cuáles son las tres cosas que forman la tecnología?',
+    a:'Ciencia (saber cómo funciona el mundo) + Técnica (herramientas y pasos) + Habilidad (saber hacerlo bien).' },
+  { b:'b1', q:'¿Para qué sirve la ciencia dentro de la tecnología?',
+    a:'Para entender cómo funciona el mundo: las leyes, los materiales, la energía...' },
+  { b:'b1', q:'¿Para qué sirve la técnica dentro de la tecnología?',
+    a:'Para dar los pasos correctos y usar las herramientas adecuadas.' },
+  { b:'b1', q:'¿Para qué sirve la habilidad dentro de la tecnología?',
+    a:'Para hacer bien el trabajo. La habilidad se mejora con la práctica.' },
+  { b:'b1', q:'Pon un ejemplo de objeto tecnológico que uses cada día.',
+    a:'Por ejemplo: el móvil, el frigorífico, la bicicleta o el autobús. (Respuesta libre)' },
+
+  // ── BLOQUE 2 · Necesidades y tipos de productos
+  { b:'b2', q:'¿Qué son las necesidades básicas? Pon 3 ejemplos.',
+    a:'Son las que necesitamos para vivir: comer, tener casa, ropa, salud y estar seguros.' },
+  { b:'b2', q:'¿Qué son las necesidades secundarias? Pon 3 ejemplos.',
+    a:'Son las que hacen nuestra vida más cómoda o divertida: el móvil, el cine, viajar...' },
+  { b:'b2', q:'El WiFi, ¿es una necesidad básica o secundaria?',
+    a:'Secundaria. Lo usamos para comunicarnos y entretenernos, pero no es imprescindible para vivir.' },
+  { b:'b2', q:'Una vacuna, ¿satisface una necesidad básica o secundaria?',
+    a:'Básica. Nos protege de enfermedades, así que es para la salud.' },
+  { b:'b2', q:'¿Cuáles son los 3 tipos de productos tecnológicos?',
+    a:'1. Objetos (cosas que puedes tocar), 2. Servicios (cosas que no puedes tocar), 3. Procesos (conjuntos de pasos).' },
+  { b:'b2', q:'¿En qué se diferencia un objeto de un servicio tecnológico?',
+    a:'Un objeto lo puedes tocar (bici, móvil). Un servicio no lo puedes tocar (internet, el autobús).' },
+  { b:'b2', q:'¿Qué es un proceso tecnológico? Pon un ejemplo.',
+    a:'Es una serie de pasos para conseguir algo. Por ejemplo: el reciclaje o hacer un bocadillo en serie.' },
+
+  // ── BLOQUE 3 · Tipos de análisis
+  { b:'b3', q:'¿Cuántos tipos de análisis tiene un objeto tecnológico?',
+    a:'5 tipos: de forma, de materiales, de para qué sirve, de cómo se ve y de cuánto cuesta.' },
+  { b:'b3', q:'¿Qué miras cuando haces el análisis de FORMA de un objeto?',
+    a:'La forma que tiene y las partes de las que está hecho.' },
+  { b:'b3', q:'¿Qué miras cuando haces el análisis de MATERIALES de un objeto?',
+    a:'De qué está hecho (plástico, madera, metal...) y cómo se ha fabricado.' },
+  { b:'b3', q:'¿Qué miras cuando haces el análisis de PARA QUÉ SIRVE un objeto?',
+    a:'La utilidad: para qué lo usamos exactamente.' },
+  { b:'b3', q:'¿Qué miras cuando haces el análisis de CÓMO SE VE un objeto?',
+    a:'Su aspecto: el color, el diseño, si es bonito o feo.' },
+  { b:'b3', q:'¿Qué miras cuando haces el análisis de COSTE E IMPACTO de un objeto?',
+    a:'Cuánto cuesta hacerlo y si es bueno o malo para el medio ambiente y la sociedad.' },
+  { b:'b3', q:'Si preguntas "¿cuánto costó fabricar esto?", ¿qué tipo de análisis estás haciendo?',
+    a:'El análisis de coste e impacto (económico-social).' },
+  { b:'b3', q:'Si preguntas "¿de qué material está hecho esto?", ¿qué tipo de análisis estás haciendo?',
+    a:'El análisis de materiales (técnico).' },
+
+  // ── BLOQUE 4 · Método de proyectos
+  { b:'b4', q:'¿Cuántos pasos tiene el método de proyectos?',
+    a:'8 pasos.' },
+  { b:'b4', q:'¿Cuál es el primer paso del método de proyectos?',
+    a:'Ver cuál es el problema o la necesidad que queremos resolver.' },
+  { b:'b4', q:'¿Cuál es el segundo paso del método de proyectos?',
+    a:'Buscar información sobre el problema.' },
+  { b:'b4', q:'¿En qué paso se hace el dibujo del objeto (el boceto)?',
+    a:'En el paso 4: Diseñar.' },
+  { b:'b4', q:'¿En qué paso se decide quién hace cada cosa y cuándo?',
+    a:'En el paso 5: Planificar.' },
+  { b:'b4', q:'¿Cuál es el último paso del método de proyectos?',
+    a:'Presentar la memoria: contar cómo ha ido todo al final.' },
+  { b:'b4', q:'Di los 8 pasos del método de proyectos en orden.',
+    a:'Ver el problema → Buscar info → Pensar ideas → Diseñar → Planificar → Construir → Evaluar → Presentar.' },
+  { b:'b4', q:'¿Para qué sirve evaluar el proyecto después de construirlo?',
+    a:'Para ver si funciona bien y pensar qué haríamos mejor la próxima vez.' },
+
+  // ── BLOQUE 5 · Herramientas y seguridad
+  { b:'b5', q:'¿Cómo se llaman las 3 familias de herramientas del taller?',
+    a:'Familia 1: La Mente (preparar y medir). Familia 2: La Fuerza (cortar y romper). Familia 3: La Precisión (acabar bien).' },
+  { b:'b5', q:'¿Qué herramientas hay en la Familia 1 (La Mente)?',
+    a:'Regla, escuadra, compás, lápiz, punzón, tornillo de banco y sargento.' },
+  { b:'b5', q:'¿Qué herramientas hay en la Familia 2 (La Fuerza)?',
+    a:'Martillo, serrucho, sierra de calar y segueta.' },
+  { b:'b5', q:'¿Qué herramientas hay en la Familia 3 (La Precisión)?',
+    a:'Taladro con brocas, pistola de cola caliente, cola para madera, destornilladores, limas y lija.' },
+  { b:'b5', q:'¿Cuáles son los 6 pasos del taller (el mantra)?',
+    a:'Mide → Marca → Corta → Perfora → Monta → Acaba.' },
+  { b:'b5', q:'¿Para qué sirve el serrucho y para qué la sierra de calar?',
+    a:'Serrucho: cortes rectos y largos en madera. Sierra de calar: cortes curvos o formas.' },
+  { b:'b5', q:'¿Para qué se usa el papel de lija?',
+    a:'Para alisar y suavizar las superficies al acabar una pieza.' },
+  { b:'b5', q:'¿Cuáles son las 5 normas básicas de seguridad en el taller?',
+    a:'1. Orden y calma. 2. Usar bien las herramientas. 3. Cortar alejándote del cuerpo. 4. Máquinas eléctricas solo con permiso. 5. Ropa y pelo adecuados.' },
+  { b:'b5', q:'¿Por qué hay que llevar el pelo recogido en el taller?',
+    a:'Para que no se enganche en las herramientas eléctricas que giran.' },
+  { b:'b5', q:'¿Cómo se deben usar las máquinas eléctricas en el taller?',
+    a:'De una en una, con permiso del profesor y siempre con él cerca.' },
+  { b:'b5', q:'¿Qué debes hacer si ocurre un accidente en el taller?',
+    a:'Avisar al profesor en seguida. Nunca esconderlo.' },
+  { b:'b5', q:'¿Qué es el tornillo de banco y para qué sirve?',
+    a:'Es una pinza fija en la mesa del taller. Sirve para sujetar la pieza mientras trabajas.' },
+  { b:'b5', q:'¿En qué se diferencia el sargento del tornillo de banco?',
+    a:'El sargento lo puedes mover; el tornillo de banco está fijo en la mesa.' },
+
+  // ── BLOQUE 6 · Documentos del proyecto
+  { b:'b6', q:'¿Cuántos documentos básicos tiene un proyecto tecnológico?',
+    a:'6 documentos.' },
+  { b:'b6', q:'¿Qué es el boceto y qué debe llevar siempre?',
+    a:'Es el dibujo de la idea antes de construirla. Siempre tiene que llevar las medidas.' },
+  { b:'b6', q:'¿Qué es la hoja de proceso?',
+    a:'Es el diario del taller: apuntas lo que haces cada día mientras fabricas el objeto.' },
+  { b:'b6', q:'¿Qué es la memoria final de un proyecto?',
+    a:'Es el documento que escribes al terminar: cuenta cómo te ha ido y qué has aprendido.' },
+  { b:'b6', q:'¿Qué documento te dice cuánto va a costar el proyecto?',
+    a:'El presupuesto.' },
+  { b:'b6', q:'¿Qué documentos se hacen ANTES de construir?',
+    a:'El boceto, la lista de materiales y herramientas, el plan de trabajo y el presupuesto.' },
+  { b:'b6', q:'¿Qué es el plan de trabajo y reparto?',
+    a:'El documento donde se decide quién hace qué tarea y en qué momento.' },
+  { b:'b6', q:'¿Qué diferencia hay entre boceto y croquis?',
+    a:'El boceto es un dibujo rápido de la idea. El croquis es más detallado y siempre lleva las medidas exactas.' },
+];
+
+/* ================================================================
+   DATOS — CUESTIONARIO (30 preguntas)
+================================================================ */
+const ALL_QUESTIONS = [
+  { type:'test', text:'¿Cuál es la fórmula correcta de la tecnología?',
+    opts:['Ciencia + Naturaleza + Máquinas','Ciencia + Técnica + Habilidad','Arte + Herramientas + Creatividad','Física + Química + Biología'], correct:1 },
+  { type:'test', text:'Una vacuna es un producto tecnológico. ¿De qué tipo es?',
+    opts:['Un objeto (algo que puedes tocar)','Un servicio (algo que no puedes tocar)','Un proceso (una serie de pasos)','Un recurso natural'], correct:0 },
+  { type:'test', text:'¿Cuál de estas es una necesidad BÁSICA?',
+    opts:['Ver la televisión','Usar internet','Tener una casa','Ir al cine'], correct:2 },
+  { type:'test', text:'¿Cuál de estas es una necesidad SECUNDARIA?',
+    opts:['Comer','Vestirse','Salud','Entretenimiento'], correct:3 },
+  { type:'test', text:'¿Cómo se llama el análisis que mira la FORMA y las partes de un objeto?',
+    opts:['Análisis de para qué sirve','Análisis de materiales','Análisis de forma','Análisis de cómo se ve'], correct:2 },
+  { type:'test', text:'¿Qué análisis responde a "¿para qué sirve este objeto?"?',
+    opts:['Análisis de forma','Análisis de cómo se ve','Análisis de coste e impacto','Análisis de para qué sirve'], correct:3 },
+  { type:'test', text:'¿Cuál es el PRIMER paso del método de proyectos?',
+    opts:['Dibujar el objeto','Buscar información','Ver cuál es el problema','Construir el objeto'], correct:2 },
+  { type:'test', text:'¿En qué paso del método de proyectos se hace el boceto?',
+    opts:['Paso 2: Buscar información','Paso 4: Diseñar','Paso 6: Construir','Paso 8: Presentar'], correct:1 },
+  { type:'test', text:'¿Cuál es el ÚLTIMO paso del método de proyectos?',
+    opts:['Evaluar','Construir','Planificar','Presentar la memoria'], correct:3 },
+  { type:'test', text:'¿A qué familia de herramientas pertenece el serrucho?',
+    opts:['Familia 1 — La Mente','Familia 2 — La Fuerza','Familia 3 — La Precisión','No es una herramienta del taller'], correct:1 },
+  { type:'test', text:'¿Qué herramienta se usa para hacer cortes CURVOS en madera?',
+    opts:['Serrucho','Martillo','Sierra de calar','Compás'], correct:2 },
+  { type:'test', text:'¿A qué familia pertenece el papel de lija?',
+    opts:['Familia 1 — La Mente','Familia 2 — La Fuerza','Familia 3 — La Precisión','No es una herramienta'], correct:2 },
+  { type:'test', text:'¿Cómo hay que usar las máquinas eléctricas en el taller?',
+    opts:['Cuando quieras y sin avisar','De una en una, con permiso y con el profesor cerca','Siempre en parejas y sin avisar','Solo fuera de clase'], correct:1 },
+  { type:'test', text:'¿Cuántos documentos básicos tiene un proyecto tecnológico?',
+    opts:['3','4','5','6'], correct:3 },
+  { type:'test', text:'¿Qué documento se rellena MIENTRAS se fabrica el objeto?',
+    opts:['El boceto','La lista de materiales','La hoja de proceso','La memoria final'], correct:2 },
+  { type:'test', text:'¿Qué tiene que llevar siempre un croquis?',
+    opts:['Colores llamativos','Las medidas exactas','La lista de materiales','El nombre del fabricante'], correct:1 },
+  { type:'test', text:'Internet es un producto tecnológico. ¿De qué tipo?',
+    opts:['Un objeto','Un servicio','Un proceso','Un material'], correct:1 },
+  { type:'test', text:'¿Cuál de estas NO es una norma de seguridad en el taller?',
+    opts:['Llevar el pelo recogido','Cortar alejándote del cuerpo','Usar un destornillador como martillo si no hay otro','Sujetar bien la pieza antes de cortar'], correct:2 },
+  { type:'short', text:'¿Cómo se llama el documento que escribes AL TERMINAR el proyecto? (una o dos palabras)',
+    accepts:['memoria','memoria final'] },
+  { type:'short', text:'¿Cuántos pasos tiene el método de proyectos? Escribe solo el número.',
+    accepts:['8','ocho'] },
+  { type:'short', text:'¿Cómo se llama la herramienta FIJA de la mesa del taller que sujeta las piezas? (dos palabras)',
+    accepts:['tornillo de banco','tornillo banco'] },
+  { type:'short', text:'¿Cuántos tipos de análisis tiene un objeto tecnológico? Escribe solo el número.',
+    accepts:['5','cinco'] },
+  { type:'short', text:'¿Cómo se llama el análisis que mira de qué MATERIALES está hecho un objeto? (una palabra)',
+    accepts:['tecnico','técnico'] },
+  { type:'short', text:'¿Cómo se llama la herramienta del taller que hace agujeros? (una palabra)',
+    accepts:['taladro'] },
+  { type:'short', text:'¿Cuál es la primera palabra del mantra del taller? (Mide → Marca → Corta → …)',
+    accepts:['mide'] },
+  { type:'short', text:'Comer todos los días es una necesidad… ¿básica o secundaria? (una palabra)',
+    accepts:['basica','básica'] },
+  { type:'short', text:'¿Cómo se llama el análisis que mira el COLOR y el diseño de un objeto? (una palabra)',
+    accepts:['estetico','estético'] },
+  { type:'short', text:'¿Cuántas normas básicas de seguridad hay en el taller? Escribe el número.',
+    accepts:['5','cinco'] },
+  { type:'short', text:'¿Cómo se llama el documento que dice CUÁNTO va a costar el proyecto? (una palabra)',
+    accepts:['presupuesto'] },
+  { type:'short', text:'¿Cuántas familias de herramientas hay en el taller? Escribe el número.',
+    accepts:['3','tres'] },
+];
+
+/* ================================================================
+   UTILIDADES
+================================================================ */
+function normalize(s){
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+}
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+/* ================================================================
+   TABS
+================================================================ */
+function showTab(id, e){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  e.currentTarget.classList.add('active');
+}
+
+/* ================================================================
+   TARJETAS
+================================================================ */
+let fcDeck=[], fcIdx=0, fcKnow=0, fcReview=0, fcFlipped=false;
+
+function fcInit(onlyReview=false){
+  if(onlyReview){
+    fcDeck=shuffle(CARDS.filter(c=>c._review));
+    if(!fcDeck.length){ fcDeck=shuffle([...CARDS]); }
+  } else {
+    CARDS.forEach(c=>delete c._review);
+    fcDeck=shuffle([...CARDS]);
+  }
+  fcIdx=0; fcKnow=0; fcReview=0; fcFlipped=false;
+  document.getElementById('fc-game').style.display='block';
+  document.getElementById('fc-end').style.display='none';
+  fcRender();
+}
+
+function fcRender(){
+  if(fcIdx>=fcDeck.length){ fcEnd(); return; }
+  const c=fcDeck[fcIdx];
+  document.getElementById('cf-q').textContent=c.q;
+  document.getElementById('cf-a').textContent=c.a;
+  document.getElementById('cf-tag').textContent='Tarjeta '+(fcIdx+1);
+  const front=document.getElementById('cf-front');
+  front.className='card-face card-front '+c.b;
+  fcFlipped=false;
+  document.getElementById('card-inner').classList.remove('flipped');
+  document.getElementById('fc-counter').textContent=`Tarjeta ${fcIdx+1} de ${fcDeck.length}`;
+  document.getElementById('badge-know').textContent=`✓ ${fcKnow} me lo sé`;
+  document.getElementById('badge-rev').textContent=`✗ ${fcReview} repasar`;
+  document.getElementById('fc-progress').style.width=Math.round((fcIdx/fcDeck.length)*100)+'%';
+}
+
+function flipCard(){
+  fcFlipped=!fcFlipped;
+  document.getElementById('card-inner').classList.toggle('flipped',fcFlipped);
+}
+function fcVote(know){
+  const c=fcDeck[fcIdx];
+  if(know){ fcKnow++; delete c._review; }
+  else    { fcReview++; c._review=true; }
+  fcIdx++; fcRender();
+}
+function fcSkip(){ fcIdx++; fcRender(); }
+function fcEnd(){
+  document.getElementById('fc-game').style.display='none';
+  document.getElementById('fc-end').style.display='block';
+  document.getElementById('fc-score-big').textContent=`${fcKnow}/${fcDeck.length} sabía`;
+  const pct=Math.round((fcKnow/fcDeck.length)*100);
+  document.getElementById('fc-end-msg').textContent =
+    pct>=90 ? '🎉 ¡Genial! Te sabes casi todo.' :
+    pct>=70 ? '💪 ¡Muy bien! Repasa un poco las rojas.' :
+    pct>=50 ? '📚 Vas bien. ¡Un poco más de repaso y lo tendrás!' :
+              '🔄 Sigue practicando. ¡Cada vez lo harás mejor!';
+}
+function fcRestart(only){ fcInit(only); }
+fcInit();
+
+/* ================================================================
+   CUESTIONARIO
+================================================================ */
+let qQuestions=[], qIdx=0, qCorrect=0, qWrongItems=[], qAnswered=false, qSelectedOpt=null;
+
+function startQuiz(){
+  qQuestions=shuffle(ALL_QUESTIONS).slice(0,30);
+  qIdx=0; qCorrect=0; qWrongItems=[];
+  document.getElementById('quiz-start').style.display='none';
+  document.getElementById('quiz-play').style.display='block';
+  document.getElementById('quiz-results').style.display='none';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  qAnswered=false; qSelectedOpt=null;
+  const q=qQuestions[qIdx];
+  document.getElementById('q-num').textContent=`Pregunta ${qIdx+1}/30`;
+  document.getElementById('q-score-live').textContent=`✓ ${qCorrect} bien`;
+  document.getElementById('q-prog-fill').style.width=`${Math.round((qIdx/30)*100)}%`;
+  const tag=document.getElementById('q-tag');
+  tag.className='q-type-tag '+(q.type==='test'?'test':'short');
+  tag.textContent=q.type==='test'?'Elige la correcta':'Escribe la respuesta';
+  document.getElementById('q-text').textContent=q.text;
+  document.getElementById('q-feedback').className='q-feedback';
+  document.getElementById('q-feedback').textContent='';
+  document.getElementById('q-check').style.display='block';
+  document.getElementById('q-check').disabled=true;
+  document.getElementById('q-next').style.display='none';
+  const body=document.getElementById('q-body');
+  body.innerHTML='';
+  if(q.type==='test'){
+    const wrap=document.createElement('div');
+    wrap.className='q-options';
+    ['A','B','C','D'].forEach((l,i)=>{
+      const d=document.createElement('div');
+      d.className='q-opt';
+      d.innerHTML=`<span class="q-opt-letter">${l}</span>${q.opts[i]}`;
+      d.onclick=()=>selectOpt(i);
+      wrap.appendChild(d);
+    });
+    body.appendChild(wrap);
+  } else {
+    const wrap=document.createElement('div');
+    wrap.className='q-short-wrap';
+    const inp=document.createElement('input');
+    inp.type='text'; inp.className='q-short-input';
+    inp.placeholder='Escribe aquí tu respuesta…'; inp.id='q-short-inp';
+    inp.oninput=()=>{ document.getElementById('q-check').disabled=inp.value.trim().length===0; };
+    inp.onkeydown=(e)=>{ if(e.key==='Enter'&&!document.getElementById('q-check').disabled) checkAnswer(); };
+    wrap.appendChild(inp); body.appendChild(wrap);
+    setTimeout(()=>inp.focus(),100);
+  }
+}
+
+function selectOpt(i){
+  if(qAnswered) return;
+  document.querySelectorAll('.q-opt').forEach(el=>el.classList.remove('selected'));
+  document.querySelectorAll('.q-opt')[i].classList.add('selected');
+  qSelectedOpt=i;
+  document.getElementById('q-check').disabled=false;
+}
+
+function checkAnswer(){
+  if(qAnswered) return;
+  qAnswered=true;
+  const q=qQuestions[qIdx];
+  const fb=document.getElementById('q-feedback');
+  let ok=false;
+  if(q.type==='test'){
+    ok=(qSelectedOpt===q.correct);
+    document.querySelectorAll('.q-opt').forEach((el,i)=>{
+      if(i===q.correct) el.classList.add('show-correct');
+      if(i===qSelectedOpt&&!ok) el.classList.add('wrong');
+    });
+    fb.textContent=ok?'✅ ¡Correcto! ¡Muy bien!':`❌ No era esa. La respuesta correcta es: "${q.opts[q.correct]}"`;
+  } else {
+    const inp=document.getElementById('q-short-inp');
+    ok=q.accepts.some(a=>normalize(a)===normalize(inp.value.trim()));
+    inp.classList.add(ok?'correct':'wrong');
+    fb.textContent=ok?'✅ ¡Correcto! ¡Muy bien!':`❌ No era esa. La respuesta correcta es: "${q.accepts[0]}"`;
+  }
+  fb.className='q-feedback '+(ok?'ok':'err');
+  if(ok) qCorrect++;
+  else   qWrongItems.push({text:q.text, ans:q.type==='test'?q.opts[q.correct]:q.accepts[0]});
+  document.getElementById('q-check').style.display='none';
+  document.getElementById('q-next').style.display='block';
+  document.getElementById('q-next').textContent=qIdx<29?'Siguiente →':'🏁 Ver el resultado';
+  document.getElementById('q-score-live').textContent=`✓ ${qCorrect} bien`;
+}
+
+function nextQuestion(){
+  qIdx++;
+  if(qIdx>=30){ showResults(); return; }
+  renderQuestion();
+}
+
+function showResults(){
+  document.getElementById('quiz-play').style.display='none';
+  document.getElementById('quiz-results').style.display='block';
+  const pct=Math.round((qCorrect/30)*100);
+  document.getElementById('res-score').textContent=`${qCorrect}/30`;
+  document.getElementById('res-ok').textContent=qCorrect;
+  document.getElementById('res-ko').textContent=30-qCorrect;
+  const msgs=[
+    [90,'🏆','¡Genial! Te lo sabes todo. ¡Eres un crack!'],
+    [70,'🎉','¡Muy bien! Has acertado más de la mitad. Repasa las preguntas en rojo y estarás listo.'],
+    [50,'💪','Bien encaminado. Con un poco más de repaso lo tendrás todo.'],
+    [0, '📚','¡Ánimo! Vuelve a repasar el cuadernillo y luego inténtalo otra vez. ¡Tú puedes!'],
+  ];
+  const [,emoji,msg]=msgs.find(([t])=>pct>=t);
+  document.getElementById('res-emoji').textContent=emoji;
+  document.getElementById('res-msg').textContent=msg;
+  const rl=document.getElementById('review-list');
+  rl.innerHTML='';
+  if(qWrongItems.length){
+    const h=document.createElement('h3');
+    h.textContent='📌 Preguntas que debes repasar:';
+    rl.appendChild(h);
+    qWrongItems.forEach(w=>{
+      const d=document.createElement('div');
+      d.className='review-item';
+      d.innerHTML=`<strong>Pregunta: </strong>${w.text}<br><strong>Respuesta: </strong>${w.ans}`;
+      rl.appendChild(d);
+    });
+  }
+}
+
+function restartQuiz(){
+  document.getElementById('quiz-results').style.display='none';
+  document.getElementById('quiz-start').style.display='block';
+}
+</script>
+</body>
+</html>
