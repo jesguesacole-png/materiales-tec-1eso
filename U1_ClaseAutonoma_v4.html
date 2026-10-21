@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="es" data-theme="verde" data-size="md">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unidad 1 · El Proceso Tecnológico</title>
+<style>
+/* ══════════════════ TEMAS ══════════════════ */
+[data-theme="verde"]   { --h1:#1e5d63;--h2:#17666d;--acc:#17666d;--aL:#e4f0f1;--bg:#eef1f1;--pg:#fff;--txt:#172426;--mu:#667;--bdr:#cad7d8;--nb:#b9c9ca;--nbg:#f3f7f7;--btn:#1e5d63;--btxt:#fff;--ok:#2e7d32;--ko:#c62828;--tk:#fff5d9;--tkb:#967516;--ck:#edf6ed;--ckb:#4d7b50;--hp:#eef4fb;--hpb:#557da4;--ib:#f3f7f7;--ibb:#8aa4a6; }
+[data-theme="azul"]    { --h1:#1a3a6b;--h2:#1e4db5;--acc:#1e4db5;--aL:#e3eaf8;--bg:#eef2fb;--pg:#fff;--txt:#0d1b3e;--mu:#546e8a;--bdr:#c5cae9;--nb:#c5cae9;--nbg:#f3f4fb;--btn:#1a3a6b;--btxt:#fff;--ok:#2e7d32;--ko:#c62828;--tk:#fff8e1;--tkb:#f57f17;--ck:#e8f5e9;--ckb:#388e3c;--hp:#e3f2fd;--hpb:#1565c0;--ib:#f3f4fb;--ibb:#7986cb; }
+[data-theme="morado"]  { --h1:#4a148c;--h2:#7b1fa2;--acc:#7b1fa2;--aL:#ede7f6;--bg:#f5f0fb;--pg:#fff;--txt:#1a0030;--mu:#7b5e8b;--bdr:#ce93d8;--nb:#ce93d8;--nbg:#f5f0fb;--btn:#4a148c;--btxt:#fff;--ok:#2e7d32;--ko:#c62828;--tk:#fff8e1;--tkb:#f9a825;--ck:#e8f5e9;--ckb:#388e3c;--hp:#fce4ec;--hpb:#c2185b;--ib:#f5f0fb;--ibb:#9c27b0; }
+[data-theme="naranja"] { --h1:#bf360c;--h2:#e64a19;--acc:#e64a19;--aL:#fbe9e7;--bg:#fdf2ec;--pg:#fff;--txt:#1c0a00;--mu:#8d4d30;--bdr:#ffccbc;--nb:#ffccbc;--nbg:#fdf2ec;--btn:#bf360c;--btxt:#fff;--ok:#2e7d32;--ko:#c62828;--tk:#fff8e1;--tkb:#f9a825;--ck:#e8f5e9;--ckb:#388e3c;--hp:#fff3e0;--hpb:#e65100;--ib:#fdf2ec;--ibb:#ff8a65; }
+[data-theme="oscuro"]  { --h1:#0f0f1a;--h2:#1a1a2e;--acc:#6c63ff;--aL:#2a2a4a;--bg:#0f0f1a;--pg:#1a1a2e;--txt:#e0e0ff;--mu:#9090bb;--bdr:#3a3a5a;--nb:#3a3a5a;--nbg:#1f1f30;--btn:#6c63ff;--btxt:#fff;--ok:#66bb6a;--ko:#ef5350;--tk:#2a2500;--tkb:#f9a825;--ck:#0a2a0a;--ckb:#66bb6a;--hp:#0a1a2a;--hpb:#64b5f6;--ib:#1f1f30;--ibb:#90a4ae; }
+
+/* ══════════════════ TAMAÑOS ══════════════════ */
+[data-size="sm"] { font-size:15px; }
+[data-size="md"] { font-size:18px; }
+[data-size="lg"] { font-size:21px; }
+[data-size="xl"] { font-size:25px; }
+
+/* ══════════════════ BASE ══════════════════ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:Arial,'Segoe UI',sans-serif;line-height:1.65;transition:background .3s,color .3s}
+.page{max-width:900px;margin:auto;background:var(--pg);transition:background .3s}
+a{color:var(--acc)}
+p{margin:.55em 0}
+ul,ol{padding-left:1.4em;margin:.4em 0}
+li{margin:.3em 0}
+strong{color:var(--acc)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.92em}
+th{background:var(--acc);color:#fff;padding:8px 12px;text-align:left}
+td{padding:8px 12px;border-bottom:1px solid var(--bdr)}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:var(--aL)}
+
+/* ══════════════════ TOOLBAR ══════════════════ */
+.toolbar{background:var(--h2);padding:7px 5%;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;border-bottom:2px solid rgba(255,255,255,.2);position:sticky;top:0;z-index:100;transition:background .3s}
+.tlabel{color:rgba(255,255,255,.7);font-size:.72em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.sz-btn{background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);color:#fff;border-radius:7px;cursor:pointer;font-weight:900;padding:3px 8px;transition:all .15s;line-height:1.2}
+.sz-btn:hover{background:rgba(255,255,255,.28)}
+.sz-btn.active{background:rgba(255,255,255,.9);color:var(--h2)}
+.th-btn{width:24px;height:24px;border-radius:50%;border:3px solid rgba(255,255,255,.25);cursor:pointer;transition:transform .15s,border-color .15s;flex-shrink:0}
+.th-btn:hover{transform:scale(1.2)}
+.th-btn.active{border-color:#fff;transform:scale(1.25)}
+.th-verde   {background:linear-gradient(135deg,#1e5d63,#38ef7d)}
+.th-azul    {background:linear-gradient(135deg,#1a3a6b,#64b5f6)}
+.th-morado  {background:linear-gradient(135deg,#4a148c,#ce93d8)}
+.th-naranja {background:linear-gradient(135deg,#bf360c,#ffcc02)}
+.th-oscuro  {background:linear-gradient(135deg,#0f0f1a,#6c63ff)}
+.reset-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);border-radius:7px;cursor:pointer;font-size:.68em;font-weight:700;padding:3px 9px;transition:all .15s;white-space:nowrap;margin-left:6px}
+.reset-btn:hover{background:rgba(255,0,0,.3);color:#fff}
+
+/* ══════════════════ CABECERA ══════════════════ */
+header{padding:26px 6% 20px;background:linear-gradient(135deg,var(--h1) 0%,var(--h2) 100%);color:#fff;transition:background .3s}
+header h1{margin:0 0 6px;font-size:clamp(22px,5vw,38px);line-height:1.2}
+header p{margin:0;opacity:.8;font-size:.88em}
+
+/* ══════════════════ BARRA PROGRESO GLOBAL ══════════════════ */
+.prog-bar-wrap{background:var(--nbg);padding:14px 6%;border-bottom:1px solid var(--bdr);transition:background .3s}
+.prog-label{font-size:.82em;font-weight:700;color:var(--mu);margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
+.prog-label span{font-size:1.1em;color:var(--acc)}
+.prog-track{background:var(--bdr);border-radius:10px;height:12px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--ok));border-radius:10px;transition:width .6s ease}
+.prog-stars{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.star{font-size:1.4em;transition:transform .3s;filter:grayscale(1);opacity:.4}
+.star.earned{filter:grayscale(0);opacity:1;transform:scale(1.15)}
+
+/* ══════════════════ SESIÓN ACORDEÓN ══════════════════ */
+.session{border:2px solid var(--bdr);border-radius:14px;margin:12px 5%;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.session.active{border-color:var(--acc);box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.session.locked{opacity:.55}
+
+.session-hdr{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;background:var(--nbg);transition:background .3s;user-select:none}
+.session.locked .session-hdr{cursor:default}
+.session-hdr:hover:not(.locked-hdr){background:var(--aL)}
+.session-icon{font-size:1.6em;flex-shrink:0}
+.session-info{flex:1;min-width:0}
+.session-title{font-weight:800;font-size:1em;line-height:1.3}
+.session-sub{font-size:.78em;color:var(--mu);margin-top:2px}
+.session-badge{flex-shrink:0;font-size:.75em;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.badge-done   {background:var(--ck);color:var(--ok)}
+.badge-open   {background:var(--aL);color:var(--acc)}
+.badge-locked {background:var(--bdr);color:var(--mu)}
+.session-arrow{font-size:.9em;color:var(--mu);transition:transform .3s;flex-shrink:0}
+.session.open .session-arrow{transform:rotate(180deg)}
+
+.session-body{display:none;padding:0 18px 20px;border-top:1px solid var(--bdr)}
+.session.open .session-body{display:block}
+
+/* ══════════════════ CONTENIDO ══════════════════ */
+.info-box,.task,.check,.help{margin:13px 0;padding:13px 16px;border:1px solid var(--bdr);border-radius:10px;line-height:1.7}
+.info-box{background:var(--ib);border-left:5px solid var(--ibb)}
+.task    {background:var(--tk);border-left:5px solid var(--tkb)}
+.check   {background:var(--ck);border-left:5px solid var(--ckb)}
+.help    {background:var(--hp);border-left:5px solid var(--hpb)}
+.box-title{font-weight:800;font-size:.82em;text-transform:uppercase;letter-spacing:.4px;opacity:.75;margin-bottom:5px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.card{border:1px solid var(--bdr);border-radius:10px;padding:12px 14px;background:var(--pg);transition:background .3s}
+.card-t{font-weight:800;color:var(--acc);margin-bottom:5px;font-size:.9em}
+
+/* ══════════════════ ACTIVIDADES ══════════════════ */
+.act-wrap{background:var(--tk);border:1px solid var(--tkb);border-radius:10px;padding:13px 16px;margin:13px 0}
+.act-title{font-weight:800;font-size:.82em;text-transform:uppercase;letter-spacing:.4px;color:var(--tkb);margin-bottom:8px}
+
+/* Opciones */
+.opts{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.opt-btn{display:flex;align-items:flex-start;gap:9px;padding:10px 13px;border:2px solid var(--bdr);border-radius:9px;background:var(--pg);color:var(--txt);cursor:pointer;font:inherit;font-size:.92em;font-weight:500;text-align:left;line-height:1.5;transition:all .18s}
+.opt-btn:hover:not(:disabled){border-color:var(--acc);background:var(--aL)}
+.opt-btn.correct{border-color:var(--ok);background:var(--ck);font-weight:700}
+.opt-btn.wrong  {border-color:var(--ko);background:#fdecea}
+.opt-btn:disabled{cursor:default}
+.opt-l{min-width:26px;height:26px;border-radius:50%;background:var(--aL);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:.75em;font-weight:900;flex-shrink:0;margin-top:1px}
+.opt-btn.correct .opt-l{background:var(--ok);color:#fff}
+.opt-btn.wrong   .opt-l{background:var(--ko);color:#fff}
+
+/* V/F */
+.vf-row{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--bdr)}
+.vf-row:last-child{border-bottom:none}
+.vf-txt{flex:1;font-size:.92em;line-height:1.5}
+.vf-btns{display:flex;gap:5px;flex-shrink:0}
+.vf-btn{padding:5px 12px;border-radius:7px;border:2px solid var(--bdr);background:var(--pg);color:var(--txt);cursor:pointer;font:inherit;font-size:.82em;font-weight:700;transition:all .15s}
+.vf-btn:hover:not(:disabled){border-color:var(--acc);background:var(--aL)}
+.vf-btn.correct{background:var(--ok);color:#fff;border-color:var(--ok)}
+.vf-btn.wrong  {background:var(--ko);color:#fff;border-color:var(--ko)}
+.vf-btn:disabled{cursor:default}
+
+/* Matching */
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin:10px 0}
+.match-col{display:flex;flex-direction:column;gap:6px}
+.match-item{padding:9px 12px;border:2px solid var(--bdr);border-radius:9px;background:var(--pg);cursor:pointer;font:inherit;font-size:.88em;text-align:left;line-height:1.4;transition:all .18s;color:var(--txt)}
+.match-item:hover:not(.used):not(:disabled){border-color:var(--acc);background:var(--aL)}
+.match-item.selected{border-color:var(--acc);background:var(--aL);font-weight:700}
+.match-item.correct{border-color:var(--ok);background:var(--ck)}
+.match-item.wrong  {border-color:var(--ko);background:#fdecea}
+.match-item.used   {opacity:.55;cursor:default}
+
+/* Huecos */
+.gap-input{border:2px solid var(--bdr);border-radius:6px;padding:2px 6px;font:inherit;font-size:.9em;min-width:85px;width:105px;outline:none;transition:border-color .18s;background:var(--pg);color:var(--txt);line-height:1.6}
+.gap-input:focus   {border-color:var(--acc)}
+.gap-input.correct {border-color:var(--ok);background:var(--ck);color:var(--ok);font-weight:700}
+.gap-input.wrong   {border-color:var(--ko);background:#fdecea;color:var(--ko)}
+.gap-text{line-height:2.3;font-size:.93em}
+
+/* Feedback */
+.fb{font-size:.86em;font-weight:700;padding:7px 11px;border-radius:8px;margin-top:6px;display:none}
+.fb.ok {background:var(--ck);color:var(--ok);display:block}
+.fb.err{background:#fdecea;color:var(--ko);display:block}
+.act-result{margin-top:8px;padding:9px 13px;border-radius:9px;font-weight:700;font-size:.88em;display:none}
+.act-result.ok {background:var(--ck);color:var(--ok);display:block}
+.act-result.err{background:#fdecea;color:var(--ko);display:block}
+.act-result.partial{background:#fff8e1;color:#7c5100;display:block}
+
+/* Cuaderno */
+.cuaderno{border:2px dashed var(--tkb);border-radius:11px;padding:12px 16px;background:var(--tk);margin:13px 0}
+.cuaderno-t{font-weight:800;color:var(--tkb);margin-bottom:6px;font-size:.85em}
+
+/* Botones */
+.act-btn{margin-top:8px;padding:9px 20px;background:var(--btn);color:var(--btxt);border:none;border-radius:9px;font:inherit;font-size:.9em;font-weight:800;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.act-btn:hover{opacity:.85;transform:translateY(-1px)}
+.reset-link{font-size:.8em;margin-left:10px;color:var(--acc);cursor:pointer;text-decoration:underline}
+
+/* ══════════════════ BOTÓN COMPLETAR SESIÓN ══════════════════ */
+.done-section{text-align:center;padding:20px 10px 8px;border-top:1px dashed var(--bdr);margin-top:18px}
+.done-btn{padding:13px 32px;background:linear-gradient(135deg,var(--acc),var(--ok));color:#fff;border:none;border-radius:30px;font:inherit;font-size:1.05em;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.18);transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.done-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 7px 22px rgba(0,0,0,.22)}
+.done-btn:disabled{opacity:.45;cursor:default;transform:none;background:var(--bdr);color:var(--mu);box-shadow:none}
+.done-hint{font-size:.78em;color:var(--mu);margin-top:8px}
+/* Bloque de código de profesor */
+.code-gate{margin-top:16px;padding:14px 18px;background:var(--hp);border:2px solid var(--hpb);border-radius:12px;display:none}
+.code-gate.visible{display:block}
+.code-gate-t{font-weight:800;font-size:.85em;color:var(--hpb);margin-bottom:10px}
+.code-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.code-input{border:2px solid var(--bdr);border-radius:8px;padding:8px 14px;font:inherit;font-size:1em;font-weight:700;letter-spacing:.12em;text-transform:uppercase;min-width:120px;max-width:180px;outline:none;transition:border-color .2s;background:var(--pg);color:var(--txt)}
+.code-input:focus{border-color:var(--hpb)}
+.code-input.ok {border-color:var(--ok);background:var(--ck)}
+.code-input.err{border-color:var(--ko);background:#fdecea;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.code-btn{padding:9px 20px;background:var(--hpb);color:#fff;border:none;border-radius:8px;font:inherit;font-size:.92em;font-weight:800;cursor:pointer;transition:opacity .15s}
+.code-btn:hover{opacity:.85}
+.code-fb{font-size:.82em;margin-top:6px;font-weight:700}
+
+/* ══════════════════ CELEBRACIÓN ══════════════════ */
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:9999;display:none}
+.confetti-msg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--pg);border:3px solid var(--acc);border-radius:20px;padding:28px 36px;text-align:center;z-index:10000;display:none;box-shadow:0 12px 40px rgba(0,0,0,.25);max-width:340px;width:90%}
+.confetti-msg h2{margin:0 0 10px;font-size:1.5em;color:var(--acc)}
+.confetti-msg p{margin:0 0 18px;font-size:.95em;color:var(--mu);line-height:1.6}
+.confetti-close{padding:10px 28px;background:var(--btn);color:var(--btxt);border:none;border-radius:20px;font:inherit;font-size:.95em;font-weight:800;cursor:pointer}
+
+/* ══════════════════ PIE ══════════════════ */
+footer{padding:18px 6%;border-top:1px solid var(--bdr);color:var(--mu);font-size:.78em;text-align:center;margin-top:8px}
+
+/* ══════════════════ RESPONSIVE ══════════════════ */
+@media(max-width:640px){
+  .cards{grid-template-columns:1fr}
+  .match-wrap{grid-template-columns:1fr}
+  .vf-btns{flex-direction:column}
+  .session{margin:10px 3%}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ TOOLBAR ══════════════════════════════════ -->
+<div class="toolbar">
+  <span class="tlabel">🎨</span>
+  <button class="th-btn th-verde    active" title="Verde"   onclick="setTheme('verde',this)"></button>
+  <button class="th-btn th-azul           " title="Azul"    onclick="setTheme('azul',this)"></button>
+  <button class="th-btn th-morado         " title="Morado"  onclick="setTheme('morado',this)"></button>
+  <button class="th-btn th-naranja        " title="Naranja" onclick="setTheme('naranja',this)"></button>
+  <button class="th-btn th-oscuro         " title="Oscuro"  onclick="setTheme('oscuro',this)"></button>
+  <span class="tlabel" style="margin-left:6px">🔤</span>
+  <button class="sz-btn" data-sz="sm" onclick="setSize('sm',this)" style="font-size:.75em">A</button>
+  <button class="sz-btn active" data-sz="md" onclick="setSize('md',this)" style="font-size:.88em">A</button>
+  <button class="sz-btn" data-sz="lg" onclick="setSize('lg',this)" style="font-size:1.02em">A</button>
+  <button class="sz-btn" data-sz="xl" onclick="setSize('xl',this)" style="font-size:1.18em">A</button>
+  <button class="reset-btn" onclick="confirmReset()" title="Borrar mi progreso">🗑 Borrar progreso</button>
+</div>
+
+<div class="page">
+
+<!-- ══ CABECERA ════════════════════════════════ -->
+<header>
+  <h1>⚡ El Proceso Tecnológico</h1>
+  <p>Tecnología y Digitalización · 1.º ESO · Unidad 1</p>
+</header>
+
+<!-- ══ BARRA DE PROGRESO ════════════════════════ -->
+<div class="prog-bar-wrap">
+  <div class="prog-label">
+    <span>Tu progreso en esta unidad</span>
+    <span id="prog-text">0 de 6 sesiones</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  <div class="prog-stars" id="prog-stars">
+    <span class="star" data-i="0">⭐</span>
+    <span class="star" data-i="1">⭐</span>
+    <span class="star" data-i="2">⭐</span>
+    <span class="star" data-i="3">⭐</span>
+    <span class="star" data-i="4">⭐</span>
+    <span class="star" data-i="5">⭐</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SESIÓN 1 · ¿QUÉ ES LA TECNOLOGÍA?
+══════════════════════════════════════════════════════════ -->
+<div class="session" id="ses-0" data-idx="0">
+  <div class="session-hdr" onclick="toggleSession(0)">
+    <span class="session-icon">🧠</span>
+    <div class="session-info">
+      <div class="session-title">Sesión 1 · ¿Qué es la tecnología?</div>
+      <div class="session-sub">La tecnología, sus tres partes y ejemplos del día a día</div>
+    </div>
+    <span class="session-badge" id="badge-0">Abierta</span>
+    <span class="session-arrow">▼</span>
+  </div>
+  <div class="session-body">
+
+    <div class="info-box" style="margin-top:14px">
+      <div class="box-title">📖 Lee esto</div>
+      <p>La <strong>tecnología</strong> es usar lo que sabemos para <strong>resolver problemas</strong> y hacer la vida más fácil.</p>
+      <p>La tecnología tiene <strong>tres partes</strong>:</p>
+    </div>
+
+    <div class="cards">
+      <div class="card"><div class="card-t">🔬 Ciencia</div><p>Saber cómo funciona el mundo: leyes, materiales, energía.</p><p><em>Ej.: el hierro conduce la electricidad.</em></p></div>
+      <div class="card"><div class="card-t">🔧 Técnica</div><p>Usar herramientas y dar los pasos correctos.</p><p><em>Ej.: saber cómo soldar dos piezas.</em></p></div>
+      <div class="card"><div class="card-t">💪 Habilidad</div><p>Saber hacerlo bien con la práctica.</p><p><em>Ej.: cortar madera en línea recta.</em></p></div>
+      <div class="card"><div class="card-t">📱 Ejemplo</div><p>Al cargar el móvil usas ciencia (electricidad), técnica (cargador) y habilidad (enchufarlo).</p></div>
+    </div>
+
+    <!-- Actividad 1 -->
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · Elige la respuesta correcta</div>
+      <p><strong>¿Cuál es la fórmula correcta de la tecnología?</strong></p>
+      <div class="opts" id="opts-s0a1">
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s0a1')"><span class="opt-l">A</span>Arte + Herramientas + Máquinas</button>
+        <button class="opt-btn" onclick="checkOpt(this,'correct','s0a1')"><span class="opt-l">B</span>Ciencia + Técnica + Habilidad</button>
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s0a1')"><span class="opt-l">C</span>Física + Química + Biología</button>
+      </div>
+      <div class="fb" id="fb-s0a1"></div>
+    </div>
+
+    <!-- Actividad 2 V/F -->
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · ¿Verdadero o Falso?</div>
+      <div id="vf-s0b">
+        <div class="vf-row"><span class="vf-txt">La tecnología sirve para resolver problemas.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'V','V','fb-s0b1')">V</button><button class="vf-btn" onclick="checkVF(this,'F','V','fb-s0b1')">F</button></div></div>
+        <div class="fb" id="fb-s0b1"></div>
+        <div class="vf-row"><span class="vf-txt">La habilidad no mejora con la práctica.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'V','F','fb-s0b2')">V</button><button class="vf-btn" onclick="checkVF(this,'F','F','fb-s0b2')">F</button></div></div>
+        <div class="fb" id="fb-s0b2"></div>
+        <div class="vf-row"><span class="vf-txt">La ciencia nos explica cómo funciona el mundo.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'V','V','fb-s0b3')">V</button><button class="vf-btn" onclick="checkVF(this,'F','V','fb-s0b3')">F</button></div></div>
+        <div class="fb" id="fb-s0b3"></div>
+      </div>
+    </div>
+
+    <div class="cuaderno"><div class="cuaderno-t">✏️ En tu cuaderno</div>
+      <p>Escribe la fórmula de la tecnología y un ejemplo de cada parte que uses tú en casa.</p>
+    </div>
+    <div class="check"><div class="box-title">✅ Comprueba que sabes...</div>
+      <ul><li>Decir qué es la tecnología con tus palabras.</li><li>Nombrar las tres partes y un ejemplo de cada una.</li></ul>
+    </div>
+
+    <div class="done-section">
+      <button class="done-btn" id="done-btn-0" disabled>✅ Terminé esta sesión</button>
+      <div class="done-hint" id="hint-0">Completa primero todas las actividades de arriba.</div>
+      <div class="code-gate" id="gate-0">
+        <div class="code-gate-t">📋 Muéstrale tu cuaderno al profe y pídele el código para continuar</div>
+        <div class="code-row">
+          <input class="code-input" id="code-inp-0" placeholder="Código..." maxlength="12" oninput="this.value=this.value.toUpperCase()">
+          <button class="code-btn" onclick="checkCode(0)">Confirmar →</button>
+        </div>
+        <div class="code-fb" id="code-fb-0"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SESIÓN 2 · NECESIDADES Y TIPOS DE PRODUCTOS
+══════════════════════════════════════════════════════════ -->
+<div class="session locked" id="ses-1" data-idx="1">
+  <div class="session-hdr locked-hdr">
+    <span class="session-icon">💡</span>
+    <div class="session-info">
+      <div class="session-title">Sesión 2 · Necesidades y tipos de productos</div>
+      <div class="session-sub">Necesidades básicas, secundarias y los 3 tipos de productos tecnológicos</div>
+    </div>
+    <span class="session-badge badge-locked" id="badge-1">🔒 Bloqueada</span>
+    <span class="session-arrow">▼</span>
+  </div>
+  <div class="session-body">
+    <div class="info-box" style="margin-top:14px">
+      <div class="box-title">📖 Lee esto</div>
+      <p>Los seres humanos tenemos <strong>necesidades</strong>. La tecnología crea <strong>productos</strong> para satisfacerlas.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card"><div class="card-t">🏠 Necesidades BÁSICAS</div><p>Las que necesitamos para vivir.</p><ul><li>Comer y beber</li><li>Tener una casa</li><li>Ropa y salud</li><li>Estar seguros</li></ul></div>
+      <div class="card"><div class="card-t">🎮 Necesidades SECUNDARIAS</div><p>Hacen la vida más cómoda, pero sin ellas podemos vivir.</p><ul><li>Entretenimiento</li><li>Internet</li><li>Viajar</li></ul></div>
+    </div>
+
+    <div class="info-box">
+      <div class="box-title">📦 Los 3 tipos de productos tecnológicos</div>
+      <table>
+        <tr><th>Tipo</th><th>¿Qué es?</th><th>Ejemplo</th></tr>
+        <tr><td><strong>Objeto</strong></td><td>Algo que puedes tocar</td><td>Bicicleta, móvil</td></tr>
+        <tr><td><strong>Servicio</strong></td><td>Algo que no puedes tocar</td><td>Internet, el autobús</td></tr>
+        <tr><td><strong>Proceso</strong></td><td>Una serie de pasos</td><td>El reciclaje</td></tr>
+      </table>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · ¿Básica o Secundaria?</div>
+      <div id="vf-s1a">
+        <div class="vf-row"><span class="vf-txt">Comer todos los días.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'básica','básica','fb-s1a1')">Básica</button><button class="vf-btn" onclick="checkVF(this,'secundaria','básica','fb-s1a1')">Secundaria</button></div></div>
+        <div class="fb" id="fb-s1a1"></div>
+        <div class="vf-row"><span class="vf-txt">Ver vídeos en internet.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'básica','secundaria','fb-s1a2')">Básica</button><button class="vf-btn" onclick="checkVF(this,'secundaria','secundaria','fb-s1a2')">Secundaria</button></div></div>
+        <div class="fb" id="fb-s1a2"></div>
+        <div class="vf-row"><span class="vf-txt">Ponerse una vacuna.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'básica','básica','fb-s1a3')">Básica</button><button class="vf-btn" onclick="checkVF(this,'secundaria','básica','fb-s1a3')">Secundaria</button></div></div>
+        <div class="fb" id="fb-s1a3"></div>
+        <div class="vf-row"><span class="vf-txt">Ir al cine.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'básica','secundaria','fb-s1a4')">Básica</button><button class="vf-btn" onclick="checkVF(this,'secundaria','secundaria','fb-s1a4')">Secundaria</button></div></div>
+        <div class="fb" id="fb-s1a4"></div>
+      </div>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · ¿Qué tipo de producto es?</div>
+      <p><strong>Internet es...</strong></p>
+      <div class="opts" id="opts-s1b">
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s1b')"><span class="opt-l">A</span>Un objeto (puedes tocarlo)</button>
+        <button class="opt-btn" onclick="checkOpt(this,'correct','s1b')"><span class="opt-l">B</span>Un servicio (no puedes tocarlo)</button>
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s1b')"><span class="opt-l">C</span>Un proceso (una serie de pasos)</button>
+      </div>
+      <div class="fb" id="fb-s1b"></div>
+    </div>
+
+    <div class="cuaderno"><div class="cuaderno-t">✏️ En tu cuaderno</div>
+      <p>Dibuja una tabla con dos columnas (Básica / Secundaria) y pon 4 ejemplos en cada una. Luego escribe 2 ejemplos de cada tipo de producto tecnológico.</p>
+    </div>
+    <div class="check"><div class="box-title">✅ Comprueba que sabes...</div>
+      <ul><li>Distinguir necesidad básica de secundaria.</li><li>Explicar la diferencia entre objeto, servicio y proceso.</li></ul>
+    </div>
+
+    <div class="done-section">
+      <button class="done-btn" id="done-btn-1" disabled>✅ Terminé esta sesión</button>
+      <div class="done-hint" id="hint-1">Completa primero todas las actividades de arriba.</div>
+      <div class="code-gate" id="gate-1">
+        <div class="code-gate-t">📋 Muéstrale tu cuaderno al profe y pídele el código para continuar</div>
+        <div class="code-row">
+          <input class="code-input" id="code-inp-1" placeholder="Código..." maxlength="12" oninput="this.value=this.value.toUpperCase()">
+          <button class="code-btn" onclick="checkCode(1)">Confirmar →</button>
+        </div>
+        <div class="code-fb" id="code-fb-1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SESIÓN 3 · ANÁLISIS DE OBJETOS
+══════════════════════════════════════════════════════════ -->
+<div class="session locked" id="ses-2" data-idx="2">
+  <div class="session-hdr locked-hdr">
+    <span class="session-icon">🔍</span>
+    <div class="session-info">
+      <div class="session-title">Sesión 3 · Análisis de objetos tecnológicos</div>
+      <div class="session-sub">Los 5 tipos de análisis: forma, materiales, para qué sirve, cómo se ve y coste</div>
+    </div>
+    <span class="session-badge badge-locked" id="badge-2">🔒 Bloqueada</span>
+    <span class="session-arrow">▼</span>
+  </div>
+  <div class="session-body">
+    <div class="info-box" style="margin-top:14px">
+      <div class="box-title">📖 Lee esto</div>
+      <p>Para entender un objeto tecnológico lo analizamos desde <strong>5 puntos de vista</strong>.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card"><div class="card-t">📐 FORMA</div><p><em>¿Qué forma tiene y de qué partes está hecho?</em></p></div>
+      <div class="card"><div class="card-t">🧱 MATERIALES</div><p><em>¿De qué está hecho y cómo se fabricó?</em></p></div>
+      <div class="card"><div class="card-t">🎯 PARA QUÉ SIRVE</div><p><em>¿Qué problema resuelve?</em></p></div>
+      <div class="card"><div class="card-t">🎨 CÓMO SE VE</div><p><em>¿Qué aspecto tiene? ¿Es bonito?</em></p></div>
+      <div class="card"><div class="card-t">💶 COSTE E IMPACTO</div><p><em>¿Cuánto cuesta y qué impacto tiene en el planeta?</em></p></div>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · Une la pregunta con su tipo de análisis</div>
+      <p style="font-size:.82em;color:var(--mu)">Pulsa primero en una pregunta (izquierda) y luego en su análisis (derecha).</p>
+      <div class="match-wrap" id="match-s2a">
+        <div class="match-col" id="match-s2a-left">
+          <button class="match-item" data-id="q1" onclick="matchClick(this,'match-s2a')">¿De qué material está hecho?</button>
+          <button class="match-item" data-id="q2" onclick="matchClick(this,'match-s2a')">¿Qué forma tiene?</button>
+          <button class="match-item" data-id="q3" onclick="matchClick(this,'match-s2a')">¿Para qué sirve?</button>
+          <button class="match-item" data-id="q4" onclick="matchClick(this,'match-s2a')">¿Cuánto costó fabricarlo?</button>
+          <button class="match-item" data-id="q5" onclick="matchClick(this,'match-s2a')">¿Es bonito o feo?</button>
+        </div>
+        <div class="match-col" id="match-s2a-right">
+          <button class="match-item" data-id="a3" onclick="matchClick(this,'match-s2a')">PARA QUÉ SIRVE</button>
+          <button class="match-item" data-id="a1" onclick="matchClick(this,'match-s2a')">MATERIALES</button>
+          <button class="match-item" data-id="a5" onclick="matchClick(this,'match-s2a')">CÓMO SE VE</button>
+          <button class="match-item" data-id="a2" onclick="matchClick(this,'match-s2a')">FORMA</button>
+          <button class="match-item" data-id="a4" onclick="matchClick(this,'match-s2a')">COSTE E IMPACTO</button>
+        </div>
+      </div>
+      <div class="fb" id="fb-match-s2a"></div>
+      <button class="act-btn" onclick="resetMatch('match-s2a')">🔁 Reintentar</button>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · Pregunta "¿de qué material está hecho?"</div>
+      <div class="opts" id="opts-s2b">
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s2b')"><span class="opt-l">A</span>Análisis de forma</button>
+        <button class="opt-btn" onclick="checkOpt(this,'correct','s2b')"><span class="opt-l">B</span>Análisis de materiales</button>
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s2b')"><span class="opt-l">C</span>Análisis de para qué sirve</button>
+      </div>
+      <div class="fb" id="fb-s2b"></div>
+    </div>
+
+    <div class="cuaderno"><div class="cuaderno-t">✏️ En tu cuaderno</div>
+      <p>Elige un objeto de casa (bolígrafo, tijeras, vaso...) y escribe una frase para cada tipo de análisis.</p>
+    </div>
+    <div class="check"><div class="box-title">✅ Comprueba que sabes...</div>
+      <ul><li>Nombrar los 5 tipos de análisis.</li><li>Decir qué pregunta responde cada uno.</li></ul>
+    </div>
+
+    <div class="done-section">
+      <button class="done-btn" id="done-btn-2" disabled>✅ Terminé esta sesión</button>
+      <div class="done-hint" id="hint-2">Completa primero todas las actividades de arriba.</div>
+      <div class="code-gate" id="gate-2">
+        <div class="code-gate-t">📋 Muéstrale tu cuaderno al profe y pídele el código para continuar</div>
+        <div class="code-row">
+          <input class="code-input" id="code-inp-2" placeholder="Código..." maxlength="12" oninput="this.value=this.value.toUpperCase()">
+          <button class="code-btn" onclick="checkCode(2)">Confirmar →</button>
+        </div>
+        <div class="code-fb" id="code-fb-2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SESIÓN 4 · EL MÉTODO DE PROYECTOS
+══════════════════════════════════════════════════════════ -->
+<div class="session locked" id="ses-3" data-idx="3">
+  <div class="session-hdr locked-hdr">
+    <span class="session-icon">🗺️</span>
+    <div class="session-info">
+      <div class="session-title">Sesión 4 · El método de proyectos</div>
+      <div class="session-sub">Los 8 pasos para resolver un problema tecnológico</div>
+    </div>
+    <span class="session-badge badge-locked" id="badge-3">🔒 Bloqueada</span>
+    <span class="session-arrow">▼</span>
+  </div>
+  <div class="session-body">
+    <div class="info-box" style="margin-top:14px">
+      <div class="box-title">📖 Lee esto</div>
+      <p>Para resolver un problema tecnológico seguimos siempre <strong>8 pasos</strong> en el mismo orden.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card"><div class="card-t">1️⃣ Ver el problema</div><p>Identificamos qué problema queremos resolver.</p></div>
+      <div class="card"><div class="card-t">2️⃣ Buscar información</div><p>Buscamos datos para entender mejor el problema.</p></div>
+      <div class="card"><div class="card-t">3️⃣ Pensar ideas</div><p>Proponemos soluciones y elegimos la mejor.</p></div>
+      <div class="card"><div class="card-t">4️⃣ Diseñar</div><p>Dibujamos el boceto con las medidas.</p></div>
+      <div class="card"><div class="card-t">5️⃣ Planificar</div><p>Decidimos quién hace qué y cuándo.</p></div>
+      <div class="card"><div class="card-t">6️⃣ Construir</div><p>Fabricamos el objeto en el taller.</p></div>
+      <div class="card"><div class="card-t">7️⃣ Evaluar</div><p>Comprobamos si funciona y qué mejoraríamos.</p></div>
+      <div class="card"><div class="card-t">8️⃣ Presentar</div><p>Explicamos cómo ha ido todo: la memoria final.</p></div>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · ¿En qué paso se hace cada cosa?</div>
+      <div id="vf-s3a">
+        <div class="vf-row"><span class="vf-txt">Se dibuja el boceto con las medidas.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'3','4','fb-s3a1')">Paso 3</button><button class="vf-btn" onclick="checkVF(this,'4','4','fb-s3a1')">Paso 4</button><button class="vf-btn" onclick="checkVF(this,'5','4','fb-s3a1')">Paso 5</button></div></div>
+        <div class="fb" id="fb-s3a1"></div>
+        <div class="vf-row"><span class="vf-txt">Se decide quién hace cada tarea.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'4','5','fb-s3a2')">Paso 4</button><button class="vf-btn" onclick="checkVF(this,'5','5','fb-s3a2')">Paso 5</button><button class="vf-btn" onclick="checkVF(this,'6','5','fb-s3a2')">Paso 6</button></div></div>
+        <div class="fb" id="fb-s3a2"></div>
+        <div class="vf-row"><span class="vf-txt">Se fabrica el objeto en el taller.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'5','6','fb-s3a3')">Paso 5</button><button class="vf-btn" onclick="checkVF(this,'6','6','fb-s3a3')">Paso 6</button><button class="vf-btn" onclick="checkVF(this,'7','6','fb-s3a3')">Paso 7</button></div></div>
+        <div class="fb" id="fb-s3a3"></div>
+      </div>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · Completa los huecos</div>
+      <p class="gap-text">
+        El primer paso es ver el <input class="gap-input" id="g3-1" placeholder="…"><br>
+        El paso 4 consiste en <input class="gap-input" id="g3-2" placeholder="…"> el objeto.<br>
+        El último paso es presentar la <input class="gap-input" id="g3-3" placeholder="…">.<br>
+        El paso 7 sirve para <input class="gap-input" id="g3-4" placeholder="…"> si funciona.
+      </p>
+      <button class="act-btn" onclick="checkGaps([
+        {id:'g3-1',ok:['problema','necesidad']},
+        {id:'g3-2',ok:['diseñar','dibujar']},
+        {id:'g3-3',ok:['memoria','memoria final']},
+        {id:'g3-4',ok:['evaluar','comprobar','ver']}
+      ],'res-s3b')">✔ Comprobar</button>
+      <div class="act-result" id="res-s3b"></div>
+    </div>
+
+    <div class="cuaderno"><div class="cuaderno-t">✏️ En tu cuaderno</div>
+      <p>Dibuja una escalera de 8 peldaños y escribe el nombre de cada paso del método de proyectos.</p>
+    </div>
+    <div class="check"><div class="box-title">✅ Comprueba que sabes...</div>
+      <ul><li>Decir los 8 pasos en orden.</li><li>Explicar qué se hace en el paso 4 y en el 5.</li><li>Decir para qué sirve la evaluación.</li></ul>
+    </div>
+
+    <div class="done-section">
+      <button class="done-btn" id="done-btn-3" disabled>✅ Terminé esta sesión</button>
+      <div class="done-hint" id="hint-3">Completa primero todas las actividades de arriba.</div>
+      <div class="code-gate" id="gate-3">
+        <div class="code-gate-t">📋 Muéstrale tu cuaderno al profe y pídele el código para continuar</div>
+        <div class="code-row">
+          <input class="code-input" id="code-inp-3" placeholder="Código..." maxlength="12" oninput="this.value=this.value.toUpperCase()">
+          <button class="code-btn" onclick="checkCode(3)">Confirmar →</button>
+        </div>
+        <div class="code-fb" id="code-fb-3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SESIÓN 5 · HERRAMIENTAS DEL TALLER
+══════════════════════════════════════════════════════════ -->
+<div class="session locked" id="ses-4" data-idx="4">
+  <div class="session-hdr locked-hdr">
+    <span class="session-icon">🔨</span>
+    <div class="session-info">
+      <div class="session-title">Sesión 5 · Herramientas y seguridad en el taller</div>
+      <div class="session-sub">Las 3 familias, el mantra del taller y las normas de seguridad</div>
+    </div>
+    <span class="session-badge badge-locked" id="badge-4">🔒 Bloqueada</span>
+    <span class="session-arrow">▼</span>
+  </div>
+  <div class="session-body">
+    <div class="info-box" style="margin-top:14px">
+      <div class="box-title">📖 Lee esto</div>
+      <p>Las herramientas del taller se organizan en <strong>3 familias</strong>. Y siempre seguimos el <strong>mantra del taller</strong>: <em>Mide → Marca → Corta → Perfora → Monta → Acaba</em>.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card"><div class="card-t">🧠 Familia 1 · La Mente</div><p><em>Preparar y medir.</em></p><p>Regla, escuadra, compás, lápiz, punzón, tornillo de banco, sargento.</p></div>
+      <div class="card"><div class="card-t">💪 Familia 2 · La Fuerza</div><p><em>Cortar y separar.</em></p><p>Martillo, serrucho (recto), sierra de calar (curvo), segueta.</p></div>
+      <div class="card"><div class="card-t">🎯 Familia 3 · La Precisión</div><p><em>Acabar y unir.</em></p><p>Taladro, pistola de cola, destornilladores, limas, lija.</p></div>
+      <div class="card"><div class="card-t">⚠️ 5 Normas básicas</div><ol style="margin:4px 0;padding-left:1.2em"><li>Orden y calma</li><li>Cada herramienta para lo suyo</li><li>Corta alejándote del cuerpo</li><li>Máquinas solo con permiso</li><li>Pelo recogido</li></ol></div>
+    </div>
+
+    <div class="help"><div class="box-title">💡 Diferencia clave</div>
+      <p><strong>Tornillo de banco:</strong> fijo en la mesa. <strong>Sargento:</strong> móvil, lo mueves donde quieras.</p>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · ¿A qué familia pertenece?</div>
+      <div id="vf-s4a">
+        <div class="vf-row"><span class="vf-txt">Serrucho</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'1','2','fb-s4a1')">F1</button><button class="vf-btn" onclick="checkVF(this,'2','2','fb-s4a1')">F2</button><button class="vf-btn" onclick="checkVF(this,'3','2','fb-s4a1')">F3</button></div></div>
+        <div class="fb" id="fb-s4a1"></div>
+        <div class="vf-row"><span class="vf-txt">Papel de lija</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'1','3','fb-s4a2')">F1</button><button class="vf-btn" onclick="checkVF(this,'2','3','fb-s4a2')">F2</button><button class="vf-btn" onclick="checkVF(this,'3','3','fb-s4a2')">F3</button></div></div>
+        <div class="fb" id="fb-s4a2"></div>
+        <div class="vf-row"><span class="vf-txt">Compás</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'1','1','fb-s4a3')">F1</button><button class="vf-btn" onclick="checkVF(this,'2','1','fb-s4a3')">F2</button><button class="vf-btn" onclick="checkVF(this,'3','1','fb-s4a3')">F3</button></div></div>
+        <div class="fb" id="fb-s4a3"></div>
+        <div class="vf-row"><span class="vf-txt">Taladro</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'1','3','fb-s4a4')">F1</button><button class="vf-btn" onclick="checkVF(this,'2','3','fb-s4a4')">F2</button><button class="vf-btn" onclick="checkVF(this,'3','3','fb-s4a4')">F3</button></div></div>
+        <div class="fb" id="fb-s4a4"></div>
+      </div>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · ¿Cuál es el mantra del taller en orden correcto?</div>
+      <div class="opts" id="opts-s4b">
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s4b')"><span class="opt-l">A</span>Corta → Mide → Marca → Perfora → Monta → Acaba</button>
+        <button class="opt-btn" onclick="checkOpt(this,'correct','s4b')"><span class="opt-l">B</span>Mide → Marca → Corta → Perfora → Monta → Acaba</button>
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s4b')"><span class="opt-l">C</span>Marca → Mide → Corta → Acaba → Perfora → Monta</button>
+      </div>
+      <div class="fb" id="fb-s4b"></div>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · ¿Correcto o Incorrecto en el taller?</div>
+      <div id="vf-s4c">
+        <div class="vf-row"><span class="vf-txt">Usar el destornillador como martillo.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'correcto','incorrecto','fb-s4c1')">✓</button><button class="vf-btn" onclick="checkVF(this,'incorrecto','incorrecto','fb-s4c1')">✗</button></div></div>
+        <div class="fb" id="fb-s4c1"></div>
+        <div class="vf-row"><span class="vf-txt">Llevar el pelo recogido con el taladro.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'correcto','correcto','fb-s4c2')">✓</button><button class="vf-btn" onclick="checkVF(this,'incorrecto','correcto','fb-s4c2')">✗</button></div></div>
+        <div class="fb" id="fb-s4c2"></div>
+        <div class="vf-row"><span class="vf-txt">Avisar al profe si ocurre un accidente.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'correcto','correcto','fb-s4c3')">✓</button><button class="vf-btn" onclick="checkVF(this,'incorrecto','correcto','fb-s4c3')">✗</button></div></div>
+        <div class="fb" id="fb-s4c3"></div>
+      </div>
+    </div>
+
+    <div class="cuaderno"><div class="cuaderno-t">✏️ En tu cuaderno</div>
+      <p>Dibuja una tabla con las 3 familias y escribe 3 herramientas en cada una. Luego escribe el mantra de memoria.</p>
+    </div>
+    <div class="check"><div class="box-title">✅ Comprueba que sabes...</div>
+      <ul><li>Nombrar las 3 familias y dar ejemplos.</li><li>Decir el mantra en orden.</li><li>Nombrar 3 normas de seguridad.</li></ul>
+    </div>
+
+    <div class="done-section">
+      <button class="done-btn" id="done-btn-4" disabled>✅ Terminé esta sesión</button>
+      <div class="done-hint" id="hint-4">Completa primero todas las actividades de arriba.</div>
+      <div class="code-gate" id="gate-4">
+        <div class="code-gate-t">📋 Muéstrale tu cuaderno al profe y pídele el código para continuar</div>
+        <div class="code-row">
+          <input class="code-input" id="code-inp-4" placeholder="Código..." maxlength="12" oninput="this.value=this.value.toUpperCase()">
+          <button class="code-btn" onclick="checkCode(4)">Confirmar →</button>
+        </div>
+        <div class="code-fb" id="code-fb-4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SESIÓN 6 · DOCUMENTOS DEL PROYECTO
+══════════════════════════════════════════════════════════ -->
+<div class="session locked" id="ses-5" data-idx="5">
+  <div class="session-hdr locked-hdr">
+    <span class="session-icon">📄</span>
+    <div class="session-info">
+      <div class="session-title">Sesión 6 · Documentos del proyecto</div>
+      <div class="session-sub">Los 6 documentos: cuándo se hacen y para qué sirven</div>
+    </div>
+    <span class="session-badge badge-locked" id="badge-5">🔒 Bloqueada</span>
+    <span class="session-arrow">▼</span>
+  </div>
+  <div class="session-body">
+    <div class="info-box" style="margin-top:14px">
+      <div class="box-title">📖 Lee esto</div>
+      <p>Todo proyecto tecnológico tiene <strong>6 documentos</strong>. Algunos se hacen antes de construir, y otros durante o después.</p>
+    </div>
+
+    <table>
+      <tr><th>Documento</th><th>¿Qué es?</th><th>¿Cuándo?</th></tr>
+      <tr><td><strong>📝 Boceto</strong></td><td>Dibujo de la idea con medidas.</td><td>Antes</td></tr>
+      <tr><td><strong>📋 Lista de materiales</strong></td><td>Qué necesitamos comprar.</td><td>Antes</td></tr>
+      <tr><td><strong>📅 Plan de trabajo</strong></td><td>Quién hace qué y cuándo.</td><td>Antes</td></tr>
+      <tr><td><strong>💶 Presupuesto</strong></td><td>Cuánto va a costar.</td><td>Antes</td></tr>
+      <tr><td><strong>📒 Hoja de proceso</strong></td><td>Diario del taller: lo que haces cada día.</td><td>Durante</td></tr>
+      <tr><td><strong>📗 Memoria final</strong></td><td>Informe de cómo fue todo.</td><td>Después</td></tr>
+    </table>
+
+    <div class="help"><div class="box-title">💡 Boceto vs. Croquis</div>
+      <p><strong>Boceto:</strong> dibujo rápido de la idea. <strong>Croquis:</strong> más detallado, con medidas exactas de todas las partes.</p>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · ¿Verdadero o Falso?</div>
+      <div id="vf-s5a">
+        <div class="vf-row"><span class="vf-txt">La hoja de proceso se rellena mientras fabricas.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'V','V','fb-s5a1')">V</button><button class="vf-btn" onclick="checkVF(this,'F','V','fb-s5a1')">F</button></div></div>
+        <div class="fb" id="fb-s5a1"></div>
+        <div class="vf-row"><span class="vf-txt">El boceto se hace después de construir el objeto.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'V','F','fb-s5a2')">V</button><button class="vf-btn" onclick="checkVF(this,'F','F','fb-s5a2')">F</button></div></div>
+        <div class="fb" id="fb-s5a2"></div>
+        <div class="vf-row"><span class="vf-txt">El presupuesto dice cuánto va a costar el proyecto.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'V','V','fb-s5a3')">V</button><button class="vf-btn" onclick="checkVF(this,'F','V','fb-s5a3')">F</button></div></div>
+        <div class="fb" id="fb-s5a3"></div>
+        <div class="vf-row"><span class="vf-txt">La memoria final se escribe antes de empezar a construir.</span><div class="vf-btns"><button class="vf-btn" onclick="checkVF(this,'V','F','fb-s5a4')">V</button><button class="vf-btn" onclick="checkVF(this,'F','F','fb-s5a4')">F</button></div></div>
+        <div class="fb" id="fb-s5a4"></div>
+      </div>
+    </div>
+
+    <div class="act-wrap">
+      <div class="act-title">🎮 Actividad · «Lo escribes todos los días mientras fabricas.» ¿Qué documento es?</div>
+      <div class="opts" id="opts-s5b">
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s5b')"><span class="opt-l">A</span>El boceto</button>
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s5b')"><span class="opt-l">B</span>La memoria final</button>
+        <button class="opt-btn" onclick="checkOpt(this,'correct','s5b')"><span class="opt-l">C</span>La hoja de proceso</button>
+        <button class="opt-btn" onclick="checkOpt(this,'wrong','s5b')"><span class="opt-l">D</span>El presupuesto</button>
+      </div>
+      <div class="fb" id="fb-s5b"></div>
+    </div>
+
+    <div class="cuaderno"><div class="cuaderno-t">✏️ En tu cuaderno</div>
+      <p>Copia la tabla de los 6 documentos y di cuál crees que es el más importante, con 2 frases explicando por qué.</p>
+    </div>
+    <div class="check"><div class="box-title">✅ Comprueba que sabes...</div>
+      <ul><li>Nombrar los 6 documentos.</li><li>Decir cuándo se hace cada uno.</li><li>Diferenciar boceto de croquis.</li></ul>
+    </div>
+
+    <div class="done-section">
+      <button class="done-btn" id="done-btn-5" disabled>✅ Terminé esta sesión</button>
+      <div class="done-hint" id="hint-5">Completa primero todas las actividades de arriba.</div>
+      <div class="code-gate" id="gate-5">
+        <div class="code-gate-t">📋 ¡Última sesión! Muéstrale tu cuaderno al profe y pídele el código final</div>
+        <div class="code-row">
+          <input class="code-input" id="code-inp-5" placeholder="Código..." maxlength="12" oninput="this.value=this.value.toUpperCase()">
+          <button class="code-btn" onclick="checkCode(5)">Confirmar →</button>
+        </div>
+        <div class="code-fb" id="code-fb-5"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>⚡ Tecnología y Digitalización · 1.º ESO · Unidad 1 — El Proceso Tecnológico<br>
+<span style="opacity:.6">Tu progreso se guarda automáticamente en este navegador. ¡Sigue así! 💪</span></footer>
+</div><!-- .page -->
+
+<!-- ══ POPUP CELEBRACIÓN ════════════════════════ -->
+<div class="confetti-msg" id="cel-msg">
+  <div style="font-size:2.6em;margin-bottom:8px" id="cel-icon">⭐</div>
+  <h2 id="cel-title">¡Sesión completada!</h2>
+  <p id="cel-body">Genial. Ya puedes pasar a la siguiente.</p>
+  <button class="confetti-close" onclick="closeCel()">¡Seguimos! →</button>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIGURACIÓN — edita solo este bloque
+   Cambia STORE_KEY para cada nueva unidad.
+   Cambia los CODES para cada grupo/año.
+══════════════════════════════════════════════ */
+const STORE_KEY = 'u1-tec-1eso-v1';
+const TOTAL = 6;
+
+// Códigos que el profesor da a cada alumno al revisar su cuaderno.
+// Puedes usar palabras, números, o combinaciones. No importan mayúsculas/minúsculas.
+const CODES = ['DIA1', 'DIA2', 'DIA3', 'DIA4', 'DIA5', 'DIA6'];
+
+// Número de actividades interactivas que debe completar el alumno en cada sesión
+// antes de que aparezca el campo de código. Orden: sesión 1, 2, 3, 4, 5, 6.
+// Una actividad V/F con 3 filas cuenta como 3; una opción múltiple cuenta como 1.
+const ACT_REQ = [4, 5, 3, 4, 5, 5]; // ajusta si añades o quitas actividades
+
+const CELEBRATIONS = [
+  {icon:'⭐', title:'¡Sesión 1 completada!',   body:'¡Buen comienzo! Ya sabes qué es la tecnología. Vuelve mañana para continuar.'},
+  {icon:'🌟', title:'¡Sesión 2 completada!',   body:'¡Dos sesiones! Ahora ya distingues necesidades básicas y secundarias. ¡Genial!'},
+  {icon:'💫', title:'¡Sesión 3 completada!',   body:'¡A medias! Ya sabes analizar un objeto tecnológico. ¡Sigue así!'},
+  {icon:'🚀', title:'¡Sesión 4 completada!',   body:'¡Más de la mitad! Los 8 pasos del método de proyectos ya los tienes. ¡Eres un crack!'},
+  {icon:'🏅', title:'¡Sesión 5 completada!',   body:'¡Casi lo tienes! Solo falta una sesión. Las herramientas del taller ya las dominas.'},
+  {icon:'🏆', title:'¡UNIDAD 1 COMPLETADA!',  body:'¡Lo conseguiste! Has terminado toda la Unidad 1. ¡Eso merece un gran aplauso! 👏'},
+];
+
+/* ══ Estado ══════════════════════════════════ */
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY))||{done:[]}; }
+  catch(e){ return {done:[]}; }
+}
+function saveState(st){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(st)); }catch(e){}
+}
+
+/* ══ Inicializar ═════════════════════════════ */
+function init(){
+  const st = loadState();
+  // Aplicar sesiones completadas (oculta el gate en las completadas)
+  st.done.forEach(i => markDone(i));
+  // Desbloquear la siguiente
+  for(let i=0; i<TOTAL; i++){
+    if(st.done.includes(i)) continue;
+    if(i===0 || st.done.includes(i-1)) unlockSession(i);
+    break;
+  }
+  if(st.done.length===TOTAL){
+    for(let i=0;i<TOTAL;i++) unlockSession(i);
+  }
+  updateProgress(st.done.length);
+  // Abrir la primera sesión disponible y no completada
+  const firstOpen = Array.from({length:TOTAL},(_,i)=>i).find(i=>!st.done.includes(i));
+  if(firstOpen!==undefined){
+    const ses = document.getElementById('ses-'+firstOpen);
+    if(ses && !ses.classList.contains('locked')) openSession(firstOpen);
+  }
+}
+
+function unlockSession(idx){
+  const ses = document.getElementById('ses-'+idx);
+  if(!ses) return;
+  ses.classList.remove('locked');
+  const hdr = ses.querySelector('.session-hdr');
+  hdr.classList.remove('locked-hdr');
+  hdr.onclick = ()=>toggleSession(idx);
+  const badge = document.getElementById('badge-'+idx);
+  if(badge && badge.textContent.includes('🔒')){
+    badge.textContent = 'Disponible';
+    badge.className = 'session-badge badge-open';
+  }
+}
+
+function markDone(idx){
+  const ses = document.getElementById('ses-'+idx);
+  if(!ses) return;
+  ses.classList.remove('locked');
+  const badge = document.getElementById('badge-'+idx);
+  if(badge){ badge.textContent='✓ Completada'; badge.className='session-badge badge-done'; }
+  const btn = document.getElementById('done-btn-'+idx);
+  if(btn){ btn.disabled=true; btn.textContent='✓ Completada'; }
+  const gate = document.getElementById('gate-'+idx);
+  if(gate){ gate.classList.remove('visible'); }
+}
+
+/* ══ Contar actividades completadas en una sesión ═══ */
+function countDoneActs(sesIdx){
+  const ses = document.getElementById('ses-'+sesIdx);
+  if(!ses) return 0;
+  // Opciones múltiples: un grupo .opts con data-done
+  const opts = ses.querySelectorAll('.opts[data-done]').length;
+  // V/F: cada .vf-row con data-done
+  const vfRows = ses.querySelectorAll('.vf-row[data-done]').length;
+  // Huecos: resultados mostrados (visible)
+  const gaps = ses.querySelectorAll('.act-result.ok, .act-result.partial').length;
+  return opts + vfRows + gaps;
+}
+
+/* ══ Revisar si se puede mostrar el campo de código ══ */
+function checkActsDone(sesIdx){
+  const st = loadState();
+  if(st.done.includes(sesIdx)) return; // ya completada
+  const done = countDoneActs(sesIdx);
+  const req  = ACT_REQ[sesIdx] || 1;
+  if(done >= req){
+    const gate = document.getElementById('gate-'+sesIdx);
+    const hint = document.getElementById('hint-'+sesIdx);
+    if(gate && !gate.classList.contains('visible')){
+      gate.classList.add('visible');
+      if(hint) hint.textContent = '¡Actividades completadas! Ahora pide el código al profe. 👇';
+      gate.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+  }
+}
+
+/* ══ Verificar código de profesor ════════════════════ */
+function checkCode(idx){
+  const inp = document.getElementById('code-inp-'+idx);
+  const fb  = document.getElementById('code-fb-'+idx);
+  const val = inp.value.trim().toUpperCase();
+  const ok  = val === CODES[idx].toUpperCase();
+  inp.classList.remove('ok','err');
+  if(ok){
+    inp.classList.add('ok');
+    fb.style.color = 'var(--ok)';
+    fb.textContent = '✅ ¡Correcto! Abriendo la siguiente sesión…';
+    inp.disabled = true;
+    setTimeout(()=>completeSession(idx), 900);
+  } else {
+    inp.classList.add('err');
+    fb.style.color = 'var(--ko)';
+    fb.textContent = '❌ Código incorrecto. Pídele el código correcto al profe.';
+    setTimeout(()=>{ inp.classList.remove('err'); fb.textContent=''; }, 2500);
+  }
+}
+
+function openSession(idx){
+  const ses = document.getElementById('ses-'+idx);
+  if(!ses || ses.classList.contains('locked')) return;
+  ses.classList.add('open');
+  ses.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleSession(idx){
+  const ses = document.getElementById('ses-'+idx);
+  if(!ses || ses.classList.contains('locked')) return;
+  ses.classList.toggle('open');
+  if(ses.classList.contains('open')) ses.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ══ Completar sesión ════════════════════════ */
+function completeSession(idx){
+  const st = loadState();
+  if(st.done.includes(idx)) return;
+  st.done.push(idx);
+  // Guardar orden
+  st.done.sort((a,b)=>a-b);
+  saveState(st);
+  markDone(idx);
+  updateProgress(st.done.length);
+  // Desbloquear siguiente
+  const next = idx+1;
+  if(next<TOTAL){
+    unlockSession(next);
+    setTimeout(()=>{
+      const ses = document.getElementById('ses-'+next);
+      if(ses) ses.classList.add('open');
+    }, 1800);
+  }
+  // Celebración
+  showCelebration(idx);
+}
+
+/* ══ Progreso ════════════════════════════════ */
+function updateProgress(n){
+  const pct = Math.round((n/TOTAL)*100);
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-text').textContent = n+' de '+TOTAL+' sesiones';
+  document.querySelectorAll('.star').forEach((s,i)=>{
+    s.classList.toggle('earned', i<n);
+  });
+}
+
+/* ══ Celebración ══════════════════════════════ */
+function showCelebration(idx){
+  const c = CELEBRATIONS[idx] || CELEBRATIONS[CELEBRATIONS.length-1];
+  document.getElementById('cel-icon').textContent  = c.icon;
+  document.getElementById('cel-title').textContent = c.title;
+  document.getElementById('cel-body').textContent  = c.body;
+  document.getElementById('cel-msg').style.display = 'block';
+}
+function closeCel(){
+  document.getElementById('cel-msg').style.display='none';
+}
+
+/* ══ Reset ════════════════════════════════════ */
+function confirmReset(){
+  if(confirm('¿Seguro que quieres borrar tu progreso y empezar de cero?')){
+    try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+    location.reload();
+  }
+}
+
+/* ══════════════════════════════════════════════
+   PERSONALIZACIÓN
+══════════════════════════════════════════════ */
+function setTheme(t,btn){
+  document.documentElement.setAttribute('data-theme',t);
+  document.querySelectorAll('.th-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  try{ localStorage.setItem(STORE_KEY+'-theme',t); }catch(e){}
+}
+function setSize(s,btn){
+  document.documentElement.setAttribute('data-size',s);
+  document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  try{ localStorage.setItem(STORE_KEY+'-size',s); }catch(e){}
+}
+function loadPrefs(){
+  try{
+    const t=localStorage.getItem(STORE_KEY+'-theme');
+    const s=localStorage.getItem(STORE_KEY+'-size');
+    if(t){ document.documentElement.setAttribute('data-theme',t);
+           document.querySelectorAll('.th-btn').forEach(b=>{ b.classList.toggle('active',b.classList.contains('th-'+t)); }); }
+    if(s){ document.documentElement.setAttribute('data-size',s);
+           document.querySelectorAll('.sz-btn').forEach(b=>{ b.classList.toggle('active',b.dataset.sz===s); }); }
+  }catch(e){}
+}
+
+/* ══════════════════════════════════════════════
+   PERSISTENCIA DE RESPUESTAS
+   Guardamos qué actividades se han respondido
+   para restaurarlas al volver a la página.
+══════════════════════════════════════════════ */
+function loadActs(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY+'-acts'))||{}; }
+  catch(e){ return {}; }
+}
+function saveAct(id, data){
+  try{
+    const acts = loadActs();
+    acts[id] = data;
+    localStorage.setItem(STORE_KEY+'-acts', JSON.stringify(acts));
+  }catch(e){}
+}
+function clearActs(){
+  try{ localStorage.removeItem(STORE_KEY+'-acts'); }catch(e){}
+}
+
+/* Restaura visualmente todas las actividades guardadas */
+function restoreActs(){
+  const acts = loadActs();
+  Object.entries(acts).forEach(([id, data])=>{
+    if(data.type==='opt')   restoreOpt(id, data);
+    if(data.type==='vf')    restoreVF(id, data);
+    if(data.type==='match') restoreMatch(id, data);
+    if(data.type==='gaps')  restoreGaps(id, data);
+  });
+}
+
+function restoreOpt(actId, data){
+  const grp = document.getElementById('opts-'+actId);
+  if(!grp || grp.dataset.done) return;
+  grp.dataset.done='1';
+  grp.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const fb = document.getElementById('fb-'+actId);
+  grp.querySelectorAll('.opt-btn').forEach(b=>{
+    const oc = b.getAttribute('onclick')||'';
+    const isCorrect = oc.includes("'correct'");
+    if(isCorrect){
+      b.classList.add('correct');
+      b.querySelector('.opt-l').style.cssText='background:var(--ok);color:#fff';
+    }
+    if(data.chosen===b.textContent.trim().substring(1).trim() && !isCorrect){
+      b.classList.add('wrong');
+      b.querySelector('.opt-l').style.cssText='background:var(--ko);color:#fff';
+    }
+  });
+  if(fb){ fb.className=data.correct?'fb ok':'fb err'; fb.textContent=data.correct?'✅ ¡Correcto! ¡Muy bien!':'❌ No es esa. Busca la respuesta en el texto.'; }
+}
+
+function restoreVF(fbId, data){
+  const fb = document.getElementById(fbId);
+  if(!fb) return;
+  const row = fb.previousElementSibling; // .vf-row está antes del .fb
+  // Busca la fila cuyo fb coincide
+  const rows = document.querySelectorAll('.vf-row');
+  rows.forEach(row=>{
+    const nextFb = row.nextElementSibling;
+    if(!nextFb || nextFb.id !== fbId) return;
+    if(row.dataset.done) return;
+    row.dataset.done='1';
+    row.querySelectorAll('.vf-btn').forEach(b=>b.disabled=true);
+    row.querySelectorAll('.vf-btn').forEach(b=>{
+      if(b.textContent.trim()===data.correct) b.classList.add('correct');
+      if(b.textContent.trim()===data.chosen && data.chosen!==data.correct) b.classList.add('wrong');
+    });
+    if(fb){ fb.className=data.correct===data.chosen?'fb ok':'fb err'; fb.textContent=data.correct===data.chosen?'✅ ¡Correcto!':'❌ No. La respuesta es: '+data.correct; }
+  });
+}
+
+function restoreMatch(gId, data){
+  if(!data.pairs) return;
+  data.pairs.forEach(([qId,aId])=>{
+    const qBtn = document.querySelector('#'+gId+'-left [data-id="'+qId+'"]');
+    const aBtn = document.querySelector('#'+gId+'-right [data-id="'+aId+'"]');
+    if(qBtn && aBtn){
+      qBtn.classList.add('correct','used'); qBtn.disabled=true;
+      aBtn.classList.add('correct','used'); aBtn.disabled=true;
+    }
+  });
+  const allItems = document.querySelectorAll('#'+gId+' .match-item');
+  if(![...allItems].some(b=>!b.classList.contains('used'))){
+    const fb = document.getElementById('fb-'+gId);
+    if(fb){ fb.className='fb ok'; fb.textContent='✅ ¡Perfecto! Todo bien relacionado.'; }
+  }
+}
+
+function restoreGaps(resId, data){
+  if(!data.values) return;
+  const r = document.getElementById(resId);
+  let ok=0;
+  data.values.forEach(({id,val,correct})=>{
+    const inp = document.getElementById(id);
+    if(!inp) return;
+    inp.value = val;
+    inp.classList.add(correct?'correct':'wrong');
+    if(correct) ok++;
+  });
+  if(r){
+    if(ok===data.values.length){ r.className='act-result ok'; r.textContent='✅ ¡Todo correcto! ¡Muy bien!'; }
+    else if(ok>0){ r.className='act-result partial'; r.textContent='💛 '+ok+' de '+data.values.length+' correctos. Revisa los rojos.'; }
+    else { r.className='act-result err'; r.textContent='❌ Repasa el texto e inténtalo otra vez.'; }
+  }
+}
+
+/* ══════════════════════════════════════════════
+   ACTIVIDADES
+══════════════════════════════════════════════ */
+function checkOpt(btn,type,actId){
+  const grp=btn.closest('.opts');
+  if(grp.dataset.done) return;
+  grp.dataset.done='1';
+  grp.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+actId);
+  if(type==='correct'){
+    btn.classList.add('correct');
+    btn.querySelector('.opt-l').style.cssText='background:var(--ok);color:#fff';
+    fb.className='fb ok'; fb.textContent='✅ ¡Correcto! ¡Muy bien!';
+  } else {
+    btn.classList.add('wrong');
+    btn.querySelector('.opt-l').style.cssText='background:var(--ko);color:#fff';
+    fb.className='fb err'; fb.textContent='❌ No es esa. Busca la respuesta en el texto.';
+    grp.querySelectorAll('.opt-btn').forEach(b=>{
+      if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'correct'")) b.classList.add('correct');
+    });
+  }
+  saveAct(actId,{type:'opt', correct:type==='correct', chosen:btn.querySelector('.opt-l').nextSibling?.textContent?.trim()||''});
+  const ses=btn.closest('.session'); if(ses) checkActsDone(+ses.dataset.idx);
+}
+
+function checkVF(btn,chosen,correct,fbId){
+  const row=btn.closest('.vf-row');
+  if(row.dataset.done) return;
+  row.dataset.done='1';
+  row.querySelectorAll('.vf-btn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById(fbId);
+  if(chosen===correct){
+    btn.classList.add('correct');
+    fb.className='fb ok'; fb.textContent='✅ ¡Correcto!';
+  } else {
+    btn.classList.add('wrong');
+    fb.className='fb err'; fb.textContent='❌ No. La respuesta es: '+correct;
+    row.querySelectorAll('.vf-btn').forEach(b=>{ if(b.textContent.trim()===correct) b.classList.add('correct'); });
+  }
+  saveAct(fbId,{type:'vf', chosen, correct});
+  const ses=btn.closest('.session'); if(ses) checkActsDone(+ses.dataset.idx);
+}
+
+/* Matching */
+const matchPairs={'q1':'a1','q2':'a2','q3':'a3','q4':'a4','q5':'a5'};
+let matchSel=null;
+let matchDonePairs={};
+function matchClick(btn,gId){
+  if(btn.classList.contains('used')||btn.disabled) return;
+  const isLeft=btn.closest('.match-col').id.includes('left');
+  if(!matchSel){
+    if(!isLeft) return;
+    document.querySelectorAll('#'+gId+' .match-item').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected'); matchSel=btn;
+  } else {
+    if(isLeft){ document.querySelectorAll('#'+gId+' .match-item').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); matchSel=btn; return; }
+    const ok=(matchPairs[matchSel.dataset.id]===btn.dataset.id);
+    if(ok){
+      matchSel.classList.remove('selected'); matchSel.classList.add('correct','used'); matchSel.disabled=true;
+      btn.classList.add('correct','used'); btn.disabled=true;
+      if(!matchDonePairs[gId]) matchDonePairs[gId]=[];
+      matchDonePairs[gId].push([matchSel.dataset.id, btn.dataset.id]);
+      const fb=document.getElementById('fb-'+gId);
+      const remaining=document.querySelectorAll('#'+gId+' .match-item:not(.used)');
+      if(!remaining.length){
+        if(fb){ fb.className='fb ok'; fb.textContent='✅ ¡Perfecto! Todo bien relacionado.'; }
+        saveAct(gId,{type:'match', pairs: matchDonePairs[gId]});
+        const ses=btn.closest('.session'); if(ses) checkActsDone(+ses.dataset.idx);
+      }
+    } else {
+      matchSel.classList.add('wrong'); btn.classList.add('wrong');
+      setTimeout(()=>{ matchSel.classList.remove('wrong','selected'); btn.classList.remove('wrong'); },700);
+    }
+    matchSel=null;
+  }
+}
+function resetMatch(gId){
+  document.querySelectorAll('#'+gId+' .match-item').forEach(b=>{ b.className='match-item'; b.disabled=false; });
+  const fb=document.getElementById('fb-'+gId); if(fb){ fb.className='fb'; fb.textContent=''; }
+  matchSel=null;
+  if(matchDonePairs[gId]) delete matchDonePairs[gId];
+  // Borrar del localStorage también
+  try{
+    const acts=loadActs(); delete acts[gId]; localStorage.setItem(STORE_KEY+'-acts',JSON.stringify(acts));
+  }catch(e){}
+}
+
+/* Huecos */
+function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim(); }
+function checkGaps(gaps,resId){
+  let ok=0;
+  const vals=[];
+  gaps.forEach(g=>{
+    const inp=document.getElementById(g.id); const v=norm(inp.value);
+    const p=g.ok.some(a=>norm(a)===v||v.includes(norm(a)));
+    inp.classList.remove('correct','wrong'); inp.classList.add(p?'correct':'wrong');
+    vals.push({id:g.id, val:inp.value, correct:p});
+    if(p) ok++;
+  });
+  const r=document.getElementById(resId);
+  if(ok===gaps.length){ r.className='act-result ok'; r.textContent='✅ ¡Todo correcto! ¡Muy bien!'; }
+  else if(ok>0){ r.className='act-result partial'; r.textContent='💛 '+ok+' de '+gaps.length+' correctos. Revisa los rojos.'; }
+  else { r.className='act-result err'; r.textContent='❌ Repasa el texto e inténtalo otra vez.'; }
+  if(ok>0){
+    saveAct(resId,{type:'gaps', values:vals});
+    const inp0=document.getElementById(gaps[0].id);
+    const ses=inp0&&inp0.closest('.session'); if(ses) checkActsDone(+ses.dataset.idx);
+  }
+}
+
+/* ══ Arranque ═════════════════════════════════ */
+loadPrefs();
+init();
+restoreActs();
+// Después de restaurar, comprobar si el gate debe mostrarse en la sesión activa
+setTimeout(()=>{ for(let i=0;i<TOTAL;i++) checkActsDone(i); }, 50);
+</script>
+</body>
+</html>
