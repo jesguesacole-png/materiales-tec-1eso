@@ -1,0 +1,1511 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Organizador de escritorio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Guía paso a paso, diario de taller y memoria técnica del organizador de escritorio (kit OPITEC 122.979) para 1.º ESO.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Baloo+2:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: banda superior (pestañas Guía/Diario/Memoria + ajustes) · columna de pasos + ficha grande · en móvil, un solo flujo */
+:root{
+  --scale:1;
+  --paper:#f3f5f9; --card:#ffffff; --ink:#1b2742; --ink-soft:#4a5672; --line:#d6dce8;
+  --navy:#1f3a6e; --band:#1f3a6e; --on-navy:#ffffff; --navy-soft:#e4eaf6;
+  --accent:#e2681a; --accent-soft:#fdeee2; --on-accent:#ffffff;
+  --ok:#23804a; --ok-soft:#e1f3e8; --warn:#c23a2b; --warn-soft:#fbe7e4;
+  --wood:#ecd3a4; --wood2:#d8b479; --wood-line:#9a7440; --grain:#c9a467;
+  --metal:#9aa6b8; --metal-dark:#5d6a80; --sheet:#ffffff; --tape:rgba(226,104,26,.55);
+  --phone:#26303f; --glue:#eaf3ff;
+  --font-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Atkinson Hyperlegible","Verdana",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"Consolas",monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11161f; --card:#1a212e; --ink:#e8edf6; --ink-soft:#aab4c7; --line:#2e384a;
+    --navy:#8fb1ee; --band:#16233d; --on-navy:#0f1726; --navy-soft:#22304a;
+    --accent:#f08a43; --accent-soft:#3a2617; --on-accent:#1a1006;
+    --ok:#5cc489; --ok-soft:#173326; --warn:#f07b6d; --warn-soft:#3a1c19;
+    --wood:#d9bd8a; --wood2:#b8945c; --wood-line:#7a5a2e; --grain:#b8945c;
+    --metal:#8792a6; --metal-dark:#c3ccda; --sheet:#eef1f6; --tape:rgba(240,138,67,.6);
+    --phone:#0b0f16; --glue:#cfe0f7;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11161f; --card:#1a212e; --ink:#e8edf6; --ink-soft:#aab4c7; --line:#2e384a;
+  --navy:#8fb1ee; --band:#16233d; --on-navy:#0f1726; --navy-soft:#22304a;
+  --accent:#f08a43; --accent-soft:#3a2617; --on-accent:#1a1006;
+  --ok:#5cc489; --ok-soft:#173326; --warn:#f07b6d; --warn-soft:#3a1c19;
+  --wood:#d9bd8a; --wood2:#b8945c; --wood-line:#7a5a2e; --grain:#b8945c;
+  --metal:#8792a6; --metal-dark:#c3ccda; --sheet:#eef1f6; --tape:rgba(240,138,67,.6);
+  --phone:#0b0f16; --glue:#cfe0f7;
+  color-scheme:dark;
+}
+html{font-size:calc(16px * var(--scale))}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:1.1875rem;line-height:1.55}
+:root[data-spacing="wide"] body{line-height:1.8;letter-spacing:.03em;word-spacing:.1em}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--band)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+img{max-width:100%}
+
+/* ---------- Cabecera ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--band);color:#fff;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px}
+.top-in{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:12px 18px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1.1;min-width:0;margin-right:auto}
+.brand small{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;opacity:.85;text-transform:uppercase}
+.brand strong{font-family:var(--font-display);font-size:1.5rem;font-weight:800}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:10px;padding:8px 14px;font-weight:700;font-size:1rem;cursor:pointer}
+.tab:hover{background:rgba(255,255,255,.22)}
+.tab[aria-current="page"]{background:#fff;color:#1b2742}
+.tab.icon{display:inline-flex;align-items:center;gap:6px}
+.tab svg{width:18px;height:18px}
+.prog{flex:1 1 100%;display:flex;align-items:center;gap:12px}
+.bar{flex:1;height:10px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#ffffff;opacity:.85;border-radius:99px;transition:width .4s}
+.prog span{font-family:var(--font-mono);font-size:.8125rem;white-space:nowrap}
+
+/* ---------- Estructura ---------- */
+.wrap{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:290px minmax(0,1fr);gap:28px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 60px}
+.wrap.single{grid-template-columns:minmax(0,1fr);max-width:1000px}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);gap:16px}}
+@media (max-width:600px){.top{position:relative;top:0}.tab{padding:7px 11px;font-size:.95rem}}
+
+.nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 110px);align-self:start;max-height:calc(100vh - 130px);overflow:auto;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
+.nav h2{font-family:var(--font-display);font-size:1rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin:6px 10px 8px}
+.nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.nav button{width:100%;display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;text-align:left;background:none;border:0;
+  padding:7px 8px;border-radius:10px;cursor:pointer;font-size:1rem;line-height:1.25}
+.nav button:hover{background:var(--navy-soft)}
+.nav button[aria-current="step"]{background:var(--navy);color:var(--on-navy)}
+.nav .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:1.05rem;
+  background:var(--navy-soft);color:var(--navy)}
+.nav button[aria-current="step"] .n{background:var(--on-navy);color:var(--navy)}
+.nav .done{font-size:.875rem;color:var(--ok);font-weight:700}
+.nav button[aria-current="step"] .done{color:inherit}
+.mnav{display:none}
+@media (max-width:900px){
+  .nav{display:none}
+  .mnav{display:flex;gap:10px;align-items:center}
+  .mnav label{font-weight:700;font-size:1rem}
+  .mnav select{flex:1;min-width:0;font-size:1.05rem;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card)}
+}
+
+/* ---------- Tarjetas ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;min-width:0}
+.step-head{padding:22px 28px 18px;border-bottom:1px solid var(--line);display:flex;gap:18px;align-items:flex-start}
+.big-n{flex:none;width:64px;height:64px;border-radius:16px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;
+  font-family:var(--font-display);font-size:2.25rem;font-weight:800;line-height:1}
+.phase{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.step-head h1,.page-head h1{font-family:var(--font-display);font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.1;margin:2px 0 6px;text-wrap:balance;font-weight:800}
+.step-head p,.page-head p{margin:0;font-size:1.25rem;color:var(--ink-soft);max-width:60ch}
+.page-head{padding:22px 28px 18px;border-bottom:1px solid var(--line)}
+.body{padding:22px 28px 28px;display:flex;flex-direction:column;gap:22px}
+@media (max-width:600px){.step-head,.page-head{padding:18px 16px 14px;gap:12px}.big-n{width:50px;height:50px;font-size:1.75rem}.body{padding:18px 16px 22px}}
+h2.sec{font-family:var(--font-display);font-size:1.5rem;margin:0 0 10px;line-height:1.2}
+h3.sub{font-family:var(--font-display);font-size:1.2rem;margin:0 0 6px}
+
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tools b{font-size:1rem;margin-right:4px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 6px;border-radius:99px;background:var(--navy-soft);font-size:1rem;font-weight:700}
+.chip svg{width:26px;height:26px}
+
+figure{margin:0}
+.fig{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px;cursor:zoom-in}
+.fig svg{display:block;width:100%;height:auto;max-height:520px}
+figcaption{font-size:1rem;color:var(--ink-soft);margin-top:8px;font-style:italic;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.zoom{flex:none;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:.95rem;font-weight:700;cursor:pointer;font-style:normal}
+
+.howto ol{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:12px}
+.howto li{counter-increment:s;display:grid;grid-template-columns:40px minmax(0,1fr);gap:12px;align-items:start;font-size:1.25rem}
+.howto li::before{content:counter(s);width:40px;height:40px;border-radius:50%;border:2.5px solid var(--navy);color:var(--navy);display:grid;place-items:center;
+  font-family:var(--font-display);font-weight:800;font-size:1.25rem;line-height:1}
+.howto li strong{color:var(--navy)}
+.mm{font-family:var(--font-mono);font-weight:700;background:var(--navy-soft);padding:0 6px;border-radius:5px;white-space:nowrap;font-size:.92em}
+
+.boxes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.box{border-radius:14px;padding:14px 16px;font-size:1.125rem}
+.box h3{margin:0 0 6px;font-family:var(--font-display);font-size:1.25rem;display:flex;align-items:center;gap:8px}
+.box ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.box.warn{background:var(--warn-soft);border:2px solid var(--warn)} .box.warn h3{color:var(--warn)}
+.box.tip{background:var(--ok-soft);border:2px solid var(--ok)} .box.tip h3{color:var(--ok)}
+.box.word{background:var(--navy-soft);border:2px solid var(--navy)} .box.word h3{color:var(--navy)}
+.box.info{background:var(--navy-soft);border:0}
+.box .ico{width:28px;height:28px;flex:none}
+
+.check{background:var(--accent-soft);border-radius:14px;padding:16px 18px}
+.check ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.check label{display:flex;gap:12px;align-items:flex-start;font-size:1.2rem;cursor:pointer;padding:6px 8px;border-radius:10px}
+.check label:hover{background:var(--card)}
+.check input{width:26px;height:26px;flex:none;margin-top:1px;accent-color:var(--ok);cursor:pointer}
+.check input:checked + span{text-decoration:line-through;color:var(--ink-soft)}
+.allok{margin:10px 0 0;font-weight:700;color:var(--ok)}
+
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:18px 28px;border-top:1px solid var(--line);background:var(--paper)}
+@media (max-width:600px){.pager{padding:14px 16px}}
+.btn{border:0;border-radius:12px;padding:12px 20px;font-size:1.125rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;text-align:center}
+.btn.prev,.btn.ghost{background:var(--card);border:2px solid var(--line)}
+.btn.next,.btn.main{background:var(--accent);color:var(--on-accent)}
+.btn.next{margin-left:auto}
+.btn.danger{background:var(--card);border:2px solid var(--warn);color:var(--warn)}
+.btn.small{min-height:40px;padding:8px 14px;font-size:1rem}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:1.125rem;min-width:520px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-display);font-size:1.05rem;background:var(--navy-soft)}
+td.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.grid-tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.tool{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.tool svg{width:70px;height:70px}
+.tool b{font-size:1.05rem;line-height:1.2}
+.tool span{font-size:.9rem;color:var(--ink-soft);line-height:1.3}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.role{border:2px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--paper)}
+.role b{font-family:var(--font-display);font-size:1.25rem;color:var(--navy);display:block}
+.role span{font-size:1.05rem}
+
+/* ---------- Formularios ---------- */
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label,.field .lab{font-weight:700;font-size:1.05rem}
+.field .hint{font-size:.95rem;color:var(--ink-soft);margin:-2px 0 2px}
+.field input[type=text],.field input[type=date],.field select,.field textarea{width:100%;padding:10px 12px;border-radius:10px;border:2px solid var(--line);background:var(--paper);font-size:1.1rem}
+.field textarea{min-height:96px;resize:vertical;line-height:1.5}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--navy);outline:none}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer;font-size:1rem;background:var(--paper)}
+.pill input{width:18px;height:18px;accent-color:var(--navy);margin:0}
+.pill:has(input:checked){border-color:var(--navy);background:var(--navy-soft);font-weight:700}
+.member{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:8px;align-items:center}
+@media (max-width:600px){.member{grid-template-columns:minmax(0,1fr) auto}.member select{grid-column:1/2}}
+.iconbtn{border:2px solid var(--line);background:var(--card);border-radius:10px;min-width:44px;padding:0 8px;height:44px;cursor:pointer;font-size:1.25rem;line-height:1}
+.panel-sec{border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:14px;background:var(--card)}
+.secnum{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--on-navy);font-family:var(--font-display);font-weight:800;margin-right:8px;font-size:1.05rem;vertical-align:middle}
+.note{font-size:1rem;color:var(--ink-soft)}
+.msg{font-weight:700;color:var(--ok);font-size:1rem}
+.msg.err{color:var(--warn)}
+
+/* Diario */
+.entry{border:2px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--paper);display:flex;flex-direction:column;gap:8px}
+.entry-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.entry-h b{font-family:var(--font-display);font-size:1.3rem}
+.entry-h .d{font-family:var(--font-mono);color:var(--ink-soft);font-size:.95rem}
+.entry dl{margin:0;display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr);gap:4px 14px}
+.entry dt{font-weight:700;color:var(--navy)}
+.entry dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+@media (max-width:600px){.entry dl{grid-template-columns:minmax(0,1fr)} .entry dd{margin-bottom:6px}}
+.tagstep{display:inline-block;background:var(--navy-soft);border-radius:99px;padding:1px 10px;margin:2px 4px 2px 0;font-size:.95rem}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.photo{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper);display:flex;flex-direction:column}
+.photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.photo .pc{padding:8px;display:flex;gap:6px}
+.photo .pc input{flex:1;min-width:0;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-size:.95rem}
+
+/* Ajustes */
+.drawer{position:fixed;inset:0;z-index:30;background:rgba(10,14,22,.55);display:flex;justify-content:flex-end}
+.drawer-in{background:var(--card);width:min(440px,100%);height:100%;overflow:auto;padding:20px max(20px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) 20px;
+  padding-top:max(20px,env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:20px;box-shadow:-10px 0 30px rgba(0,0,0,.25)}
+.drawer-in h2{font-family:var(--font-display);font-size:1.6rem;margin:0}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:2px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 12px;cursor:pointer;font-weight:700;font-size:1rem}
+.seg button[aria-pressed="true"]{border-color:var(--navy);background:var(--navy);color:var(--on-navy)}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.sw{border:2px solid var(--line);border-radius:12px;padding:8px;cursor:pointer;background:var(--paper);display:flex;flex-direction:column;gap:6px;align-items:flex-start;font-weight:700;font-size:.95rem}
+.sw[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.sw i{display:flex;gap:4px}
+.sw i span{width:22px;height:22px;border-radius:6px;display:block;border:1px solid rgba(0,0,0,.15)}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:20;background:rgba(10,14,22,.82);display:flex;align-items:center;justify-content:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb-in{background:var(--paper);border-radius:16px;width:min(1400px,100%);max-height:100%;overflow:auto;padding:16px}
+.lb-in svg{width:100%;height:auto;display:block}
+.lb-close{position:sticky;top:0;float:right;background:var(--accent);color:var(--on-accent);border:0;border-radius:99px;padding:8px 18px;font-size:1.1rem;font-weight:700;cursor:pointer;z-index:2}
+.reset{margin-top:14px;font-size:.9rem;background:none;border:1px dashed var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;color:var(--ink-soft);width:100%}
+.reset.sure{border-color:var(--warn);color:var(--warn);font-weight:700}
+.foot{font-size:.875rem;color:var(--ink-soft);margin-top:16px;text-align:center}
+
+/* Documento de la memoria (vista previa e impresión) */
+.doc{background:#fff;color:#16203a;border:1px solid var(--line);border-radius:12px;padding:32px;font-size:16px;line-height:1.5;font-family:var(--font-body);letter-spacing:normal;word-spacing:normal}
+.doc h1{font-family:var(--font-display);font-size:30px;margin:0 0 6px;color:#1f3a6e}
+.doc h2{font-family:var(--font-display);font-size:22px;color:#1f3a6e;border-bottom:2px solid #e2681a;padding-bottom:4px;margin:28px 0 10px}
+.doc h3{font-size:17px;margin:16px 0 6px}
+.doc p{margin:0 0 8px;white-space:pre-wrap}
+.doc table{min-width:0;font-size:14px}
+.doc th{background:#e4eaf6;color:#16203a;font-family:var(--font-body)}
+.doc th,.doc td{border:1px solid #c9d1e0;padding:6px 8px}
+.doc .cover{text-align:center;padding:30px 0 10px}
+.doc .cover .sub{font-size:18px;color:#4a5672}
+.doc .cover dl{display:inline-grid;grid-template-columns:auto auto;gap:6px 16px;text-align:left;margin:20px auto 0;font-size:16px}
+.doc .cover dt{font-weight:700}
+.doc .cover dd{margin:0}
+.doc .figs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.doc .figs figure{border:1px solid #c9d1e0;border-radius:8px;padding:6px;break-inside:avoid}
+.doc .figs figcaption{font-size:13px;color:#4a5672;display:block}
+.doc .pimg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.doc .pimg figure{break-inside:avoid}
+.doc .pimg img{width:100%;border-radius:6px}
+.doc .empty{color:#8a93a8;font-style:italic}
+.doc .toc{columns:2;font-size:15px}
+.doc ul{margin:0 0 8px;padding-left:22px}
+/* En el documento, los dibujos usan siempre colores claros */
+.doc{--paper:#f3f5f9;--card:#ffffff;--ink:#1b2742;--ink-soft:#4a5672;--line:#d6dce8;--navy:#1f3a6e;--navy-soft:#e4eaf6;--accent:#e2681a;--accent-soft:#fdeee2;--ok:#23804a;--warn:#c23a2b;--wood:#ecd3a4;--wood2:#d8b479;--wood-line:#9a7440;--grain:#c9a467;--metal:#9aa6b8;--metal-dark:#5d6a80;--sheet:#ffffff;--tape:rgba(226,104,26,.55);--phone:#26303f;--glue:#eaf3ff;--warn-soft:#fbe7e4;--ok-soft:#e1f3e8;--on-accent:#fff;--on-navy:#fff}
+@media (max-width:600px){.doc{padding:18px}.doc .figs,.doc .pimg{grid-template-columns:1fr}}
+
+@media print{
+  @page{size:A4;margin:16mm}
+  body:has(.printable){background:#fff}
+  body:has(.printable)::before,body:has(.printable) .top,.wrap:has(.printable)>*:not(.printable),.printable .noprint,.lb,.drawer{display:none!important}
+  .wrap:has(.printable){display:block;padding:0;max-width:none}
+  .printable{display:block!important}
+  .printable>*:not(.doc){display:none!important}
+  .doc{border:0;padding:0;border-radius:0}
+  .doc .cover{page-break-after:always;padding-top:60mm}
+  .doc h2{break-after:avoid}
+}
+
+/* ---------- Clases de dibujo SVG ---------- */
+.wd{fill:var(--wood);stroke:var(--wood-line);stroke-width:2;stroke-linejoin:round}
+.wd2{fill:var(--wood2);stroke:var(--wood-line);stroke-width:2;stroke-linejoin:round}
+.gr{fill:none;stroke:var(--grain);stroke-width:1.2;opacity:.7}
+.ln{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.lnf{fill:var(--card);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.hole{fill:var(--paper);stroke:var(--wood-line);stroke-width:2}
+.dim{stroke:var(--navy);stroke-width:1.6;fill:none}
+.dimf{fill:var(--navy)}
+.dt{fill:var(--navy);font-family:var(--font-mono);font-weight:700;font-size:15px}
+.tx{fill:var(--ink);font-family:var(--font-body);font-size:17px;font-weight:700}
+.txs{fill:var(--ink-soft);font-family:var(--font-body);font-size:14px}
+.tag{fill:var(--card);stroke:var(--ink);stroke-width:2}
+.tagt{fill:var(--ink);font-family:var(--font-display);font-weight:800;font-size:18px}
+.hl{fill:var(--accent)}
+.hls{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.cut{fill:none;stroke:var(--accent);stroke-width:3;stroke-dasharray:9 6;stroke-linecap:round}
+.dash{fill:none;stroke:var(--ink-soft);stroke-width:1.5;stroke-dasharray:10 5 2 5}
+.okf{fill:var(--ok)} .badf{fill:var(--warn)}
+.metal{fill:var(--metal);stroke:var(--metal-dark);stroke-width:2;stroke-linejoin:round}
+.sheet{fill:var(--sheet);stroke:var(--ink-soft);stroke-width:1.5}
+.tape{fill:var(--tape)}
+.phone{fill:var(--phone);stroke:var(--ink);stroke-width:2}
+.glue{fill:var(--glue);stroke:var(--navy);stroke-width:1.5}
+.panel{fill:var(--card);stroke:var(--line);stroke-width:1.5}
+.pn{fill:var(--accent)} .pnt{fill:var(--on-accent);font-family:var(--font-display);font-weight:800;font-size:18px}
+svg text{letter-spacing:normal;word-spacing:normal}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+<style id="palcss"></style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><small id="brandSmall"></small><strong id="brandTitle"></strong></div>
+    <nav class="tabs" aria-label="Secciones" id="tabs"></nav>
+    <div class="prog" id="progWrap"><div class="bar"><i id="bar"></i></div><span id="progtxt"></span></div>
+  </div>
+</header>
+
+<div class="wrap" id="wrap"></div>
+
+<div class="lb" id="lb" hidden>
+  <div class="lb-in" role="dialog" aria-modal="true" id="lbdlg">
+    <button class="lb-close" id="lbclose" type="button"></button>
+    <div id="lbbody"></div>
+  </div>
+</div>
+
+<div class="drawer" id="drawer" hidden>
+  <div class="drawer-in" role="dialog" aria-modal="true" aria-labelledby="setTitle" id="drawerIn"></div>
+</div>
+
+<input type="file" id="fileImport" accept="application/json,.json" hidden>
+<input type="file" id="filePhoto" accept="image/*" multiple hidden>
+
+<script>
+(function(){
+"use strict";
+
+/* ===================================================================
+   1. ALMACENAMIENTO
+   =================================================================== */
+var KEY='opitec-122979-v2';
+var DEFAULT_SETTINGS={lang:'es',scale:1,theme:'auto',pal:'taller',spacing:'normal'};
+function blankData(){ return {v:2,settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS)),checks:{},
+  group:{name:'',course:'1.º ESO',school:'',teacher:'',date:'',members:[{name:'',role:'coord'},{name:'',role:'measure'},{name:'',role:'tools'},{name:'',role:'safety'}]},
+  diary:[],memo:{intro:'',use:'',otherMat:'',tools:{},process:'',problems:'',safety:'',learned:'',improve:'',team:'',grade:''},photos:[],draft:null,draftFor:null}; }
+var D=blankData();
+var ROLE_ALL=['coord','measure','tools','safety','other'];
+function cleanEntry(e){
+  function str(v){ return typeof v==='string'?v:(v==null?'':String(v)); }
+  var m=parseInt(e.mood,10);
+  return {id:str(e.id)||('e'+Math.random().toString(36).slice(2,9)),created:Number(e.created)||0,date:/^\d{4}-\d{2}-\d{2}$/.test(str(e.date))?e.date:'',
+    steps:Array.isArray(e.steps)?e.steps.filter(function(x){return typeof x==='string';}):[],did:str(e.did),prob:str(e.prob),sol:str(e.sol),who:str(e.who),next:str(e.next),mood:(m>=1&&m<=5)?m:0};
+}
+function load(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){ var o=JSON.parse(raw); if(o&&typeof o==='object') D=merge(blankData(),o); }
+    else{ var old=localStorage.getItem('opitec-122979-guia-v1'); if(old){ var c=JSON.parse(old); if(c&&typeof c==='object') D.checks=c; } }
+  }catch(e){}
+}
+function merge(base,o){
+  ['checks','group','memo','settings'].forEach(function(k){ if(o[k]&&typeof o[k]==='object'&&!Array.isArray(o[k])) Object.keys(o[k]).forEach(function(j){ base[k][j]=o[k][j]; }); });
+  function str(v){ return typeof v==='string'?v:(v==null?'':String(v)); }
+  if(Array.isArray(o.diary)) base.diary=o.diary.filter(function(e){return e&&typeof e==='object';}).map(cleanEntry);
+  if(Array.isArray(o.photos)) base.photos=o.photos.filter(function(p){return p&&typeof p.data==='string'&&/^data:image\/(png|jpeg|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(p.data);}).slice(0,6).map(function(p){return {data:p.data,cap:str(p.cap)};});
+  if(!Array.isArray(base.group.members)) base.group.members=[];
+  base.group.members=base.group.members.filter(function(m){return m&&typeof m==='object';}).slice(0,6).map(function(m){ return {name:str(m.name),role:(ROLE_ALL.indexOf(m.role)>=0?m.role:'other')}; });
+  ['name','course','school','teacher','date'].forEach(function(k){ base.group[k]=str(base.group[k]); });
+  if(!base.memo.tools||typeof base.memo.tools!=='object'||Array.isArray(base.memo.tools)) base.memo.tools={};
+  ['intro','use','otherMat','process','problems','safety','learned','improve','team','grade'].forEach(function(k){ base.memo[k]=str(base.memo[k]); });
+  base.draft=(o.draft&&typeof o.draft==='object')?cleanEntry(o.draft):null;
+  base.draftFor=typeof o.draftFor==='string'?o.draftFor:null;
+  return base;
+}
+var saveErr=false;
+function save(){
+  try{ localStorage.setItem(KEY,JSON.stringify(D)); saveErr=false; return true; }
+  catch(e){ saveErr=true; return false; }
+}
+load();
+var S=D.settings;
+if(['es','en'].indexOf(S.lang)<0) S.lang='es';
+
+/* ===================================================================
+   2. TEXTOS DE LA INTERFAZ (ES / EN)
+   =================================================================== */
+var T={
+es:{brandSmall:'Taller · 1.º ESO · Kit OPITEC 122.979',brandTitle:'Organizador de escritorio',
+  tabGuide:'Guía',tabDiary:'Diario de taller',tabMemo:'Memoria técnica',tabSet:'Ajustes',
+  progress:function(p){return p+' % de la guía hecho';},
+  stepsTitle:'Pasos del proyecto',stepLabel:'Paso:',resetChecks:'Borrar todas las casillas marcadas',resetSure:'¿Seguro? Pulsa otra vez para borrar',resetDone:'Casillas borradas',
+  need:'Necesitáis:',whatToDo:'Qué tenéis que hacer',beforeNext:'Antes de seguir, comprobad',careful:'¡Cuidado!',tip:'Truco',words:'Palabras clave',
+  stepDone:'✔ ¡Paso completado! Podéis pasar al siguiente.',projDone:'✔ ¡Proyecto terminado! Buen trabajo.',
+  prev:'← Anterior',next:'Siguiente:',zoom:'Ampliar imagen',close:'Cerrar ✕',enlarge:'Imagen ampliada',
+  foot:'Guía adaptada a partir de las instrucciones de montaje del kit OPITEC 122.979. Trabajad siempre con la supervisión del profesor.',
+  /* ajustes */
+  setTitle:'Ajustes',setLang:'Idioma',setSize:'Tamaño del texto',sizes:['Pequeño','Normal','Grande','Muy grande'],setTheme:'Modo de color',themes:{auto:'Automático',light:'Claro',dark:'Oscuro'},
+  setPal:'Colores',setSpacing:'Espaciado del texto',spacings:{normal:'Normal',wide:'Más espaciado (ayuda a leer)'},setReset:'Volver a los ajustes iniciales',setClose:'Cerrar',
+  setNote:'Los ajustes se guardan en este navegador.',
+  pal:{taller:'Taller',oceano:'Océano',bosque:'Bosque',uva:'Uva',contraste:'Alto contraste'},
+  /* grupo */
+  groupTitle:'Datos del grupo',gName:'Nombre del grupo',gCourse:'Curso y grupo',gSchool:'Centro',gTeacher:'Profesor/a',gDate:'Fecha de entrega',
+  members:'Componentes del grupo',memberName:'Nombre y apellidos',memberRole:'Papel',addMember:'+ Añadir componente',delMember:'Quitar',
+  roles:{coord:'Coordinador/a',measure:'Medidor/a',tools:'Herramientas',safety:'Seguridad y limpieza',other:'Otro'},
+  /* diario */
+  diaryTitle:'Diario de taller',diaryLead:'Al final de cada sesión, escribid lo que habéis hecho. Este diario os servirá para hacer la memoria técnica.',
+  newEntry:'Nueva entrada del diario',editEntry:'Editar la entrada',session:'Sesión',dDate:'Fecha',dSteps:'¿En qué pasos habéis trabajado?',
+  dDid:'¿Qué hemos hecho hoy?',dDidHint:'Contadlo con vuestras palabras: qué piezas, qué herramientas, qué medidas.',
+  dProb:'¿Qué problemas hemos tenido?',dProbHint:'Por ejemplo: «la ranura quedaba justa», «nos equivocamos al medir».',
+  dSol:'¿Cómo los hemos solucionado?',dWho:'¿Quién ha hecho cada cosa?',dWhoHint:'Ejemplo: «Ana midió, Luis cortó, Marta lijó».',
+  dNext:'¿Qué haremos en la próxima sesión?',dMood:'¿Cómo ha ido la sesión?',moods:['Muy mal','Regular','Bien','Muy bien','¡Genial!'],
+  saveEntry:'Guardar entrada',cancel:'Cancelar',edit:'Editar',del:'Borrar',delSure:'¿Seguro? Pulsa otra vez',delQ:'¿Borrar?',noEntries:'Todavía no hay entradas. Escribid la primera al acabar la sesión de hoy.',
+  entrySaved:'Entrada guardada.',needText:'Escribid al menos qué habéis hecho hoy.',
+  entriesTitle:'Entradas del diario',
+  /* memoria */
+  memoTitle:'Memoria técnica',memoLead:'Rellenad cada apartado. Muchos datos se completan solos con la guía y el diario. Al final, podéis imprimirla o guardarla como PDF.',
+  m1:'Portada',m1hint:'Se rellena con los datos del grupo de arriba.',
+  m2:'Introducción y objetivo',m2a:'¿Qué hemos construido?',m2aHint:'Describid el objeto: qué forma tiene, de qué está hecho.',m2b:'¿Para qué sirve y quién lo podría usar?',
+  m3:'Materiales',m3a:'Otros materiales que habéis usado',m3aHint:'Por ejemplo: pintura, barniz, rotuladores…',
+  m4:'Herramientas',m4hint:'Marcad las herramientas que habéis usado.',
+  m5:'Planos y dibujos',m5hint:'Se añaden solos los dibujos de la guía: el objeto, las piezas, la varilla, los listones y el montaje.',
+  m6:'Proceso de construcción',m6hint:'Se añaden solos los pasos de la guía y las entradas de vuestro diario. Podéis añadir algo más aquí:',
+  m7:'Problemas y soluciones',m7hint:'Se recogen solos los problemas y soluciones del diario. Añadid otros si queréis:',
+  m8:'Seguridad',m8hint:'¿Qué normas de seguridad habéis aplicado? ¿Hubo algún peligro?',
+  m9:'Fotos del proyecto',m9hint:'Añadid fotos del trabajo (máximo 6). Se guardan en este ordenador.',addPhoto:'+ Añadir fotos',photoCap:'Pie de foto',photoMax:'Máximo 6 fotos.',photoErr:'No se ha podido guardar la foto: no queda espacio en el navegador. Borrad alguna foto.',
+  m10:'Valoración final',m10a:'¿Qué hemos aprendido?',m10b:'¿Qué mejoraríamos si lo hiciéramos otra vez?',m10c:'¿Cómo ha funcionado el grupo?',m10d:'Nota que nos ponemos (de 1 a 10)',
+  annex:'Anexo: diario de taller',
+  preview:'Ver la memoria terminada',hidePreview:'Ocultar la vista previa',print:'Imprimir o guardar en PDF',downloadDoc:'Descargar para editar (Word)',copyText:'Copiar el texto',copied:'Texto copiado.',copyFail:'No se ha podido copiar. Seleccionad el texto y copiadlo a mano.',
+  printNote:'Para guardarla en PDF: pulsad «Imprimir» y elegid «Guardar como PDF» como impresora.',printFail:'Este visor no permite imprimir. Abrid la web desde GitHub Pages o descargad el documento.',
+  backupTitle:'Copia de seguridad',backupLead:'Los datos se guardan solo en este ordenador y en este navegador. Si cambiáis de ordenador, guardad una copia y cargadla en el otro.',
+  exportBtn:'Guardar copia (archivo)',importBtn:'Cargar copia',importOk:'Copia cargada correctamente.',importErr:'Ese archivo no es una copia válida de este proyecto.',importSure:'Cargar la copia sustituye los datos actuales. Pulsa otra vez para confirmar.',
+  wipeBtn:'Borrar todos los datos',wipeSure:'Se borrará todo (diario, memoria, fotos). Pulsa otra vez para confirmar.',wiped:'Datos borrados.',
+  saveFail:'No se ha podido guardar: el navegador no deja espacio. Guardad una copia en archivo.',
+  docTitle:'Memoria técnica',docProject:'Organizador de escritorio multifuncional',docSub:'Proyecto de taller · Tecnología y Digitalización',
+  docGroup:'Grupo',docMembers:'Componentes',docCourse:'Curso',docSchool:'Centro',docTeacher:'Profesor/a',docDate:'Fecha',docToc:'Índice',
+  docEmpty:'(Sin completar)',docMatT:['Material','Medidas','Para qué sirve','Pieza n.º'],docKit:'Material del kit',docOther:'Otros materiales',
+  docStepsT:'Pasos seguidos',docDiaryT:'Lo que hicimos en cada sesión',docSess:'Sesión',docMore:'Otras observaciones',
+  docProbT:['Sesión','Problema','Solución'],docSafety:'Normas aplicadas',docCheck:'Revisión final',yes:'Sí',no:'No',
+  docDiaryCols:['Sesión','Fecha','Pasos','Qué hicimos','Quién lo hizo','Valoración'],
+  fileDoc:'memoria-organizador',fileBackup:'copia-organizador'
+},
+en:{brandSmall:'Workshop · Year 8 · OPITEC kit 122.979',brandTitle:'Desk organiser',
+  tabGuide:'Guide',tabDiary:'Workshop diary',tabMemo:'Technical report',tabSet:'Settings',
+  progress:function(p){return p+' % of the guide done';},
+  stepsTitle:'Project steps',stepLabel:'Step:',resetChecks:'Clear all ticked boxes',resetSure:'Sure? Press again to clear',resetDone:'Boxes cleared',
+  need:'You need:',whatToDo:'What to do',beforeNext:'Before you go on, check',careful:'Be careful!',tip:'Tip',words:'Key words',
+  stepDone:'✔ Step complete! You can go to the next one.',projDone:'✔ Project finished! Well done.',
+  prev:'← Back',next:'Next:',zoom:'Enlarge picture',close:'Close ✕',enlarge:'Enlarged picture',
+  foot:'Guide adapted from the assembly instructions of OPITEC kit 122.979. Always work under your teacher’s supervision.',
+  setTitle:'Settings',setLang:'Language',setSize:'Text size',sizes:['Small','Normal','Large','Extra large'],setTheme:'Colour mode',themes:{auto:'Automatic',light:'Light',dark:'Dark'},
+  setPal:'Colours',setSpacing:'Text spacing',spacings:{normal:'Normal',wide:'Wider (easier to read)'},setReset:'Back to default settings',setClose:'Close',
+  setNote:'Settings are saved in this browser.',
+  pal:{taller:'Workshop',oceano:'Ocean',bosque:'Forest',uva:'Grape',contraste:'High contrast'},
+  groupTitle:'Group details',gName:'Group name',gCourse:'Class',gSchool:'School',gTeacher:'Teacher',gDate:'Hand-in date',
+  members:'Group members',memberName:'Full name',memberRole:'Role',addMember:'+ Add member',delMember:'Remove',
+  roles:{coord:'Coordinator',measure:'Measurer',tools:'Tools',safety:'Safety and cleaning',other:'Other'},
+  diaryTitle:'Workshop diary',diaryLead:'At the end of each lesson, write down what you did. This diary will help you write the technical report.',
+  newEntry:'New diary entry',editEntry:'Edit entry',session:'Lesson',dDate:'Date',dSteps:'Which steps did you work on?',
+  dDid:'What did we do today?',dDidHint:'Use your own words: which parts, which tools, which measurements.',
+  dProb:'What problems did we have?',dProbHint:'For example: “the slot was too tight”, “we measured wrong”.',
+  dSol:'How did we solve them?',dWho:'Who did each job?',dWhoHint:'Example: “Ana measured, Luis cut, Marta sanded”.',
+  dNext:'What will we do next lesson?',dMood:'How did the lesson go?',moods:['Very bad','Not great','OK','Good','Great!'],
+  saveEntry:'Save entry',cancel:'Cancel',edit:'Edit',del:'Delete',delSure:'Sure? Press again',delQ:'Delete?',noEntries:'No entries yet. Write the first one at the end of today’s lesson.',
+  entrySaved:'Entry saved.',needText:'Write at least what you did today.',
+  entriesTitle:'Diary entries',
+  memoTitle:'Technical report',memoLead:'Fill in each section. A lot of it fills in by itself from the guide and the diary. At the end you can print it or save it as a PDF.',
+  m1:'Cover page',m1hint:'It uses the group details above.',
+  m2:'Introduction and aim',m2a:'What have we built?',m2aHint:'Describe the object: its shape and what it is made of.',m2b:'What is it for and who could use it?',
+  m3:'Materials',m3a:'Other materials you used',m3aHint:'For example: paint, varnish, markers…',
+  m4:'Tools',m4hint:'Tick the tools you used.',
+  m5:'Drawings and plans',m5hint:'The guide drawings are added automatically: the object, the parts, the dowel, the strips and the assembly.',
+  m6:'Building process',m6hint:'The guide steps and your diary entries are added automatically. You can add more here:',
+  m7:'Problems and solutions',m7hint:'Problems and solutions from the diary are collected automatically. Add others if you want:',
+  m8:'Safety',m8hint:'Which safety rules did you follow? Was there any danger?',
+  m9:'Project photos',m9hint:'Add photos of your work (6 maximum). They are saved on this computer.',addPhoto:'+ Add photos',photoCap:'Caption',photoMax:'6 photos maximum.',photoErr:'The photo could not be saved: the browser has no space left. Delete a photo.',
+  m10:'Final evaluation',m10a:'What have we learnt?',m10b:'What would we improve if we did it again?',m10c:'How did the group work together?',m10d:'Our own mark (1 to 10)',
+  annex:'Appendix: workshop diary',
+  preview:'See the finished report',hidePreview:'Hide the preview',print:'Print or save as PDF',downloadDoc:'Download to edit (Word)',copyText:'Copy the text',copied:'Text copied.',copyFail:'Copy did not work. Select the text and copy it by hand.',
+  printNote:'To save it as a PDF: press “Print” and choose “Save as PDF” as the printer.',printFail:'This viewer cannot print. Open the website from GitHub Pages or download the document.',
+  backupTitle:'Backup',backupLead:'Your data is saved only on this computer and in this browser. If you change computer, save a backup and load it on the other one.',
+  exportBtn:'Save backup (file)',importBtn:'Load backup',importOk:'Backup loaded.',importErr:'That file is not a valid backup of this project.',importSure:'Loading the backup replaces the current data. Press again to confirm.',
+  wipeBtn:'Delete all data',wipeSure:'Everything will be deleted (diary, report, photos). Press again to confirm.',wiped:'Data deleted.',
+  saveFail:'Could not save: the browser has no space left. Save a backup file.',
+  docTitle:'Technical report',docProject:'Multifunctional desk organiser',docSub:'Workshop project · Technology and Digital Skills',
+  docGroup:'Group',docMembers:'Members',docCourse:'Class',docSchool:'School',docTeacher:'Teacher',docDate:'Date',docToc:'Contents',
+  docEmpty:'(Not filled in)',docMatT:['Material','Size','Used for','Part no.'],docKit:'Kit materials',docOther:'Other materials',
+  docStepsT:'Steps followed',docDiaryT:'What we did in each lesson',docSess:'Lesson',docMore:'Other notes',
+  docProbT:['Lesson','Problem','Solution'],docSafety:'Rules we followed',docCheck:'Final check',yes:'Yes',no:'No',
+  docDiaryCols:['Lesson','Date','Steps','What we did','Who did it','Rating'],
+  fileDoc:'report-desk-organiser',fileBackup:'backup-desk-organiser'
+}};
+function t(k){ var v=T[S.lang][k]; return v===undefined?T.es[k]:v; }
+
+/* Etiquetas de los dibujos */
+var SV={
+es:{phoneSpot:'Sitio para el móvil',stop:'Tope del móvil (3c)',watch:'Reloj o pulsera',hooks:'Colgadores (varillas 2a–2d)',vase:'Florero',pencils:'Lápices',
+  board:'Contrachapado · pieza 1 · 8 mm de grosor',dowel:'Varilla redonda · pieza 2 · ø10 mm',strips:'Listones · piezas 3 · 10 × 5 mm',stripsSub:'(10 mm de ancho y 5 mm de grueso)',
+  pl1:'Recortad las 3 hojas',pl2:'Unidlas por la línea discontinua',pl3:'Fijadlas al tablero',page:'pág.',cutEdge:'Cortad por el borde de la hoja',match1:'Las líneas deben coincidir',match2:'exactamente, sin huecos',
+  tape1:'Cinta en las esquinas y en los bordes',tape2:'para que el papel no se mueva',scale1:'Las plantillas están a tamaño real (escala 1:1).',scale2:'No las amplíes ni las reduzcas al imprimir: imprime al 100 %, sin «ajustar a la página».',
+  closeUp:'Vista de cerca de un agujero',here:'¡Aquí!',centre:'El centro es donde se cruzan las dos líneas',pz1:'1. Apoya la punta en el centro.',pz2a:'2. Da un golpe ',pz2b:'suave',pz2c:' con el martillo.',
+  drTitle:'Taladrad desde las dos caras para que no se astille',dr1a:'Taladra hasta que',dr1b:'asome la punta',dr2a:'Da la vuelta a la pieza',dr2b:'y termina por el otro lado',dr3a:'Agujero limpio',dr3b:'por las dos caras',
+  drBad1:'Si atraviesas de golpe por una sola cara,',drBad2:'la salida del agujero se astilla (se rompe la madera).',
+  hl10:'ø10',hl20:'ø20 Forstner',hl15:'ø15 Forstner (medias lunas del borde)',holesNote:'Dibujo orientativo. La posición exacta de cada agujero está en vuestra plantilla.',
+  sawWhere:'Por dónde cortar',keep:'Pieza (se queda)',waste:'Sobrante',sawRule1:'Corta ',sawRule2:'por fuera',sawRule3:' de la línea, en el sobrante.',sawRule4:'Luego lijas o limas hasta llegar justo a la línea.',
+  slotHow:'Cómo hacer una ranura (hendidura)',slot12:'1 y 2: dos cortes rectos hasta el fondo.',slot3:'3: un corte en curva para sacar el trocito.',
+  saw1:'Los dientes de la hoja miran hacia el mango (hacia abajo).',saw2:'Sierra con movimientos largos, rectos y sin prisa.',saw3:'En las curvas, gira la pieza poco a poco mientras sierras.',
+  sandT:'Lijar los cantos',sand1:'Envuelve la lija en un taco de madera.',sand2:'Lija siempre en la dirección de la veta.',fitT:'Prueba de encaje en seco (sin cola)',otherEdge1:'canto de',otherEdge2:'la otra pieza',
+  fit1:'La ranura debe medir lo mismo',fit2a:'que el grosor del tablero: ',fit3:'¿Muy justa? Repásala con la lima.',fit4:'¿Muy floja? Avisad al profesor.',
+  dwT:'Marca y corta la varilla de 200 mm en 4 trozos',rest:'sobra',dwNote:'Las rayas naranjas son los cortes. Mide cada trozo desde el corte anterior, no desde el principio.',
+  notchT:'Detalle: muesca en 2a y 2b',notchV:'muesca en «V»',inHole1:'Este extremo irá',inHole2:'dentro del agujero',out1:'Este extremo',out2:'queda fuera',
+  file1:'Lima triangular:',file2:'pocas pasadas,',file3:'sin apretar.',file4:'Poco profunda o',file5:'la varilla se parte.',
+  glueT:'Qué varilla va en cada agujero de la pieza A',side:'Visto de lado',notchUp:'Muesca ARRIBA',glue:'cola',straight:'La varilla debe quedar recta, en ángulo recto.',
+  st1:'Listón 1 → dos trozos 3a',st2:'Listón 2 → un trozo 3c y dos trozos 3b',round:'Esquina redondeada (radio 10 mm = R10)',stNote:'Dibujo a escala: 1 mm de listón = 3,2 mm en el dibujo. Mide siempre con la regla sobre la madera.',
+  frT:'El marco va pegado sobre la pieza B, donde marca la plantilla',fr4:'Las 4 piezas del marco',fr3a:'3a (120 mm): arriba y abajo.',fr3b:'3b (70 mm): a los lados.',
+  topT:'El listón 3c es el tope donde se apoya el móvil',topNext:'3c, pegado junto a la ranura',measure:'Cómo medir la posición',ms1:'Coloca el móvil, marca con',ms2:'lápiz el borde y pega 3c ahí.',
+  as1:'Pon las ranuras una frente a otra',as2:'Desliza hasta el fondo',slotA:'Ranura de A',slotB:'Ranura de B',cross:'Las piezas quedan en cruz.',hit1:'Si cuesta, no golpees:',hit2:'repasa la ranura con la lima.',
+  aria:{portada:'Dibujo del organizador terminado',material:'Los tres materiales del kit con sus medidas',plantillas:'Recortar, unir y fijar las plantillas',punzon:'Uso del punzón',taladrar:'Taladrar desde ambas caras',agujeros:'Situación de los agujeros en A y B',serrar:'Cómo serrar',lijar:'Lijado y prueba de encaje',varilla:'Corte de la varilla y muesca',encolarA:'Posición de las varillas en la pieza A',listones:'Despiece de los listones',marco:'Marco sobre la pieza B',tope:'Tope 3c sobre la pieza B',montaje:'Encaje de A y B en cruz'}},
+en:{phoneSpot:'Place for the phone',stop:'Phone stop (3c)',watch:'Watch or bracelet',hooks:'Hooks (dowels 2a–2d)',vase:'Vase',pencils:'Pencils',
+  board:'Plywood · part 1 · 8 mm thick',dowel:'Round dowel · part 2 · ø10 mm',strips:'Wooden strips · parts 3 · 10 × 5 mm',stripsSub:'(10 mm wide and 5 mm thick)',
+  pl1:'Cut out the 3 sheets',pl2:'Join them on the dashed line',pl3:'Fix them to the board',page:'p.',cutEdge:'Cut along the edge of the sheet',match1:'The lines must match',match2:'exactly, with no gaps',
+  tape1:'Tape on the corners and the edges',tape2:'so the paper does not move',scale1:'The templates are real size (scale 1:1).',scale2:'Do not make them bigger or smaller when printing: print at 100 %, not “fit to page”.',
+  closeUp:'Close-up of a hole',here:'Here!',centre:'The centre is where the two lines cross',pz1:'1. Put the point on the centre.',pz2a:'2. Give it a ',pz2b:'gentle',pz2c:' tap with the hammer.',
+  drTitle:'Drill from both sides so the wood does not split',dr1a:'Drill until the tip',dr1b:'comes through',dr2a:'Turn the piece over',dr2b:'and finish from the other side',dr3a:'Clean hole',dr3b:'on both sides',
+  drBad1:'If you drill right through from one side only,',drBad2:'the wood splinters where the drill comes out.',
+  hl10:'ø10',hl20:'ø20 Forstner',hl15:'ø15 Forstner (half circles on the edge)',holesNote:'Approximate drawing. The exact position of each hole is on your template.',
+  sawWhere:'Where to cut',keep:'Part (you keep it)',waste:'Waste',sawRule1:'Cut ',sawRule2:'outside',sawRule3:' the line, in the waste.',sawRule4:'Then sand or file right up to the line.',
+  slotHow:'How to cut a slot',slot12:'1 and 2: two straight cuts to the end.',slot3:'3: a curved cut to remove the piece.',
+  saw1:'The teeth of the blade point towards the handle (down).',saw2:'Saw with long, straight strokes. Do not rush.',saw3:'On curves, turn the piece slowly as you saw.',
+  sandT:'Sanding the edges',sand1:'Wrap the sandpaper around a wooden block.',sand2:'Always sand along the grain.',fitT:'Dry fit test (no glue)',otherEdge1:'edge of',otherEdge2:'the other part',
+  fit1:'The slot must be as wide',fit2a:'as the board is thick: ',fit3:'Too tight? File it a little.',fit4:'Too loose? Tell your teacher.',
+  dwT:'Mark and cut the 200 mm dowel into 4 pieces',rest:'waste',dwNote:'The orange lines are the cuts. Measure each piece from the last cut, not from the start.',
+  notchT:'Detail: notch on 2a and 2b',notchV:'“V” notch',inHole1:'This end goes',inHole2:'into the hole',out1:'This end',out2:'stays out',
+  file1:'Triangular file:',file2:'a few strokes,',file3:'do not press hard.',file4:'Keep it shallow or',file5:'the dowel breaks.',
+  glueT:'Which dowel goes in each hole of part A',side:'Side view',notchUp:'Notch UP',glue:'glue',straight:'The dowel must be straight, at a right angle.',
+  st1:'Strip 1 → two 3a pieces',st2:'Strip 2 → one 3c piece and two 3b pieces',round:'Rounded corner (radius 10 mm = R10)',stNote:'Drawn to scale: 1 mm of strip = 3.2 mm in the drawing. Always measure with the ruler on the wood.',
+  frT:'The frame is glued on part B, where the template shows',fr4:'The 4 frame pieces',fr3a:'3a (120 mm): top and bottom.',fr3b:'3b (70 mm): the sides.',
+  topT:'Strip 3c is the stop the phone rests on',topNext:'3c, glued next to the slot',measure:'How to measure the position',ms1:'Put the phone in place, mark',ms2:'its edge and glue 3c there.',
+  as1:'Put the slots face to face',as2:'Slide them all the way in',slotA:'Slot of A',slotB:'Slot of B',cross:'The parts form a cross.',hit1:'If it is hard, do not hit it:',hit2:'file the slot a little.',
+  aria:{portada:'Drawing of the finished organiser',material:'The three kit materials with their sizes',plantillas:'Cutting out, joining and fixing the templates',punzon:'Using the centre punch',taladrar:'Drilling from both sides',agujeros:'Position of the holes in A and B',serrar:'How to saw',lijar:'Sanding and dry fit test',varilla:'Cutting the dowel and the notch',encolarA:'Position of the dowels in part A',listones:'Cutting plan for the strips',marco:'Frame on part B',tope:'Stop 3c on part B',montaje:'Joining A and B in a cross'}}
+};
+function L(k){ var v=SV[S.lang][k]; return v===undefined?SV.es[k]:v; }
+
+/* ===================================================================
+   3. PALETAS DE COLOR
+   =================================================================== */
+var PAL={
+ taller:{l:{navy:'#1f3a6e',band:'#1f3a6e','on-navy':'#ffffff','navy-soft':'#e4eaf6',accent:'#e2681a','accent-soft':'#fdeee2','on-accent':'#ffffff'},
+         d:{navy:'#8fb1ee',band:'#16233d','on-navy':'#0f1726','navy-soft':'#22304a',accent:'#f08a43','accent-soft':'#3a2617','on-accent':'#1a1006'}},
+ oceano:{l:{navy:'#0e5a68',band:'#0e5a68','on-navy':'#ffffff','navy-soft':'#ddeff2',accent:'#2463c9','accent-soft':'#e3ecfb','on-accent':'#ffffff'},
+         d:{navy:'#74ccd9',band:'#0b3640','on-navy':'#06232a','navy-soft':'#163a41',accent:'#7aa8f5','accent-soft':'#1b2a44','on-accent':'#08152a'}},
+ bosque:{l:{navy:'#2b5a25',band:'#2b5a25','on-navy':'#ffffff','navy-soft':'#e3efdf',accent:'#b87700','accent-soft':'#fbf0d6','on-accent':'#ffffff'},
+         d:{navy:'#9fd494',band:'#1a3417','on-navy':'#0d1f0b','navy-soft':'#1f3320',accent:'#f0b93a','accent-soft':'#3a2e10','on-accent':'#1e1500'}},
+ uva:{l:{navy:'#4b2a7b',band:'#4b2a7b','on-navy':'#ffffff','navy-soft':'#ede5f7',accent:'#c92d68','accent-soft':'#fbe4ec','on-accent':'#ffffff'},
+      d:{navy:'#c3a6f0',band:'#2a1846','on-navy':'#1a0d2e','navy-soft':'#2d2340',accent:'#f27ba6','accent-soft':'#3d1c2a','on-accent':'#2a0815'}},
+ contraste:{l:{navy:'#000000',band:'#000000','on-navy':'#ffffff','navy-soft':'#ececec',accent:'#b03a00','accent-soft':'#ffe6d4','on-accent':'#ffffff',paper:'#ffffff',card:'#ffffff',ink:'#000000','ink-soft':'#222222',line:'#555555'},
+            d:{navy:'#ffe14d',band:'#000000','on-navy':'#000000','navy-soft':'#26231a',accent:'#ffe14d','accent-soft':'#2b2600','on-accent':'#000000',paper:'#000000',card:'#0b0b0b',ink:'#ffffff','ink-soft':'#e6e6e6',line:'#8a8a8a'}}
+};
+function palCss(){
+  var css='';
+  Object.keys(PAL).forEach(function(k){
+    function decl(o){ return Object.keys(o).map(function(n){return '--'+n+':'+o[n];}).join(';'); }
+    css+=':root[data-pal="'+k+'"]{'+decl(PAL[k].l)+'}';
+    css+='@media (prefers-color-scheme: dark){:root[data-pal="'+k+'"]:not([data-theme="light"]){'+decl(PAL[k].d)+'}}';
+    css+=':root[data-pal="'+k+'"][data-theme="dark"]{'+decl(PAL[k].d)+'}';
+  });
+  document.getElementById('palcss').textContent=css;
+}
+palCss();
+var SCALES=[0.9,1,1.15,1.3];
+function applySettings(){
+  var r=document.documentElement;
+  if(!PAL[S.pal]) S.pal='taller';
+  r.setAttribute('data-pal',S.pal);
+  if(S.theme==='light'||S.theme==='dark') r.setAttribute('data-theme',S.theme); else r.removeAttribute('data-theme');
+  if(SCALES.indexOf(S.scale)<0) S.scale=1;
+  r.style.setProperty('--scale',String(S.scale));
+  r.setAttribute('data-spacing',S.spacing==='wide'?'wide':'normal');
+  r.setAttribute('lang',S.lang);
+  document.title=S.lang==='en'?'Desk organiser':'Organizador de escritorio';
+}
+
+/* ===================================================================
+   4. AYUDAS DE DIBUJO
+   =================================================================== */
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function arrowH(x1,x2,y){ var a=8;
+  return '<line class="dim" x1="'+x1+'" y1="'+y+'" x2="'+x2+'" y2="'+y+'"/><polygon class="dimf" points="'+x1+','+y+' '+(x1+a)+','+(y-4)+' '+(x1+a)+','+(y+4)+'"/><polygon class="dimf" points="'+x2+','+y+' '+(x2-a)+','+(y-4)+' '+(x2-a)+','+(y+4)+'"/>'; }
+function arrowV(x,y1,y2){ var a=8;
+  return '<line class="dim" x1="'+x+'" y1="'+y1+'" x2="'+x+'" y2="'+y2+'"/><polygon class="dimf" points="'+x+','+y1+' '+(x-4)+','+(y1+a)+' '+(x+4)+','+(y1+a)+'"/><polygon class="dimf" points="'+x+','+y2+' '+(x-4)+','+(y2-a)+' '+(x+4)+','+(y2-a)+'"/>'; }
+function cotaH(x1,x2,y,label,ext){ var s='';
+  if(ext){ s+='<line class="dim" x1="'+x1+'" y1="'+(y-ext)+'" x2="'+x1+'" y2="'+(y+6)+'"/><line class="dim" x1="'+x2+'" y1="'+(y-ext)+'" x2="'+x2+'" y2="'+(y+6)+'"/>'; }
+  return s+arrowH(x1,x2,y)+'<text class="dt" x="'+((x1+x2)/2)+'" y="'+(y-7)+'" text-anchor="middle">'+label+'</text>'; }
+function tag(x,y,tx,r){ r=r||17; return '<circle class="tag" cx="'+x+'" cy="'+y+'" r="'+r+'"/><text class="tagt" x="'+x+'" y="'+(y+6)+'" text-anchor="middle">'+tx+'</text>'; }
+function pnum(x,y,n){ return '<circle class="pn" cx="'+x+'" cy="'+y+'" r="15"/><text class="pnt" x="'+x+'" y="'+(y+6)+'" text-anchor="middle">'+n+'</text>'; }
+function okMark(x,y){ return '<circle cx="'+x+'" cy="'+y+'" r="18" class="okf"/><path d="M'+(x-8)+' '+y+' l6 6 l11 -12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>'; }
+function badMark(x,y){ return '<circle cx="'+x+'" cy="'+y+'" r="18" class="badf"/><path d="M'+(x-7)+' '+(y-7)+' l14 14 M'+(x+7)+' '+(y-7)+' l-14 14" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'; }
+function txt(x,y,s,cls,extra){ return '<text class="'+(cls||'tx')+'" x="'+x+'" y="'+y+'"'+(extra||'')+'>'+esc(s)+'</text>'; }
+function svg(vb,inner,label){ return '<svg viewBox="'+vb+'" role="img" aria-label="'+esc(label)+'" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>'; }
+
+function pathA(){ return 'M14,0 L172,0 A8,8 0 0 0 188,0 L206,0 A14,14 0 0 1 220,14 L220,56 L150,56 A6,6 0 0 0 150,68 L220,68 L220,226 A14,14 0 0 1 206,240 L128,240 L128,150 L120,150 L120,240 L48,240 A8,8 0 0 0 32,240 L14,240 A14,14 0 0 1 0,226 L0,14 A14,14 0 0 1 14,0 Z'; }
+var A_HOLES=[{x:55,y:55,id:'2d'},{x:95,y:100,id:'2c'},{x:150,y:118,id:'2b'},{x:185,y:140,id:'2a'}];
+function pathB(){ return 'M14,0 L192,0 A8,8 0 0 0 208,0 L326,0 A14,14 0 0 1 340,14 L340,40 L262,40 A7,7 0 0 0 262,54 L340,54 L340,98 L232,98 A8,8 0 0 0 232,114 L340,114 L340,176 A14,14 0 0 1 326,190 L14,190 A14,14 0 0 1 0,176 L0,86 L150,86 L150,78 L0,78 L0,14 A14,14 0 0 1 14,0 Z'; }
+var B_HOLES=[{x:305,y:160,r:10},{x:276,y:164,r:5},{x:256,y:167,r:5}];
+function grain(w,h,n){ var s=''; for(var i=1;i<=n;i++){ var y=h*i/(n+1); s+='<path class="gr" d="M8,'+y.toFixed(1)+' Q'+(w*0.3)+','+(y-5).toFixed(1)+' '+(w*0.55)+','+y.toFixed(1)+' T'+(w-8)+','+(y+2).toFixed(1)+'"/>'; } return s; }
+var uid=0;
+function pieceA(tx,ty,sc,opts){ opts=opts||{}; var id='clA'+(++uid);
+  var s='<g transform="translate('+tx+','+ty+') scale('+sc+')"><path class="wd" d="'+pathA()+'"/><clipPath id="'+id+'"><path d="'+pathA()+'"/></clipPath><g clip-path="url(#'+id+')">'+grain(220,240,6)+'</g>';
+  A_HOLES.forEach(function(h){ s+='<circle class="hole" cx="'+h.x+'" cy="'+h.y+'" r="5"/>'; if(opts.holeTags){ s+='<g transform="translate('+h.x+','+(h.y-26)+') scale('+(1/sc)+')">'+tag(0,0,h.id,16)+'</g>'; } });
+  if(opts.label!==false) s+='<g transform="translate(60,180) scale('+(1/sc)+')">'+tag(0,0,'A',20)+'</g>';
+  return s+'</g>'; }
+function pieceB(tx,ty,sc,opts){ opts=opts||{}; var id='clB'+(++uid);
+  var s='<g transform="translate('+tx+','+ty+') scale('+sc+')"><path class="wd" d="'+pathB()+'"/><clipPath id="'+id+'"><path d="'+pathB()+'"/></clipPath><g clip-path="url(#'+id+')">'+grain(340,190,6)+'</g>';
+  B_HOLES.forEach(function(h){ s+='<circle class="hole" cx="'+h.x+'" cy="'+h.y+'" r="'+h.r+'"/>'; });
+  if(opts.extra) s+=opts.extra;
+  if(opts.label!==false) s+='<g transform="translate(110,40) scale('+(1/sc)+')">'+tag(0,0,'B',20)+'</g>';
+  return s+'</g>'; }
+
+/* Iconos de herramientas (64×64) */
+var IC={
+  sierra:'<path class="ln" d="M14 50 V14 Q14 9 19 9 H46 Q51 9 51 14 V42"/><line x1="14" y1="42" x2="51" y2="42" stroke="var(--metal-dark)" stroke-width="2" stroke-dasharray="3 2"/><rect class="wd2" x="45" y="42" width="12" height="18" rx="4"/>',
+  broca:'<rect class="metal" x="28" y="4" width="8" height="20" rx="1"/><path class="metal" d="M27 24 H37 V50 L32 60 L27 50 Z"/><path d="M27 30 L37 35 M27 38 L37 43 M27 46 L37 51" stroke="var(--metal-dark)" stroke-width="2"/>',
+  cola:'<path class="lnf" d="M22 26 H42 Q50 30 50 40 V54 Q50 58 46 58 H18 Q14 58 14 54 V40 Q14 30 22 26 Z"/><path class="ln" d="M27 26 L30 10 H34 L37 26"/><rect class="hl" x="20" y="38" width="24" height="10" rx="2"/>',
+  regla:'<g transform="rotate(-30 32 32)"><rect class="wd" x="4" y="24" width="56" height="16" rx="2"/><path d="M10 24 v6 M16 24 v4 M22 24 v6 M28 24 v4 M34 24 v6 M40 24 v4 M46 24 v6 M52 24 v4" stroke="var(--ink)" stroke-width="1.5"/></g>',
+  lapiz:'<g transform="rotate(-40 32 32)"><rect class="hl" x="10" y="26" width="34" height="12"/><path class="wd" d="M44 26 L58 32 L44 38 Z"/><path d="M54 30.3 L58 32 L54 33.7 Z" fill="var(--ink)"/><rect class="metal" x="5" y="26" width="6" height="12"/></g>',
+  tijeras:'<circle class="ln" cx="18" cy="46" r="8"/><circle class="ln" cx="38" cy="50" r="8"/><path class="metal" d="M23 40 L52 8 L30 44 Z"/><path class="metal" d="M34 43 L56 14 L28 41 Z"/>',
+  forstner:'<rect class="metal" x="28" y="4" width="8" height="28" rx="1"/><path class="metal" d="M18 32 H46 V50 H18 Z"/><path d="M18 50 L22 56 L26 50 L30 56 L34 50 L38 56 L42 50 L46 56" class="ln"/><line x1="32" y1="50" x2="32" y2="60" stroke="var(--metal-dark)" stroke-width="3"/>',
+  lija:'<rect class="wd2" x="8" y="22" width="48" height="16" rx="3"/><rect x="8" y="38" width="48" height="8" rx="2" fill="var(--ink-soft)"/><path d="M12 42 h2 M18 41 h2 M24 43 h2 M30 41 h2 M36 42 h2 M42 41 h2 M48 43 h2" stroke="var(--card)" stroke-width="2"/>',
+  cinta:'<circle cx="28" cy="32" r="20" class="hl" opacity=".75"/><circle cx="28" cy="32" r="9" class="lnf"/><path d="M48 32 H60 V44 H44" class="tape" stroke="var(--accent)" stroke-width="1.5"/>',
+  lima:'<rect class="wd2" x="26" y="44" width="12" height="16" rx="4"/><rect class="metal" x="28" y="6" width="8" height="38" rx="1"/><path d="M28 12 l8 4 M28 18 l8 4 M28 24 l8 4 M28 30 l8 4 M28 36 l8 4" stroke="var(--metal-dark)" stroke-width="1.5"/>',
+  tenazas:'<path class="ln" d="M24 58 Q22 36 30 26 M40 58 Q42 36 34 26" stroke-width="4"/><path class="metal" d="M30 26 Q22 16 24 6 Q30 10 33 22 Z"/><path class="metal" d="M34 26 Q42 16 40 6 Q34 10 31 22 Z"/><circle cx="32" cy="25" r="3" fill="var(--ink)"/>',
+  martillo:'<rect class="wd2" x="29" y="20" width="7" height="40" rx="3"/><path class="metal" d="M14 8 H50 V20 H14 Q10 14 14 8 Z"/>',
+  punzon:'<rect class="wd2" x="25" y="4" width="14" height="26" rx="6"/><path class="metal" d="M30 30 H34 V50 L32 60 L30 50 Z"/>',
+  limatri:'<rect class="wd2" x="26" y="44" width="12" height="16" rx="4"/><path class="metal" d="M27 44 L32 4 L37 44 Z"/><path d="M29 36 h6 M30 28 h4 M31 20 h2" stroke="var(--metal-dark)" stroke-width="1.5"/>',
+  gafas:'<circle class="lnf" cx="20" cy="34" r="10"/><circle class="lnf" cx="44" cy="34" r="10"/><path class="ln" d="M30 32 Q32 29 34 32 M10 32 L4 26 M54 32 L60 26"/>',
+  gato:'<path class="metal" d="M14 10 H50 V18 H22 V46 H50 V54 H14 Z"/><rect class="metal" x="42" y="18" width="4" height="24"/><rect class="wd2" x="38" y="42" width="12" height="6" rx="2"/>',
+  taladro:'<path class="hl" d="M10 18 H44 Q50 18 50 24 V30 Q50 34 44 34 H10 Z"/><path class="ln" d="M18 34 L14 56 H28 L30 34"/><rect class="metal" x="50" y="23" width="10" height="6"/>'
+};
+function ico(k){ return '<svg viewBox="0 0 64 64" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">'+IC[k]+'</svg>'; }
+var TOOLN={
+ es:{sierra:'Sierra de marquetería',broca:'Broca ø3 y ø10',cola:'Cola blanca',regla:'Regla',lapiz:'Lápiz',tijeras:'Tijeras',forstner:'Broca Forstner ø15 y ø20',lija:'Papel de lija',cinta:'Cinta adhesiva',lima:'Lima de taller',tenazas:'Tenazas',martillo:'Martillo',punzon:'Punzón',limatri:'Lima triangular',gafas:'Gafas de protección',gato:'Gato o tornillo de banco',taladro:'Taladro'},
+ en:{sierra:'Fretsaw',broca:'Drill bit ø3 and ø10',cola:'Wood glue',regla:'Ruler',lapiz:'Pencil',tijeras:'Scissors',forstner:'Forstner bit ø15 and ø20',lija:'Sandpaper',cinta:'Sticky tape',lima:'Workshop file',tenazas:'Pincers',martillo:'Hammer',punzon:'Centre punch',limatri:'Triangular file',gafas:'Safety glasses',gato:'Clamp or vice',taladro:'Drill'}};
+function TN(k){ return TOOLN[S.lang][k]; }
+var TOOL_LIST=['sierra','broca','forstner','punzon','martillo','regla','lapiz','tijeras','cinta','lija','lima','limatri','tenazas','cola'];
+var TOOL_USE={
+ es:{sierra:'Sierra de calar (marquetería) o serrucho|Para cortar las piezas',broca:'|Agujero guía y agujeros de las varillas',forstner:'|Agujeros grandes y limpios',punzon:'|Marcar el centro de los agujeros',martillo:'|Golpear el punzón',regla:'|Medir',lapiz:'|Marcar',tijeras:'|Recortar las plantillas',cinta:'|Unir y fijar las plantillas',lija:'|Alisar los cortes',lima:'|Afinar ranuras y bordes',limatri:'|Hacer las muescas',tenazas:'|Sujetar y retirar piezas pequeñas',cola:'Cola para madera|Pegar las piezas'},
+ en:{sierra:'Fretsaw or handsaw|To cut out the parts',broca:'|Pilot holes and dowel holes',forstner:'|Big, clean holes',punzon:'|Marking the centre of the holes',martillo:'|Tapping the centre punch',regla:'|Measuring',lapiz:'|Marking',tijeras:'|Cutting out the templates',cinta:'|Joining and fixing the templates',lija:'|Smoothing the cuts',lima:'|Finishing slots and edges',limatri:'|Making the notches',tenazas:'|Holding and removing small pieces',cola:'|Gluing the parts'}};
+
+/* ===================================================================
+   5. DIBUJOS (se generan en el idioma activo)
+   =================================================================== */
+var FIG={};
+FIG.portada=function(){
+  var s='<rect class="panel" x="1" y="1" width="818" height="468" rx="12"/>'+
+  '<path class="wd2" d="M232 52 L244 40 L522 40 L510 52 Z"/><path class="wd" d="M232 52 H510 V380 H232 Z"/><path class="wd2" d="M510 52 L522 40 V368 L510 380 Z"/>'+
+  '<path class="gr" d="M240 120 Q330 112 420 122 T505 118 M240 200 Q330 192 420 202 T505 198 M240 280 Q330 272 420 282 T505 278"/>'+
+  '<rect class="phone" x="262" y="72" width="150" height="262" rx="18"/><rect x="272" y="86" width="130" height="234" rx="8" fill="var(--navy)" opacity=".55"/>'+
+  '<rect class="wd2" x="248" y="334" width="186" height="16" rx="8"/>'+
+  '<rect x="452" y="60" width="22" height="104" rx="4" fill="var(--wood-line)" opacity=".8"/><rect class="phone" x="440" y="84" width="46" height="56" rx="10"/>'+
+  '<path class="wd2" d="M392 230 L404 220 H612 L600 230 Z"/><path class="wd" d="M392 230 H600 V430 H392 Z"/><path class="wd2" d="M600 230 L612 220 V420 L600 430 Z"/>'+
+  '<path class="gr" d="M400 290 Q480 284 560 292 T596 288 M400 360 Q480 354 560 362 T596 358"/>'+
+  '<rect class="wd2" x="418" y="252" width="30" height="12" rx="6"/><ellipse class="wd" cx="418" cy="258" rx="5" ry="7"/>'+
+  '<rect class="wd2" x="458" y="296" width="30" height="12" rx="6"/><ellipse class="wd" cx="458" cy="302" rx="5" ry="7"/>'+
+  '<rect class="wd2" x="508" y="318" width="34" height="12" rx="6"/><ellipse class="wd" cx="508" cy="324" rx="5" ry="7"/>'+
+  '<rect class="wd2" x="548" y="340" width="34" height="12" rx="6"/><ellipse class="wd" cx="548" cy="346" rx="5" ry="7"/>'+
+  '<circle cx="512" cy="336" r="9" fill="none" stroke="var(--metal-dark)" stroke-width="3"/><path class="metal" d="M506 345 h12 v40 h-4 v-6 h-4 v6 h-4 Z"/>'+
+  '<circle cx="552" cy="358" r="9" fill="none" stroke="var(--metal-dark)" stroke-width="3"/><path class="metal" d="M546 367 h12 v34 h-4 v-6 h-4 v6 h-4 Z"/>'+
+  '<path class="wd" d="M560 420 L760 420 L736 446 L536 446 Z"/><path class="wd2" d="M536 446 H736 V456 H536 Z"/>'+
+  '<rect x="612" y="300" width="10" height="150" fill="var(--accent)" stroke="var(--ink)" stroke-width="1.5"/><path d="M612 300 L617 284 L622 300 Z" class="wd"/>'+
+  '<rect x="630" y="320" width="10" height="132" fill="var(--wood-line)" stroke="var(--ink)" stroke-width="1.5"/><path d="M630 320 L635 304 L640 320 Z" class="wd"/>'+
+  '<rect x="666" y="250" width="22" height="200" rx="11" fill="var(--glue)" stroke="var(--navy)" stroke-width="1.5" opacity=".9"/>'+
+  '<path d="M677 420 Q674 300 690 190" fill="none" stroke="var(--ok)" stroke-width="5" stroke-linecap="round"/><path d="M680 330 Q710 300 722 270 Q700 290 682 312 Z" class="okf"/>'+
+  '<g transform="translate(690 180)"><ellipse rx="10" ry="26" fill="var(--card)" stroke="var(--ink-soft)" stroke-width="1.5"/><ellipse rx="10" ry="26" transform="rotate(60)" fill="var(--card)" stroke="var(--ink-soft)" stroke-width="1.5"/><ellipse rx="10" ry="26" transform="rotate(-60)" fill="var(--card)" stroke="var(--ink-soft)" stroke-width="1.5"/><circle r="8" fill="#f2c94c"/></g>'+
+  '<path class="hls" d="M200 120 L262 140"/>'+txt(40,114,L('phoneSpot'))+
+  '<path class="hls" d="M200 360 L250 344"/>'+txt(40,366,L('stop'))+
+  '<path class="hls" d="M600 76 L490 104"/>'+txt(604,80,L('watch'))+
+  '<path class="hls" d="M470 446 L462 314"/>'+txt(250,462,L('hooks'))+
+  '<path class="hls" d="M734 244 L690 262"/>'+txt(736,248,L('vase'))+
+  txt(740,410,L('pencils'))+'<path class="hls" d="M740 400 L644 360"/>'+
+  tag(372,60,'B')+tag(624,236,'A');
+  return svg('0 0 820 470',s,L('aria').portada);
+};
+FIG.material=function(){
+  var s='<rect class="panel" x="1" y="1" width="818" height="398" rx="12"/>'+
+  '<path class="wd2" d="M40 70 L60 50 H380 L360 70 Z"/><rect class="wd" x="40" y="70" width="320" height="240"/><path class="wd2" d="M360 70 L380 50 V290 L360 310 Z"/>'+
+  '<path class="gr" d="M48 120 Q150 112 250 122 T354 118 M48 180 Q150 172 250 182 T354 178 M48 240 Q150 232 250 242 T354 238"/>'+
+  cotaH(40,360,340,'400 mm',12)+arrowV(28,70,310)+'<text class="dt" transform="translate(20 190) rotate(-90)" text-anchor="middle">300 mm</text>'+
+  txt(200,384,L('board'),'tx',' text-anchor="middle"')+
+  '<rect class="wd2" x="440" y="90" width="340" height="22" rx="11"/><ellipse class="wd" cx="440" cy="101" rx="7" ry="11"/>'+
+  cotaH(440,780,70,'200 mm',0)+txt(610,140,L('dowel'),'tx',' text-anchor="middle"')+
+  '<rect class="wd" x="440" y="210" width="340" height="16"/><rect class="wd" x="440" y="250" width="340" height="16"/>'+
+  cotaH(440,780,196,'250 mm',0)+txt(610,296,L('strips'),'tx',' text-anchor="middle"')+txt(610,318,L('stripsSub'),'txs',' text-anchor="middle"');
+  return svg('0 0 820 400',s,L('aria').material);
+};
+FIG.plantillas=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="440" rx="12"/>';
+  s+=pnum(34,36,1)+txt(58,42,L('pl1'));
+  [0,1,2].forEach(function(i){ var x=30+i*84;
+    s+='<rect class="sheet" x="'+x+'" y="70" width="74" height="104"/>'+txt(x+37,196,L('page')+' '+[5,7,9][i],'txs',' text-anchor="middle"');
+    s+='<path d="M'+(x+10)+' 90 h40 v30 h-40z" fill="none" stroke="var(--ink-soft)" stroke-width="1.2"/>';
+    s+='<line class="dash" x1="'+(x+(i===0?66:8))+'" y1="74" x2="'+(x+(i===0?66:8))+'" y2="170"/>';
+  });
+  s+='<path class="cut" d="M30 220 H290"/><g transform="translate(40 240) scale(.75)">'+IC.tijeras+'</g>'+txt(100,272,L('cutEdge'),'txs');
+  s+=pnum(330,36,2)+txt(354,42,L('pl2'));
+  s+='<rect class="sheet" x="340" y="80" width="140" height="190"/><rect class="sheet" x="478" y="80" width="140" height="190"/>';
+  s+='<line class="dash" x1="478" y1="70" x2="478" y2="280" style="stroke:var(--accent);stroke-width:3"/>';
+  s+='<path d="M360 120 h100 v60 h-100z M500 110 h90 v80 h-90z" fill="none" stroke="var(--ink-soft)" stroke-width="1.5"/>';
+  s+='<rect class="tape" x="462" y="100" width="32" height="14"/><rect class="tape" x="462" y="168" width="32" height="14"/><rect class="tape" x="462" y="236" width="32" height="14"/>';
+  s+=txt(480,300,L('match1'),'txs',' text-anchor="middle"')+txt(480,318,L('match2'),'txs',' text-anchor="middle"');
+  s+=pnum(650,36,3)+txt(674,42,L('pl3'));
+  s+='<rect class="wd" x="650" y="80" width="210" height="160"/><path class="gr" d="M656 120 Q720 114 790 122 T856 118 M656 170 Q720 164 790 172 T856 168 M656 210 Q720 204 790 212 T856 208"/>';
+  s+='<rect class="sheet" x="660" y="90" width="190" height="140" opacity=".92"/>';
+  s+='<g transform="translate(672 102) scale(.28)"><path d="'+pathA()+'" fill="none" stroke="var(--ink)" stroke-width="5"/></g>';
+  s+='<g transform="translate(746 112) scale(.28)"><path d="'+pathB()+'" fill="none" stroke="var(--ink)" stroke-width="5"/></g>';
+  [[654,84],[834,84],[654,214],[834,214],[744,84],[744,214]].forEach(function(p){ s+='<rect class="tape" x="'+p[0]+'" y="'+p[1]+'" width="22" height="22"/>'; });
+  s+=txt(755,266,L('tape1'),'txs',' text-anchor="middle"')+txt(755,284,L('tape2'),'txs',' text-anchor="middle"');
+  s+='<rect x="30" y="340" width="820" height="76" rx="12" fill="var(--navy-soft)"/>'+txt(50,372,L('scale1'))+txt(50,396,L('scale2'),'txs',' style="font-size:16px"');
+  return svg('0 0 880 442',s,L('aria').plantillas);
+};
+FIG.punzon=function(){
+  var s='<rect class="panel" x="1" y="1" width="818" height="418" rx="12"/>'+
+  '<rect class="wd" x="40" y="60" width="330" height="300" rx="8"/><rect class="sheet" x="56" y="76" width="298" height="268" opacity=".95"/>'+
+  '<circle cx="205" cy="210" r="80" fill="none" stroke="var(--ink)" stroke-width="2.5"/><line x1="95" y1="210" x2="315" y2="210" class="dash"/><line x1="205" y1="100" x2="205" y2="320" class="dash"/>'+
+  '<circle cx="205" cy="210" r="10" class="hl"/><path class="hls" d="M220 196 L300 120"/>'+txt(250,104,L('here'))+
+  txt(205,388,L('centre'),'txs',' text-anchor="middle" style="font-size:16px"')+txt(40,40,L('closeUp'))+
+  '<rect class="wd2" x="430" y="300" width="350" height="24"/><rect class="wd" x="430" y="290" width="350" height="12"/><rect class="sheet" x="430" y="286" width="350" height="5"/>'+
+  '<g transform="translate(560 120) scale(2.6)">'+IC.punzon+'</g><g transform="translate(610 20) rotate(25) scale(1.6)">'+IC.martillo+'</g>'+
+  '<path class="hls" d="M700 70 q20 20 0 40"/><path class="hls" d="M720 60 q28 30 0 60"/>'+
+  txt(430,360,L('pz1'))+'<text class="tx" x="430" y="386">'+esc(L('pz2a'))+'<tspan fill="var(--accent)">'+esc(L('pz2b'))+'</tspan>'+esc(L('pz2c'))+'</text>';
+  return svg('0 0 820 420',s,L('aria').punzon);
+};
+FIG.taladrar=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="470" rx="12"/>'+txt(30,40,L('drTitle'));
+  function boardSec(x,y,drill,hole,flip){
+    var q='<rect class="wd" x="'+x+'" y="'+y+'" width="220" height="40"/><path class="gr" d="M'+(x+4)+' '+(y+13)+' H'+(x+216)+' M'+(x+4)+' '+(y+27)+' H'+(x+216)+'"/>';
+    if(hole==='half'){ q+='<rect x="'+(x+96)+'" y="'+(flip?y+12:y)+'" width="28" height="28" fill="var(--paper)"/><rect x="'+(x+108)+'" y="'+(flip?y:y+28)+'" width="4" height="12" fill="var(--paper)"/>'; }
+    if(hole==='full'){ q+='<rect x="'+(x+96)+'" y="'+y+'" width="28" height="40" fill="var(--paper)"/>'; }
+    if(drill){ q+='<path class="metal" d="M'+(x+98)+' '+(y-110)+' H'+(x+122)+' V'+(y-4)+' L'+(x+110)+' '+(y+36)+' L'+(x+98)+' '+(y-4)+' Z"/><path d="M'+(x+98)+' '+(y-80)+' L'+(x+122)+' '+(y-68)+' M'+(x+98)+' '+(y-56)+' L'+(x+122)+' '+(y-44)+' M'+(x+98)+' '+(y-32)+' L'+(x+122)+' '+(y-20)+'" stroke="var(--metal-dark)" stroke-width="2"/>'; }
+    return q; }
+  s+=pnum(40,80,1)+boardSec(30,230,true,'half',false)+txt(140,300,L('dr1a'),'tx',' text-anchor="middle"')+txt(140,322,L('dr1b'),'tx',' text-anchor="middle"')+'<circle cx="140" cy="270" r="9" fill="none" stroke="var(--accent)" stroke-width="3"/>';
+  s+=pnum(330,80,2)+'<path class="hls" d="M262 200 C300 150 330 150 360 200"/><polygon class="hl" points="360,200 348,192 362,188"/>'+boardSec(320,230,true,'half',true)+txt(430,300,L('dr2a'),'tx',' text-anchor="middle"')+txt(430,322,L('dr2b'),'tx',' text-anchor="middle"');
+  s+=pnum(620,80,3)+boardSec(610,230,false,'full',false)+okMark(720,190)+txt(720,300,L('dr3a'),'tx',' text-anchor="middle"')+txt(720,322,L('dr3b'),'tx',' text-anchor="middle"');
+  s+='<rect x="30" y="356" width="820" height="96" rx="12" fill="var(--warn-soft)"/><rect class="wd" x="56" y="384" width="160" height="34"/><rect x="122" y="384" width="28" height="34" fill="var(--warn-soft)"/>';
+  s+='<path d="M114 418 l6 -8 l2 8 l4 -10 M150 418 l4 -9 l3 9 l5 -7" fill="none" stroke="var(--wood-line)" stroke-width="3"/><path d="M112 418 L104 430 M160 418 L170 432 M130 418 L126 434" stroke="var(--wood-line)" stroke-width="3"/>';
+  s+=badMark(250,404)+txt(290,396,L('drBad1'))+txt(290,422,L('drBad2'));
+  return svg('0 0 880 472',s,L('aria').taladrar);
+};
+FIG.agujeros=function(){
+  var ax=40,ay=70,as=0.95,bx=320,by=86,bs=1.3;
+  var s='<rect class="panel" x="1" y="1" width="878" height="378" rx="12"/>'+pieceA(ax,ay,as)+pieceB(bx,by,bs);
+  function ring(x,y,r,c){ return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'" fill="none" stroke="var(--'+c+')" stroke-width="3"/>'; }
+  A_HOLES.forEach(function(h){ s+=ring(ax+h.x*as,ay+h.y*as,13,'navy'); });
+  s+=ring(bx+305*bs,by+160*bs,20,'accent')+ring(bx+276*bs,by+164*bs,11,'navy')+ring(bx+256*bs,by+167*bs,11,'navy');
+  s+=ring(ax+180*as,ay,14,'ok')+ring(ax+40*as,ay+240*as,14,'ok')+ring(bx+200*bs,by,15,'ok');
+  s+='<g transform="translate(40 34)"><circle cx="8" cy="-6" r="8" fill="none" stroke="var(--navy)" stroke-width="3"/>'+txt(24,0,L('hl10'))+
+    '<circle cx="98" cy="-6" r="8" fill="none" stroke="var(--accent)" stroke-width="3"/>'+txt(114,0,L('hl20'))+
+    '<circle cx="262" cy="-6" r="8" fill="none" stroke="var(--ok)" stroke-width="3"/>'+txt(278,0,L('hl15'))+'</g>';
+  s+=txt(440,366,L('holesNote'),'txs',' text-anchor="middle"');
+  return svg('0 0 880 380',s,L('aria').agujeros);
+};
+FIG.serrar=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="440" rx="12"/>'+txt(30,40,L('sawWhere'));
+  s+='<rect class="wd" x="30" y="66" width="390" height="120" rx="6"/><rect x="30" y="66" width="390" height="60" fill="var(--sheet)" opacity=".9"/><line x1="30" y1="126" x2="420" y2="126" stroke="var(--ink)" stroke-width="3"/>';
+  s+=txt(40,104,L('keep'),'txs')+txt(40,176,L('waste'),'txs')+'<line x1="30" y1="140" x2="420" y2="140" class="cut"/>'+okMark(395,152);
+  s+='<text class="tx" x="30" y="214">'+esc(L('sawRule1'))+'<tspan fill="var(--accent)">'+esc(L('sawRule2'))+'</tspan>'+esc(L('sawRule3'))+'</text>'+txt(30,236,L('sawRule4'),'txs',' style="font-size:16px"');
+  s+=txt(470,40,L('slotHow'))+'<rect class="wd" x="480" y="70" width="360" height="170" rx="8"/>';
+  s+='<path d="M640 240 V120 M680 240 V120" stroke="var(--ink)" stroke-width="2"/><path d="M640 120 H680" stroke="var(--ink)" stroke-width="2"/>';
+  s+='<path class="hls" d="M646 236 V126"/><polygon class="hl" points="646,122 640,134 652,134"/>'+pnum(612,180,1);
+  s+='<path class="hls" d="M674 236 V126"/><polygon class="hl" points="674,122 668,134 680,134"/>'+pnum(708,180,2);
+  s+='<path class="hls" d="M648 230 Q660 170 672 128"/>'+pnum(760,128,3)+'<path class="hls" d="M745 128 H690"/>';
+  s+=txt(480,266,L('slot12'),'txs',' style="font-size:16px"')+txt(480,288,L('slot3'),'txs',' style="font-size:16px"');
+  s+='<rect x="30" y="316" width="820" height="106" rx="12" fill="var(--navy-soft)"/><g transform="translate(46 330) scale(1.2)">'+IC.sierra+'</g>';
+  s+=txt(140,352,L('saw1'))+txt(140,380,L('saw2'))+txt(140,408,L('saw3'));
+  return svg('0 0 880 442',s,L('aria').serrar);
+};
+FIG.lijar=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="400" rx="12"/>'+txt(30,40,L('sandT'))+
+  '<rect class="wd" x="40" y="160" width="330" height="40"/><path class="wd2" d="M40 160 L60 140 H390 L370 160 Z"/>'+
+  '<g transform="translate(150 70) rotate(-8)"><rect class="wd2" x="0" y="0" width="120" height="40" rx="6"/><rect x="0" y="40" width="120" height="10" fill="var(--ink-soft)"/></g>'+
+  '<path class="hls" d="M120 100 H300"/><polygon class="hl" points="300,100 288,94 288,106"/><polygon class="hl" points="120,100 132,94 132,106"/>'+
+  txt(40,236,L('sand1'),'txs',' style="font-size:16px"')+txt(40,258,L('sand2'),'txs',' style="font-size:16px"')+
+  txt(470,40,L('fitT'))+
+  '<rect class="wd" x="480" y="70" width="170" height="210" rx="10"/><path d="M561 280 V190 H569 V280 Z" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>'+
+  '<rect class="wd2" x="700" y="90" width="8" height="180"/>'+txt(716,130,L('otherEdge1'),'txs')+txt(716,148,L('otherEdge2'),'txs')+
+  '<line class="dim" x1="532" y1="210" x2="559" y2="210"/><polygon class="dimf" points="561,210 551,205 551,215"/><line class="dim" x1="598" y1="210" x2="571" y2="210"/><polygon class="dimf" points="569,210 579,205 579,215"/><text class="dt" x="602" y="215">8 mm</text>'+
+  txt(480,312,L('fit1'))+'<text class="tx" x="480" y="336">'+esc(L('fit2a'))+'<tspan fill="var(--accent)">8 mm</tspan>.</text>'+
+  txt(480,362,L('fit3'),'txs',' style="font-size:16px"')+txt(480,384,L('fit4'),'txs',' style="font-size:16px"');
+  return svg('0 0 880 402',s,L('aria').lijar);
+};
+FIG.varilla=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="440" rx="12"/>', x0=40, k=4;
+  s+=txt(30,40,L('dwT'));
+  var parts=[['2a',45,'var(--wood)'],['2b',40,'var(--wood2)'],['2c',30,'var(--wood)'],['2d',30,'var(--wood2)']], x=x0;
+  parts.forEach(function(p){ var w=p[1]*k;
+    s+='<rect x="'+x+'" y="110" width="'+w+'" height="40" fill="'+p[2]+'" stroke="var(--wood-line)" stroke-width="2"/>'+cotaH(x,x+w,96,p[1]+' mm',0)+'<g transform="translate('+(x+w/2)+' 130)">'+tag(0,0,p[0],17)+'</g>';
+    x+=w; s+='<line x1="'+x+'" y1="100" x2="'+x+'" y2="162" stroke="var(--accent)" stroke-width="3"/>'; });
+  var rest=200-145;
+  s+='<rect x="'+x+'" y="110" width="'+(rest*k)+'" height="40" fill="var(--paper)" stroke="var(--wood-line)" stroke-width="2" stroke-dasharray="6 4"/>'+txt(x+rest*k/2,135,L('rest'),'txs',' text-anchor="middle"');
+  s+=txt(x0,184,L('dwNote'),'txs',' style="font-size:16px"');
+  s+=txt(30,236,L('notchT'))+'<rect class="wd" x="60" y="290" width="450" height="60" rx="4"/><ellipse class="wd2" cx="510" cy="320" rx="10" ry="30"/>';
+  s+='<path d="M398 290 L410 312 L422 290 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>'+cotaH(410,510,276,'15 mm',14);
+  s+='<path class="hls" d="M410 312 L380 400"/>'+txt(250,420,L('notchV'));
+  s+=txt(70,380,L('inHole1'),'txs',' style="font-size:16px"')+txt(70,398,L('inHole2'),'txs',' style="font-size:16px"');
+  s+=txt(510,380,L('out1'),'txs',' text-anchor="end" style="font-size:16px"')+txt(510,398,L('out2'),'txs',' text-anchor="end" style="font-size:16px"');
+  s+='<g transform="translate(560 250) rotate(28) scale(1.7)">'+IC.limatri+'</g>'+txt(680,276,L('file1'));
+  ['file2','file3','file4','file5'].forEach(function(k2,i){ s+=txt(680,[300,320,344,364][i],L(k2),'txs',' style="font-size:16px"'); });
+  return svg('0 0 880 442',s,L('aria').varilla);
+};
+FIG.encolarA=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="440" rx="12"/>'+txt(30,40,L('glueT'));
+  s+=pieceA(50,70,1.4,{holeTags:true,label:false})+'<g transform="translate(130 380)">'+tag(0,0,'A',22)+'</g>';
+  s+=txt(430,40,L('side'))+'<rect class="wd" x="520" y="80" width="32" height="300"/><rect class="wd2" x="520" y="200" width="210" height="40" rx="6"/>';
+  s+='<ellipse class="glue" cx="555" cy="198" rx="7" ry="4"/><ellipse class="glue" cx="555" cy="242" rx="7" ry="4"/><ellipse class="glue" cx="517" cy="198" rx="7" ry="4"/><ellipse class="glue" cx="517" cy="242" rx="7" ry="4"/>';
+  s+='<path d="M668 200 L680 216 L692 200 Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/><path class="hls" d="M690 192 L740 130"/>'+txt(700,118,L('notchUp'));
+  s+=txt(430,270,L('glue'),'txs')+'<path class="hls" d="M462 264 L512 244"/>'+txt(430,410,L('straight'),'txs',' style="font-size:16px"');
+  s+='<path d="M552 250 H582 V280" fill="none" stroke="var(--ok)" stroke-width="3"/><rect x="552" y="250" width="12" height="12" fill="none" stroke="var(--ok)" stroke-width="2"/>';
+  return svg('0 0 880 442',s,L('aria').encolarA);
+};
+FIG.listones=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="420" rx="12"/>', x0=40, k=3.2, y=250;
+  s+=txt(30,40,L('st1'));
+  s+='<rect class="wd" x="'+x0+'" y="90" width="'+(120*k)+'" height="32"/><g transform="translate('+(x0+60*k)+' 106)">'+tag(0,0,'3a')+'</g>';
+  s+='<rect x="'+(x0+120*k)+'" y="90" width="'+(10*k)+'" height="32" fill="var(--paper)" stroke="var(--wood-line)" stroke-width="2" stroke-dasharray="5 4"/>';
+  s+='<rect class="wd" x="'+(x0+130*k)+'" y="90" width="'+(120*k)+'" height="32"/><g transform="translate('+(x0+190*k)+' 106)">'+tag(0,0,'3a')+'</g>';
+  s+=cotaH(x0,x0+120*k,76,'120 mm',0)+cotaH(x0+130*k,x0+250*k,76,'120 mm',0)+txt(x0+125*k,146,L('rest'),'txs',' text-anchor="middle"');
+  s+=txt(30,200,L('st2'));
+  s+='<path class="wd" d="M'+x0+' '+y+' H'+(x0+100*k)+' V'+(y+32)+' H'+(x0+10*k)+' A'+(10*k)+' '+(10*k)+' 0 0 1 '+x0+' '+y+' Z"/><g transform="translate('+(x0+55*k)+' '+(y+16)+')">'+tag(0,0,'3c')+'</g>';
+  s+='<rect x="'+(x0+100*k)+'" y="'+y+'" width="'+(10*k)+'" height="32" fill="var(--paper)" stroke="var(--wood-line)" stroke-width="2" stroke-dasharray="5 4"/>';
+  s+='<rect class="wd" x="'+(x0+110*k)+'" y="'+y+'" width="'+(70*k)+'" height="32"/><g transform="translate('+(x0+145*k)+' '+(y+16)+')">'+tag(0,0,'3b')+'</g>';
+  s+='<rect class="wd" x="'+(x0+180*k)+'" y="'+y+'" width="'+(70*k)+'" height="32"/><g transform="translate('+(x0+215*k)+' '+(y+16)+')">'+tag(0,0,'3b')+'</g>';
+  s+=cotaH(x0,x0+100*k,y-14,'100 mm',0)+cotaH(x0+110*k,x0+180*k,y-14,'70 mm',0)+cotaH(x0+180*k,x0+250*k,y-14,'70 mm',0);
+  s+='<path class="hls" d="M'+(x0+8)+' '+(y+26)+' L'+(x0+14)+' '+(y+76)+'"/>'+txt(x0-10,y+98,L('round'))+txt(x0+100*k+16,y+56,L('rest'),'txs',' text-anchor="middle"');
+  s+=txt(30,404,L('stNote'),'txs',' style="font-size:16px"');
+  return svg('0 0 880 422',s,L('aria').listones);
+};
+FIG.marco=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="440" rx="12"/>'+txt(30,40,L('frT'));
+  s+=pieceB(40,110,1.55)+'<rect x="'+(40+40*1.55)+'" y="'+(110+102*1.55)+'" width="'+(120*1.55)+'" height="'+(80*1.55)+'" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="8 5"/>';
+  var ox=630, oy=120;
+  s+=txt(ox,oy-30,L('fr4'))+'<rect class="wd" x="'+ox+'" y="'+oy+'" width="200" height="16"/><text class="dt" x="'+(ox+100)+'" y="'+(oy+13)+'" text-anchor="middle">3a</text>';
+  s+='<rect class="wd" x="'+ox+'" y="'+(oy+30)+'" width="16" height="116"/><text class="dt" x="'+(ox+34)+'" y="'+(oy+94)+'">3b</text>';
+  s+='<rect class="wd" x="'+(ox+184)+'" y="'+(oy+30)+'" width="16" height="116"/><text class="dt" x="'+(ox+150)+'" y="'+(oy+94)+'">3b</text>';
+  s+='<rect class="wd" x="'+ox+'" y="'+(oy+160)+'" width="200" height="16"/><text class="dt" x="'+(ox+100)+'" y="'+(oy+173)+'" text-anchor="middle">3a</text>';
+  s+=txt(ox,oy+210,L('fr3a'),'txs',' style="font-size:16px"')+txt(ox,oy+232,L('fr3b'),'txs',' style="font-size:16px"');
+  s+='<path class="hls" d="M'+(ox-14)+' 330 L300 330"/><polygon class="hl" points="292,330 306,322 306,338"/>';
+  return svg('0 0 880 442',s,L('aria').marco);
+};
+FIG.tope=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="420" rx="12"/>'+txt(30,40,L('topT'));
+  s+=pieceB(40,90,1.55,{extra:'<rect class="hl" x="18" y="62" width="100" height="10" rx="5" opacity=".95"/>'});
+  s+='<path class="hls" d="M'+(40+60*1.55)+' '+(90+60*1.55)+' L250 380"/>'+txt(180,404,L('topNext'));
+  s+=txt(620,80,L('measure'))+'<rect class="wd" x="620" y="100" width="230" height="250" rx="6"/><rect class="phone" x="660" y="130" width="120" height="170" rx="14" opacity=".85"/>';
+  s+='<rect class="hl" x="650" y="304" width="140" height="12" rx="6"/><line x1="640" y1="300" x2="830" y2="300" stroke="var(--ink)" stroke-width="2" stroke-dasharray="4 4"/>';
+  s+=txt(620,376,L('ms1'),'txs',' style="font-size:16px"')+txt(620,396,L('ms2'),'txs',' style="font-size:16px"');
+  return svg('0 0 880 422',s,L('aria').tope);
+};
+FIG.montaje=function(){
+  var s='<rect class="panel" x="1" y="1" width="878" height="460" rx="12"/>';
+  function plateA(x,y){ var w=220,h=200,sl=110,sw=10,d=[14,-10];
+    var q='<path class="wd2" d="M'+x+' '+y+' l'+d[0]+' '+d[1]+' h'+w+' l'+(-d[0])+' '+(-d[1])+' Z"/><path class="wd2" d="M'+(x+w)+' '+y+' l'+d[0]+' '+d[1]+' v'+h+' l'+(-d[0])+' '+(-d[1])+' Z"/>';
+    q+='<path class="wd" d="M'+x+' '+y+' h'+w+' v'+h+' h'+(-(w/2-sw/2))+' v'+(-sl/2)+' h'+(-sw)+' v'+(sl/2)+' h'+(-(w/2-sw/2))+' Z"/><path class="gr" d="M'+(x+6)+' '+(y+50)+' H'+(x+w-6)+' M'+(x+6)+' '+(y+110)+' H'+(x+w-6)+'"/>';
+    return q; }
+  function plateB(x,y){ var L2=[120,-60],h=70;
+    var q='<path class="wd2" d="M'+x+' '+y+' l'+L2[0]+' '+L2[1]+' v'+h+' l'+(-L2[0])+' '+(-L2[1])+' Z"/><path class="wd" d="M'+x+' '+y+' l'+L2[0]+' '+L2[1]+' l8 3 l'+(-L2[0])+' '+(-L2[1])+' Z"/>';
+    var mx=x+L2[0]/2,my=y+L2[1]/2; q+='<path d="M'+(mx-5)+' '+(my+2)+' v35 h10 v-35 Z" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>';
+    return q; }
+  s+=pnum(40,40,1)+txt(64,46,L('as1'))+plateA(60,90)+'<g transform="translate(100 130)">'+tag(0,0,'A')+'</g>';
+  s+=plateB(110,370)+'<g transform="translate(80 420)">'+tag(0,0,'B')+'</g>';
+  s+='<path class="hls" d="M170 334 V304"/><polygon class="hl" points="170,296 162,310 178,310"/>';
+  s+=txt(300,290,L('slotA'),'txs',' style="font-size:16px"')+'<path class="hls" d="M296 286 L178 268"/>'+txt(300,372,L('slotB'),'txs',' style="font-size:16px"')+'<path class="hls" d="M296 368 L178 352"/>';
+  var ax=520,ay=120;
+  s+=pnum(480,40,2)+txt(504,46,L('as2'));
+  s+='<path class="wd2" d="M'+(ax+110)+' '+(ay+200)+' l75 -55 v-110 l-75 55 Z"/><path class="wd" d="M'+(ax+110)+' '+(ay+90)+' l75 -55 l8 3 l-75 55 Z"/>';
+  s+=plateA(ax,ay);
+  s+='<path class="wd2" d="M'+(ax+35)+' '+(ay+255)+' l75 -55 v-110 l-75 55 Z"/><path class="wd" d="M'+(ax+35)+' '+(ay+145)+' l75 -55 l8 3 l-75 55 Z"/>';
+  s+='<g transform="translate('+(ax+10)+' '+(ay+262)+')">'+tag(0,0,'B')+'</g><g transform="translate('+(ax+190)+' '+(ay+30)+')">'+tag(0,0,'A')+'</g>'+okMark(ax+260,ay+30);
+  s+=txt(ax+130,ay+296,L('cross'),'txs',' style="font-size:16px"')+txt(ax+130,ay+318,L('hit1'),'txs',' style="font-size:16px"')+txt(ax+130,ay+340,L('hit2'),'txs',' style="font-size:16px"');
+  return svg('0 0 880 462',s,L('aria').montaje);
+};
+
+/* ===================================================================
+   6. CONTENIDO DE LOS PASOS (ES / EN)
+   =================================================================== */
+var STEPS_ES=[
+{ id:'inicio', phase:'Empezamos', title:'Nuestro proyecto', lead:'Vamos a construir un organizador de escritorio de madera para tener ordenados el móvil, las llaves, los lápices, un bloc de notas y hasta una flor.',
+  fig:'portada', cap:'Así quedará vuestro organizador (dibujo orientativo).', extra:'intro',
+  check:['Hemos mirado el dibujo del organizador terminado','Sabemos qué es la pieza A y qué es la pieza B','Hemos repartido los papeles del grupo'] },
+{ id:'material', phase:'Preparación', title:'Material y herramientas', lead:'Antes de empezar, comprobad que tenéis todo el material del kit y sabéis para qué sirve cada herramienta.',
+  fig:'material', cap:'Material que trae el kit.', extra:'material',
+  words:[['Contrachapado','Tablero hecho con capas finas de madera pegadas.'],['ø','Significa «diámetro»: lo que mide un círculo de lado a lado.']],
+  check:['Tenemos el tablero, la varilla y los listones','Sabemos el nombre de cada herramienta','Tenemos las 3 hojas de plantillas (páginas 5, 7 y 9)'] },
+{ id:'seguridad', phase:'Preparación', title:'Normas de seguridad', lead:'En el taller trabajamos con herramientas que cortan y pinchan. Estas normas son obligatorias para todo el grupo.', extra:'safety',
+  check:['Todos tenemos gafas de protección','Sabemos que el taladro solo se usa con el profesor','El pelo largo está recogido'] },
+{ id:'plantillas', phase:'Fase 1 · Piezas A y B', title:'Preparar las plantillas', lead:'Las plantillas son los dibujos a tamaño real de las piezas. Las vamos a pegar sobre el tablero para saber por dónde cortar y taladrar.',
+  tools:['tijeras','cinta','regla'], fig:'plantillas', cap:'Recortar, unir y fijar las plantillas.',
+  steps:['Recortad las plantillas de las <strong>páginas 5, 7 y 9</strong>.','Juntad las hojas haciendo coincidir las <strong>líneas discontinuas</strong> (las de raya y punto). Pegadlas con cinta por detrás.','Colocad la plantilla unida sobre el tablero de contrachapado. Que no se salga por ningún borde.','Fijadla con <strong>trozos de cinta</strong> en las esquinas y en los bordes.'],
+  warn:['Si la plantilla se mueve, todas las piezas saldrán torcidas. Usad bastante cinta.'],
+  tip:['Antes de pegar, comprobad con la regla una medida de la plantilla: si está a tamaño real, el dibujo coincide con lo que mide la regla.'],
+  words:[['Plantilla','Dibujo a tamaño real que se pega sobre la madera para copiar la forma.']],
+  check:['Las 3 hojas están recortadas','Las líneas discontinuas coinciden','La plantilla está bien sujeta con cinta y no se mueve'] },
+{ id:'punzon', phase:'Fase 1 · Piezas A y B', title:'Marcar los agujeros con el punzón', lead:'Con el punzón hacemos un pequeño hoyo en el centro de cada círculo. Así la broca no se resbala al taladrar.',
+  tools:['punzon','martillo'], fig:'punzon', cap:'El centro está donde se cruzan las dos líneas finas.',
+  steps:['Buscad en la plantilla <strong>todos los círculos</strong> que tienen una cruz en el centro.','Apoyad la punta del punzón justo en el cruce de las líneas.','Dad <strong>un golpe suave</strong> con el martillo. Debe quedar un hoyito en la madera.','Repetid en todos los círculos. Id tachando con lápiz los que ya están hechos.'],
+  warn:['Sujetad el punzón por el mango, nunca por la punta.','No golpeéis fuerte: solo hace falta una pequeña marca.'],
+  tip:['Contad los círculos antes de empezar y al terminar. Deben salir los mismos.'],
+  words:[['Punzón','Herramienta con punta de metal para marcar un punto en la madera.']],
+  check:['Hemos marcado todos los centros','Cada marca está justo en el cruce de las líneas'] },
+{ id:'taladrar', phase:'Fase 1 · Piezas A y B', title:'Taladrar los agujeros', lead:'Ahora hacemos los agujeros. Este paso se hace siempre con el profesor delante.',
+  tools:['taladro','broca','forstner','gato','gafas'], fig:'taladrar', cap:'Taladrar por las dos caras evita que la madera se astille.', extra:'holes',
+  steps:['Sujetad el tablero con el <strong>gato</strong> encima de una madera de sacrificio (una tabla vieja que se puede agujerear).','Haced primero un <strong>agujero guía de ø3</strong> en cada marca del punzón.','Cambiad a la broca del tamaño que indica la plantilla: <span class="mm">ø10</span>, <span class="mm">ø15</span> o <span class="mm">ø20</span>.','Taladrad <strong>hasta que asome la punta</strong> por el otro lado. Parad.','Dad la vuelta al tablero y <strong>terminad el agujero desde la otra cara</strong>, usando el agujerito de la punta como guía.'],
+  warn:['Gafas puestas. Pelo recogido. Manos lejos de la broca.','Las medias lunas de ø15 están en el borde: taladradlas ANTES de serrar, cuando todavía hay madera alrededor.'],
+  tip:['La broca Forstner tiene una puntita en el centro: ponedla justo en la marca del punzón.'],
+  words:[['Broca Forstner','Broca ancha que hace agujeros grandes, redondos y limpios.'],['Astillarse','Cuando la madera se rompe en trocitos al salir la broca.']],
+  check:['Agujeros guía de ø3 hechos','6 agujeros de ø10 hechos','1 agujero de ø20 hecho','3 agujeros de ø15 hechos','Todos limpios por las dos caras'] },
+{ id:'serrar', phase:'Fase 1 · Piezas A y B', title:'Serrar las piezas A y B', lead:'Con la sierra recortamos el contorno de las dos piezas y todas las ranuras (hendiduras).',
+  tools:['sierra','gato','gafas'], fig:'serrar', cap:'Cortad siempre por fuera de la línea, en la parte que sobra.',
+  steps:['Primero separad las piezas A y B con un corte entre ellas.','Sujetad la pieza con el gato. La línea de corte debe quedar <strong>fuera de la mesa</strong>.','Cortad el contorno <strong>por fuera de la línea</strong>. En las esquinas redondeadas id despacio y girad la pieza.','Haced las <strong>ranuras</strong>: dos cortes rectos hasta el fondo y un tercer corte en curva para sacar el trocito.','Comprobad que cada ranura llega hasta el final de lo que marca la plantilla.'],
+  warn:['No forcéis la sierra: si la hoja se dobla, se rompe.','La mano que sujeta, siempre lejos de la hoja.'],
+  tip:['Es mejor dejar 1 mm de más y lijar después que cortar de menos: lo que se corta no se puede volver a poner.'],
+  words:[['Hendidura o ranura','Corte estrecho y alargado en la madera. Aquí sirven para encajar las piezas.']],
+  check:['La pieza A está recortada','La pieza B está recortada','Todas las ranuras están cortadas hasta el fondo'] },
+{ id:'lijar', phase:'Fase 1 · Piezas A y B', title:'Lijar y probar el encaje', lead:'Alisamos todos los cortes y comprobamos que A y B encajan, sin pegarlas todavía.',
+  tools:['lija','lima','lapiz'], fig:'lijar', cap:'La ranura debe medir lo mismo que el grosor del tablero.',
+  steps:['<strong>Antes de quitar la plantilla de B</strong>: la plantilla indica dónde va el marco de listones. Pasad esas marcas a la madera con el lápiz.','Despegad las plantillas con cuidado.','Lijad todos los cantos y los bordes de los agujeros hasta que no pinchen ni tengan astillas.','Probad a encajar A y B por sus ranuras <strong>sin cola</strong>.','Si una ranura está muy justa, repasadla con la lima poco a poco y volved a probar.'],
+  warn:['No lijéis las ranuras de más: si quedan anchas, las piezas bailarán.'],
+  tip:['Pasad la mano por los bordes: si se nota suave, está bien lijado.'],
+  check:['Hemos marcado dónde va el marco en la pieza B','Todos los cortes están lijados','A y B encajan sin forzar'] },
+{ id:'varilla', phase:'Fase 2 · Colgadores', title:'Cortar la varilla y hacer las muescas', lead:'De la varilla de 200 mm sacamos 4 trozos: 2a, 2b, 2c y 2d. Dos de ellos llevan una muesca para que no se resbalen las llaves.',
+  tools:['regla','lapiz','sierra','limatri','lija'], fig:'varilla', cap:'Medidas de cada trozo y posición de la muesca.',
+  steps:['Marcad con el lápiz los trozos: <span class="mm">2a = 45 mm</span>, <span class="mm">2b = 40 mm</span>, <span class="mm">2c = 30 mm</span> y <span class="mm">2d = 30 mm</span>.','Sujetad la varilla en el tornillo de banco y cortad <strong>cada trozo de uno en uno</strong>. Medid el siguiente después de cortar el anterior.','Escribid con lápiz el nombre de cada trozo para no confundirlos.','En <strong>2a y 2b</strong>: marcad un punto a <span class="mm">15 mm</span> de un extremo (ese extremo quedará fuera) y haced una muesca en forma de «V» con la lima triangular.','Lijad los extremos cortados hasta que queden lisos.'],
+  warn:['Una varilla redonda rueda: sujetadla siempre en el tornillo de banco, nunca con la mano.'],
+  tip:['La sierra quita un poco de madera en cada corte. Por eso hay que medir cada trozo después de cortar el anterior.'],
+  words:[['Muesca','Pequeño corte en forma de «V» que sirve para que algo no se escurra.']],
+  check:['Tenemos 4 trozos con su nombre escrito','2a mide 45 mm y 2b mide 40 mm','2c y 2d miden 30 mm','2a y 2b tienen su muesca a 15 mm del extremo'] },
+{ id:'encolarA', phase:'Fase 2 · Colgadores', title:'Pegar las varillas en la pieza A', lead:'Pegamos los 4 trozos de varilla en los agujeros de ø10 de la pieza A.',
+  tools:['cola'], fig:'encolarA', cap:'Cada varilla en su agujero. Las muescas de 2a y 2b miran hacia arriba.',
+  steps:['Probad primero <strong>sin cola</strong> que cada varilla entra en su agujero.','Poned un poco de cola en el agujero y en la punta de la varilla.','Meted la varilla girándola un poco. Entra por el extremo <strong>más alejado de la muesca</strong>.','En <strong>2a y 2b</strong>: girad la varilla hasta que la <strong>muesca mire hacia arriba</strong>.','Limpiad la cola que sobra con un trapo húmedo y comprobad que la varilla queda recta.','Dejad secar bien la cola sin tocar la pieza.'],
+  warn:['No pongáis mucha cola: la que sobra mancha y luego cuesta quitarla.'],
+  tip:['Mirad la placa desde un lado: la varilla tiene que formar un ángulo recto con la madera.'],
+  words:[['Encolar','Pegar piezas de madera con cola.']],
+  check:['Las 4 varillas están pegadas','Las muescas de 2a y 2b miran hacia arriba','No queda cola manchando la madera'] },
+{ id:'listones', phase:'Fase 3 · Respaldo', title:'Cortar los listones', lead:'Con los dos listones de 250 mm hacemos las piezas del marco (3a y 3b) y el tope del móvil (3c).',
+  tools:['regla','lapiz','sierra','lija'], fig:'listones', cap:'Despiece de los dos listones.',
+  steps:['<strong>Listón 1</strong>: marcad y cortad dos trozos de <span class="mm">120 mm</span>. Son los dos <strong>3a</strong>.','<strong>Listón 2</strong>: marcad un trozo de <span class="mm">100 mm</span> (será <strong>3c</strong>) y dos de <span class="mm">70 mm</span> (los dos <strong>3b</strong>).','Cortad cada trozo y volved a medir después de cada corte.','En <strong>3c</strong>, redondead la esquina como en el dibujo (radio <span class="mm">R10</span>) con la lima y la lija.','Lijad todos los cortes.'],
+  warn:['Los listones son finos: cortad despacio para que no se partan.'],
+  tip:['Para dibujar la curva R10 podéis usar el compás con 10 mm de abertura, o una moneda pequeña como guía.'],
+  check:['Tenemos dos trozos 3a de 120 mm','Tenemos dos trozos 3b de 70 mm','Tenemos el trozo 3c de 100 mm con la esquina redondeada'] },
+{ id:'marco', phase:'Fase 3 · Respaldo', title:'Pegar el marco en la pieza B', lead:'Los listones 3a y 3b forman un marco rectangular sobre la pieza B. Ahí se sujeta el bloc de notas.',
+  tools:['cola'], fig:'marco', cap:'El marco va en la zona que marcasteis con la plantilla.',
+  steps:['Colocad los 4 listones <strong>sin cola</strong> sobre las marcas que pasasteis de la plantilla.','Comprobad que <strong>3a</strong> va arriba y abajo y <strong>3b</strong> a los lados.','Pegad los listones de uno en uno con una línea fina de cola.','Apretad cada listón unos segundos y limpiad la cola que salga.','Dejad secar bien la cola.'],
+  warn:['Si pegáis el marco torcido, el bloc no entrará bien. Comprobad la posición antes de poner cola.'],
+  tip:['Podéis poner algo de peso encima (unos libros) mientras se seca.'],
+  check:['El marco está en su sitio','Las esquinas del marco están bien cerradas','No queda cola manchando'] },
+{ id:'tope', phase:'Fase 3 · Respaldo', title:'Pegar el tope del móvil', lead:'El listón 3c hace de tope: es el escalón donde se apoya el móvil para que no resbale.',
+  tools:['regla','lapiz','cola'], fig:'tope', cap:'3c se pega en la pieza B, junto a la ranura.',
+  steps:['Buscad en la pieza B el sitio del estante del móvil (mirad el dibujo).','Medid y marcad con lápiz la posición del listón <strong>3c</strong>.','Comprobad que queda <strong>paralelo</strong> al borde: medid la distancia en los dos extremos. Debe dar lo mismo.','Pegad 3c con una línea fina de cola y limpiad lo que sobre.','Dejad secar bien la cola.'],
+  tip:['Si os ayuda, apoyad un móvil o un trozo de cartón del mismo tamaño para ver dónde queda bien.'],
+  check:['3c está pegado y recto','La cola está seca antes de seguir'] },
+{ id:'montaje', phase:'Fase 4 · Montaje', title:'Montar el organizador', lead:'Último paso de construcción: encajamos la pieza A con la pieza B por sus ranuras.',
+  fig:'montaje', cap:'Las ranuras de A y B se encajan una dentro de la otra.',
+  steps:['Comprobad que <strong>toda la cola está seca</strong>.','Poned la pieza A de pie, con las varillas hacia vosotros.','Colocad la ranura de B frente a la ranura de A, como en el dibujo.','Deslizad las piezas a la vez, sin forzar, hasta que las ranuras lleguen al fondo.','Comprobad que el organizador se sostiene solo y no cojea.'],
+  warn:['Nunca golpeéis las piezas para que entren: se puede romper la madera.'],
+  tip:['Si no entra, sacad las piezas, mirad dónde roza y pasad la lima en ese sitio.'],
+  check:['A y B están encajadas hasta el fondo','El organizador se sostiene solo'] },
+{ id:'final', phase:'Fase 4 · Montaje', title:'Decorar y revisar', lead:'¡Enhorabuena! Ahora podéis decorar el organizador a vuestro gusto, revisar el trabajo y terminar la memoria técnica.', extra:'final',
+  checkTitle:'Revisión final del grupo', checkNote:'Contestad con sinceridad: os ayudará a mejorar en el próximo proyecto.',
+  check:['Las piezas tienen el tamaño de la plantilla','Los agujeros están limpios, sin astillas','Las varillas están rectas y bien pegadas','No hay manchas de cola','Hemos trabajado todos y respetado las normas','Hemos dejado la mesa y las herramientas recogidas'] }
+];
+
+var STEPS_EN=[
+{ id:'inicio', phase:'Getting started', title:'Our project', lead:'We are going to build a wooden desk organiser to keep your phone, keys, pencils, a notepad and even a flower in order.',
+  fig:'portada', cap:'This is what your organiser will look like (approximate drawing).', extra:'intro',
+  check:['We have looked at the drawing of the finished organiser','We know which part is A and which part is B','We have shared out the group roles'] },
+{ id:'material', phase:'Getting ready', title:'Materials and tools', lead:'Before you start, check that you have all the materials in the kit and that you know what each tool is for.',
+  fig:'material', cap:'Materials in the kit.', extra:'material',
+  words:[['Plywood','A board made of thin layers of wood glued together.'],['ø','It means “diameter”: the width of a circle from side to side.']],
+  check:['We have the board, the dowel and the strips','We know the name of each tool','We have the 3 template sheets (pages 5, 7 and 9)'] },
+{ id:'seguridad', phase:'Getting ready', title:'Safety rules', lead:'In the workshop we use tools that cut and pierce. These rules are compulsory for everyone in the group.', extra:'safety',
+  check:['We all have safety glasses','We know the drill is only used with the teacher','Long hair is tied back'] },
+{ id:'plantillas', phase:'Phase 1 · Parts A and B', title:'Prepare the templates', lead:'The templates are real-size drawings of the parts. We stick them on the board so we know where to cut and drill.',
+  tools:['tijeras','cinta','regla'], fig:'plantillas', cap:'Cut out, join and fix the templates.',
+  steps:['Cut out the templates on <strong>pages 5, 7 and 9</strong>.','Put the sheets together so the <strong>dashed lines</strong> (dash and dot) match. Tape them on the back.','Place the joined template on the plywood board. It must not go over any edge.','Fix it with <strong>pieces of tape</strong> on the corners and the edges.'],
+  warn:['If the template moves, all the parts will come out crooked. Use plenty of tape.'],
+  tip:['Before taping, check one measurement of the template with the ruler: if it is real size, the drawing matches the ruler.'],
+  words:[['Template','A real-size drawing you stick on the wood to copy the shape.']],
+  check:['The 3 sheets are cut out','The dashed lines match','The template is well taped and does not move'] },
+{ id:'punzon', phase:'Phase 1 · Parts A and B', title:'Mark the holes with the centre punch', lead:'With the centre punch we make a small dent in the centre of each circle, so the drill bit does not slip.',
+  tools:['punzon','martillo'], fig:'punzon', cap:'The centre is where the two thin lines cross.',
+  steps:['Find <strong>all the circles</strong> on the template that have a cross in the middle.','Put the point of the centre punch exactly where the lines cross.','Give it <strong>a gentle tap</strong> with the hammer. You should see a small dent in the wood.','Do the same on every circle. Cross out the ones you have done with a pencil.'],
+  warn:['Hold the centre punch by the handle, never by the point.','Do not hit hard: you only need a small mark.'],
+  tip:['Count the circles before you start and when you finish. The numbers must be the same.'],
+  words:[['Centre punch','A tool with a metal point for marking a point on the wood.']],
+  check:['We have marked all the centres','Each mark is exactly where the lines cross'] },
+{ id:'taladrar', phase:'Phase 1 · Parts A and B', title:'Drill the holes', lead:'Now we drill the holes. Always do this step with the teacher next to you.',
+  tools:['taladro','broca','forstner','gato','gafas'], fig:'taladrar', cap:'Drilling from both sides stops the wood from splintering.', extra:'holes',
+  steps:['Clamp the board on top of a <strong>scrap board</strong> (an old board you can drill into).','First drill a <strong>ø3 pilot hole</strong> on each punch mark.','Change to the drill bit size shown on the template: <span class="mm">ø10</span>, <span class="mm">ø15</span> or <span class="mm">ø20</span>.','Drill <strong>until the tip comes through</strong> the other side. Stop.','Turn the board over and <strong>finish the hole from the other side</strong>, using the small hole of the tip as a guide.'],
+  warn:['Glasses on. Hair tied back. Hands away from the drill bit.','The ø15 half circles are on the edge: drill them BEFORE sawing, while there is still wood all around.'],
+  tip:['The Forstner bit has a small point in the middle: put it exactly on the punch mark.'],
+  words:[['Forstner bit','A wide drill bit that makes big, round, clean holes.'],['Splinter','When the wood breaks into small pieces as the drill comes out.']],
+  check:['ø3 pilot holes done','6 ø10 holes done','1 ø20 hole done','3 ø15 holes done','All holes clean on both sides'] },
+{ id:'serrar', phase:'Phase 1 · Parts A and B', title:'Saw parts A and B', lead:'With the saw we cut out the outline of the two parts and all the slots.',
+  tools:['sierra','gato','gafas'], fig:'serrar', cap:'Always cut outside the line, in the waste.',
+  steps:['First separate parts A and B with a cut between them.','Clamp the part. The cutting line must be <strong>off the edge of the table</strong>.','Cut the outline <strong>outside the line</strong>. Go slowly on the rounded corners and turn the piece.','Cut the <strong>slots</strong>: two straight cuts to the end and a third, curved cut to remove the piece.','Check that each slot goes all the way to the end shown on the template.'],
+  warn:['Do not force the saw: if the blade bends, it breaks.','Keep the hand holding the wood away from the blade.'],
+  tip:['It is better to leave 1 mm extra and sand it later than to cut too much: you cannot put back what you cut off.'],
+  words:[['Slot','A narrow, long cut in the wood. Here the slots join the parts together.']],
+  check:['Part A is cut out','Part B is cut out','All the slots are cut to the end'] },
+{ id:'lijar', phase:'Phase 1 · Parts A and B', title:'Sand and test the fit', lead:'We smooth all the cuts and check that A and B fit together, without gluing them yet.',
+  tools:['lija','lima','lapiz'], fig:'lijar', cap:'The slot must be as wide as the board is thick.',
+  steps:['<strong>Before removing the template from B</strong>: the template shows where the strip frame goes. Copy those marks onto the wood with a pencil.','Peel off the templates carefully.','Sand all the edges and the edges of the holes until they are smooth and have no splinters.','Try to fit A and B together by their slots <strong>without glue</strong>.','If a slot is too tight, file it a little at a time and try again.'],
+  warn:['Do not sand the slots too much: if they get too wide, the parts will wobble.'],
+  tip:['Run your hand along the edges: if they feel smooth, they are well sanded.'],
+  check:['We have marked where the frame goes on part B','All the cuts are sanded','A and B fit without forcing'] },
+{ id:'varilla', phase:'Phase 2 · Hooks', title:'Cut the dowel and make the notches', lead:'From the 200 mm dowel we get 4 pieces: 2a, 2b, 2c and 2d. Two of them have a notch so the keys do not slide off.',
+  tools:['regla','lapiz','sierra','limatri','lija'], fig:'varilla', cap:'Size of each piece and position of the notch.',
+  steps:['Mark the pieces with a pencil: <span class="mm">2a = 45 mm</span>, <span class="mm">2b = 40 mm</span>, <span class="mm">2c = 30 mm</span> and <span class="mm">2d = 30 mm</span>.','Hold the dowel in the vice and cut <strong>one piece at a time</strong>. Measure the next piece after cutting the last one.','Write the name of each piece in pencil so you do not mix them up.','On <strong>2a and 2b</strong>: mark a point <span class="mm">15 mm</span> from one end (that end stays outside) and make a “V” notch with the triangular file.','Sand the cut ends until they are smooth.'],
+  warn:['A round dowel rolls: always hold it in the vice, never in your hand.'],
+  tip:['The saw removes a little wood with each cut. That is why you measure each piece after cutting the last one.'],
+  words:[['Notch','A small “V” cut that stops something from sliding off.']],
+  check:['We have 4 pieces with their names written on','2a is 45 mm and 2b is 40 mm','2c and 2d are 30 mm','2a and 2b have their notch 15 mm from the end'] },
+{ id:'encolarA', phase:'Phase 2 · Hooks', title:'Glue the dowels into part A', lead:'We glue the 4 dowel pieces into the ø10 holes of part A.',
+  tools:['cola'], fig:'encolarA', cap:'Each dowel in its hole. The notches of 2a and 2b point up.',
+  steps:['First check <strong>without glue</strong> that each dowel fits in its hole.','Put a little glue in the hole and on the end of the dowel.','Push the dowel in, turning it a little. The end <strong>furthest from the notch</strong> goes in.','On <strong>2a and 2b</strong>: turn the dowel until the <strong>notch points up</strong>.','Wipe off the extra glue with a damp cloth and check that the dowel is straight.','Let the glue dry well without touching the part.'],
+  warn:['Do not use too much glue: the extra glue makes marks that are hard to remove.'],
+  tip:['Look at the board from the side: the dowel must be at a right angle to the wood.'],
+  words:[['Glue up','To join pieces of wood with glue.']],
+  check:['The 4 dowels are glued','The notches of 2a and 2b point up','There is no glue left on the wood'] },
+{ id:'listones', phase:'Phase 3 · Back panel', title:'Cut the strips', lead:'With the two 250 mm strips we make the frame pieces (3a and 3b) and the phone stop (3c).',
+  tools:['regla','lapiz','sierra','lija'], fig:'listones', cap:'Cutting plan for the two strips.',
+  steps:['<strong>Strip 1</strong>: mark and cut two pieces of <span class="mm">120 mm</span>. These are the two <strong>3a</strong> pieces.','<strong>Strip 2</strong>: mark one piece of <span class="mm">100 mm</span> (this is <strong>3c</strong>) and two of <span class="mm">70 mm</span> (the two <strong>3b</strong> pieces).','Cut each piece and measure again after every cut.','On <strong>3c</strong>, round the corner as in the drawing (radius <span class="mm">R10</span>) with the file and sandpaper.','Sand all the cuts.'],
+  warn:['The strips are thin: cut slowly so they do not break.'],
+  tip:['To draw the R10 curve you can use a compass open to 10 mm, or a small coin as a guide.'],
+  check:['We have two 3a pieces of 120 mm','We have two 3b pieces of 70 mm','We have the 3c piece of 100 mm with the rounded corner'] },
+{ id:'marco', phase:'Phase 3 · Back panel', title:'Glue the frame onto part B', lead:'Strips 3a and 3b make a rectangular frame on part B. The notepad goes there.',
+  tools:['cola'], fig:'marco', cap:'The frame goes in the area you marked from the template.',
+  steps:['Place the 4 strips <strong>without glue</strong> on the marks you copied from the template.','Check that <strong>3a</strong> goes at the top and bottom and <strong>3b</strong> on the sides.','Glue the strips one at a time with a thin line of glue.','Press each strip for a few seconds and wipe off any glue that comes out.','Let the glue dry well.'],
+  warn:['If the frame is crooked, the notepad will not fit. Check the position before using glue.'],
+  tip:['You can put some weight on top (a few books) while it dries.'],
+  check:['The frame is in place','The frame corners are closed','There is no glue left on the wood'] },
+{ id:'tope', phase:'Phase 3 · Back panel', title:'Glue the phone stop', lead:'Strip 3c is the stop: the step the phone rests on so it does not slide.',
+  tools:['regla','lapiz','cola'], fig:'tope', cap:'3c is glued on part B, next to the slot.',
+  steps:['Find the place for the phone shelf on part B (look at the drawing).','Measure and mark the position of strip <strong>3c</strong> with a pencil.','Check that it is <strong>parallel</strong> to the edge: measure the distance at both ends. It must be the same.','Glue 3c with a thin line of glue and wipe off any extra.','Let the glue dry well.'],
+  tip:['If it helps, rest a phone or a piece of card the same size on it to see where it fits best.'],
+  check:['3c is glued and straight','The glue is dry before going on'] },
+{ id:'montaje', phase:'Phase 4 · Assembly', title:'Put the organiser together', lead:'Last building step: we join part A and part B by their slots.',
+  fig:'montaje', cap:'The slots of A and B slide into each other.',
+  steps:['Check that <strong>all the glue is dry</strong>.','Stand part A up, with the dowels facing you.','Put the slot of B in front of the slot of A, as in the drawing.','Slide the parts together, without forcing, until the slots reach the end.','Check that the organiser stands on its own and does not wobble.'],
+  warn:['Never hit the parts to make them go in: the wood can break.'],
+  tip:['If it does not go in, take the parts out, see where they rub and file that spot.'],
+  check:['A and B are pushed all the way in','The organiser stands on its own'] },
+{ id:'final', phase:'Phase 4 · Assembly', title:'Decorate and check', lead:'Well done! Now you can decorate the organiser the way you like, check your work and finish the technical report.', extra:'final',
+  checkTitle:'Final group check', checkNote:'Answer honestly: it will help you do better in the next project.',
+  check:['The parts are the same size as the template','The holes are clean, with no splinters','The dowels are straight and well glued','There are no glue marks','We all worked and followed the rules','We have tidied the table and the tools'] }
+];
+function STEPS(){ return S.lang==='en'?STEPS_EN:STEPS_ES; }
+
+/* Bloques extra de algunos pasos */
+var ROLE_KEYS=['coord','measure','tools','safety'];
+var ROLE_DESC={es:{coord:'Lee cada paso en voz alta y marca las casillas.',measure:'Mide y marca con regla y lápiz. Lo revisa otro compañero.',tools:'Coge solo lo que se necesita y lo devuelve a su sitio.',safety:'Vigila las normas y deja la mesa limpia al acabar.'},
+               en:{coord:'Reads each step aloud and ticks the boxes.',measure:'Measures and marks with ruler and pencil. Someone else checks it.',tools:'Takes only what is needed and puts it back.',safety:'Watches the rules and leaves the table clean at the end.'}};
+var SAFETY={es:[['gafas','Gafas puestas','Cuando sierres, taladres o limes.'],['gato','Pieza bien sujeta','Con el gato o el tornillo de banco. Nunca con la mano.'],['taladro','Taladro con el profesor','Solo cuando el profesor lo autorice y esté delante.'],['sierra','Manos lejos de la hoja','La mano que sujeta siempre detrás de la línea de corte.'],['punzon','Puntas hacia abajo','Lleva el punzón y las limas con la punta hacia el suelo.'],['cola','Orden y limpieza','Herramientas en su sitio y cola limpia con un trapo.']],
+            en:[['gafas','Safety glasses on','When you saw, drill or file.'],['gato','Part clamped tight','Use a clamp or a vice. Never hold it in your hand.'],['taladro','Drill with the teacher','Only when the teacher says so and is with you.'],['sierra','Hands away from the blade','The holding hand always behind the cutting line.'],['punzon','Points down','Carry the punch and files with the point to the floor.'],['cola','Tidy and clean','Tools back in place and glue wiped with a cloth.']]};
+var KIT={es:[['Contrachapado','400 × 300 × 8 mm','Placa base (de aquí salen A y B)','1'],['Varilla de madera','ø10 × 200 mm','Varillas de fijación (colgadores)','2'],['Listones de madera','250 × 10 × 5 mm','Soporte para el móvil y el bloc de notas','3']],
+         en:[['Plywood','400 × 300 × 8 mm','Base board (A and B come from it)','1'],['Wooden dowel','ø10 × 200 mm','Fixing dowels (hooks)','2'],['Wooden strips','250 × 10 × 5 mm','Holder for the phone and the notepad','3']]};
+var HOLES={es:[['ø3','En todas las marcas','Agujero guía pequeño. Ayuda a que la broca grande vaya recta.'],['ø10','6','4 en la pieza A (para las varillas) y 2 en la pieza B.'],['ø20 Forstner','1','En la pieza B (el agujero grande).'],['ø15 Forstner','3','Las «medias lunas» del borde de las piezas.']],
+           en:[['ø3','On every mark','Small pilot hole. It helps the big drill bit go straight.'],['ø10','6','4 in part A (for the dowels) and 2 in part B.'],['ø20 Forstner','1','In part B (the big hole).'],['ø15 Forstner','3','The “half circles” on the edge of the parts.']]};
+var HOLES_H={es:['Broca','Cuántos','Dónde y para qué'],en:['Drill bit','How many','Where and what for']};
+var INTRO={es:{partsT:'Las dos piezas principales',p1:'<strong>Pieza A</strong>: la placa con <strong>4 varillas</strong> pegadas. Sirven para colgar llaves o pulseras.',p2:'<strong>Pieza B</strong>: el respaldo. Lleva el <strong>marco</strong> de listones, el <strong>tope del móvil</strong> y los <strong>agujeros</strong> para lápices y florero.',p3:'Al final, A y B se <strong>encajan en cruz</strong> por sus ranuras. ¡No hacen falta tornillos!',rolesT:'Repartid los papeles en el grupo',rolesN:'Cambiad los papeles cada sesión para que todos hagáis de todo.',diaryT:'Diario de taller y memoria técnica',diaryP:'Al acabar cada sesión, rellenad el <strong>Diario de taller</strong> (pestaña de arriba). Con el diario y esta guía podréis hacer la <strong>Memoria técnica</strong> al final del proyecto.',toolsT:'Herramientas',decoT:'Ideas para decorarlo',deco:['Pintadlo con <strong>pintura acrílica</strong> o rotuladores para madera.','Escribid vuestro nombre o dibujad un diseño con <strong>pirograbado</strong> (si el profesor lo permite).','Colocad vuestras cosas: el móvil, las llaves, los lápices y un bloc de notas.'],memoGo:'Ir a la memoria técnica →'},
+           en:{partsT:'The two main parts',p1:'<strong>Part A</strong>: the board with <strong>4 dowels</strong> glued in. They are hooks for keys or bracelets.',p2:'<strong>Part B</strong>: the back panel. It has the strip <strong>frame</strong>, the <strong>phone stop</strong> and the <strong>holes</strong> for pencils and a vase.',p3:'At the end, A and B <strong>slot together in a cross</strong>. No screws needed!',rolesT:'Share out the roles in the group',rolesN:'Change roles every lesson so everyone does every job.',diaryT:'Workshop diary and technical report',diaryP:'At the end of each lesson, fill in the <strong>Workshop diary</strong> (tab at the top). With the diary and this guide you will write the <strong>Technical report</strong> at the end of the project.',toolsT:'Tools',decoT:'Ideas to decorate it',deco:['Paint it with <strong>acrylic paint</strong> or wood markers.','Write your name or draw a design with <strong>pyrography</strong> (if your teacher allows it).','Put your things in it: phone, keys, pencils and a notepad.'],memoGo:'Go to the technical report →'}};
+function I(k){ return INTRO[S.lang][k]; }
+
+function extraBlock(kind){
+  if(kind==='intro'){
+    return '<section class="howto"><h2 class="sec">'+I('partsT')+'</h2><ol><li><span>'+I('p1')+'</span></li><li><span>'+I('p2')+'</span></li><li><span>'+I('p3')+'</span></li></ol></section>'+
+      '<section><h2 class="sec">'+I('rolesT')+'</h2><div class="roles">'+ROLE_KEYS.map(function(r){ return '<div class="role"><b>'+t('roles')[r]+'</b><span>'+ROLE_DESC[S.lang][r]+'</span></div>'; }).join('')+'</div><p style="font-size:1.125rem;margin:10px 0 0">'+I('rolesN')+'</p></section>'+
+      '<div class="box info"><h3>'+I('diaryT')+'</h3><p style="margin:0">'+I('diaryP')+'</p></div>';
+  }
+  if(kind==='material'){
+    var h=t('docMatT');
+    return '<div class="tbl"><table><thead><tr>'+h.map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr></thead><tbody>'+KIT[S.lang].map(function(r){ return '<tr><td>'+r[0]+'</td><td class="num">'+r[1]+'</td><td>'+r[2]+'</td><td class="num">'+r[3]+'</td></tr>'; }).join('')+'</tbody></table></div>'+
+      '<section><h2 class="sec">'+I('toolsT')+'</h2><div class="grid-tools">'+TOOL_LIST.map(function(k){ var u=TOOL_USE[S.lang][k].split('|'); return '<div class="tool">'+ico(k)+'<b>'+(u[0]||TN(k))+'</b><span>'+u[1]+'</span></div>'; }).join('')+'</div></section>';
+  }
+  if(kind==='safety'){
+    return '<div class="grid-tools" style="grid-template-columns:repeat(auto-fill,minmax(210px,1fr))">'+SAFETY[S.lang].map(function(r){ return '<div class="tool">'+ico(r[0])+'<b>'+r[1]+'</b><span style="font-size:1rem">'+r[2]+'</span></div>'; }).join('')+'</div>'+
+      '<div class="box warn"><h3>'+(S.lang==='en'?'Hair, clothes and jewellery':'Pelo, ropa y joyas')+'</h3><ul>'+(S.lang==='en'?'<li>Tie long hair back.</li><li>No bracelets, necklaces or loose sleeves near the drill.</li>':'<li>Pelo largo recogido.</li><li>Nada de pulseras, colgantes ni mangas sueltas cerca del taladro.</li>')+'</ul></div>';
+  }
+  if(kind==='holes'){
+    return figHTML('agujeros',S.lang==='en'?'Size of each hole (approximate).':'Qué tamaño tiene cada agujero (orientativo).')+
+      '<div class="tbl"><table><thead><tr>'+HOLES_H[S.lang].map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr></thead><tbody>'+HOLES[S.lang].map(function(r){ return '<tr><td class="num">'+r[0]+'</td><td class="num">'+r[1]+'</td><td>'+r[2]+'</td></tr>'; }).join('')+'</tbody></table></div>';
+  }
+  if(kind==='final'){
+    return '<section class="howto"><h2 class="sec">'+I('decoT')+'</h2><ol>'+I('deco').map(function(x){return '<li><span>'+x+'</span></li>';}).join('')+'</ol></section>'+
+      '<div class="row"><button class="btn main" type="button" data-view="memo">'+I('memoGo')+'</button></div>';
+  }
+  return '';
+}
+function figHTML(k,cap){
+  return '<figure><div class="fig" data-fig="'+k+'" tabindex="0" role="button" aria-label="'+esc(t('zoom'))+'">'+FIG[k]()+'</div><figcaption><span>'+(cap||'')+'</span><button class="zoom" type="button" data-fig="'+k+'">'+t('zoom')+'</button></figcaption></figure>';
+}
+
+/* ===================================================================
+   7. VISTAS
+   =================================================================== */
+var view='guide', cur=0;
+var elWrap=document.getElementById('wrap');
+function isDone(i){ var s=STEPS()[i]; if(!s.check||!s.check.length) return false; for(var j=0;j<s.check.length;j++){ if(!D.checks[s.id+'_'+j]) return false; } return true; }
+function totals(){ var tt=0,d=0; STEPS_ES.forEach(function(s){ s.check.forEach(function(c,j){ tt++; if(D.checks[s.id+'_'+j]) d++; }); }); return {t:tt,d:d}; }
+
+function renderTop(){
+  document.getElementById('brandSmall').textContent=t('brandSmall');
+  document.getElementById('brandTitle').textContent=t('brandTitle');
+  var gear='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.4 7.4 0 0 0 1.7-1l2.4 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg>';
+  document.getElementById('tabs').innerHTML=
+    tabBtn('guide',t('tabGuide'))+tabBtn('diary',t('tabDiary'))+tabBtn('memo',t('tabMemo'))+
+    '<button class="tab" type="button" data-lang="'+(S.lang==='es'?'en':'es')+'" aria-label="'+(S.lang==='es'?'English':'Español')+'" lang="'+(S.lang==='es'?'en':'es')+'">'+(S.lang==='es'?'EN':'ES')+'</button>'+
+    '<button class="tab icon" type="button" id="openSet">'+gear+t('tabSet')+'</button>';
+  var tt=totals(), p=tt.t?Math.round(tt.d*100/tt.t):0;
+  document.getElementById('bar').style.width=p+'%';
+  document.getElementById('progtxt').textContent=t('progress')(p);
+}
+function tabBtn(v,label){ return '<button class="tab" type="button" data-view="'+v+'"'+(view===v?' aria-current="page"':'')+'>'+label+'</button>'; }
+
+function render(){
+  applySettings(); renderTop();
+  if(view==='guide') renderGuide();
+  else if(view==='diary') renderDiary();
+  else renderMemo();
+}
+
+/* ---------- Guía ---------- */
+function renderGuide(){
+  var st=STEPS(); cur=Math.max(0,Math.min(st.length-1,cur)); var s=st[cur];
+  elWrap.className='wrap';
+  var nav='<aside class="nav noprint" aria-label="'+esc(t('stepsTitle'))+'"><h2>'+t('stepsTitle')+'</h2><ol>'+st.map(function(x,i){
+    return '<li><button type="button" data-go="'+i+'"'+(i===cur?' aria-current="step"':'')+'><span class="n">'+i+'</span><span>'+x.title+'</span>'+(isDone(i)?'<span class="done" aria-label="ok">✔</span>':'<span></span>')+'</button></li>'; }).join('')+
+    '</ol><button class="reset" id="reset" type="button">'+t('resetChecks')+'</button></aside>';
+  var h='<header class="step-head"><div class="big-n" aria-hidden="true">'+cur+'</div><div style="min-width:0"><div class="phase">'+s.phase+'</div><h1>'+s.title+'</h1><p>'+s.lead+'</p></div></header><div class="body">';
+  if(s.tools) h+='<div class="tools"><b>'+t('need')+'</b>'+s.tools.map(function(k){return '<span class="chip">'+ico(k)+TN(k)+'</span>';}).join('')+'</div>';
+  if(s.fig) h+=figHTML(s.fig,s.cap);
+  if(s.steps) h+='<section class="howto"><h2 class="sec">'+t('whatToDo')+'</h2><ol>'+s.steps.map(function(x){return '<li><span>'+x+'</span></li>';}).join('')+'</ol></section>';
+  if(s.extra) h+=extraBlock(s.extra);
+  if(s.warn||s.tip||s.words){
+    h+='<div class="boxes">';
+    if(s.warn) h+='<div class="box warn"><h3>'+ICON_WARN+t('careful')+'</h3>'+list(s.warn)+'</div>';
+    if(s.tip) h+='<div class="box tip"><h3>'+ICON_TIP+t('tip')+'</h3>'+list(s.tip)+'</div>';
+    if(s.words) h+='<div class="box word"><h3>'+ICON_WORD+t('words')+'</h3>'+list(s.words.map(function(w){return '<strong>'+w[0]+'</strong>: '+w[1];}))+'</div>';
+    h+='</div>';
+  }
+  if(s.check){
+    h+='<section class="check"><h2 class="sec">'+(s.checkTitle||t('beforeNext'))+'</h2>'+(s.checkNote?'<p style="margin:0 0 8px;font-size:1.125rem">'+s.checkNote+'</p>':'')+'<ul>'+s.check.map(function(c,j){
+      var id='ck_'+s.id+'_'+j; return '<li><label for="'+id+'"><input type="checkbox" id="'+id+'" data-k="'+s.id+'_'+j+'"'+(D.checks[s.id+'_'+j]?' checked':'')+'><span>'+c+'</span></label></li>'; }).join('')+
+      '</ul><p class="allok" id="allok"'+(isDone(cur)?'':' hidden')+'>'+(cur===st.length-1?t('projDone'):t('stepDone'))+'</p></section>';
+  }
+  h+='</div><nav class="pager" aria-label="pager"><button class="btn prev" type="button" data-go="'+(cur-1)+'"'+(cur===0?' disabled':'')+'>'+t('prev')+'</button>'+
+    (cur<st.length-1?'<button class="btn next" type="button" data-go="'+(cur+1)+'">'+t('next')+' '+st[cur+1].title+' →</button>':'<span></span>')+'</nav>';
+  var sel='<div class="mnav noprint"><label for="msel">'+t('stepLabel')+'</label><select id="msel">'+st.map(function(x,i){ return '<option value="'+i+'"'+(i===cur?' selected':'')+'>'+i+'. '+esc(x.title)+(isDone(i)?' ✔':'')+'</option>'; }).join('')+'</select></div>';
+  elWrap.innerHTML=nav+'<main style="min-width:0;display:flex;flex-direction:column;gap:14px">'+sel+'<article class="card" id="step">'+h+'</article><p class="foot">'+t('foot')+'</p></main>';
+}
+function list(items){ return '<ul>'+items.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>'; }
+var ICON_WARN='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 L23 21 H1 Z" fill="var(--warn)"/><rect x="11" y="8" width="2" height="7" fill="#fff"/><rect x="11" y="17" width="2" height="2" fill="#fff"/></svg>';
+var ICON_TIP='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="7" fill="var(--ok)"/><rect x="9" y="17" width="6" height="4" rx="1" fill="var(--ok)"/><path d="M12 6 v5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+var ICON_WORD='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="var(--navy)"/><text x="12" y="17" text-anchor="middle" font-size="13" font-weight="700" fill="var(--card)" font-family="Georgia,serif">Aa</text></svg>';
+
+/* ---------- Datos del grupo (compartido) ---------- */
+function groupBlock(){
+  var g=D.group;
+  var h='<section class="panel-sec"><h2 class="sec" style="margin:0">'+t('groupTitle')+'</h2><div class="grid2">'+
+    fText('g_name',t('gName'),g.name)+fText('g_course',t('gCourse'),g.course)+fText('g_school',t('gSchool'),g.school)+fText('g_teacher',t('gTeacher'),g.teacher)+
+    '<div class="field"><label for="g_date">'+t('gDate')+'</label><input type="date" id="g_date" data-g="date" value="'+esc(g.date)+'"></div></div>';
+  h+='<div class="field"><span class="lab">'+t('members')+'</span><div style="display:flex;flex-direction:column;gap:8px">';
+  g.members.forEach(function(m,i){
+    h+='<div class="member"><input type="text" id="mem_n_'+i+'" data-mem="'+i+'" data-mf="name" value="'+esc(m.name)+'" aria-label="'+esc(t('memberName'))+' '+(i+1)+'" placeholder="'+esc(t('memberName'))+'" style="padding:10px 12px;border-radius:10px;border:2px solid var(--line);background:var(--paper);min-width:0">'+
+      '<select id="mem_r_'+i+'" data-mem="'+i+'" data-mf="role" aria-label="'+esc(t('memberRole'))+'" style="padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--paper);min-width:0">'+
+      Object.keys(t('roles')).map(function(r){ return '<option value="'+r+'"'+(m.role===r?' selected':'')+'>'+t('roles')[r]+'</option>'; }).join('')+'</select>'+
+      '<button class="iconbtn" type="button" data-delmem="'+i+'" aria-label="'+esc(t('delMember'))+'">×</button></div>';
+  });
+  h+='</div><div><button class="btn ghost small" type="button" id="addMem"'+(g.members.length>=6?' disabled':'')+'>'+t('addMember')+'</button></div></div></section>';
+  return h;
+}
+function fText(id,label,val,hint){ return '<div class="field"><label for="'+id+'">'+label+'</label>'+(hint?'<p class="hint">'+hint+'</p>':'')+'<input type="text" id="'+id+'" data-g="'+id.slice(2)+'" value="'+esc(val)+'"></div>'; }
+
+/* ---------- Diario ---------- */
+var editing=null; // id de la entrada en edición o 'new'
+function todayISO(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function fmtDate(iso){ if(!iso) return ''; var p=String(iso).split('-'); if(p.length!==3) return esc(iso); return esc(p[2]+'/'+p[1]+'/'+p[0]); }
+function roleName(r){ var rs=t('roles'); return rs[r]||rs.other; }
+function sortedDiary(){ return D.diary.slice().sort(function(a,b){ return (a.date||'').localeCompare(b.date||'') || (a.created||0)-(b.created||0); }); }
+function stepTitle(id){ var s=STEPS().filter(function(x){return x.id===id;})[0]; return s?s.title:id; }
+function stepNum(id){ var i=-1; STEPS().forEach(function(x,j){ if(x.id===id) i=j; }); return i; }
+
+function renderDiary(){
+  elWrap.className='wrap single';
+  var h='<article class="card"><header class="page-head"><div class="phase">'+t('tabDiary')+'</div><h1>'+t('diaryTitle')+'</h1><p>'+t('diaryLead')+'</p></header><div class="body">';
+  h+=groupBlock();
+  h+=entryForm();
+  h+='<section><h2 class="sec">'+t('entriesTitle')+'</h2><div style="display:flex;flex-direction:column;gap:12px">';
+  var list2=sortedDiary();
+  if(!list2.length) h+='<p class="note">'+t('noEntries')+'</p>';
+  list2.forEach(function(e,i){
+    if(editing===e.id) return;
+    h+='<div class="entry"><div class="entry-h"><b>'+t('session')+' '+(i+1)+'</b><span class="d">'+fmtDate(e.date)+'</span>'+(e.mood?'<span class="tagstep">'+t('moods')[e.mood-1]+'</span>':'')+'</div>';
+    if(e.steps&&e.steps.length) h+='<div>'+e.steps.map(function(id){ return '<span class="tagstep">'+stepNum(id)+'. '+esc(stepTitle(id))+'</span>'; }).join('')+'</div>';
+    h+='<dl>'+dd(t('dDid'),e.did)+dd(t('dProb'),e.prob)+dd(t('dSol'),e.sol)+dd(t('dWho'),e.who)+dd(t('dNext'),e.next)+'</dl>';
+    h+='<div class="row"><button class="btn ghost small" type="button" data-editentry="'+esc(e.id)+'">'+t('edit')+'</button><button class="btn danger small" type="button" data-delentry="'+esc(e.id)+'">'+t('del')+'</button></div></div>';
+  });
+  h+='</div></section>'+backupBlock()+'</div></article>';
+  elWrap.innerHTML=h;
+}
+function dd(k,v){ return v?'<dt>'+k+'</dt><dd>'+esc(v)+'</dd>':''; }
+function entryForm(){
+  var e={date:todayISO(),steps:[],did:'',prob:'',sol:'',who:'',next:'',mood:0};
+  if(editing){ var f=D.diary.filter(function(x){return x.id===editing;})[0]; if(f) e=f; else editing=null; }
+  if(D.draft&&D.draftFor===(editing||null)) e=D.draft;
+  var h='<section class="panel-sec" id="entryForm"><h2 class="sec" style="margin:0">'+(editing?t('editEntry'):t('newEntry'))+'</h2>';
+  h+='<div class="grid2"><div class="field"><label for="e_date">'+t('dDate')+'</label><input type="date" id="e_date" value="'+esc(e.date)+'"></div></div>';
+  h+='<div class="field"><span class="lab">'+t('dSteps')+'</span><div class="pills">'+STEPS().map(function(s,i){ if(i<1) return ''; return '<label class="pill"><input type="checkbox" name="e_steps" value="'+s.id+'"'+(e.steps.indexOf(s.id)>=0?' checked':'')+'>'+i+'. '+s.title+'</label>'; }).join('')+'</div></div>';
+  h+=fArea('e_did',t('dDid'),e.did,t('dDidHint'))+'<div class="grid2">'+fArea('e_prob',t('dProb'),e.prob,t('dProbHint'))+fArea('e_sol',t('dSol'),e.sol)+'</div>';
+  h+='<div class="grid2">'+fArea('e_who',t('dWho'),e.who,t('dWhoHint'))+fArea('e_next',t('dNext'),e.next)+'</div>';
+  h+='<div class="field"><span class="lab">'+t('dMood')+'</span><div class="pills">'+t('moods').map(function(m,i){ return '<label class="pill"><input type="radio" name="e_mood" value="'+(i+1)+'"'+(e.mood===i+1?' checked':'')+'>'+m+'</label>'; }).join('')+'</div></div>';
+  h+='<div class="row"><button class="btn main" type="button" id="saveEntry">'+t('saveEntry')+'</button>'+(editing?'<button class="btn ghost" type="button" id="cancelEntry">'+t('cancel')+'</button>':'')+'<span class="msg" id="entryMsg" role="status"></span></div></section>';
+  return h;
+}
+function fArea(id,label,val,hint){ return '<div class="field"><label for="'+id+'">'+label+'</label>'+(hint?'<p class="hint" id="'+id+'_h">'+hint+'</p>':'')+'<textarea id="'+id+'"'+(hint?' aria-describedby="'+id+'_h"':'')+'>'+esc(val)+'</textarea></div>'; }
+function readForm(){
+  if(!document.getElementById('e_did')) return null;
+  var g=function(id){ var el=document.getElementById(id); return el?el.value:''; };
+  var mEl=document.querySelector('input[name=e_mood]:checked');
+  return cleanEntry({date:g('e_date'),steps:[].slice.call(document.querySelectorAll('input[name=e_steps]:checked')).map(function(x){return x.value;}),did:g('e_did'),prob:g('e_prob'),sol:g('e_sol'),who:g('e_who'),next:g('e_next'),mood:mEl?mEl.value:0});
+}
+function keepDraft(){ D.draft=readForm(); D.draftFor=editing||null; clearTimeout(saveT); saveT=setTimeout(save,400); }
+function saveEntryFromForm(){
+  var g=function(id){ var el=document.getElementById(id); return el?el.value.trim():''; };
+  var did=g('e_did'), msg=document.getElementById('entryMsg');
+  if(!did){ msg.textContent=t('needText'); msg.className='msg err'; document.getElementById('e_did').focus(); return; }
+  var steps=[].slice.call(document.querySelectorAll('input[name=e_steps]:checked')).map(function(x){return x.value;});
+  var mEl=document.querySelector('input[name=e_mood]:checked');
+  var obj={date:g('e_date')||todayISO(),steps:steps,did:did,prob:g('e_prob'),sol:g('e_sol'),who:g('e_who'),next:g('e_next'),mood:mEl?parseInt(mEl.value,10):0};
+  if(editing){ D.diary.forEach(function(x){ if(x.id===editing){ Object.keys(obj).forEach(function(k){ x[k]=obj[k]; }); } }); }
+  else { obj.id='e'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); obj.created=Date.now(); D.diary.push(obj); }
+  editing=null; D.draft=null; D.draftFor=null;
+  var ok=save(); render();
+  var m2=document.getElementById('entryMsg'); if(m2){ m2.textContent=ok?t('entrySaved'):t('saveFail'); m2.className=ok?'msg':'msg err'; }
+}
+
+/* ---------- Copia de seguridad ---------- */
+function backupBlock(){
+  return '<section class="panel-sec noprint"><h2 class="sec" style="margin:0">'+t('backupTitle')+'</h2><p class="note" style="margin:0">'+t('backupLead')+'</p>'+
+    '<div class="row"><button class="btn ghost small" type="button" id="exportBtn">'+t('exportBtn')+'</button><button class="btn ghost small" type="button" id="importBtn">'+t('importBtn')+'</button><button class="btn danger small" type="button" id="wipeBtn">'+t('wipeBtn')+'</button></div><p class="msg" id="backupMsg" role="status"></p></section>';
+}
+function download(name,mime,content){
+  try{
+    var blob=new Blob([content],{type:mime}); var url=URL.createObjectURL(blob);
+    var a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); },1500); return true;
+  }catch(e){ return false; }
+}
+function stamp(){ return todayISO(); }
+
+/* ---------- Memoria ---------- */
+var showPreview=false;
+function mArea(key,label,hint){ return fArea('m_'+key,label,D.memo[key]||'',hint).replace('<textarea id="m_'+key+'"','<textarea id="m_'+key+'" data-m="'+key+'"'); }
+function secHead(n,title,hint){ return '<h2 class="sec" style="margin:0"><span class="secnum">'+n+'</span>'+title+'</h2>'+(hint?'<p class="note" style="margin:0">'+hint+'</p>':''); }
+function renderMemo(){
+  elWrap.className='wrap single';
+  var h='<div class="printable" style="min-width:0;display:flex;flex-direction:column;gap:14px"><article class="card noprint"><header class="page-head"><div class="phase">'+t('tabMemo')+'</div><h1>'+t('memoTitle')+'</h1><p>'+t('memoLead')+'</p></header><div class="body">';
+  h+=groupBlock();
+  h+='<section class="panel-sec">'+secHead(1,t('m1'),t('m1hint'))+'</section>';
+  h+='<section class="panel-sec">'+secHead(2,t('m2'))+mArea('intro',t('m2a'),t('m2aHint'))+mArea('use',t('m2b'))+'</section>';
+  h+='<section class="panel-sec">'+secHead(3,t('m3'))+'<div class="tbl"><table><thead><tr>'+t('docMatT').map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr></thead><tbody>'+KIT[S.lang].map(function(r){ return '<tr><td>'+r[0]+'</td><td class="num">'+r[1]+'</td><td>'+r[2]+'</td><td class="num">'+r[3]+'</td></tr>'; }).join('')+'</tbody></table></div>'+mArea('otherMat',t('m3a'),t('m3aHint'))+'</section>';
+  h+='<section class="panel-sec">'+secHead(4,t('m4'),t('m4hint'))+'<div class="pills">'+TOOL_LIST.concat(['gato','taladro','gafas']).map(function(k){ return '<label class="pill"><input type="checkbox" data-tool="'+k+'"'+(D.memo.tools[k]?' checked':'')+'>'+TN(k)+'</label>'; }).join('')+'</div></section>';
+  h+='<section class="panel-sec">'+secHead(5,t('m5'),t('m5hint'))+'</section>';
+  h+='<section class="panel-sec">'+secHead(6,t('m6'),t('m6hint'))+mArea('process',t('docMore'))+'</section>';
+  h+='<section class="panel-sec">'+secHead(7,t('m7'),t('m7hint'))+mArea('problems',t('docMore'))+'</section>';
+  h+='<section class="panel-sec">'+secHead(8,t('m8'),t('m8hint'))+mArea('safety',t('docSafety'))+'</section>';
+  h+='<section class="panel-sec">'+secHead(9,t('m9'),t('m9hint'))+'<div class="photos">'+D.photos.map(function(p,i){ return '<div class="photo"><img src="'+p.data+'" alt="'+esc(p.cap||('Foto '+(i+1)))+'"><div class="pc"><input type="text" id="ph_'+i+'" data-ph="'+i+'" value="'+esc(p.cap||'')+'" placeholder="'+esc(t('photoCap'))+'" aria-label="'+esc(t('photoCap'))+'"><button class="iconbtn" type="button" data-delph="'+i+'" aria-label="'+esc(t('del'))+'">×</button></div></div>'; }).join('')+'</div>'+
+     '<div class="row"><button class="btn ghost small" type="button" id="addPhoto"'+(D.photos.length>=6?' disabled':'')+'>'+t('addPhoto')+'</button><span class="msg" id="photoMsg" role="status"></span></div></section>';
+  h+='<section class="panel-sec">'+secHead(10,t('m10'))+mArea('learned',t('m10a'))+mArea('improve',t('m10b'))+mArea('team',t('m10c'))+
+     '<div class="field" style="max-width:240px"><label for="m_grade">'+t('m10d')+'</label><select id="m_grade" data-m="grade"><option value=""></option>'+[1,2,3,4,5,6,7,8,9,10].map(function(n){ return '<option'+(String(D.memo.grade)===String(n)?' selected':'')+'>'+n+'</option>'; }).join('')+'</select></div></section>';
+  h+='<section class="panel-sec"><div class="row"><button class="btn main" type="button" id="togglePrev">'+(showPreview?t('hidePreview'):t('preview'))+'</button><button class="btn ghost" type="button" id="printBtn">'+t('print')+'</button><button class="btn ghost" type="button" id="docBtn">'+t('downloadDoc')+'</button><button class="btn ghost" type="button" id="copyBtn">'+t('copyText')+'</button></div><p class="note" style="margin:0">'+t('printNote')+'</p><p class="msg" id="memoMsg" role="status"></p></section>';
+  h+=backupBlock();
+  h+='</div></article>';
+  h+='<div class="doc" id="doc"'+(showPreview?'':' hidden')+'>'+(showPreview?buildDoc(false):'')+'</div></div>';
+  elWrap.innerHTML=h;
+}
+
+function val(v){ return v&&String(v).trim()?'<p>'+esc(v)+'</p>':'<p class="empty">'+t('docEmpty')+'</p>'; }
+function buildDoc(forWord){
+  var g=D.group, st=STEPS(), diary=sortedDiary(), h='';
+  var members=g.members.filter(function(m){return m.name&&m.name.trim();});
+  var secs=[t('m2'),t('m3'),t('m4'),t('m5'),t('m6'),t('m7'),t('m8'),t('m9'),t('m10'),t('annex')];
+  h+='<div class="cover"><h1>'+t('docProject')+'</h1><div class="sub">'+t('docTitle')+' · '+t('docSub')+'</div>';
+  if(!forWord) h+='<div style="max-width:520px;margin:20px auto 0">'+FIG.portada()+'</div>';
+  h+='<dl>'+(g.name?'<dt>'+t('docGroup')+'</dt><dd>'+esc(g.name)+'</dd>':'')+
+    '<dt>'+t('docMembers')+'</dt><dd>'+(members.length?members.map(function(m){ return esc(m.name)+' ('+roleName(m.role)+')'; }).join('<br>'):t('docEmpty'))+'</dd>'+
+    (g.course?'<dt>'+t('docCourse')+'</dt><dd>'+esc(g.course)+'</dd>':'')+(g.school?'<dt>'+t('docSchool')+'</dt><dd>'+esc(g.school)+'</dd>':'')+
+    (g.teacher?'<dt>'+t('docTeacher')+'</dt><dd>'+esc(g.teacher)+'</dd>':'')+(g.date?'<dt>'+t('docDate')+'</dt><dd>'+fmtDate(g.date)+'</dd>':'')+'</dl></div>';
+  h+='<h2>'+t('docToc')+'</h2><ol class="toc">'+secs.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ol>';
+  h+='<h2>1. '+t('m2')+'</h2><h3>'+t('m2a')+'</h3>'+val(D.memo.intro)+'<h3>'+t('m2b')+'</h3>'+val(D.memo.use);
+  h+='<h2>2. '+t('m3')+'</h2><h3>'+t('docKit')+'</h3><table><thead><tr>'+t('docMatT').map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr></thead><tbody>'+KIT[S.lang].map(function(r){ return '<tr><td>'+r.join('</td><td>')+'</td></tr>'; }).join('')+'</tbody></table><h3>'+t('docOther')+'</h3>'+val(D.memo.otherMat);
+  var used=Object.keys(D.memo.tools).filter(function(k){return D.memo.tools[k]&&TOOLN[S.lang][k];});
+  h+='<h2>3. '+t('m4')+'</h2>'+(used.length?'<ul>'+used.map(function(k){return '<li>'+TN(k)+'</li>';}).join('')+'</ul>':'<p class="empty">'+t('docEmpty')+'</p>');
+  h+='<h2>4. '+t('m5')+'</h2>';
+  if(forWord) h+='<p class="empty">'+(S.lang==='en'?'(Drawings are included in the PDF version.)':'(Los dibujos se incluyen en la versión PDF.)')+'</p>';
+  else h+='<div class="figs">'+[['material',st[1].title],['agujeros',st[5].title],['varilla',st[8].title],['listones',st[10].title],['encolarA',st[9].title],['montaje',st[13].title]].map(function(f){ return '<figure>'+FIG[f[0]]()+'<figcaption>'+esc(f[1])+'</figcaption></figure>'; }).join('')+'</div>';
+  h+='<h2>5. '+t('m6')+'</h2><h3>'+t('docStepsT')+'</h3><ol>'+st.slice(3,14).map(function(s){ return '<li><b>'+esc(s.title)+'</b>: '+esc(s.lead)+'</li>'; }).join('')+'</ol>';
+  h+='<h3>'+t('docDiaryT')+'</h3>'+(diary.length?diary.map(function(e,i){ return '<p><b>'+t('docSess')+' '+(i+1)+' ('+fmtDate(e.date)+')</b>'+(e.steps&&e.steps.length?' · '+e.steps.map(function(id){return esc(stepTitle(id));}).join(', '):'')+'\n'+esc(e.did)+'</p>'; }).join(''):'<p class="empty">'+t('docEmpty')+'</p>');
+  if(D.memo.process) h+='<h3>'+t('docMore')+'</h3>'+val(D.memo.process);
+  var probs=diary.map(function(e,i){return {n:i+1,p:e.prob,s:e.sol};}).filter(function(x){return x.p||x.s;});
+  h+='<h2>6. '+t('m7')+'</h2>'+(probs.length?'<table><thead><tr>'+t('docProbT').map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr></thead><tbody>'+probs.map(function(x){ return '<tr><td>'+x.n+'</td><td>'+esc(x.p)+'</td><td>'+esc(x.s)+'</td></tr>'; }).join('')+'</tbody></table>':'')+(D.memo.problems?val(D.memo.problems):(probs.length?'':'<p class="empty">'+t('docEmpty')+'</p>'));
+  h+='<h2>7. '+t('m8')+'</h2><ul>'+SAFETY[S.lang].map(function(r){ return '<li><b>'+r[1]+'</b>: '+r[2]+'</li>'; }).join('')+'</ul>'+val(D.memo.safety);
+  h+='<h2>8. '+t('m9')+'</h2>'+(D.photos.length?'<div class="pimg">'+D.photos.map(function(p){ return '<figure><img src="'+p.data+'" alt="'+esc(p.cap||'')+'"'+(forWord?' width="300"':'')+'><figcaption>'+esc(p.cap||'')+'</figcaption></figure>'; }).join('')+'</div>':'<p class="empty">'+t('docEmpty')+'</p>');
+  var fin=STEPS()[14];
+  h+='<h2>9. '+t('m10')+'</h2><h3>'+t('m10a')+'</h3>'+val(D.memo.learned)+'<h3>'+t('m10b')+'</h3>'+val(D.memo.improve)+'<h3>'+t('m10c')+'</h3>'+val(D.memo.team)+
+    '<h3>'+t('docCheck')+'</h3><ul>'+fin.check.map(function(c,j){ return '<li>'+(D.checks['final_'+j]?'☑ ':'☐ ')+esc(c)+'</li>'; }).join('')+'</ul>'+
+    '<h3>'+t('m10d')+'</h3>'+val(D.memo.grade);
+  h+='<h2>10. '+t('annex')+'</h2>'+(diary.length?'<table><thead><tr>'+t('docDiaryCols').map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr></thead><tbody>'+diary.map(function(e,i){
+      return '<tr><td>'+(i+1)+'</td><td>'+fmtDate(e.date)+'</td><td>'+(e.steps||[]).map(function(id){return stepNum(id);}).join(', ')+'</td><td>'+esc(e.did)+'</td><td>'+esc(e.who)+'</td><td>'+(e.mood?t('moods')[e.mood-1]:'')+'</td></tr>'; }).join('')+'</tbody></table>':'<p class="empty">'+t('docEmpty')+'</p>');
+  return h;
+}
+function docText(){
+  var tmp=document.createElement('div'); tmp.innerHTML=buildDoc(true);
+  tmp.querySelectorAll('h1,h2,h3,p,li,tr,dt,dd,figcaption').forEach(function(el){ el.insertAdjacentText('afterend','\n'); });
+  tmp.querySelectorAll('h2').forEach(function(el){ el.insertAdjacentText('beforebegin','\n'); });
+  tmp.querySelectorAll('td,th').forEach(function(el){ el.insertAdjacentText('afterend',' | '); });
+  return tmp.textContent.replace(/\n{3,}/g,'\n\n').trim();
+}
+function wordDoc(){
+  var css='body{font-family:Calibri,Arial,sans-serif;font-size:12pt;color:#16203a}h1{color:#1f3a6e}h2{color:#1f3a6e;border-bottom:2px solid #e2681a}table{border-collapse:collapse;width:100%}th,td{border:1px solid #c9d1e0;padding:4px 6px;text-align:left;vertical-align:top}th{background:#e4eaf6}.empty{color:#8a93a8;font-style:italic}.cover{text-align:center}';
+  return '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>'+esc(t('docTitle'))+'</title><style>'+css+'</style></head><body>'+buildDoc(true)+'</body></html>';
+}
+
+/* ---------- Fotos ---------- */
+function addPhotos(files){
+  var msg=document.getElementById('photoMsg');
+  var room=6-D.photos.length; if(room<=0){ if(msg){msg.textContent=t('photoMax');msg.className='msg err';} return; }
+  var arr=[].slice.call(files).filter(function(f){return /^image\//.test(f.type);}).slice(0,room), done=0, failed=false;
+  if(!arr.length) return;
+  arr.forEach(function(f){
+    var r=new FileReader();
+    r.onload=function(){
+      var img=new Image();
+      img.onload=function(){
+        try{
+          var max=1100, w=img.width, hgt=img.height, k=Math.min(1,max/Math.max(w,hgt));
+          var c=document.createElement('canvas'); c.width=Math.round(w*k); c.height=Math.round(hgt*k);
+          c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+          D.photos.push({data:c.toDataURL('image/jpeg',0.72),cap:''});
+          if(!save()){ D.photos.pop(); failed=true; }
+        }catch(e){ failed=true; }
+        finish();
+      };
+      img.onerror=function(){ failed=true; finish(); };
+      img.src=r.result;
+    };
+    r.onerror=function(){ failed=true; finish(); };
+    r.readAsDataURL(f);
+  });
+  function finish(){ done++; if(done===arr.length){ render(); var m=document.getElementById('photoMsg'); if(m&&failed){ m.textContent=t('photoErr'); m.className='msg err'; } } }
+}
+
+/* ---------- Ajustes ---------- */
+function renderSettings(){
+  var el=document.getElementById('drawerIn');
+  function seg(name,opts,curV){ return '<div class="seg" role="group">'+opts.map(function(o){ return '<button type="button" data-set="'+name+'" data-v="'+o[0]+'" aria-pressed="'+(String(curV)===String(o[0]))+'">'+o[1]+'</button>'; }).join('')+'</div>'; }
+  var h='<div class="row" style="justify-content:space-between"><h2 id="setTitle">'+t('setTitle')+'</h2><button class="btn ghost small" type="button" id="closeSet">'+t('setClose')+'</button></div>';
+  h+='<div class="field"><span class="lab">'+t('setLang')+'</span>'+seg('lang',[['es','Español'],['en','English']],S.lang)+'</div>';
+  h+='<div class="field"><span class="lab">'+t('setSize')+'</span>'+seg('scale',SCALES.map(function(sc,i){return [sc,t('sizes')[i]];}),S.scale)+'</div>';
+  h+='<div class="field"><span class="lab">'+t('setTheme')+'</span>'+seg('theme',[['auto',t('themes').auto],['light',t('themes').light],['dark',t('themes').dark]],S.theme)+'</div>';
+  h+='<div class="field"><span class="lab">'+t('setPal')+'</span><div class="swatches">'+Object.keys(PAL).map(function(k){ var p=PAL[k].l;
+    return '<button type="button" class="sw" data-set="pal" data-v="'+k+'" aria-pressed="'+(S.pal===k)+'"><i><span style="background:'+p.band+'"></span><span style="background:'+p.accent+'"></span><span style="background:'+p['navy-soft']+'"></span></i>'+t('pal')[k]+'</button>'; }).join('')+'</div></div>';
+  h+='<div class="field"><span class="lab">'+t('setSpacing')+'</span>'+seg('spacing',[['normal',t('spacings').normal],['wide',t('spacings').wide]],S.spacing)+'</div>';
+  h+='<p class="note" style="margin:0">'+t('setNote')+'</p><div><button class="btn ghost small" type="button" id="resetSet">'+t('setReset')+'</button></div>';
+  el.innerHTML=h;
+}
+var setReturn=null;
+function openSettings(){ setReturn=document.activeElement; renderSettings(); document.getElementById('drawer').hidden=false; var b=document.getElementById('closeSet'); if(b) b.focus(); }
+function closeSettings(){ document.getElementById('drawer').hidden=true; var o=document.getElementById('openSet'); if(o) o.focus(); }
+
+/* ===================================================================
+   8. EVENTOS
+   =================================================================== */
+function setHash(h){ try{ history.replaceState(null,'','#'+h); }catch(e){} }
+function goStep(i,scroll){ cur=i; view='guide'; render(); setHash('paso-'+cur); if(scroll) window.scrollTo({top:0,behavior:'smooth'}); }
+function goView(v){ if(view==='diary'&&document.getElementById('e_did')) D.draft=readForm(),D.draftFor=editing||null,save(); view=v; render(); setHash(v==='guide'?'paso-'+cur:(v==='diary'?'diario':'memoria')); window.scrollTo({top:0}); }
+
+var confirmState={};
+function twoStep(btn,key,sureText,action){
+  if(confirmState[key]){ clearTimeout(confirmState[key].t); delete confirmState[key]; action(); return; }
+  var orig=btn.textContent; btn.textContent=sureText; btn.classList.add('sure');
+  confirmState[key]={t:setTimeout(function(){ delete confirmState[key]; if(document.body.contains(btn)){ btn.textContent=orig; btn.classList.remove('sure'); } },4500)};
+}
+var pendingImport=null;
+
+document.addEventListener('click',function(e){
+  var el;
+  if((el=e.target.closest('[data-view]'))){ goView(el.getAttribute('data-view')); return; }
+  if((el=e.target.closest('[data-lang]'))){ S.lang=el.getAttribute('data-lang'); save(); render(); return; }
+  if((el=e.target.closest('#openSet'))){ openSettings(); return; }
+  if((el=e.target.closest('#closeSet'))){ closeSettings(); return; }
+  if(e.target.id==='drawer'){ closeSettings(); return; }
+  if((el=e.target.closest('[data-set]'))){
+    var k=el.getAttribute('data-set'), v=el.getAttribute('data-v');
+    if(k==='scale') v=parseFloat(v);
+    S[k]=v; save(); render(); renderSettings(); var again=document.querySelector('[data-set="'+k+'"][data-v="'+el.getAttribute('data-v')+'"]'); if(again) again.focus(); return; }
+  if((el=e.target.closest('#resetSet'))){ Object.keys(DEFAULT_SETTINGS).forEach(function(k2){ S[k2]=DEFAULT_SETTINGS[k2]; }); save(); render(); renderSettings(); return; }
+  if((el=e.target.closest('[data-go]'))){ if(!el.disabled) goStep(parseInt(el.getAttribute('data-go'),10),true); return; }
+  if((el=e.target.closest('[data-fig]'))){ if(!e.target.closest('.doc')) openLb(el.getAttribute('data-fig')); return; }
+  if((el=e.target.closest('#reset'))){ twoStep(el,'reset',t('resetSure'),function(){ D.checks={}; save(); render(); }); return; }
+  /* grupo */
+  if((el=e.target.closest('#addMem'))){ if(D.group.members.length<6){ D.group.members.push({name:'',role:'other'}); save(); render(); var n=document.getElementById('mem_n_'+(D.group.members.length-1)); if(n) n.focus(); } return; }
+  if((el=e.target.closest('[data-delmem]'))){ D.group.members.splice(parseInt(el.getAttribute('data-delmem'),10),1); save(); render(); return; }
+  /* diario */
+  if((el=e.target.closest('#saveEntry'))){ saveEntryFromForm(); return; }
+  if((el=e.target.closest('#cancelEntry'))){ editing=null; D.draft=null; D.draftFor=null; save(); render(); return; }
+  if((el=e.target.closest('[data-editentry]'))){ editing=el.getAttribute('data-editentry'); D.draft=null; D.draftFor=null; render(); var f=document.getElementById('entryForm'); if(f){ f.scrollIntoView({behavior:'smooth',block:'start'}); var d2=document.getElementById('e_did'); if(d2) d2.focus({preventScroll:true}); } return; }
+  if((el=e.target.closest('[data-delentry]'))){ var id=el.getAttribute('data-delentry'); twoStep(el,'del_'+id,t('delSure'),function(){ D.diary=D.diary.filter(function(x){return x.id!==id;}); save(); render(); }); return; }
+  /* fotos */
+  if((el=e.target.closest('#addPhoto'))){ document.getElementById('filePhoto').click(); return; }
+  if((el=e.target.closest('[data-delph]'))){ var pi=parseInt(el.getAttribute('data-delph'),10); twoStep(el,'ph_'+pi,t('delQ'),function(){ D.photos.splice(pi,1); save(); render(); }); return; }
+  /* memoria */
+  if((el=e.target.closest('#togglePrev'))){ showPreview=!showPreview; render(); if(showPreview){ var d3=document.getElementById('doc'); if(d3) d3.scrollIntoView({behavior:'smooth'}); } return; }
+  if((el=e.target.closest('#printBtn'))){
+    if(!showPreview){ showPreview=true; render(); }
+    var msg=document.getElementById('memoMsg');
+    setTimeout(function(){ try{ window.print(); }catch(err){ if(msg){ msg.textContent=t('printFail'); msg.className='msg err'; } } },60);
+    return; }
+  if((el=e.target.closest('#docBtn'))){ var ok=download(t('fileDoc')+'-'+stamp()+'.doc','application/msword',wordDoc()); var m=document.getElementById('memoMsg'); if(m&&!ok){ m.textContent=t('printFail'); m.className='msg err'; } return; }
+  if((el=e.target.closest('#copyBtn'))){
+    var text=docText(), m3=document.getElementById('memoMsg');
+    function fail(){ if(m3){ m3.textContent=t('copyFail'); m3.className='msg err'; } if(!showPreview){ showPreview=true; render(); } }
+    try{ navigator.clipboard.writeText(text).then(function(){ if(m3){ m3.textContent=t('copied'); m3.className='msg'; } },fail); }catch(err){ fail(); }
+    return; }
+  /* copia */
+  if((el=e.target.closest('#exportBtn'))){ var ok2=download(t('fileBackup')+'-'+stamp()+'.json','application/json',JSON.stringify(D)); var bm=document.getElementById('backupMsg'); if(bm&&!ok2){ bm.textContent=t('printFail'); bm.className='msg err'; } return; }
+  if((el=e.target.closest('#importBtn'))){ document.getElementById('fileImport').click(); return; }
+  if((el=e.target.closest('#confirmImport'))){ if(pendingImport){ D=pendingImport; S=D.settings; pendingImport=null; save(); render(); var bm2=document.getElementById('backupMsg'); if(bm2){ bm2.textContent=t('importOk'); bm2.className='msg'; } } return; }
+  if((el=e.target.closest('#wipeBtn'))){ twoStep(el,'wipe',t('wipeSure'),function(){ var keep=JSON.parse(JSON.stringify(S)); D=blankData(); D.settings=keep; S=D.settings; save(); render(); var bm3=document.getElementById('backupMsg'); if(bm3){ bm3.textContent=t('wiped'); bm3.className='msg'; } }); return; }
+});
+
+document.addEventListener('change',function(e){
+  var tg=e.target;
+  if(tg.id==='msel'){ goStep(parseInt(tg.value,10),true); return; }
+  if(tg.matches('input[type=checkbox][data-k]')){
+    D.checks[tg.getAttribute('data-k')]=tg.checked; save(); renderTop();
+    var ok=document.getElementById('allok'); if(ok) ok.hidden=!isDone(cur);
+    var nb=document.querySelector('.nav button[data-go="'+cur+'"] span:last-child'); if(nb){ nb.className=isDone(cur)?'done':''; nb.textContent=isDone(cur)?'✔':''; }
+    return; }
+  if(tg.matches('[data-tool]')){ D.memo.tools[tg.getAttribute('data-tool')]=tg.checked; save(); return; }
+  if(tg.matches('select[data-mem]')){ D.group.members[parseInt(tg.getAttribute('data-mem'),10)].role=tg.value; save(); return; }
+  if(tg.matches('select[data-m]')){ D.memo[tg.getAttribute('data-m')]=tg.value; save(); return; }
+  if(tg.matches('input[type=date][data-g]')){ D.group[tg.getAttribute('data-g')]=tg.value; save(); return; }
+  if(tg.id==='e_date'||tg.name==='e_steps'||tg.name==='e_mood'){ keepDraft(); return; }
+  if(tg.id==='filePhoto'){ addPhotos(tg.files); tg.value=''; return; }
+  if(tg.id==='fileImport'){
+    var f=tg.files&&tg.files[0]; tg.value=''; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(){
+      var bm=document.getElementById('backupMsg');
+      try{ var o=JSON.parse(r.result); if(!o||o.v!==2||typeof o.checks!=='object') throw 0; pendingImport=merge(blankData(),o);
+        if(bm){ bm.innerHTML=esc(t('importSure'))+' <button class="btn main small" type="button" id="confirmImport">'+esc(t('importBtn'))+'</button>'; bm.className='msg'; } }
+      catch(err){ pendingImport=null; if(bm){ bm.textContent=t('importErr'); bm.className='msg err'; } }
+    };
+    r.readAsText(f);
+    return; }
+});
+var saveT=null;
+document.addEventListener('input',function(e){
+  var tg=e.target, changed=false;
+  if(tg.matches('input[type=text][data-g]')){ D.group[tg.getAttribute('data-g')]=tg.value; changed=true; }
+  else if(tg.matches('input[type=text][data-mem]')){ D.group.members[parseInt(tg.getAttribute('data-mem'),10)].name=tg.value; changed=true; }
+  else if(tg.matches('textarea[data-m]')){ D.memo[tg.getAttribute('data-m')]=tg.value; changed=true; }
+  else if(tg.matches('input[data-ph]')){ var p=D.photos[parseInt(tg.getAttribute('data-ph'),10)]; if(p){ p.cap=tg.value; changed=true; } }
+  if(tg.id&&/^e_(did|prob|sol|who|next)$/.test(tg.id)){ keepDraft(); return; }
+  if(changed){ clearTimeout(saveT); saveT=setTimeout(function(){ save(); if(showPreview&&view==='memo'){ var d=document.getElementById('doc'); if(d) d.innerHTML=buildDoc(false); } },400); }
+});
+document.addEventListener('keydown',function(e){
+  if(!document.getElementById('lb').hidden){ if(e.key==='Escape') closeLb(); return; }
+  if(!document.getElementById('drawer').hidden){ if(e.key==='Escape') closeSettings(); return; }
+  if(e.target&&e.target.classList&&e.target.classList.contains('fig')&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); openLb(e.target.getAttribute('data-fig')); return; }
+  var tag=(e.target&&e.target.tagName)||'';
+  if(tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA'||tag==='BUTTON'||view!=='guide') return;
+  if(e.key==='ArrowRight'&&cur<STEPS().length-1) goStep(cur+1,true);
+  if(e.key==='ArrowLeft'&&cur>0) goStep(cur-1,true);
+});
+window.addEventListener('beforeprint',function(){ if(view==='memo'&&!showPreview){ showPreview=true; render(); } });
+
+/* Lightbox */
+var lastFocus=null;
+function openLb(k){ if(!FIG[k]) return; lastFocus=document.activeElement; document.getElementById('lbbody').innerHTML=FIG[k](); document.getElementById('lbdlg').setAttribute('aria-label',t('enlarge')); var c=document.getElementById('lbclose'); c.textContent=t('close'); document.getElementById('lb').hidden=false; c.focus(); }
+function closeLb(){ document.getElementById('lb').hidden=true; document.getElementById('lbbody').innerHTML=''; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+document.getElementById('lbclose').addEventListener('click',function(e){ e.stopPropagation(); closeLb(); });
+document.getElementById('lb').addEventListener('click',function(e){ if(e.target.id==='lb') closeLb(); });
+
+/* Inicio y enlaces directos (#paso-3, #diario, #memoria) */
+function route(){
+  var h=location.hash||'', m=/^#paso-(\d+)$/.exec(h);
+  if(m){ cur=parseInt(m[1],10); view='guide'; }
+  else if(h==='#diario') view='diary';
+  else if(h==='#memoria') view='memo';
+  render();
+}
+window.addEventListener('hashchange',function(){ route(); window.scrollTo({top:0}); });
+route();
+})();
+</script>
+</body>
+</html>
