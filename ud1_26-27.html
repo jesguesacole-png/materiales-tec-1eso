@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>U1 · El Proceso Tecnológico, el Taller y los Proyectos</title>
 <meta name="description" content="Tecnología y Digitalización 1.º ESO · Unidad 1 · Estudio bilingüe (ES/EN): contenidos, flashcards, práctica, examen y apuntes imprimibles.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#16365c">
+<link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -46,6 +49,10 @@ header.top{background:var(--navy); color:#fff; position:sticky; top:0; z-index:2
 .lang{display:flex; border:2px solid rgba(255,255,255,.6); border-radius:999px; overflow:hidden}
 .lang button{background:transparent; color:#fff; border:0; padding:6px 14px; font-weight:700; font-size:.95rem}
 .lang button[aria-pressed="true"]{background:var(--orange); color:#fff}
+.lang-badge{display:none; border:2px solid rgba(255,255,255,.6); border-radius:999px; padding:5px 14px; font-weight:700; font-size:.95rem; color:#fff}
+body.lang-locked .lang{display:none}
+body.lang-locked .lang-badge{display:inline-block}
+.es-help{margin:0 0 12px}
 nav.tabs{display:flex; gap:4px; overflow-x:auto; padding-bottom:8px; scrollbar-width:thin}
 nav.tabs a{color:#dbe7f5; text-decoration:none; padding:7px 12px; border-radius:8px; white-space:nowrap; font-weight:700; font-size:.95rem}
 nav.tabs a:hover{background:rgba(255,255,255,.12); color:#fff}
@@ -346,6 +353,7 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
         <button type="button" data-lang="es" aria-pressed="true">ES</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
+      <span class="lang-badge" title="Bilingual group">🇬🇧 English</span>
     </div>
     <nav class="tabs" aria-label="Secciones">
       <a href="#inicio" data-view="inicio" data-i18n="navHome">Inicio</a>
@@ -2684,8 +2692,14 @@ var qrcode = function() {
    PASS:     % from which a ficha counts as passed.
    SALT:     change it to any secret word to personalise the verification codes
              (codes made with a different SALT will no longer verify).
+   PUBLIC_URL: your published address (e.g. "https://user.github.io/repo/"). The QR of every
+             hand-in points there, even when the page is opened as a local file on a Chromebook.
+             If empty, the QR uses the current address (and is left out when opened as a local file).
+   TEACHER_PIN: PIN to unlock the language of a device (teacher page).
+   BIL_HELP: true = in bilingual mode, the Contents tab offers a "see in Spanish" button per section
+             (worksheets, practice, exam and flashcards stay in English only). false = English only everywhere.
    ========================================================= */
-const CONFIG = { ENDPOINT: "", PASS: 80, SALT: "U1-TecDig-2026" };
+const CONFIG = { ENDPOINT: "", PASS: 80, SALT: "U1-TecDig-2026", PUBLIC_URL: "", TEACHER_PIN: "1234", BIL_HELP: true };
 /* =========================================================
    1. UI STRINGS
    ========================================================= */
@@ -2735,6 +2749,7 @@ const UI = {
     name:"Nombre:", group:"Grupo:", toc:"Índice",
     bankTitle:"Banco de preguntas con respuestas", solTitle:"Soluciones de las actividades",
     answer:"Respuesta",
+    langDone:"Idioma", bilMode:"modo bilingüe", lockTitle:"Idioma de este dispositivo", lockState:"Estado", lockedEn:"bloqueado en inglés (bilingüe)", unlocked:"libre (ES/EN)", lockBtn:"Bloquear en inglés", unlockBtn:"Desbloquear", badPin:"PIN incorrecto.",
     navFichas:"Fichas", navCuaderno:"Cuaderno", confirmCheck:"Te quedan {n} actividad(es) sin responder y contará como un intento. ¿Corregir igualmente?",
     mFichas:"Fichas de trabajo", mFichasD:"Lee cada apartado, haz las actividades y entrega tu ficha en PDF por Classroom.",
     mCuaderno:"Cuaderno", mCuadernoD:"Hoja-guía de lo que debe tener tu cuaderno y fichas en papel para imprimir.",
@@ -2821,6 +2836,7 @@ const UI = {
     name:"Name:", group:"Class:", toc:"Contents",
     bankTitle:"Question bank with answers", solTitle:"Activity solutions",
     answer:"Answer",
+    langDone:"Language", bilMode:"bilingual mode", lockTitle:"Language of this device", lockState:"Status", lockedEn:"locked in English (bilingual)", unlocked:"free (ES/EN)", lockBtn:"Lock in English", unlockBtn:"Unlock", badPin:"Wrong PIN.",
     navFichas:"Worksheets", navCuaderno:"Notebook", confirmCheck:"You have {n} unanswered activity(ies) and this will count as an attempt. Check anyway?",
     mFichas:"Worksheets", mFichasD:"Read each section, do the activities and hand in your worksheet as a PDF on Classroom.",
     mCuaderno:"Notebook", mCuadernoD:"Guide sheet of what your notebook must contain and paper worksheets to print.",
@@ -4275,7 +4291,15 @@ const store = {
   get(k,d){ try{ const v=localStorage.getItem("u1pt_"+k); return v===null?d:JSON.parse(v);}catch(e){return d;} },
   set(k,v){ try{ localStorage.setItem("u1pt_"+k, JSON.stringify(v)); }catch(e){} }
 };
+/* Bilingual lock: opening the page once with ?grupo=bilingue fixes this device in English.
+   Only the teacher can undo it (teacher page + PIN). */
+let LOCK = (function(){
+  try{ const g=(new URLSearchParams(location.search).get("grupo")||"").toLowerCase();
+       if(g==="bilingue"||g==="bilingüe"||g==="bil"||g==="bilingual") store.set("lock","en"); }catch(e){}
+  const l = store.get("lock", null); return l==="en" ? "en" : null;
+})();
 let LANG = (function(){
+  if(LOCK) return LOCK;
   try{ const p=new URLSearchParams(location.search).get("lang"); if(p==="es"||p==="en") return p; }catch(e){}
   const s = store.get("lang", null); return (s==="es"||s==="en") ? s : "es";
 })();
@@ -4333,12 +4357,21 @@ function renderContents(){
     ${SECTIONS.map((s,i)=>`
       <details class="sec" data-sid="${s.id}"${openSections.has(s.id)?" open":""}>
         <summary><span class="num">${i+1}</span>${s[LANG].title}</summary>
-        <div class="sec-body doc">${s[LANG].html()}</div>
+        <div class="sec-body doc">${LOCK && CONFIG.BIL_HELP ? `<button type="button" class="btn ghost es-help" data-esh="${s.id}">🇪🇸 Ver en español</button>`:""}<div class="sec-inner">${s[LANG].html()}</div></div>
       </details>`).join("")}`;
   $$("details.sec",v).forEach(d=>d.addEventListener("toggle",()=>{ d.open?openSections.add(d.dataset.sid):openSections.delete(d.dataset.sid); }));
   $("#accOpen").onclick = ()=> $$("details.sec",v).forEach(d=>d.open=true);
   $("#accClose").onclick = ()=> $$("details.sec",v).forEach(d=>d.open=false);
   $$('[data-widget="circuit"]',v).forEach(mountCircuit);
+  $$("[data-esh]",v).forEach(b=>b.onclick=()=>{
+    const s=SECTIONS.find(x=>x.id===b.dataset.esh), inner=b.parentNode.querySelector(".sec-inner");
+    const toEs = !b.classList.contains("on");
+    b.classList.toggle("on", toEs);
+    inner.innerHTML = toEs ? s.es.html() : s[LANG].html();
+    inner.lang = toEs ? "es" : LANG;
+    b.textContent = toEs ? "🇬🇧 Back to English" : "🇪🇸 Ver en español";
+    $$('[data-widget="circuit"]',inner).forEach(mountCircuit);
+  });
 }
 // Broken-circuit interactive ordering
 let circuitOrder = null;
@@ -4815,7 +4848,7 @@ const EPOCH = Date.UTC(2026,0,1);
 const b36 = (n,w)=>Math.max(0,Math.floor(n)).toString(36).toUpperCase().padStart(w,"0").slice(-w);
 function codeSig(P, name, group){ return cyrb53(CONFIG.SALT+"|"+P+"|"+norm(name)+"|"+norm(group)).toString(36).toUpperCase().padStart(11,"0").slice(-6); }
 function makeCode(f, score, first, attempts, date, name, group){
-  const P = String(f).padStart(2,"0") + b36(score,2) + b36(first,2) + b36(Math.min(attempts,1295),2) + b36((date.getTime()-EPOCH)/60000,5) + DEVICE;
+  const P = String(f + (LANG==="en"?50:0)).padStart(2,"0") + b36(score,2) + b36(first,2) + b36(Math.min(attempts,1295),2) + b36((date.getTime()-EPOCH)/60000,5) + DEVICE;
   return "U1" + P + codeSig(P, name, group);
 }
 const fmtCode = c => c.slice(0,2)+"-"+c.slice(2).match(/.{1,5}/g).join("-");
@@ -4823,10 +4856,11 @@ function decodeCode(raw, name, group){
   const c = String(raw||"").toUpperCase().replace(/[^0-9A-Z]/g,"");
   if(c.length!==27 || c.slice(0,2)!=="U1") return {ok:false, err:"format"};
   const P=c.slice(2,21), sig=c.slice(21);
-  const f=parseInt(P.slice(0,2),10), score=parseInt(P.slice(2,4),36), first=parseInt(P.slice(4,6),36), att=parseInt(P.slice(6,8),36);
+  let f=parseInt(P.slice(0,2),10); const lang = f>50 ? "en" : "es"; if(f>50) f-=50;
+  const score=parseInt(P.slice(2,4),36), first=parseInt(P.slice(4,6),36), att=parseInt(P.slice(6,8),36);
   const min=parseInt(P.slice(8,13),36), dev=P.slice(13,19);
   if(!(f>=1&&f<=FICHA_DEF.length) || score>100 || first>100 || isNaN(min)) return {ok:false, err:"format"};
-  return {ok:true, valid: sig===codeSig(P,name,group), f, score, first, att, date:new Date(EPOCH+min*60000), dev, code:c};
+  return {ok:true, valid: sig===codeSig(P,name,group), f, lang, score, first, att, date:new Date(EPOCH+min*60000), dev, code:c};
 }
 
 /* state */
@@ -4971,10 +5005,11 @@ function renderFicha(num){
 function reportHTML(num, date){
   const f=FICHAS[num-1], d=fd(num), sc=fichaScore(num), L=LANG, loc=L==="es"?"es-ES":"en-GB";
   const code = makeCode(num, sc.pct, d.first===null?0:d.first, d.attempts, date, fs.ident.name, fs.ident.group);
-  const base = location.href.split("#")[0];
-  const url = `${base}#profesor?c=${code}&n=${encodeURIComponent(fs.ident.name)}&g=${encodeURIComponent(fs.ident.group)}`;
+  const base = (CONFIG.PUBLIC_URL || "").trim() ? CONFIG.PUBLIC_URL.trim().split("#")[0]
+             : (/^https?:$/.test(location.protocol) ? location.href.split("#")[0] : "");
+  const url = base ? `${base}#profesor?c=${code}&n=${encodeURIComponent(fs.ident.name)}&g=${encodeURIComponent(fs.ident.group)}` : "";
   let qr = "";
-  try{ const qq=qrcode(0,"M"); qq.addData(url); qq.make(); qr = qq.createSvgTag(3,2); }catch(e){ qr=""; }
+  if(url){ try{ const qq=qrcode(0,"M"); qq.addData(url); qq.make(); qr = qq.createSvgTag(3,2); }catch(e){ qr=""; } }
   const mins = Math.max(1, Math.round(d.time/60));
   return { code, url, html:`
   <div class="rep-head">
@@ -4991,6 +5026,7 @@ function reportHTML(num, date){
       <tr><th>${T("finalMark")}</th><td><b>${(sc.pct/10).toLocaleString(loc,{maximumFractionDigits:1})} / 10</b> (${fmtPts(sc.got)} / ${fmtPts(sc.max)} ${T("ptsShort")})</td></tr>
       <tr><th>${T("workTime")}</th><td>≈ ${mins} min</td></tr>
       <tr><th>${T("device")}</th><td>${DEVICE}</td></tr>
+      <tr><th>${T("langDone")}</th><td>${L==="en"?"English":"Español"}${LOCK?` (${T("bilMode")})`:""}</td></tr>
     </table>
     <div class="rep-code">${qr}<div class="code">${fmtCode(code)}</div><div class="muted" style="font-size:.8rem">${T("codeHelp")}</div></div>
   </div>
@@ -5012,7 +5048,7 @@ function makeDelivery(num){
   // automatic copy to the teacher's sheet (optional)
   if(CONFIG.ENDPOINT){
     const payload = { fecha: date.toISOString(), nombre: fs.ident.name, grupo: fs.ident.group, ficha: num, titulo: fichaTitle(FICHAS[num-1],"es"),
-      nota: sc.pct/10, primerIntento: (d.first||0)/10, intentos: d.attempts, minutos: Math.max(1,Math.round(d.time/60)), dispositivo: DEVICE, codigo: fmtCode(rep.code), idioma: LANG,
+      nota: sc.pct/10, primerIntento: (d.first||0)/10, intentos: d.attempts, minutos: Math.max(1,Math.round(d.time/60)), dispositivo: DEVICE, codigo: fmtCode(rep.code), idioma: LANG + (LOCK?" (bloqueado)":""),
       respuestas: FICHAS[num-1].ids.map((id,k)=>{ const q=QUESTIONS[id]; const s=d.locked[id]?1:(d.res[id]||0); return `${k+1}) ${givenText(q,d.ans[id],"es")||"—"} [${s===1?"✔":(s>0?"◐":"✘")}]`; }).join("\n") };
     try{
       fetch(CONFIG.ENDPOINT, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)})
@@ -5111,6 +5147,16 @@ function renderProfesor(){
   let params={}; try{ const h=location.hash.split("?")[1]||""; params=Object.fromEntries(new URLSearchParams(h)); }catch(e){}
   v.innerHTML = `<h2 class="no-print">${T("profTitle")}</h2>
   <div class="card no-print" style="margin-bottom:16px">
+    <h3 style="margin-top:0">${T("lockTitle")}</h3>
+    <p style="margin-top:0">${T("lockState")}: <b>${LOCK?T("lockedEn"):T("unlocked")}</b> · ${T("device")}: <b>${DEVICE}</b></p>
+    <div class="row">
+      <label class="field">PIN<input type="password" id="pvPin" autocomplete="off" style="min-width:120px;width:140px"></label>
+      <button class="btn" type="button" id="pvLock" style="margin-top:18px">🔒 ${T("lockBtn")}</button>
+      <button class="btn ghost" type="button" id="pvUnlock" style="margin-top:18px">🔓 ${T("unlockBtn")}</button>
+      <span id="pvLockMsg" class="muted" style="margin-top:18px" role="status"></span>
+    </div>
+  </div>
+  <div class="card no-print" style="margin-bottom:16px">
     <h3 style="margin-top:0">${T("verifyTitle")}</h3>
     <p class="muted" style="margin-top:0">${T("verifyHelp")}</p>
     <div class="row">
@@ -5133,10 +5179,13 @@ function renderProfesor(){
     out.innerHTML = `<div class="fb ${r.valid?"ok":"ko"}"><b>${r.valid?T("validYes"):T("validNo")}</b>
       <ul style="margin:6px 0 0"><li>${T("ficha")} ${r.f}: ${esc(fichaTitle(FICHAS[r.f-1],L))}</li>
       <li>${T("finalMark")}: <b>${(r.score/10).toLocaleString(loc)}</b> / 10 · ${T("firstTry")}: ${(r.first/10).toLocaleString(loc)} · ${T("attempts")}: ${r.att}</li>
-      <li>${T("deliveredAt")}: ${r.date.toLocaleString(loc)}</li><li>${T("device")}: <b>${r.dev}</b></li></ul>
+      <li>${T("deliveredAt")}: ${r.date.toLocaleString(loc)}</li><li>${T("device")}: <b>${r.dev}</b></li><li>${T("langDone")}: <b>${r.lang==="en"?"English":"Español"}</b></li></ul>
       <p style="margin:6px 0 0" class="muted">${T("verifyNote")}</p></div>`;
   };
   $("#pvGo").onclick=run;
+  const pinOK=()=>{ if($("#pvPin").value===String(CONFIG.TEACHER_PIN)) return true; $("#pvLockMsg").textContent=T("badPin"); return false; };
+  $("#pvLock").onclick=()=>{ if(!pinOK()) return; store.set("lock","en"); LOCK="en"; LANG="en"; store.set("lang","en"); applyStaticI18n(); renderProfesor(); };
+  $("#pvUnlock").onclick=()=>{ if(!pinOK()) return; store.set("lock",null); LOCK=null; applyStaticI18n(); renderProfesor(); };
   $("#pvPrint").onclick=()=>window.print();
   if(params.c) run();
 }
@@ -5206,6 +5255,7 @@ function applyStaticI18n(){
   document.documentElement.lang = LANG;
   $$("[data-i18n]").forEach(el=>{ el.textContent = T(el.dataset.i18n); });
   $$(".lang button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang===LANG)));
+  document.body.classList.toggle("lang-locked", !!LOCK);
   document.title = T("unitTitle");
 }
 function route(){
@@ -5217,6 +5267,7 @@ function route(){
 }
 function setLang(l){
   if(l!=="es" && l!=="en") return;
+  if(LOCK && l!==LOCK) return;
   LANG=l; store.set("lang",l);
   try{ const u=new URL(location.href); if(u.searchParams.has("lang")){ u.searchParams.set("lang",l); history.replaceState(null,"",u.toString()); } }catch(e){}
   applyStaticI18n(); VIEWS[currentView]();
@@ -5225,6 +5276,10 @@ $$(".lang button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.l
 window.addEventListener("hashchange", ()=>{ route(); window.scrollTo({top:0}); });
 applyStaticI18n();
 route();
+/* offline support (only when served over http/https, e.g. GitHub Pages) */
+if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
+  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
+}
 </script>
 </body>
 </html>
