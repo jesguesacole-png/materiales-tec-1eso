@@ -234,6 +234,56 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
 .bank-q b{color:var(--navy)}
 .notes.show-sol .sol-print{display:block}
 
+
+/* ---------- fichas ---------- */
+.fgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; margin-top:16px}
+.fcard{display:flex; flex-direction:column; gap:6px; border-top:6px solid var(--line)}
+.fcard h3{margin:0}
+.fcard .btn{margin-top:auto; align-self:flex-start}
+.fcard.st-doing{border-top-color:var(--yellow)} .fcard.st-pass{border-top-color:var(--blue)} .fcard.st-done{border-top-color:var(--green)}
+.fnum{font-family:var(--font-head); font-weight:700; color:var(--orange); text-transform:uppercase; letter-spacing:.06em}
+.fstat{display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:.92rem}
+.chip{font-size:.8rem; font-weight:700; padding:2px 10px; border-radius:999px; background:#eef2f6; color:var(--muted)}
+.chip.doing{background:var(--yellow-soft); color:#8a6900} .chip.pass{background:var(--blue-soft); color:var(--blue)} .chip.done{background:var(--green-soft); color:var(--green)}
+.step-h{display:flex; align-items:center; gap:10px; margin-top:22px}
+.step-h span{display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:var(--orange); color:#fff; font-size:1.1rem}
+.fq{margin-bottom:12px}
+.fq.locked{border-color:var(--green); background:#f6fbf7}
+.fq-head{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px}
+.fq-n{display:grid; place-items:center; width:28px; height:28px; border-radius:8px; background:var(--navy); color:#fff; font-weight:700}
+.qstat{margin-left:auto; font-weight:700; font-size:.92rem}
+.qstat.ok{color:var(--green)} .qstat.part{color:#8a6900} .qstat.ko{color:var(--red)}
+.fsum{border-left:6px solid var(--orange)}
+.print-only{display:none}
+.rep-head h1{font-size:1.8rem; margin:.1em 0 .4em}
+.rep-top{display:flex; gap:18px; align-items:flex-start; margin-bottom:12px}
+.rep-data{border-collapse:collapse; flex:1}
+.rep-data th,.rep-data td{border:1px solid #999; padding:4px 8px; text-align:left; font-size:.92rem}
+.rep-data th{background:#eef2f6; width:42%}
+.rep-code{width:190px; text-align:center}
+.rep-code svg{width:170px; height:170px}
+.rep-code .code{font-family:ui-monospace,Consolas,monospace; font-weight:700; font-size:.82rem; word-break:break-all; margin:4px 0}
+/* ---------- paper sheets ---------- */
+.paper-head{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:flex-end; border-bottom:3px solid var(--navy); padding-bottom:8px; margin-bottom:12px}
+.paper-head .student{display:flex; gap:14px; flex-wrap:wrap; font-weight:700; font-size:.92rem}
+.paper-head .student span{display:inline-block; border-bottom:1.5px solid var(--ink); min-width:200px}
+.paper + .paper{margin-top:40px; border-top:2px dashed var(--line); padding-top:24px}
+.gsec{background:#eef2f6!important}
+.box{display:inline-block; width:18px; height:18px; border:2px solid var(--ink); border-radius:3px; vertical-align:middle}
+.box.wide{width:30px}
+.pq{margin:0 0 14px; break-inside:avoid}
+.pq-h{margin-bottom:6px}
+.pq-opts{list-style:none; padding-left:6px!important}
+.pq-opts li{margin-bottom:5px!important}
+.pq-tf{display:flex; gap:30px; padding-left:6px}
+.pq-match{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.pq-match ul{list-style:none; padding-left:4px!important}
+.pq-fill{line-height:2.4}
+.gap{display:inline-block; min-width:130px; border-bottom:1.5px solid var(--ink)}
+.lines div{border-bottom:1px solid #999; height:30px}
+.paper-text{border:1px solid var(--line); border-radius:8px; padding:6px 14px; margin-bottom:14px}
+.notes.bw .gsec, .notes.bw .rep-data th{background:#fff!important}
+
 /* B/N (black & white) mode — screen preview + print */
 .notes.bw, .notes.bw *{
   --navy:#000; --blue:#000; --blue-soft:#fff; --orange:#000; --orange-soft:#fff;
@@ -255,7 +305,8 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
   .brand b{font-size:1.1rem}
   .hero{grid-template-columns:1fr}
   .hero h1{font-size:2rem}
-  .twocol,.grid2,.grid3{grid-template-columns:1fr}
+  .twocol,.grid2,.grid3,.pq-match{grid-template-columns:1fr}
+  .rep-top{flex-direction:column}
   .match-row{grid-template-columns:1fr}
   .notes{padding:18px 16px}
   .notes .toc ol{columns:1}
@@ -276,6 +327,9 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
   .tbl-scroll{overflow:visible}
   a{color:inherit; text-decoration:none}
   .review-item, .result-print *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .print-only{display:block!important}
+  .paper + .paper{break-before:page; margin-top:0; border-top:0; padding-top:0}
+  .rep-code svg{width:150px; height:150px}
 }
 </style>
 </head>
@@ -296,6 +350,8 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
     <nav class="tabs" aria-label="Secciones">
       <a href="#inicio" data-view="inicio" data-i18n="navHome">Inicio</a>
       <a href="#contenidos" data-view="contenidos" data-i18n="navContents">Contenidos</a>
+      <a href="#fichas" data-view="fichas" data-i18n="navFichas">Fichas</a>
+      <a href="#cuaderno" data-view="cuaderno" data-i18n="navCuaderno">Cuaderno</a>
       <a href="#flashcards" data-view="flashcards" data-i18n="navFlash">Flashcards</a>
       <a href="#practica" data-view="practica" data-i18n="navPractice">Práctica</a>
       <a href="#examen" data-view="examen" data-i18n="navExam">Examen</a>
@@ -307,16 +363,2329 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
 <main class="wrap">
   <section class="view" id="view-inicio"></section>
   <section class="view" id="view-contenidos"></section>
+  <section class="view" id="view-fichas"></section>
+  <section class="view" id="view-cuaderno"></section>
   <section class="view" id="view-flashcards"></section>
   <section class="view" id="view-practica"></section>
   <section class="view" id="view-examen"></section>
   <section class="view" id="view-apuntes"></section>
+  <section class="view" id="view-profesor"></section>
 </main>
 
 <div class="footer wrap" data-i18n="footer">Material de estudio basado exclusivamente en las presentaciones de la Unidad 1.</div>
 
 <script>
+/* QR Code Generator for JavaScript — Copyright (c) 2009 Kazuhiko Arase — MIT License — https://github.com/kazuhikoarase/qrcode-generator */
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+<script>
 "use strict";
+/* =========================================================
+   0. CONFIGURATION (teacher)
+   ENDPOINT: URL of your Google Apps Script web app (see README) to receive an
+             automatic copy of every ficha delivery in a Google Sheet. Leave "" to disable.
+   PASS:     % from which a ficha counts as passed.
+   SALT:     change it to any secret word to personalise the verification codes
+             (codes made with a different SALT will no longer verify).
+   ========================================================= */
+const CONFIG = { ENDPOINT: "", PASS: 80, SALT: "U1-TecDig-2026" };
 /* =========================================================
    1. UI STRINGS
    ========================================================= */
@@ -366,6 +2735,38 @@ const UI = {
     name:"Nombre:", group:"Grupo:", toc:"Índice",
     bankTitle:"Banco de preguntas con respuestas", solTitle:"Soluciones de las actividades",
     answer:"Respuesta",
+    navFichas:"Fichas", navCuaderno:"Cuaderno", confirmCheck:"Te quedan {n} actividad(es) sin responder y contará como un intento. ¿Corregir igualmente?",
+    mFichas:"Fichas de trabajo", mFichasD:"Lee cada apartado, haz las actividades y entrega tu ficha en PDF por Classroom.",
+    mCuaderno:"Cuaderno", mCuadernoD:"Hoja-guía de lo que debe tener tu cuaderno y fichas en papel para imprimir.",
+    fichasIntro:"Cada ficha corresponde a un apartado de la unidad. Primero escribe tu nombre y tu grupo (solo hace falta una vez en este dispositivo). Después abre la ficha que te indique el profesor.",
+    ficha:"Ficha", activities:"actividades", st_new:"Sin empezar", st_doing:"En curso", st_pass:"Superada", st_done:"Completada", attemptsShort:"intentos",
+    continue:"Continuar", startFicha:"Empezar", allFichas:"Todas las fichas",
+    fullName:"Nombre y apellidos", groupLbl:"Grupo", device:"Dispositivo",
+    partialShort:"Casi", reviewIt:"Revísala",
+    step1:"Lee el apartado", step2:"Haz las actividades", step3:"Entrega tu ficha",
+    step2Help:"Cuando termines, pulsa «Corregir». Lo que esté bien quedará fijado en verde; lo que esté mal se marca en rojo para que lo revises. Puedes corregir todas las veces que necesites.",
+    correctBtn:"Corregir", notCorrected:"Todavía no has corregido la ficha.",
+    fichaDone:"¡Ficha completada al 100 %! Ya puedes generar tu entrega.", fichaPass:"Ficha superada. Puedes mejorarla o generar ya tu entrega.", fichaRetry:"Revisa lo marcado en rojo (vuelve a leer el apartado) y corrige otra vez.",
+    attempts:"Intentos", firstTry:"Nota del primer intento", currentMark:"Nota actual", finalMark:"Nota final",
+    step3Help:"Pulsa el botón y, en la ventana de impresión, elige «Guardar como PDF» como destino. Después sube ese PDF a la tarea de Classroom.",
+    makePdf:"Generar entrega (PDF)", deliveredAt:"Fecha y hora", workTime:"Tiempo de trabajo", answersTitle:"Respuestas",
+    codeHelp:"Código de verificación. El profesor puede comprobarlo escaneando el QR.",
+    repFooter:"Documento generado automáticamente por la aplicación de estudio de la Unidad 1. El código de verificación queda invalidado si se modifica el nombre, el grupo o la nota.",
+    needIdent:"Escribe tu nombre y apellidos y tu grupo antes de generar la entrega.", needCheck:"Primero tienes que corregir la ficha al menos una vez.",
+    sentOk:"Copia enviada también a tu profesor ✔", sentFail:"No se pudo enviar la copia automática; entrega el PDF por Classroom.",
+    navCuadernoT:"Cuaderno",
+    cuIntro:"Desde aquí puedes imprimir (o guardar en PDF) la hoja-guía del cuaderno y las fichas en papel, para trabajar sin Chromebook.",
+    cuWhat:"¿Qué quieres imprimir?", guideTitle:"Hoja-guía del cuaderno", paperFichas:"Fichas en papel", withText:"Incluir el texto del apartado",
+    guideIntro:"Pega esta hoja al principio de la unidad en tu cuaderno. Marca cada casilla cuando tengas ese apartado hecho. Pon siempre la fecha y el título de cada sesión.",
+    guideWhat:"Qué debe aparecer en tu cuaderno", guideType:"Tipo", gt_n:"Apuntes", gt_d:"Dibujo", gt_a:"Actividad",
+    rubricTitle:"Evaluación del cuaderno", criterion:"Criterio", maxPts:"Máximo", mark:"Nota", total:"Total",
+    rb1:"Contenido completo: aparecen todos los apartados de la lista.", rb2:"Dibujos y esquemas claros y bien hechos.", rb3:"Orden, limpieza y buena letra.", rb4:"Fechas, títulos y apartados bien indicados.",
+    teacherSign:"Revisado por el profesor", paperRead:"Lee antes el apartado", paperMatch:"Escribe en cada casilla la letra que corresponde.", paperOrder:"Numera las casillas en el orden correcto (1, 2, 3…).",
+    profTitle:"Página del profesor", verifyTitle:"Verificar una entrega", verifyHelp:"Escanea el QR del PDF con el móvil, o copia aquí el código, el nombre y el grupo tal como aparecen en el PDF.",
+    codeLbl:"Código", verifyBtn:"Verificar", keyTitle:"Solucionario de las fichas",
+    badCode:"El código no tiene un formato válido. Revisa que esté completo.",
+    validYes:"✔ Código válido para este alumno/a y grupo.", validNo:"✘ El código NO corresponde a ese nombre y grupo (o se ha modificado).",
+    verifyNote:"Comprueba que la nota, la fecha y la ficha coinciden con lo que muestra el PDF. Si dos alumnos distintos entregan desde el mismo dispositivo, revísalo.",
     qType:"Tipo de pregunta", qt_all:"Todas", qt_test:"Solo tipo test", qt_written:"Solo para escribir, relacionar y ordenar",
     lbl_mc:"Test", lbl_tf:"Verdadero / falso", lbl_fill:"Completar", lbl_match:"Relacionar", lbl_order:"Ordenar", lbl_open:"Respuesta escrita",
     examKind:"Tipo de examen", ek_mix:"Mixto (test y escritas)", ek_test:"Solo tipo test", ek_written:"Solo escribir, relacionar y ordenar", ek_model:"Modelo de examen completo",
@@ -420,6 +2821,38 @@ const UI = {
     name:"Name:", group:"Class:", toc:"Contents",
     bankTitle:"Question bank with answers", solTitle:"Activity solutions",
     answer:"Answer",
+    navFichas:"Worksheets", navCuaderno:"Notebook", confirmCheck:"You have {n} unanswered activity(ies) and this will count as an attempt. Check anyway?",
+    mFichas:"Worksheets", mFichasD:"Read each section, do the activities and hand in your worksheet as a PDF on Classroom.",
+    mCuaderno:"Notebook", mCuadernoD:"Guide sheet of what your notebook must contain and paper worksheets to print.",
+    fichasIntro:"Each worksheet matches a section of the unit. First write your name and your class (you only need to do it once on this device). Then open the worksheet your teacher tells you.",
+    ficha:"Worksheet", activities:"activities", st_new:"Not started", st_doing:"In progress", st_pass:"Passed", st_done:"Completed", attemptsShort:"attempts",
+    continue:"Continue", startFicha:"Start", allFichas:"All worksheets",
+    fullName:"Full name", groupLbl:"Class", device:"Device",
+    partialShort:"Almost", reviewIt:"Check it again",
+    step1:"Read the section", step2:"Do the activities", step3:"Hand in your worksheet",
+    step2Help:"When you finish, press “Check”. Correct answers are fixed in green; wrong ones are marked in red so you can review them. You can check as many times as you need.",
+    correctBtn:"Check", notCorrected:"You have not checked the worksheet yet.",
+    fichaDone:"Worksheet 100% complete! You can now create your hand-in.", fichaPass:"Worksheet passed. You can improve it or create your hand-in now.", fichaRetry:"Review what is marked in red (read the section again) and check again.",
+    attempts:"Attempts", firstTry:"First-attempt mark", currentMark:"Current mark", finalMark:"Final mark",
+    step3Help:"Press the button and, in the print window, choose “Save as PDF” as the destination. Then upload that PDF to the Classroom assignment.",
+    makePdf:"Create hand-in (PDF)", deliveredAt:"Date and time", workTime:"Working time", answersTitle:"Answers",
+    codeHelp:"Verification code. Your teacher can check it by scanning the QR.",
+    repFooter:"Document generated automatically by the Unit 1 study app. The verification code becomes invalid if the name, class or mark is changed.",
+    needIdent:"Write your full name and your class before creating the hand-in.", needCheck:"You must check the worksheet at least once first.",
+    sentOk:"A copy was also sent to your teacher ✔", sentFail:"The automatic copy could not be sent; hand in the PDF on Classroom.",
+    navCuadernoT:"Notebook",
+    cuIntro:"From here you can print (or save as PDF) the notebook guide sheet and the paper worksheets, to work without a Chromebook.",
+    cuWhat:"What do you want to print?", guideTitle:"Notebook guide sheet", paperFichas:"Paper worksheets", withText:"Include the text of the section",
+    guideIntro:"Stick this sheet at the start of the unit in your notebook. Tick each box when you have done that part. Always write the date and the title of each lesson.",
+    guideWhat:"What must appear in your notebook", guideType:"Type", gt_n:"Notes", gt_d:"Drawing", gt_a:"Activity",
+    rubricTitle:"Notebook assessment", criterion:"Criterion", maxPts:"Maximum", mark:"Mark", total:"Total",
+    rb1:"Complete content: all the items on the list appear.", rb2:"Clear, well-made drawings and diagrams.", rb3:"Order, tidiness and neat handwriting.", rb4:"Dates, titles and sections clearly shown.",
+    teacherSign:"Checked by the teacher", paperRead:"First read section", paperMatch:"Write the matching letter in each box.", paperOrder:"Number the boxes in the correct order (1, 2, 3…).",
+    profTitle:"Teacher page", verifyTitle:"Verify a hand-in", verifyHelp:"Scan the QR on the PDF with your phone, or copy the code, name and class here exactly as they appear on the PDF.",
+    codeLbl:"Code", verifyBtn:"Verify", keyTitle:"Worksheet answer key",
+    badCode:"The code does not have a valid format. Check that it is complete.",
+    validYes:"✔ Valid code for this student and class.", validNo:"✘ The code does NOT match that name and class (or it has been changed).",
+    verifyNote:"Check that the mark, date and worksheet match what the PDF shows. If two different students hand in from the same device, look into it.",
     qType:"Question type", qt_all:"All", qt_test:"Multiple choice only", qt_written:"Only writing, matching and ordering",
     lbl_mc:"Multiple choice", lbl_tf:"True / false", lbl_fill:"Fill in", lbl_match:"Matching", lbl_order:"Ordering", lbl_open:"Written answer",
     examKind:"Exam type", ek_mix:"Mixed (multiple choice and written)", ek_test:"Multiple choice only", ek_written:"Only writing, matching and ordering", ek_model:"Full model exam",
@@ -1598,8 +4031,152 @@ const QUESTIONS = RAW_Q.map((r,i)=>({
   o:r[3].map(p=>({es:p[0],en:p[1]})),
   x:{es:r[4][0],en:r[4][1]}
 }));
-MODEL_Q.forEach(m=>{
-  const q = {id:QUESTIONS.length, src:"model", type:m.type, pts:m.pts, n:m.n, t:m.t, q:m.q, fixed:!!m.fixed};
+/* =========================================================
+   FICHAS (daily work sheets) — 1 per content section.
+   Items: {m:n} = question n of the model exam; other objects = questions only used in fichas.
+   ========================================================= */
+const FICHA_DEF = [
+{sec:"tech", items:[
+ {type:"fill", pts:1, q:{es:"La tecnología es la combinación de conocimientos, {{0}} y {{1}} que permite resolver {{2}} y satisfacer necesidades humanas.", en:"Technology is the combination of knowledge, {{0}} and {{1}} that allows us to solve {{2}} and meet human needs."},
+  blanks:[{es:["técnicas"],en:["techniques"],alt:["tecnica","technique"]},{es:["habilidades"],en:["skills"],alt:["habilidad","skill"]},{es:["problemas"],en:["problems"],alt:["problema","problem"]}]},
+ {type:"match", pts:1, q:{es:"Relaciona cada ingrediente de la tecnología con lo que aporta.", en:"Match each ingredient of technology with what it contributes."},
+  items:[["Ciencia","Science"],["Técnica","Technique"],["Habilidad","Skill"]],
+  opts:[["Herramientas y procesos","Tools and processes"],["Destreza humana","Human dexterity"],["Conocer el mundo","Knowing the world"]], ans:[2,0,1]},
+ {m:1},
+ {type:"mc", fixed:true, pts:0.5, q:{es:"Verdadero o falso: la ciencia, por sí sola, ya es tecnología.", en:"True or false: science on its own is already technology."},
+  o:[["Verdadero","True"],["Falso","False"]], a:1, x:["Ninguno de los tres ingredientes basta por sí solo.","None of the three ingredients is enough on its own."]},
+ {type:"fill", pts:0.5, q:{es:"C + T + H = {{0}}", en:"Science + Technique + Skill = {{0}}"},
+  blanks:[{es:["tecnología"],en:["technology"],alt:[]}]},
+ {type:"open", pts:1.5, q:{es:"Explica con tus palabras qué es la tecnología.", en:"Explain in your own words what technology is."},
+  model:["La tecnología es la combinación de conocimientos (ciencia), técnicas (herramientas y procesos) y habilidades (destreza humana) que permite resolver problemas y satisfacer necesidades humanas.","Technology is the combination of knowledge (science), techniques (tools and processes) and skills (human dexterity) that allows us to solve problems and meet human needs."],
+  groups:[
+   {es:"Conocimientos / ciencia",en:"Knowledge / science",k:["conocimiento","ciencia","saber","knowledge","science"]},
+   {es:"Técnicas / herramientas",en:"Techniques / tools",k:["tecnica","herramienta","proceso","technique","tool","process"]},
+   {es:"Habilidades / destreza",en:"Skills / dexterity",k:["habilidad","destreza","skill","dexterity","ability"]},
+   {es:"Resolver problemas o necesidades",en:"Solving problems or needs",k:["problema","necesidad","solucion","resolver","problem","need","solution","solve"]}
+  ], need:3}
+]},
+{sec:"needs", items:[
+ {type:"match", pts:1.5, q:{es:"Clasifica cada necesidad como BÁSICA o SECUNDARIA.", en:"Classify each need as BASIC or SECONDARY."},
+  items:[["Alimentación","Food"],["Ocio","Leisure"],["Salud","Health"],["Transporte","Transport"],["Vivienda","Housing"],["Cultura","Culture"]],
+  opts:[["Básica","Basic"],["Secundaria","Secondary"]], ans:[0,1,0,1,0,1]},
+ {m:2},
+ {m:3},
+ {type:"match", pts:1, q:{es:"¿Qué tipo de necesidad satisface cada objeto?", en:"What type of need does each object meet?"},
+  items:[["Un router wifi","A wifi router"],["Un abrigo","A coat"],["Una vacuna","A vaccine"],["Una consola de videojuegos","A games console"]],
+  opts:[["Básica","Basic"],["Secundaria","Secondary"]], ans:[1,0,0,1]},
+ {type:"fill", pts:1, q:{es:"Las necesidades básicas son las de {{0}}; las secundarias mejoran la {{1}} de vida.", en:"Basic needs are the ones for {{0}}; secondary needs improve our {{1}} of life."},
+  blanks:[{es:["supervivencia"],en:["survival"],alt:["sobrevivir","survive"]},{es:["calidad"],en:["quality"],alt:[]}]},
+ {m:6}
+]},
+{sec:"products", items:[
+ {m:4},
+ {type:"fill", pts:1, q:{es:"Los bienes son objetos físicos, los {{0}} son intangibles y los {{1}} son sistemas.", en:"Goods are physical objects, {{0}} are intangible and {{1}} are systems."},
+  blanks:[{es:["servicios"],en:["services"],alt:["servicio","service"]},{es:["procesos"],en:["processes"],alt:["proceso","process"]}]},
+ {type:"mc", fixed:true, pts:0.5, q:{es:"Verdadero o falso: un servicio es un objeto físico que se puede tocar.", en:"True or false: a service is a physical object you can touch."},
+  o:[["Verdadero","True"],["Falso","False"]], a:1, x:["Los servicios son intangibles.","Services are intangible."]},
+ {type:"mc", pts:1, q:{es:"El reciclaje de botellas de plástico es…", en:"Recycling plastic bottles is…"},
+  o:[["Un proceso (sistema)","A process (system)"],["Un bien (objeto físico)","A good (physical object)"],["Un servicio (intangible)","A service (intangible)"],["Una necesidad básica","A basic need"]], a:0},
+ {type:"match", pts:1, q:{es:"Clasifica cada ejemplo según el tipo de producto tecnológico.", en:"Classify each example by type of technological product."},
+  items:[["Una bicicleta","A bicycle"],["El autobús urbano","The city bus"],["Un teléfono móvil","A mobile phone"],["La conexión wifi","A wifi connection"]],
+  opts:[["Bien","Good"],["Servicio","Service"],["Proceso","Process"]], ans:[0,1,0,1]}
+]},
+{sec:"analysis", items:[
+ {type:"match", pts:1.5, q:{es:"Relaciona cada tipo de análisis con lo que estudia.", en:"Match each type of analysis with what it studies."},
+  items:[["Anatómico","Anatomical"],["Técnico","Technical"],["Funcional","Functional"],["Estético","Aesthetic"],["Económico-social","Socio-economic"]],
+  opts:[["Belleza, color y acabado exterior","Beauty, colour and outer finish"],["Forma y piezas que lo componen","Shape and the parts it is made of"],["Coste económico e impacto en la sociedad y el medio ambiente","Economic cost and impact on society and the environment"],["Materiales y herramientas usadas en su fabricación","Materials and tools used to make it"],["Utilidad y función principal","Usefulness and main function"]],
+  ans:[1,3,4,0,2]},
+ {m:11}, {m:8}, {m:10}, {m:9}, {m:12}
+]},
+{sec:"process", items:[
+ {type:"order", pts:2, q:{es:"Ordena las 8 fases de la brújula del inventor. Usa las flechas para mover cada fase.", en:"Put the 8 stages of the inventor’s compass in order. Use the arrows to move each stage."},
+  items:[["Identificar el problema","Identify the problem"],["Buscar información","Research information"],["Generar ideas","Generate ideas"],["Elegir la mejor solución","Choose the best solution"],["Planificar y organizar","Plan and organise"],["Construir el prototipo","Build the prototype"],["Evaluar y comprobar","Test and evaluate"],["Presentar y comercializar","Present and market"]],
+  start:[5,2,7,0,4,1,6,3]},
+ {type:"order", pts:2, q:{es:"El circuito roto: los perros del barrio pasan frío. Ordena las 8 tarjetas de acción.", en:"The broken circuit: the neighbourhood dogs are cold. Put the 8 action cards in order."},
+  items:[["Nos damos cuenta de que los perros pasan frío.","We realise that the dogs are cold."],["Buscamos en internet medidas estándar de perros.","We look up standard dog sizes on the internet."],["Dibujamos tres opciones diferentes de casetas.","We draw three different kennel options."],["Elegimos la caseta con techo inclinado para la lluvia.","We choose the kennel with a sloping roof for the rain."],["Hacemos una lista de la madera y clavos necesarios.","We make a list of the wood and nails we need."],["Construimos una caseta de madera reciclada.","We build a kennel out of recycled wood."],["Probamos si un perro cabe dentro y está caliente.","We test whether a dog fits inside and stays warm."],["Hacemos un cartel para enseñársela a los vecinos.","We make a poster to show it to the neighbours."]],
+  start:[5,2,0,6,3,4,1,7]},
+ {type:"mc", fixed:true, pts:0.5, q:{es:"Verdadero o falso: el proceso tecnológico es una línea recta; cuando terminas de construir, ya has acabado.", en:"True or false: the technological process is a straight line; once you finish building, you are done."},
+  o:[["Verdadero","True"],["Falso","False"]], a:1, x:["Es un ciclo: si falla, rediseña.","It is a cycle: if it fails, redesign."]},
+ {m:26},
+ {type:"fill", pts:0.5, q:{es:"Si al evaluar el prototipo falla, hay que volver atrás y {{0}}.", en:"If the prototype fails when we test it, we must go back and {{0}}."},
+  blanks:[{es:["rediseñar"],en:["redesign"],alt:["redisenarlo","rediseña","rediseñarlo","redesign it"]}]},
+ {m:29}
+]},
+{sec:"team", items:[
+ {m:31}, {m:32}, {m:34}, {m:30}, {m:35}
+]},
+{sec:"tools", items:[
+ {type:"match", pts:1.5, q:{es:"¿A qué familia de herramientas pertenece cada operación?", en:"Which family of tools does each operation belong to?"},
+  items:[["Medir","Measure"],["Golpear","Hit"],["Perforar","Drill"],["Sujetar","Hold"],["Acabar","Finish"],["Cortar / serrar","Cut / saw"]],
+  opts:[["La Mente (preparación)","The Mind (preparation)"],["La Fuerza (transformación)","The Strength (transformation)"],["La Precisión (finalización)","The Precision (finishing)"]],
+  ans:[0,1,2,0,2,1]},
+ {type:"order", pts:1.5, q:{es:"Ordena el mantra del taller: lo que hay que seguir SIEMPRE antes de fabricar.", en:"Put the workshop mantra in order: what you must ALWAYS follow before making something."},
+  items:[["Mide","Measure"],["Marca","Mark"],["Corta","Cut"],["Perfora","Drill"],["Monta","Assemble"],["Acaba","Finish"]],
+  start:[2,4,0,5,1,3]},
+ {type:"match", pts:1.5, q:{es:"Relaciona cada herramienta con su uso.", en:"Match each tool with its use."},
+  items:[["Escuadra","Try square"],["Compás","Compass"],["Serrucho","Handsaw"],["Sierra de calar / segueta","Coping saw / fretsaw"],["Broca Forstner","Forstner bit"],["Lima","File"]],
+  opts:[["Cortes curvos o finos","Curved or fine cuts"],["Comprobar ángulos rectos (90º)","Checking right angles (90º)"],["Desbastar bordes duros","Smoothing down hard edges"],["Trazar circunferencias","Drawing circles"],["Agujeros anchos","Wide holes"],["Cortes rectos y largos en madera","Long, straight cuts in wood"]],
+  ans:[1,3,5,0,4,2]},
+ {m:42}, {m:39},
+ {type:"fill", pts:1, q:{es:"Consejo experto: mide dos veces, {{0}} una vez.", en:"Expert tip: measure twice, {{0}} once."},
+  blanks:[{es:["corta"],en:["cut"],alt:["cortar"]}]},
+ {m:45}
+]},
+{sec:"safety", items:[
+ {type:"match", pts:1.5, q:{es:"Relaciona cada norma básica con lo que dice.", en:"Match each basic rule with what it says."},
+  items:[["1. Orden y tranquilidad","1. Order and calm"],["2. Uso correcto","2. Correct use"],["3. Seguridad al cortar","3. Cutting safely"],["4. Máquinas eléctricas","4. Electric machines"],["5. Indumentaria","5. Clothing"]],
+  opts:[["Pelo recogido, sin bufandas ni ropa suelta","Hair tied back, no scarves or loose clothes"],["Entra sin correr y mantén tu mesa limpia","Come in without running and keep your table clean"],["Solo con autorización y supervisión del profesor","Only with the teacher’s permission and supervision"],["Cada herramienta SOLO para su función real","Each tool ONLY for its real purpose"],["Sujeta la pieza y corta alejándote del cuerpo","Hold the piece and cut away from your body"]],
+  ans:[1,3,4,2,0]},
+ {m:50}, {m:47}, {m:49}, {m:51}, {m:48}, {m:52}
+]},
+{sec:"drawing", items:[
+ {type:"order", pts:1, q:{es:"Ordena los 3 pasos de la expresión gráfica, de la idea al objeto.", en:"Put the 3 steps of graphic expression in order, from idea to object."},
+  items:[["Boceto","Sketch"],["Croquis","Dimensioned sketch"],["Dibujo técnico","Technical drawing"]], start:[2,0,1]},
+ {type:"match", pts:1.5, q:{es:"Relaciona cada tipo de línea con lo que representa.", en:"Match each line type with what it shows."},
+  items:[["Continua gruesa","Thick continuous"],["Continua fina","Thin continuous"],["Discontinua","Dashed"]],
+  opts:[["Aristas ocultas","Hidden edges"],["Contornos visibles","Visible outlines"],["Líneas auxiliares y de cota","Auxiliary and dimension lines"]], ans:[1,2,0]},
+ {type:"mc", fixed:true, pts:0.5, q:{es:"Verdadero o falso: el boceto se dibuja con regla y con medidas exactas.", en:"True or false: a sketch is drawn with a ruler and exact measurements."},
+  o:[["Verdadero","True"],["Falso","False"]], a:1, x:["El boceto es rápido, a mano alzada y sin medidas exactas.","A sketch is quick, freehand and without exact measurements."]},
+ {type:"fill", pts:1, q:{es:"El croquis SIEMPRE lleva {{0}} (cotas), expresadas en {{1}}.", en:"A dimensioned sketch ALWAYS has {{0}} (dimensions), given in {{1}}."},
+  blanks:[{es:["medidas"],en:["measurements"],alt:["medida","cotas","measurement","dimensions"]},{es:["milímetros"],en:["millimetres"],alt:["mm","milimetro","millimeters","millimetre"]}]},
+ {m:53}
+]},
+{sec:"docs", items:[
+ {type:"match", pts:1.5, q:{es:"Relaciona cada documento del proyecto con su descripción.", en:"Match each project document with its description."},
+  items:[["Boceto y croquis","Sketch and dimensioned sketch"],["Lista de materiales y herramientas","List of materials and tools"],["Plan de trabajo y reparto","Work plan and task allocation"],["Hoja de proceso","Process sheet"],["Presupuesto","Budget"],["Memoria final","Final report"]],
+  opts:[["Quién hace qué y cuándo","Who does what and when"],["Documento de evaluación tras terminar el objeto","Evaluation document after finishing the object"],["La idea visual (antes de construir)","The visual idea (before building)"],["Cálculo de cuánto nos costaría fabricarlo","Calculation of how much it would cost us to make it"],["Todo lo que necesitaremos","Everything we will need"],["El diario de a bordo durante la fabricación","The logbook during manufacturing"]],
+  ans:[2,4,0,5,3,1]},
+ {m:56}, {m:54}, {m:55},
+ {type:"fill", pts:1, q:{es:"Un proyecto sin documentación es solo un {{0}}. Si no está en {{1}}, no existe.", en:"A project without documentation is just a {{0}}. If it is not on {{1}}, it does not exist."},
+  blanks:[{es:["pasatiempo"],en:["hobby"],alt:[]},{es:["papel"],en:["paper"],alt:[]}]},
+ {m:57}
+]},
+{sec:"project", items:[
+ {type:"order", pts:1.5, q:{es:"Ordena las 5 fases de la hoja de ruta del proyecto del organizador.", en:"Put the 5 stages of the organiser project roadmap in order."},
+  items:[["Medir y cortar","Measure and cut"],["Marcar y perforar","Mark and drill"],["Unir y encolar","Join and glue"],["Montar el soporte","Assemble the support"],["Acabar","Finish"]], start:[3,0,4,2,1]},
+ {type:"match", pts:1, q:{es:"Relaciona cada parte del organizador con su descripción.", en:"Match each part of the organiser with its description."},
+  items:[["Soporte principal","Main support"],["Fijaciones cilíndricas","Cylindrical fixings"],["Listones de freno","Stopper strips"],["Base ranurada","Slotted base"]],
+  opts:[["Evitan que el móvil deslice","Stop the mobile phone from sliding"],["Madera de contrachapado resistente","Strong plywood"],["Diseñada para encajar el respaldo","Designed to fit the backrest"],["Varillas de madera redondas para llaves y soporte","Round wooden rods for keys and support"]],
+  ans:[1,3,0,2]},
+ {type:"fill", pts:1, q:{es:"En el proyecto taladramos orificios de ø{{0}} mm y ø{{1}} mm.", en:"In the project we drill holes of ø{{0}} mm and ø{{1}} mm."},
+  blanks:[{es:["10"],en:["10"],alt:[]},{es:["15"],en:["15"],alt:[]}]},
+ {m:58},
+ {type:"mc", fixed:true, pts:0.5, q:{es:"Verdadero o falso: al fijar las varillas de retención, las muescas deben mirar hacia abajo.", en:"True or false: when fixing the retaining rods, the notches must face downwards."},
+  o:[["Verdadero","True"],["Falso","False"]], a:1, x:["Las muescas deben mirar hacia arriba.","The notches must face upwards."]}
+]},
+{sec:"summary", items:[
+ {type:"match", pts:2, q:{es:"Relaciona cada pilar de la unidad con su idea principal.", en:"Match each pillar of the unit with its main idea."},
+  items:[["Pilar 1: Definición","Pillar 1: Definition"],["Pilar 2: Proceso","Pillar 2: Process"],["Pilar 3: Herramientas y dibujo","Pillar 3: Tools and drawing"],["Pilar 4: Seguridad","Pillar 4: Safety"]],
+  opts:[["Mide → Marca → Corta → Perfora → Monta → Acaba","Measure → Mark → Cut → Drill → Assemble → Finish"],["Sentido común, puesto ordenado y trabajo en equipo","Common sense, a tidy workspace and teamwork"],["C + T + H = Tecnología","Science + Technique + Skill = Technology"],["Identificar → Buscar → Generar → … → Presentar","Identify → Research → Generate → … → Present"]],
+  ans:[2,3,0,1]},
+ {m:59},
+ {type:"fill", pts:1, q:{es:"El croquis SIEMPRE lleva {{0}}.", en:"A dimensioned sketch ALWAYS has {{0}}."},
+  blanks:[{es:["medidas"],en:["measurements"],alt:["cotas","medida","dimensions","measurement"]}]}
+]}
+];
+
+function addQ(m, src){
+  const q = {id:QUESTIONS.length, src, type:m.type, pts:m.pts, n:m.n, t:m.t, q:m.q, fixed:!!m.fixed};
   const pair = p=>({es:p[0],en:p[1]});
   if(m.type==="mc"){ q.o=m.o.map(pair); q.a=m.a; }
   if(m.type==="fill"){ q.blanks=m.blanks; }
@@ -1607,8 +4184,15 @@ MODEL_Q.forEach(m=>{
   if(m.type==="order"){ q.items=m.items.map(pair); q.start=m.start; }
   if(m.type==="open"){ q.model=pair(m.model); q.groups=m.groups; q.need=m.need; }
   q.x = m.x ? pair(m.x) : null;
-  QUESTIONS.push(q);
-});
+  QUESTIONS.push(q); return q.id;
+}
+MODEL_Q.forEach(m=>addQ(m,"model"));
+FICHA_DEF.forEach(f=>{ f.ids = f.items.map(it=>{
+  if(it.m){ const q=QUESTIONS.find(x=>x.src==="model" && x.n===it.m); if(!q) throw new Error("model "+it.m); return q.id; }
+  return addQ(Object.assign({t:f.sec}, it), "ficha");
+}); });
+/* questions used for study (practice, flashcards, exam, notes): everything except ficha-only items */
+const STUDY = QUESTIONS.filter(q=>q.src!=="ficha");
 
 /* ---------- answer checking (case, accents and punctuation are ignored) ---------- */
 function norm(s){
@@ -1706,7 +4290,7 @@ function topicOptions(selected, withAll=true){
   TOPICS.forEach((t,i)=>{ h += `<option value="${t.id}"${selected===t.id?" selected":""}>${i+1}. ${esc(t[LANG])}</option>`; });
   return h;
 }
-const qsByTopic = t => QUESTIONS.filter(q=> t==="all" || q.t===t);
+const qsByTopic = t => STUDY.filter(q=> t==="all" || q.t===t);
 
 /* =========================================================
    7. VIEWS
@@ -1724,11 +4308,13 @@ function renderHome(){
     <div class="card" style="text-align:center">
       <div class="formula-mini">${LANG==="es"?"Ciencia + Técnica + Habilidad":"Science + Technique + Skill"}</div>
       <div style="font-family:var(--font-head);font-size:2.2rem;color:var(--orange);font-weight:700">= ${LANG==="es"?"TECNOLOGÍA":"TECHNOLOGY"}</div>
-      <p class="muted" style="margin:0">${QUESTIONS.length} ${LANG==="es"?"preguntas":"questions"} · ${SECTIONS.length} ${LANG==="es"?"apartados":"sections"}</p>
+      <p class="muted" style="margin:0">${STUDY.length} ${LANG==="es"?"preguntas":"questions"} · ${SECTIONS.length} ${LANG==="es"?"apartados":"sections"}</p>
     </div>
   </div>
   <div class="modes">
     <a class="card mode" href="#contenidos"><span class="ico" aria-hidden="true">📘</span><h3>${T("mContents")}</h3><span>${T("mContentsD")}</span></a>
+    <a class="card mode c3" href="#fichas"><span class="ico" aria-hidden="true">✏️</span><h3>${T("mFichas")}</h3><span>${T("mFichasD")}</span></a>
+    <a class="card mode c5" href="#cuaderno"><span class="ico" aria-hidden="true">📒</span><h3>${T("mCuaderno")}</h3><span>${T("mCuadernoD")}</span></a>
     <a class="card mode c2" href="#flashcards"><span class="ico" aria-hidden="true">🃏</span><h3>${T("mFlash")}</h3><span>${T("mFlashD")}</span></a>
     <a class="card mode c3" href="#practica"><span class="ico" aria-hidden="true">🎯</span><h3>${T("mPractice")}</h3><span>${T("mPracticeD")}</span></a>
     <a class="card mode c4" href="#examen"><span class="ico" aria-hidden="true">📝</span><h3>${T("mExam")}</h3><span>${T("mExamD")}</span></a>
@@ -1894,12 +4480,13 @@ function typeLabel(q){
 }
 /* st = {ans, order(for mc), done(bool, show correction)} */
 function answerAreaHTML(q, st){
-  const ans = st.ans, done = st.done, L = LANG;
+  const ans = st.ans, done = st.done, L = LANG, mark = !!st.mark && !done;
   if(q.type==="mc"){
     const ord = q.fixed ? q.o.map((_,i)=>i) : st.order;
     return `<div class="opts">${ord.map((oi,k)=>{
       let cls="";
       if(done){ if(oi===q.a) cls=" right"; else if(oi===ans) cls=" wrong"; }
+      else if(mark && ans===oi) cls = oi===q.a ? " right" : " wrong";
       else if(ans===oi) cls=" sel";
       return `<button type="button" class="opt${cls}" data-oi="${oi}" aria-pressed="${ans===oi}"${done?" disabled":""}><span class="lt">${LETTERS[k]}</span><span>${esc(q.o[oi][L])}</span></button>`;}).join("")}</div>`;
   }
@@ -1911,7 +4498,7 @@ function answerAreaHTML(q, st){
       h += p;
       if(k<parts.length-1){ i++;
         const v = (ans||[])[i]||"";
-        let cls = ""; if(done) cls = blankOK(v,q.blanks[i]) ? " right" : " wrong";
+        let cls = ""; if(done||mark) cls = blankOK(v,q.blanks[i]) ? " right" : " wrong";
         h += `<input type="text" class="blank${cls}" data-b="${i}" value="${esc(v)}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${T("blank")} ${i+1}"${done?" disabled":""}>`;
       }
     });
@@ -1920,7 +4507,7 @@ function answerAreaHTML(q, st){
   if(q.type==="match"){
     return `<div class="match">${q.items.map((it,i)=>{
       const v = ans ? ans[i] : -1;
-      let cls=""; if(done) cls = v===q.ans[i] ? " right" : " wrong";
+      let cls=""; if(done||mark) cls = v===q.ans[i] ? " right" : " wrong";
       return `<div class="match-row${cls}"><span class="mi"><b>${i+1}.</b> ${esc(it[L])}</span>
         <select data-m="${i}"${done?" disabled":""} aria-label="${esc(it[L])}"><option value="-1">${T("choose")}</option>${q.opts.map((o,k)=>`<option value="${k}"${v===k?" selected":""}>${LETTERS[k]}) ${esc(o[L])}</option>`).join("")}</select>
         ${done && v!==q.ans[i] ? `<span class="mfix">✔ ${esc(q.opts[q.ans[i]][L])}</span>`:""}</div>`;}).join("")}</div>`;
@@ -1928,7 +4515,7 @@ function answerAreaHTML(q, st){
   if(q.type==="order"){
     const cur = ans || q.start;
     return `<ol class="circuit qorder">${cur.map((it,pos)=>{
-      let cls=""; if(done) cls = it===pos ? "ok" : "bad";
+      let cls=""; if(done||mark) cls = it===pos ? "ok" : "bad";
       return `<li class="${cls}"><span class="pos">${pos+1}</span><span class="txt">${esc(q.items[it][L])}${done&&it!==pos?` <span class="muted">(${T("goesIn")} ${it+1})</span>`:""}</span>
         <button type="button" data-mv="up" data-i="${pos}" aria-label="${T("moveUp")}"${pos===0||done?" disabled":""}>▲</button>
         <button type="button" data-mv="down" data-i="${pos}" aria-label="${T("moveDown")}"${pos===cur.length-1||done?" disabled":""}>▼</button></li>`;}).join("")}</ol>`;
@@ -1986,7 +4573,7 @@ function feedbackHTML(q, ans){
 // ---------- PRACTICE ----------
 const pr = { topic:"all", qtype:"all", list:[], i:0, orders:{}, answers:{}, checked:{}, started:false };
 function startPractice(){
-  pr.list = shuffle(QUESTIONS.filter(q=>(pr.topic==="all"||q.t===pr.topic) && TYPE_GROUPS[pr.qtype](q)).map(q=>q.id));
+  pr.list = shuffle(STUDY.filter(q=>(pr.topic==="all"||q.t===pr.topic) && TYPE_GROUPS[pr.qtype](q)).map(q=>q.id));
   pr.orders = {}; pr.list.forEach(id=>{ const q=QUESTIONS[id]; if(q.type==="mc") pr.orders[id]=shuffle(q.o.map((_,i)=>i)); });
   pr.answers = {}; pr.checked = {}; pr.i=0; pr.started=true;
 }
@@ -2061,18 +4648,18 @@ function roundRobin(pool, n){
   return out;
 }
 function pickExam(n, kind){
-  if(kind==="model") return QUESTIONS.filter(q=>q.src==="model").sort((a,b)=>a.n-b.n).map(q=>q.id);
-  if(kind==="test") return shuffle(roundRobin(QUESTIONS.filter(TYPE_GROUPS.test), n));
-  if(kind==="written") return shuffle(roundRobin(QUESTIONS.filter(TYPE_GROUPS.written), n));
-  const written = QUESTIONS.filter(TYPE_GROUPS.written);
+  if(kind==="model") return STUDY.filter(q=>q.src==="model").sort((a,b)=>a.n-b.n).map(q=>q.id);
+  if(kind==="test") return shuffle(roundRobin(STUDY.filter(TYPE_GROUPS.test), n));
+  if(kind==="written") return shuffle(roundRobin(STUDY.filter(TYPE_GROUPS.written), n));
+  const written = STUDY.filter(TYPE_GROUPS.written);
   const nW = Math.min(written.length, Math.round(n*0.4));
-  return shuffle(roundRobin(written, nW).concat(roundRobin(QUESTIONS.filter(TYPE_GROUPS.test), n-nW)));
+  return shuffle(roundRobin(written, nW).concat(roundRobin(STUDY.filter(TYPE_GROUPS.test), n-nW)));
 }
 function examMaxN(kind){
-  if(kind==="test") return QUESTIONS.filter(TYPE_GROUPS.test).length;
-  if(kind==="written") return QUESTIONS.filter(TYPE_GROUPS.written).length;
-  if(kind==="model") return QUESTIONS.filter(q=>q.src==="model").length;
-  return QUESTIONS.length;
+  if(kind==="test") return STUDY.filter(TYPE_GROUPS.test).length;
+  if(kind==="written") return STUDY.filter(TYPE_GROUPS.written).length;
+  if(kind==="model") return STUDY.filter(q=>q.src==="model").length;
+  return STUDY.length;
 }
 function renderExam(focusSel){
   const v=$("#view-examen");
@@ -2182,6 +4769,378 @@ function renderExam(focusSel){
   $("#exPrint").onclick=()=>window.print();
 }
 
+// ---------- FICHAS (daily work) ----------
+const GUIDE = [
+ {sec:"tech", e:[["n","Definición de tecnología.","Definition of technology."],["d","Fórmula Ciencia + Técnica + Habilidad = Tecnología, con lo que aporta cada una (dibuja los bloques).","Formula Science + Technique + Skill = Technology, with what each one contributes (draw the blocks)."]]},
+ {sec:"needs", e:[["n","Tabla de necesidades básicas (supervivencia) y secundarias (calidad de vida).","Table of basic needs (survival) and secondary needs (quality of life)."],["a","Actividad «Clasifica»: router wifi, abrigo, vacuna y consola.","“Classify” activity: wifi router, coat, vaccine and games console."]]},
+ {sec:"products", e:[["n","Los 3 tipos de productos tecnológicos (bienes, servicios y procesos) con un ejemplo de cada.","The 3 types of technological products (goods, services and processes) with an example of each."]]},
+ {sec:"analysis", e:[["n","Tabla de los 5 tipos de análisis con su pregunta clave.","Table of the 5 types of analysis with their key question."],["a","Análisis rápido en vivo: las 5 lupas aplicadas al bolígrafo o al pupitre.","Quick live analysis: the 5 magnifying glasses applied to the pen or the desk."]]},
+ {sec:"process", e:[["d","Dibujo de la brújula del inventor: las 8 fases en ciclo, con «si falla, rediseña».","Drawing of the inventor’s compass: the 8 stages in a cycle, with “if it fails, redesign”."],["a","El circuito roto: las 8 tarjetas en orden.","The broken circuit: the 8 cards in order."]]},
+ {sec:"team", e:[["n","Los 4 roles del equipo de taller y la función de cada uno.","The 4 workshop team roles and the job of each one."]]},
+ {sec:"tools", e:[["n","Las 3 familias de herramientas y las 8 operaciones.","The 3 families of tools and the 8 operations."],["n","El mantra del taller: Mide → Marca → Corta → Perfora → Monta → Acaba.","The workshop mantra: Measure → Mark → Cut → Drill → Assemble → Finish."],["d","Dibuja al menos 3 herramientas (una de cada familia) y escribe para qué sirven.","Draw at least 3 tools (one from each family) and write what they are for."],["a","El cirujano del taller: los 4 casos con su herramienta.","The workshop surgeon: the 4 cases with their tool."]]},
+ {sec:"safety", e:[["n","Las 5 normas básicas del decálogo de supervivencia.","The 5 basic rules of the survival code."],["n","Qué hacer y qué no hacer en el taller.","What to do and what not to do in the workshop."],["a","Encuentra el peligro: las 5 infracciones y la norma que rompen.","Spot the danger: the 5 breaches and the rule they break."]]},
+ {sec:"drawing", e:[["n","Boceto, croquis y dibujo técnico: cómo se hace cada uno.","Sketch, dimensioned sketch and technical drawing: how each one is done."],["d","Los 3 tipos de línea dibujados, con su significado.","The 3 line types drawn, with their meaning."],["d","El escritorio del caos: tu boceto del organizador (5 minutos).","The chaos desk: your sketch of the organiser (5 minutes)."]]},
+ {sec:"docs", e:[["n","Los 6 documentos básicos del proyecto.","The 6 basic project documents."],["n","Qué se documenta antes, durante y después de construir.","What is documented before, during and after building."]]},
+ {sec:"project", e:[["n","Las partes del organizador OPITEC 122.979.","The parts of the OPITEC 122.979 organiser."],["n","Hoja de ruta del proyecto: las 5 fases.","Project roadmap: the 5 stages."]]},
+ {sec:"summary", e:[["n","Mapa de la unidad: los 4 pilares y la frase final.","Unit map: the 4 pillars and the final sentence."]]}
+];
+const secById = id => SECTIONS.find(s=>s.id===id);
+const fichaTitle = (f,L) => secById(f.sec)[L].title;
+
+/* device id (random, created once per browser profile) */
+const DEVICE = (function(){
+  let d = store.get("dev", null);
+  if(typeof d!=="string" || !/^[0-9A-Z]{6}$/.test(d)){
+    d = ""; const c="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    try{ const a=new Uint32Array(6); crypto.getRandomValues(a); a.forEach(x=>d+=c[x%36]); }
+    catch(e){ for(let i=0;i<6;i++) d+=c[Math.floor(Math.random()*36)]; }
+    store.set("dev", d);
+  }
+  return d;
+})();
+/* small deterministic hash (cyrb53) */
+function cyrb53(str, seed=0){
+  let h1=0xdeadbeef^seed, h2=0x41c6ce57^seed;
+  for(let i=0;i<str.length;i++){ const ch=str.charCodeAt(i); h1=Math.imul(h1^ch,2654435761); h2=Math.imul(h2^ch,1597334677); }
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  return 4294967296*(2097151&h2)+(h1>>>0);
+}
+function seededOrder(n, seedStr){ // stable option order per device + question
+  const idx=[...Array(n).keys()]; let s=cyrb53(seedStr)%2147483647||1;
+  for(let i=n-1;i>0;i--){ s=(s*48271)%2147483647; const j=s%(i+1); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+  return idx;
+}
+const EPOCH = Date.UTC(2026,0,1);
+const b36 = (n,w)=>Math.max(0,Math.floor(n)).toString(36).toUpperCase().padStart(w,"0").slice(-w);
+function codeSig(P, name, group){ return cyrb53(CONFIG.SALT+"|"+P+"|"+norm(name)+"|"+norm(group)).toString(36).toUpperCase().padStart(11,"0").slice(-6); }
+function makeCode(f, score, first, attempts, date, name, group){
+  const P = String(f).padStart(2,"0") + b36(score,2) + b36(first,2) + b36(Math.min(attempts,1295),2) + b36((date.getTime()-EPOCH)/60000,5) + DEVICE;
+  return "U1" + P + codeSig(P, name, group);
+}
+const fmtCode = c => c.slice(0,2)+"-"+c.slice(2).match(/.{1,5}/g).join("-");
+function decodeCode(raw, name, group){
+  const c = String(raw||"").toUpperCase().replace(/[^0-9A-Z]/g,"");
+  if(c.length!==27 || c.slice(0,2)!=="U1") return {ok:false, err:"format"};
+  const P=c.slice(2,21), sig=c.slice(21);
+  const f=parseInt(P.slice(0,2),10), score=parseInt(P.slice(2,4),36), first=parseInt(P.slice(4,6),36), att=parseInt(P.slice(6,8),36);
+  const min=parseInt(P.slice(8,13),36), dev=P.slice(13,19);
+  if(!(f>=1&&f<=FICHA_DEF.length) || score>100 || first>100 || isNaN(min)) return {ok:false, err:"format"};
+  return {ok:true, valid: sig===codeSig(P,name,group), f, score, first, att, date:new Date(EPOCH+min*60000), dev, code:c};
+}
+
+/* state */
+const fs = { open:null, ident: store.get("ident",{name:"",group:""}), data: store.get("fichas",{}) };
+function fd(num){
+  if(!fs.data[num]) fs.data[num] = {ans:{}, locked:{}, res:{}, dirty:{}, attempts:0, first:null, last:null, time:0};
+  return fs.data[num];
+}
+const saveFichas = ()=>store.set("fichas", fs.data);
+const FICHAS = FICHA_DEF.map((f,i)=>({num:i+1, sec:f.sec, ids:f.ids}));
+function fichaScore(num){
+  const f=FICHAS[num-1], d=fd(num);
+  let got=0, max=0;
+  f.ids.forEach(id=>{ const q=QUESTIONS[id]; max+=q.pts; got += (d.locked[id]?1:(d.res[id]||0))*q.pts; });
+  return {got, max, pct: max? Math.round(got/max*100) : 0};
+}
+function fichaStatus(num){
+  const d=fd(num);
+  if(!d.attempts) return Object.keys(d.ans).length ? "doing" : "new";
+  const s=fichaScore(num).pct;
+  return s===100 ? "done" : (s>=CONFIG.PASS ? "pass" : "doing");
+}
+setInterval(()=>{ // approximate working time
+  if(currentView==="fichas" && fs.open && document.visibilityState==="visible" && document.hasFocus()){
+    fd(fs.open).time += 10; saveFichas();
+  }
+}, 10000);
+
+function renderFichas(){
+  const v=$("#view-fichas");
+  if(fs.open) return renderFicha(fs.open);
+  const L=LANG;
+  v.innerHTML = `<h2>${T("navFichas")}</h2>
+  <div class="card">
+    <p style="margin-top:0">${T("fichasIntro")}</p>
+    ${identHTML()}
+  </div>
+  <div class="fgrid">${FICHAS.map(f=>{
+    const d=fd(f.num), st=fichaStatus(f.num), sc=fichaScore(f.num);
+    return `<div class="card fcard st-${st}">
+      <div class="fnum">${T("ficha")} ${f.num}</div>
+      <h3>${esc(fichaTitle(f,L))}</h3>
+      <div class="muted">${f.ids.length} ${T("activities")}</div>
+      <div class="fstat"><span class="chip ${st}">${T("st_"+st)}</span>${d.attempts?` <span>${sc.pct} % · ${d.attempts} ${T("attemptsShort")}</span>`:""}</div>
+      <button class="btn" type="button" data-open="${f.num}">${d.attempts||Object.keys(d.ans).length?T("continue"):T("startFicha")} ▶</button>
+    </div>`;}).join("")}</div>`;
+  bindIdent(v);
+  $$("[data-open]",v).forEach(b=>b.onclick=()=>{ fs.open=+b.dataset.open; renderFichas(); window.scrollTo({top:0}); });
+}
+function identHTML(){
+  return `<div class="row ident">
+    <label class="field">${T("fullName")}<input type="text" id="idName" maxlength="70" autocomplete="off" value="${esc(fs.ident.name)}"></label>
+    <label class="field">${T("groupLbl")}<input type="text" id="idGroup" maxlength="12" autocomplete="off" placeholder="1.º B" value="${esc(fs.ident.group)}" style="min-width:90px;width:110px"></label>
+    <span class="muted" style="margin-top:18px">${T("device")}: <b>${DEVICE}</b></span>
+  </div>`;
+}
+function bindIdent(v){
+  const n=$("#idName",v), g=$("#idGroup",v);
+  const save=()=>{ fs.ident={name:n.value.trim().slice(0,70), group:g.value.trim().slice(0,12)}; store.set("ident",fs.ident); };
+  n.addEventListener("input",save); g.addEventListener("input",save);
+}
+
+function fichaQState(num, id){
+  const d=fd(num), q=QUESTIONS[id];
+  return { ans:d.ans[id], order: q.type==="mc" ? seededOrder(q.o.length, DEVICE+"|"+id) : null,
+           done: !!d.locked[id], mark: d.res[id]!==undefined && !d.dirty[id] && !d.locked[id] };
+}
+function fichaCardHTML(num, id, k){
+  const q=QUESTIONS[id], st=fichaQState(num,id), d=fd(num);
+  let status="";
+  if(d.locked[id]) status=`<span class="qstat ok">✔ ${T("correct")}</span>`;
+  else if(st.mark) status = d.res[id]>0 ? `<span class="qstat part">◐ ${T("partialShort")}</span>` : `<span class="qstat ko">✘ ${T("reviewIt")}</span>`;
+  let extra="";
+  if(q.type==="open" && (st.mark || st.done)){
+    const found=openFound(q, d.ans[id]);
+    extra = `<div class="fb ${st.done?"ok":"part"}" style="margin-top:8px">${T("keyIdeas")} (${found.filter(Boolean).length}/${q.groups.length}, ${T("needed")} ${q.need}):<ul class="ideas">${q.groups.map((g,i)=>`<li class="${found[i]?"yes":"no"}">${found[i]?"✔":"✘"} ${esc(g[LANG])}</li>`).join("")}</ul></div>`;
+  }
+  return `<div class="fq-head"><span class="fq-n">${k+1}</span><span class="tag">${typeLabel(q)}</span><span class="muted">${fmtPts(q.pts)} ${T("ptsShort")}</span>${status}</div>
+    ${q.type==="fill"?`<div class="q-text">${T("fillIntro")}</div>`:`<div class="q-text">${esc(q.q[LANG])}</div>`}
+    <div class="fq-area">${answerAreaHTML(q, Object.assign({}, st, {done: st.done}), st.mark)}</div>${extra}`;
+}
+function mountFichaCard(num, id, k, focusSel){
+  const el = document.querySelector(`.fq[data-q="${id}"]`); if(!el) return;
+  el.className = "card fq" + (fd(num).locked[id] ? " locked" : "");
+  el.innerHTML = fichaCardHTML(num, id, k);
+  const q=QUESTIONS[id], d=fd(num);
+  if(!d.locked[id]){
+    bindAnswerArea($(".fq-area",el), q, fichaQState(num,id), (a, rerender, fsel)=>{
+      d.ans[id]=a; d.dirty[id]=true; saveFichas();
+      if(rerender) mountFichaCard(num, id, k, fsel);
+      else { $$(".right,.wrong,.ok,.bad",el).forEach(x=>x.classList.remove("right","wrong","ok","bad")); }
+    });
+  }
+  if(focusSel){ const f=el.querySelector(focusSel); if(f && !f.disabled) f.focus({preventScroll:true}); }
+}
+function fichaSummaryHTML(num){
+  const d=fd(num), sc=fichaScore(num);
+  if(!d.attempts) return `<p class="muted" style="margin:0">${T("notCorrected")}</p>`;
+  const msg = sc.pct===100 ? T("fichaDone") : (sc.pct>=CONFIG.PASS ? T("fichaPass") : T("fichaRetry"));
+  return `<div class="stats"><span>${T("attempts")}: ${d.attempts}</span><span>${T("firstTry")}: ${(d.first/10).toLocaleString(LANG==="es"?"es-ES":"en-GB",{maximumFractionDigits:1})}</span><span>${T("currentMark")}: ${(sc.pct/10).toLocaleString(LANG==="es"?"es-ES":"en-GB",{maximumFractionDigits:1})} / 10</span><span>${fmtPts(sc.got)} / ${fmtPts(sc.max)} ${T("ptsShort")}</span></div>
+    <p style="margin:10px 0 0;font-weight:700;color:var(--navy)">${msg}</p>`;
+}
+function renderFicha(num){
+  const v=$("#view-fichas"), f=FICHAS[num-1], L=LANG, sec=secById(f.sec);
+  v.innerHTML = `
+  <div class="no-print">
+    <button class="btn ghost" type="button" id="fBack">◀ ${T("allFichas")}</button>
+    <h2 style="margin-top:12px">${T("ficha")} ${num}: ${esc(sec[L].title)}</h2>
+    <div class="card" style="margin-bottom:14px">${identHTML()}</div>
+    <h3 class="step-h"><span>1</span> ${T("step1")}</h3>
+    <details class="sec" open><summary><span class="num">${SECTIONS.indexOf(sec)+1}</span>${esc(sec[L].title)}</summary><div class="sec-body doc">${sec[L].html()}</div></details>
+    <h3 class="step-h"><span>2</span> ${T("step2")}</h3>
+    <p class="muted">${T("step2Help")}</p>
+    ${f.ids.map(id=>`<div class="card fq" data-q="${id}"></div>`).join("")}
+    <div class="card fsum" id="fSum">${fichaSummaryHTML(num)}</div>
+    <div class="row" style="margin:12px 0 4px"><button class="btn green" type="button" id="fCheck">✔ ${T("correctBtn")}</button></div>
+    <h3 class="step-h"><span>3</span> ${T("step3")}</h3>
+    <div class="card">
+      <p style="margin-top:0">${T("step3Help")}</p>
+      <div class="row"><button class="btn orange" type="button" id="fPdf">📄 ${T("makePdf")}</button><span id="fMsg" class="muted" role="status"></span></div>
+    </div>
+  </div>
+  <div class="print-only" id="fReport"></div>`;
+  f.ids.forEach((id,k)=>mountFichaCard(num,id,k));
+  $$('[data-widget="circuit"]',v).forEach(mountCircuit);
+  $$(".sec-body details.sol",v).forEach(d=>d.remove()); // no solutions inside a worksheet
+  bindIdent(v);
+  $("#fBack").onclick=()=>{ fs.open=null; renderFichas(); window.scrollTo({top:0}); };
+  $("#fCheck").onclick=()=>{
+    const d=fd(num);
+    const missing = f.ids.filter(id=>!d.locked[id] && !isAnswered(QUESTIONS[id], d.ans[id])).length;
+    if(missing>0 && !window.confirm(T("confirmCheck").replace("{n}",missing))) return;
+    f.ids.forEach(id=>{ if(d.locked[id]) return; const s=scoreQ(QUESTIONS[id], d.ans[id]); d.res[id]=s; d.dirty[id]=false; if(s===1) d.locked[id]=true; });
+    d.attempts++; $("#fMsg").textContent="";
+    const pct=fichaScore(num).pct; if(d.first===null) d.first=pct; d.last=pct; saveFichas();
+    f.ids.forEach((id,k)=>mountFichaCard(num,id,k));
+    $("#fSum").innerHTML=fichaSummaryHTML(num);
+    $("#fSum").scrollIntoView({behavior:"smooth", block:"center"});
+  };
+  $("#fPdf").onclick=()=>makeDelivery(num);
+}
+function reportHTML(num, date){
+  const f=FICHAS[num-1], d=fd(num), sc=fichaScore(num), L=LANG, loc=L==="es"?"es-ES":"en-GB";
+  const code = makeCode(num, sc.pct, d.first===null?0:d.first, d.attempts, date, fs.ident.name, fs.ident.group);
+  const base = location.href.split("#")[0];
+  const url = `${base}#profesor?c=${code}&n=${encodeURIComponent(fs.ident.name)}&g=${encodeURIComponent(fs.ident.group)}`;
+  let qr = "";
+  try{ const qq=qrcode(0,"M"); qq.addData(url); qq.make(); qr = qq.createSvgTag(3,2); }catch(e){ qr=""; }
+  const mins = Math.max(1, Math.round(d.time/60));
+  return { code, url, html:`
+  <div class="rep-head">
+    <div><div class="muted">${esc(T("subject"))} · ${esc(T("unitTitle"))}</div>
+      <h1>${T("ficha")} ${num}: ${esc(fichaTitle(f,L))}</h1></div>
+  </div>
+  <div class="rep-top">
+    <table class="rep-data">
+      <tr><th>${T("fullName")}</th><td>${esc(fs.ident.name)}</td></tr>
+      <tr><th>${T("groupLbl")}</th><td>${esc(fs.ident.group)}</td></tr>
+      <tr><th>${T("deliveredAt")}</th><td>${date.toLocaleDateString(loc,{day:"2-digit",month:"2-digit",year:"numeric"})} ${date.toLocaleTimeString(loc,{hour:"2-digit",minute:"2-digit"})}</td></tr>
+      <tr><th>${T("attempts")}</th><td>${d.attempts}</td></tr>
+      <tr><th>${T("firstTry")}</th><td>${((d.first||0)/10).toLocaleString(loc,{maximumFractionDigits:1})} / 10</td></tr>
+      <tr><th>${T("finalMark")}</th><td><b>${(sc.pct/10).toLocaleString(loc,{maximumFractionDigits:1})} / 10</b> (${fmtPts(sc.got)} / ${fmtPts(sc.max)} ${T("ptsShort")})</td></tr>
+      <tr><th>${T("workTime")}</th><td>≈ ${mins} min</td></tr>
+      <tr><th>${T("device")}</th><td>${DEVICE}</td></tr>
+    </table>
+    <div class="rep-code">${qr}<div class="code">${fmtCode(code)}</div><div class="muted" style="font-size:.8rem">${T("codeHelp")}</div></div>
+  </div>
+  <h2>${T("answersTitle")}</h2>
+  ${f.ids.map((id,k)=>{ const q=QUESTIONS[id], a=d.ans[id], s=d.locked[id]?1:(d.res[id]||0), gt=givenText(q,a,L);
+    const cls = s===1?"ok":(s>0?"part":"ko");
+    return `<div class="review-item ${cls}"><b>${k+1}. ${esc(promptText(q,L))}</b> <span class="muted">(${fmtPts(s*q.pts)} / ${fmtPts(q.pts)} ${T("ptsShort")})</span><br>
+      ${T("yourAnswer")} ${gt===null?`<i>${T("noAnswer")}</i>`:esc(gt)} ${s===1?"✔":(s>0?"◐":"✘")}</div>`;}).join("")}
+  <p class="muted" style="font-size:.8rem;margin-top:12px">${T("repFooter")}</p>`};
+}
+function makeDelivery(num){
+  const d=fd(num), msg=$("#fMsg");
+  if(!fs.ident.name || !fs.ident.group){ msg.textContent=T("needIdent"); const n=$("#idName"); if(n){ n.focus(); n.scrollIntoView({block:"center"}); } return; }
+  if(!d.attempts){ msg.textContent=T("needCheck"); return; }
+  const date=new Date();
+  const rep=reportHTML(num, date);
+  $("#fReport").innerHTML = rep.html;
+  const sc=fichaScore(num);
+  // automatic copy to the teacher's sheet (optional)
+  if(CONFIG.ENDPOINT){
+    const payload = { fecha: date.toISOString(), nombre: fs.ident.name, grupo: fs.ident.group, ficha: num, titulo: fichaTitle(FICHAS[num-1],"es"),
+      nota: sc.pct/10, primerIntento: (d.first||0)/10, intentos: d.attempts, minutos: Math.max(1,Math.round(d.time/60)), dispositivo: DEVICE, codigo: fmtCode(rep.code), idioma: LANG,
+      respuestas: FICHAS[num-1].ids.map((id,k)=>{ const q=QUESTIONS[id]; const s=d.locked[id]?1:(d.res[id]||0); return `${k+1}) ${givenText(q,d.ans[id],"es")||"—"} [${s===1?"✔":(s>0?"◐":"✘")}]`; }).join("\n") };
+    try{
+      fetch(CONFIG.ENDPOINT, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)})
+        .then(()=>{ msg.textContent=T("sentOk"); }).catch(()=>{ msg.textContent=T("sentFail"); });
+    }catch(e){ msg.textContent=T("sentFail"); }
+  }
+  const safe = s=>norm(s).replace(/ /g,"_").slice(0,40);
+  const oldTitle=document.title;
+  document.title = `U1_Ficha${String(num).padStart(2,"0")}_${safe(fs.ident.name)}_${safe(fs.ident.group)}`;
+  document.body.classList.add("printing-report");
+  const restore=()=>{ document.title=oldTitle; document.body.classList.remove("printing-report"); window.removeEventListener("afterprint",restore); };
+  window.addEventListener("afterprint",restore);
+  setTimeout(()=>{ window.print(); setTimeout(restore, 1500); }, 50);
+}
+
+// ---------- CUADERNO (notebook guide + paper fichas) ----------
+const cu = { mode:"guide", ficha:"all", withText:true, bw: store.get("bwCu",true) };
+function paperQHTML(q, k, L){
+  let h = `<div class="pq"><div class="pq-h"><b>${k+1}.</b> `;
+  if(q.type==="fill"){
+    h += `${T("fillIntro")} <span class="muted">(${fmtPts(q.pts)} ${T("ptsShort")})</span></div><p class="pq-fill">${esc(q.q[L]).replace(/\{\{\d+\}\}/g,'<span class="gap"></span>')}</p>`;
+  } else {
+    h += `${esc(q.q[L])} <span class="muted">(${fmtPts(q.pts)} ${T("ptsShort")})</span></div>`;
+    if(q.type==="mc"){
+      h += q.fixed ? `<div class="pq-tf">${q.o.map(o=>`<span><span class="box"></span> ${esc(o[L])}</span>`).join("")}</div>`
+                   : `<ul class="pq-opts">${q.o.map((o,i)=>`<li><span class="box"></span> ${LETTERS[i]}) ${esc(o[L])}</li>`).join("")}</ul>`;
+    } else if(q.type==="match"){
+      h += `<div class="pq-match"><ul>${q.items.map((it,i)=>`<li><span class="box wide"></span> ${i+1}. ${esc(it[L])}</li>`).join("")}</ul>
+        <ul>${q.opts.map((o,i)=>`<li><b>${LETTERS[i]})</b> ${esc(o[L])}</li>`).join("")}</ul></div><div class="muted" style="font-size:.85rem">${T("paperMatch")}</div>`;
+    } else if(q.type==="order"){
+      h += `<ul class="pq-opts">${q.start.map(i=>`<li><span class="box"></span> ${esc(q.items[i][L])}</li>`).join("")}</ul><div class="muted" style="font-size:.85rem">${T("paperOrder")}</div>`;
+    } else if(q.type==="open"){
+      h += `<div class="lines">${'<div></div>'.repeat(q.pts>=2?6:4)}</div>`;
+    }
+  }
+  return h + `</div>`;
+}
+function renderCuaderno(){
+  const v=$("#view-cuaderno"), L=LANG;
+  const sheetHead = title=>`<div class="paper-head"><div><div class="muted">${esc(T("subject"))} · U1</div><h2 style="border:0;margin:0">${title}</h2></div>
+    <div class="student"><div>${T("fullName")}: <span>&nbsp;</span></div><div>${T("groupLbl")}: <span style="min-width:70px">&nbsp;</span></div><div>${T("date")}: <span style="min-width:90px">&nbsp;</span></div></div></div>`;
+  let body;
+  if(cu.mode==="guide"){
+    let n=0;
+    body = `<section class="paper doc">${sheetHead(T("guideTitle"))}
+      <p>${T("guideIntro")}</p>
+      <table><tr><th style="width:40px">Nº</th><th>${T("guideWhat")}</th><th style="width:110px">${T("guideType")}</th><th style="width:60px">✓</th></tr>
+      ${GUIDE.map(g=>`<tr><td colspan="4" class="gsec"><b>${SECTIONS.indexOf(secById(g.sec))+1}. ${esc(secById(g.sec)[L].title)}</b></td></tr>`+
+        g.e.map(e=>{ n++; return `<tr><td>${n}</td><td>${esc(e[L==="es"?1:2])}</td><td>${T("gt_"+e[0])}</td><td><span class="box"></span></td></tr>`; }).join("")).join("")}
+      </table>
+      <div style="break-inside:avoid"><h3>${T("rubricTitle")}</h3>
+      <table><tr><th>${T("criterion")}</th><th style="width:90px">${T("maxPts")}</th><th style="width:90px">${T("mark")}</th></tr>
+        <tr><td>${T("rb1")}</td><td>4</td><td></td></tr>
+        <tr><td>${T("rb2")}</td><td>2</td><td></td></tr>
+        <tr><td>${T("rb3")}</td><td>2</td><td></td></tr>
+        <tr><td>${T("rb4")}</td><td>2</td><td></td></tr>
+        <tr><td><b>${T("total")}</b></td><td><b>10</b></td><td></td></tr></table>
+      <p style="margin-top:18px">${T("teacherSign")}: ______________________ &nbsp; ${T("date")}: ____________</p></div>
+    </section>`;
+  } else {
+    const list = cu.ficha==="all" ? FICHAS : [FICHAS[+cu.ficha-1]];
+    body = list.map(f=>{ const sec=secById(f.sec);
+      return `<section class="paper doc">${sheetHead(`${T("ficha")} ${f.num}: ${esc(sec[L].title)}`)}
+        ${cu.withText ? `<div class="paper-text"><h3>${T("step1")}</h3>${sec[L].html()}</div><h3>${T("step2")}</h3>` : `<p class="muted">${T("paperRead")} ${SECTIONS.indexOf(sec)+1}.</p>`}
+        ${f.ids.map((id,k)=>paperQHTML(QUESTIONS[id],k,L)).join("")}</section>`; }).join("");
+  }
+  v.innerHTML = `<h2 class="no-print">${T("navCuaderno")}</h2>
+  <div class="card print-controls no-print">
+    <p style="margin-top:0">${T("cuIntro")}</p>
+    <div class="row" style="gap:28px;align-items:flex-start">
+      <fieldset><legend>${T("cuWhat")}</legend>
+        <label><input type="radio" name="cum" value="guide"${cu.mode==="guide"?" checked":""}> ${T("guideTitle")}</label>
+        <label><input type="radio" name="cum" value="paper"${cu.mode==="paper"?" checked":""}> ${T("paperFichas")}</label></fieldset>
+      ${cu.mode==="paper"?`<label class="field">${T("ficha")}<select id="cuF"><option value="all">${T("allFichas")}</option>${FICHAS.map(f=>`<option value="${f.num}"${String(f.num)===String(cu.ficha)?" selected":""}>${f.num}. ${esc(fichaTitle(f,L))}</option>`).join("")}</select></label>
+      <label style="margin-top:22px"><input type="checkbox" id="cuTxt"${cu.withText?" checked":""}> ${T("withText")}</label>`:""}
+      <fieldset><legend>${T("printMode")}</legend>
+        <label><input type="radio" name="cub" value="color"${!cu.bw?" checked":""}> ${T("color")}</label>
+        <label><input type="radio" name="cub" value="bw"${cu.bw?" checked":""}> ${T("bw")}</label></fieldset>
+    </div>
+    <div class="row" style="margin-top:14px"><button class="btn orange" type="button" id="cuPrint">🖨️ ${T("printBtn")}</button></div>
+  </div>
+  <article class="notes paper-wrap${cu.bw?" bw":""}">${body}</article>`;
+  // static circuit in paper text
+  $$('[data-widget="circuit"]',v).forEach(h=>{ h.innerHTML = `<ul class="circuit-static">${CIRCUIT.shown.map(c=>`<li><span class="blank"></span>${esc(c[L])}</li>`).join("")}</ul>`; });
+  $$("details.sol",v).forEach(d=>d.remove());
+  $$('input[name="cum"]',v).forEach(r=>r.onchange=()=>{ if(r.checked){ cu.mode=r.value; renderCuaderno(); } });
+  $$('input[name="cub"]',v).forEach(r=>r.onchange=()=>{ if(r.checked){ cu.bw=(r.value==="bw"); store.set("bwCu",cu.bw); renderCuaderno(); } });
+  const sf=$("#cuF"); if(sf) sf.onchange=e=>{ cu.ficha=e.target.value; renderCuaderno(); };
+  const tx=$("#cuTxt"); if(tx) tx.onchange=e=>{ cu.withText=e.target.checked; renderCuaderno(); };
+  $("#cuPrint").onclick=()=>window.print();
+}
+
+// ---------- PROFESOR (not linked in the menu) ----------
+function renderProfesor(){
+  const v=$("#view-profesor"), L=LANG;
+  let params={}; try{ const h=location.hash.split("?")[1]||""; params=Object.fromEntries(new URLSearchParams(h)); }catch(e){}
+  v.innerHTML = `<h2 class="no-print">${T("profTitle")}</h2>
+  <div class="card no-print" style="margin-bottom:16px">
+    <h3 style="margin-top:0">${T("verifyTitle")}</h3>
+    <p class="muted" style="margin-top:0">${T("verifyHelp")}</p>
+    <div class="row">
+      <label class="field">${T("codeLbl")}<input type="text" id="pvC" style="min-width:300px" autocomplete="off"></label>
+      <label class="field">${T("fullName")}<input type="text" id="pvN" autocomplete="off"></label>
+      <label class="field">${T("groupLbl")}<input type="text" id="pvG" autocomplete="off" style="min-width:90px;width:110px"></label>
+      <button class="btn green" type="button" id="pvGo" style="margin-top:18px">${T("verifyBtn")}</button>
+    </div>
+    <div id="pvOut" style="margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <div class="row no-print" style="justify-content:space-between"><h3 style="margin:0">${T("keyTitle")}</h3><button class="btn ghost" type="button" id="pvPrint">🖨️ ${T("printBtn")}</button></div>
+    <div class="doc">${FICHAS.map(f=>`<h3>${T("ficha")} ${f.num}: ${esc(fichaTitle(f,L))}</h3>${f.ids.map((id,k)=>{ const q=QUESTIONS[id];
+      return `<div class="bank-q"><b>${k+1}. ${esc(promptText(q,L))}</b> <span class="muted">(${fmtPts(q.pts)} ${T("ptsShort")})</span>${fcExtra(q,L)}<br>✔ ${esc(answerText(q,L))}</div>`; }).join("")}`).join("")}</div>
+  </div>`;
+  $("#pvC").value=params.c||""; $("#pvN").value=params.n||""; $("#pvG").value=params.g||"";
+  const run=()=>{
+    const r=decodeCode($("#pvC").value, $("#pvN").value, $("#pvG").value), out=$("#pvOut"), loc=L==="es"?"es-ES":"en-GB";
+    if(!r.ok){ out.innerHTML=`<div class="fb ko">${T("badCode")}</div>`; return; }
+    out.innerHTML = `<div class="fb ${r.valid?"ok":"ko"}"><b>${r.valid?T("validYes"):T("validNo")}</b>
+      <ul style="margin:6px 0 0"><li>${T("ficha")} ${r.f}: ${esc(fichaTitle(FICHAS[r.f-1],L))}</li>
+      <li>${T("finalMark")}: <b>${(r.score/10).toLocaleString(loc)}</b> / 10 · ${T("firstTry")}: ${(r.first/10).toLocaleString(loc)} · ${T("attempts")}: ${r.att}</li>
+      <li>${T("deliveredAt")}: ${r.date.toLocaleString(loc)}</li><li>${T("device")}: <b>${r.dev}</b></li></ul>
+      <p style="margin:6px 0 0" class="muted">${T("verifyNote")}</p></div>`;
+  };
+  $("#pvGo").onclick=run;
+  $("#pvPrint").onclick=()=>window.print();
+  if(params.c) run();
+}
+
 // ---------- NOTES (printable) ----------
 const nt = { bw: store.get("bw",false), sol: store.get("incSol",true), bank: store.get("incBank",false) };
 function renderNotes(){
@@ -2189,7 +5148,7 @@ function renderNotes(){
   const secs = SECTIONS.map((s,i)=>`
     <section class="nsec doc"><h2><span class="n">${i+1}.</span> ${s[LANG].title}</h2>${s[LANG].html()}</section>`).join("");
   const bank = !nt.bank ? "" : `<section class="nsec doc"><h2>${T("bankTitle")}</h2>
-    ${TOPICS.map((t,ti)=>{ const qs=QUESTIONS.filter(q=>q.t===t.id); return `<h3>${ti+1}. ${esc(t[LANG])}</h3>`+
+    ${TOPICS.map((t,ti)=>{ const qs=STUDY.filter(q=>q.t===t.id); return `<h3>${ti+1}. ${esc(t[LANG])}</h3>`+
       qs.map((q,k)=>`<div class="bank-q"><b>${k+1}. ${esc(promptText(q,LANG))}</b>${fcExtra(q,LANG)}✔ ${esc(answerText(q,LANG))}</div>`).join(""); }).join("")}</section>`;
   v.innerHTML = `
   <h2 class="no-print">${T("navNotes")}</h2>
@@ -2238,7 +5197,10 @@ function renderNotes(){
 /* =========================================================
    8. ROUTER + LANGUAGE
    ========================================================= */
-const VIEWS = {inicio:renderHome, contenidos:renderContents, flashcards:renderFlash, practica:renderPractice, examen:renderExam, apuntes:renderNotes};
+const VIEWS = {inicio:renderHome, contenidos:renderContents, fichas:renderFichas, cuaderno:renderCuaderno, flashcards:renderFlash, practica:renderPractice, examen:renderExam, apuntes:renderNotes, profesor:renderProfesor};
+window.addEventListener("beforeprint", ()=>{
+  if(currentView==="fichas" && fs.open){ const r=$("#fReport"); if(r && !r.innerHTML.trim() && fd(fs.open).attempts && fs.ident.name && fs.ident.group) r.innerHTML = reportHTML(fs.open, new Date()).html; }
+});
 let currentView = "inicio";
 function applyStaticI18n(){
   document.documentElement.lang = LANG;
