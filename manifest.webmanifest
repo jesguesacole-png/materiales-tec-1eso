@@ -1,0 +1,15 @@
+{
+  "name": "U1 · El Proceso Tecnológico, el Taller y los Proyectos",
+  "short_name": "Tecno U1",
+  "description": "Tecnología y Digitalización 1.º ESO · Unidad 1 (ES/EN)",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbfcfe",
+  "theme_color": "#16365c",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
