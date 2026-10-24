@@ -1,1 +1,1735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>U1 · El Proceso Tecnológico, el Taller y los Proyectos</title>
+<meta name="description" content="Tecnología y Digitalización 1.º ESO · Unidad 1 · Estudio bilingüe (ES/EN): contenidos, flashcards, práctica, examen y apuntes imprimibles.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#16365c; --blue:#1f6fb2; --blue-soft:#e3eef9;
+  --orange:#e8710a; --orange-soft:#fdeedd;
+  --green:#2e8540; --green-soft:#e2f2e5;
+  --red:#c0392b; --red-soft:#fbe5e2;
+  --yellow:#f2b705; --yellow-soft:#fdf5d6;
+  --purple:#7b3fa0; --purple-soft:#f1e7f7;
+  --ink:#1d2733; --muted:#5b6876; --line:#c9d6e3;
+  --paper:#fbfcfe; --card:#ffffff; --grid:rgba(31,111,178,.07);
+  --radius:12px;
+  --font-body:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-head:"Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:var(--font-body); color:var(--ink); font-size:17px; line-height:1.55;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+h1,h2,h3,h4{font-family:var(--font-head); color:var(--navy); line-height:1.15; margin:0 0 .5em; letter-spacing:.01em}
+h1{font-size:2.2rem} h2{font-size:1.75rem} h3{font-size:1.3rem} h4{font-size:1.1rem}
+p{margin:0 0 .8em}
+button{font:inherit; cursor:pointer}
+button:focus-visible, summary:focus-visible, select:focus-visible, input:focus-visible{outline:3px solid var(--orange); outline-offset:2px}
+.wrap{max-width:1040px; margin:0 auto; padding:0 16px}
 
+/* ---------- header / nav ---------- */
+header.top{background:var(--navy); color:#fff; position:sticky; top:0; z-index:20; box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.top-row{display:flex; align-items:center; gap:12px; padding:10px 0; flex-wrap:wrap}
+.brand{display:flex; flex-direction:column; flex:1; min-width:200px}
+.brand small{opacity:.8; font-size:.8rem; letter-spacing:.04em; text-transform:uppercase}
+.brand b{font-family:var(--font-head); font-size:1.25rem; letter-spacing:.02em}
+.lang{display:flex; border:2px solid rgba(255,255,255,.6); border-radius:999px; overflow:hidden}
+.lang button{background:transparent; color:#fff; border:0; padding:6px 14px; font-weight:700; font-size:.95rem}
+.lang button[aria-pressed="true"]{background:var(--orange); color:#fff}
+nav.tabs{display:flex; gap:4px; overflow-x:auto; padding-bottom:8px; scrollbar-width:thin}
+nav.tabs a{color:#dbe7f5; text-decoration:none; padding:7px 12px; border-radius:8px; white-space:nowrap; font-weight:700; font-size:.95rem}
+nav.tabs a:hover{background:rgba(255,255,255,.12); color:#fff}
+nav.tabs a[aria-current="page"]{background:#fff; color:var(--navy)}
+
+main{padding:24px 0 60px}
+.view{display:none}
+.view.active{display:block}
+
+/* ---------- generic ---------- */
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; box-shadow:0 1px 3px rgba(22,54,92,.06)}
+.btn{display:inline-flex; align-items:center; gap:6px; border:2px solid var(--navy); background:var(--navy); color:#fff; padding:9px 16px; border-radius:10px; font-weight:700; font-size:.98rem; text-decoration:none}
+.btn:hover{filter:brightness(1.12)}
+.btn.ghost{background:#fff; color:var(--navy)}
+.btn.orange{background:var(--orange); border-color:var(--orange)}
+.btn.green{background:var(--green); border-color:var(--green)}
+.btn.red{background:var(--red); border-color:var(--red)}
+.btn:disabled{opacity:.45; cursor:not-allowed; filter:none}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.muted{color:var(--muted)}
+label.field{display:flex; flex-direction:column; gap:4px; font-weight:700; font-size:.92rem; color:var(--navy)}
+select,input[type=text]{font:inherit; padding:8px 10px; border:2px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); min-width:180px}
+.tag{display:inline-block; font-family:var(--font-head); font-weight:700; letter-spacing:.05em; text-transform:uppercase; font-size:.85rem; padding:2px 10px; border-radius:6px; background:var(--blue-soft); color:var(--blue)}
+.tag.orange{background:var(--orange-soft); color:#a34d00}
+.tag.green{background:var(--green-soft); color:var(--green)}
+.progress{height:10px; background:var(--blue-soft); border-radius:999px; overflow:hidden}
+.progress > span{display:block; height:100%; background:var(--orange); width:0; transition:width .25s}
+
+/* ---------- home ---------- */
+.hero{display:grid; gap:18px; grid-template-columns:1.3fr 1fr; align-items:center; margin-bottom:24px}
+.hero h1{font-size:2.6rem}
+.hero .formula-mini{font-family:var(--font-head); font-size:1.6rem; color:var(--navy)}
+.modes{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
+.mode{display:flex; flex-direction:column; gap:6px; text-decoration:none; color:inherit; border-top:6px solid var(--blue)}
+.mode:hover{transform:translateY(-2px); box-shadow:0 6px 16px rgba(22,54,92,.12)}
+.mode .ico{font-size:1.8rem}
+.mode h3{margin:0}
+.mode.c2{border-top-color:var(--orange)} .mode.c3{border-top-color:var(--green)} .mode.c4{border-top-color:var(--red)} .mode.c5{border-top-color:var(--purple)}
+
+/* ---------- contents (accordion) ---------- */
+.acc-tools{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px}
+details.sec{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); margin-bottom:10px; overflow:hidden}
+details.sec > summary{list-style:none; cursor:pointer; padding:14px 18px; display:flex; align-items:center; gap:12px; font-family:var(--font-head); font-size:1.35rem; font-weight:700; color:var(--navy)}
+details.sec > summary::-webkit-details-marker{display:none}
+details.sec > summary .num{flex:none; width:34px; height:34px; border-radius:8px; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:1.1rem}
+details.sec > summary::after{content:"+"; margin-left:auto; font-size:1.6rem; color:var(--orange); font-family:var(--font-body)}
+details.sec[open] > summary::after{content:"–"}
+details.sec[open] > summary{border-bottom:1px solid var(--line); background:var(--blue-soft)}
+.sec-body{padding:16px 20px 20px}
+
+/* ---------- content blocks (shared by screen + print) ---------- */
+.doc h3{margin-top:1.1em; color:var(--blue)}
+.doc ul,.doc ol{margin:0 0 .9em; padding-left:1.3em}
+.doc li{margin-bottom:.25em}
+.doc table{width:100%; border-collapse:collapse; margin:0 0 1em; font-size:.95rem; background:#fff}
+.doc th,.doc td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+.doc th{background:var(--navy); color:#fff; font-weight:700}
+.doc tr:nth-child(even) td{background:#f5f8fc}
+.tbl-scroll{overflow-x:auto}
+.key{border-left:6px solid var(--orange); background:var(--orange-soft); padding:10px 14px; border-radius:8px; margin:0 0 1em}
+.key b:first-child{color:#a34d00}
+.note{border-left:6px solid var(--blue); background:var(--blue-soft); padding:10px 14px; border-radius:8px; margin:0 0 1em}
+.activity{border:2px dashed var(--orange); border-radius:10px; padding:12px 16px; margin:0 0 1em; background:#fffaf4}
+.activity > .tag{margin-bottom:6px}
+.activity h4{margin:.2em 0 .4em}
+details.sol{margin-top:8px}
+details.sol > summary{cursor:pointer; font-weight:700; color:var(--green)}
+.sol-print{display:none; margin-top:8px; border-top:1px solid var(--line); padding-top:6px}
+.sol-print b.sl{color:var(--green)}
+.formula{display:flex; flex-wrap:wrap; align-items:stretch; gap:8px; margin:0 0 1em}
+.formula .fx{flex:1 1 130px; border-radius:10px; padding:10px; text-align:center; border:2px solid}
+.formula .fx b{display:block; font-family:var(--font-head); font-size:1.45rem}
+.formula .op{align-self:center; font-family:var(--font-head); font-size:2rem; font-weight:700; color:var(--navy)}
+.fx.c{border-color:var(--blue); background:var(--blue-soft)} .fx.c b{color:var(--blue)}
+.fx.t{border-color:var(--green); background:var(--green-soft)} .fx.t b{color:var(--green)}
+.fx.h{border-color:var(--orange); background:var(--orange-soft)} .fx.h b{color:#b85600}
+.fx.r{border-color:var(--purple); background:var(--purple-soft)} .fx.r b{color:var(--purple)}
+.twocol{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1em}
+.box{border:2px solid var(--line); border-radius:10px; padding:10px 14px; background:#fff}
+.box h4{margin-top:0}
+.box.blue{border-color:var(--blue)} .box.blue h4{color:var(--blue)}
+.box.orange{border-color:var(--orange)} .box.orange h4{color:#b85600}
+.box.green{border-color:var(--green)} .box.green h4{color:var(--green)}
+.box.red{border-color:var(--red)} .box.red h4{color:var(--red)}
+.box.yellow{border-color:var(--yellow)} .box.yellow h4{color:#8a6900}
+.box.purple{border-color:var(--purple)} .box.purple h4{color:var(--purple)}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:1em}
+.grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:1em}
+.mantra{font-family:var(--font-head); font-size:1.3rem; font-weight:700; text-align:center; background:var(--yellow-soft); border:3px solid var(--yellow); border-radius:10px; padding:10px; margin:0 0 1em; color:var(--ink)}
+.steps{counter-reset:st; list-style:none; padding:0!important}
+.steps li{counter-increment:st; position:relative; padding:6px 0 6px 44px; margin:0!important; border-bottom:1px dashed var(--line)}
+.steps li::before{content:counter(st); position:absolute; left:0; top:6px; width:30px; height:30px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-weight:700; font-size:.95rem}
+.fig{margin:0 0 1em; text-align:center}
+.fig svg{max-width:100%; height:auto}
+.fig figcaption{font-size:.88rem; color:var(--muted)}
+.quote{font-family:var(--font-head); font-size:1.4rem; text-align:center; color:var(--navy); border:3px solid var(--navy); border-radius:12px; padding:12px 16px; margin:1em 0}
+
+/* circuit widget */
+.circuit{list-style:none; padding:0!important; margin:8px 0}
+.circuit li{display:flex; align-items:center; gap:8px; background:#f3e3c8; border:1px solid #d9bf95; border-radius:8px; padding:7px 8px; margin-bottom:6px!important}
+.circuit li .pos{flex:none; width:28px; height:28px; border-radius:6px; background:#fff; border:2px solid #b38b4d; display:grid; place-items:center; font-weight:700}
+.circuit li .txt{flex:1}
+.circuit li button{border:1px solid #b38b4d; background:#fff; border-radius:6px; width:34px; height:30px; font-weight:700}
+.circuit li.ok{background:var(--green-soft); border-color:var(--green)}
+.circuit li.bad{background:var(--red-soft); border-color:var(--red)}
+.circuit-static{list-style:none; padding:0!important}
+.circuit-static li{display:flex; gap:10px; align-items:center; margin-bottom:6px!important}
+.circuit-static .blank{flex:none; width:30px; height:26px; border:2px solid var(--ink); border-radius:4px}
+
+/* ---------- flashcards ---------- */
+.fc-stage{perspective:1400px; margin:14px auto; max-width:720px}
+.fc{display:grid; cursor:pointer; transition:transform .5s; transform-style:preserve-3d; min-height:280px}
+.fc.flipped{transform:rotateY(180deg)}
+.fc-face{grid-area:1/1; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:16px; padding:28px 26px; display:flex; flex-direction:column; justify-content:center; gap:10px; border:2px solid var(--navy); background:#fff; box-shadow:0 6px 18px rgba(22,54,92,.12)}
+.fc-face.back{transform:rotateY(180deg); background:var(--green-soft); border-color:var(--green)}
+.fc-face .lbl{font-family:var(--font-head); text-transform:uppercase; letter-spacing:.08em; font-size:.85rem; color:var(--muted)}
+.fc-face .big{font-size:1.35rem; font-weight:700; color:var(--navy)}
+.fc-face.back .big{color:var(--green)}
+.fc-face .hint{font-size:.85rem; color:var(--muted); margin-top:auto}
+.fc-nav{display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; max-width:720px; margin:0 auto}
+
+/* ---------- quiz ---------- */
+.q-card{max-width:780px; margin:0 auto}
+.q-meta{display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; font-size:.9rem; color:var(--muted); margin-bottom:8px}
+.q-text{font-size:1.25rem; font-weight:700; color:var(--navy); margin-bottom:14px}
+.opts{display:flex; flex-direction:column; gap:8px}
+.opt{display:flex; gap:10px; align-items:flex-start; text-align:left; border:2px solid var(--line); background:#fff; border-radius:10px; padding:10px 14px; color:var(--ink); font-size:1rem}
+.opt .lt{flex:none; width:28px; height:28px; border-radius:50%; background:var(--blue-soft); color:var(--blue); display:grid; place-items:center; font-weight:700}
+@media (hover:hover){.opt:hover:not(:disabled){border-color:var(--blue)}}
+.opt.sel{border-color:var(--blue); background:var(--blue-soft)}
+.opt.sel .lt{background:var(--blue); color:#fff}
+.opt.right{border-color:var(--green); background:var(--green-soft)}
+.opt.right .lt{background:var(--green); color:#fff}
+.opt.wrong{border-color:var(--red); background:var(--red-soft)}
+.opt.wrong .lt{background:var(--red); color:#fff}
+.opt:disabled{cursor:default}
+.fb{margin-top:12px; padding:10px 14px; border-radius:10px; font-size:.98rem}
+.fb.ok{background:var(--green-soft); border-left:6px solid var(--green)}
+.fb.ko{background:var(--red-soft); border-left:6px solid var(--red)}
+.dots{display:flex; flex-wrap:wrap; gap:6px; margin:12px 0}
+.dots button{width:34px; height:34px; border-radius:8px; border:2px solid var(--line); background:#fff; font-weight:700; font-size:.85rem; color:var(--ink)}
+.dots button.ans{background:var(--blue-soft); border-color:var(--blue)}
+.dots button.cur{border-color:var(--orange); box-shadow:0 0 0 2px var(--orange)}
+.score-big{font-family:var(--font-head); font-size:4rem; font-weight:700; line-height:1; color:var(--navy)}
+.score-wrap{display:flex; gap:24px; align-items:center; flex-wrap:wrap}
+.review-item{border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin-bottom:8px; background:#fff}
+.review-item.ok{border-left:6px solid var(--green)}
+.review-item.ko{border-left:6px solid var(--red)}
+.stats{display:flex; gap:14px; flex-wrap:wrap; font-weight:700}
+.stats span{background:#fff; border:1px solid var(--line); border-radius:8px; padding:6px 12px}
+
+/* ---------- notes (apuntes) ---------- */
+.print-controls{margin-bottom:18px}
+.print-controls fieldset{border:0; padding:0; margin:0; display:flex; gap:14px; flex-wrap:wrap}
+.print-controls legend{font-weight:700; color:var(--navy); margin-bottom:4px}
+.print-controls label{display:flex; gap:6px; align-items:center}
+.notes{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:28px 34px}
+.notes .cover{text-align:center; border-bottom:4px solid var(--navy); padding-bottom:18px; margin-bottom:18px}
+.notes .cover h1{font-size:2.3rem; margin-bottom:.2em}
+.notes .cover .sub{font-size:1.05rem; color:var(--muted)}
+.notes .student{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:14px; font-weight:700}
+.notes .student span{border-bottom:1.5px solid var(--ink); min-width:220px; display:inline-block; text-align:left}
+.notes .toc ol{columns:2; column-gap:30px}
+.notes section.nsec{margin-top:26px}
+.notes section.nsec > h2{border-bottom:3px solid var(--orange); padding-bottom:4px}
+.notes section.nsec > h2 .n{color:var(--orange)}
+.bank-q{margin-bottom:8px; break-inside:avoid}
+.bank-q b{color:var(--navy)}
+.notes.show-sol .sol-print{display:block}
+
+/* B/N (black & white) mode — screen preview + print */
+.notes.bw, .notes.bw *{
+  --navy:#000; --blue:#000; --blue-soft:#fff; --orange:#000; --orange-soft:#fff;
+  --green:#000; --green-soft:#fff; --red:#000; --red-soft:#fff; --yellow:#000; --yellow-soft:#fff;
+  --purple:#000; --purple-soft:#fff; --ink:#000; --muted:#333; --line:#777;
+}
+.notes.bw .doc th{background:#fff; color:#000; border-bottom:2px solid #000}
+.notes.bw .doc tr:nth-child(even) td{background:#fff}
+.notes.bw .activity{background:#fff}
+.notes.bw .circuit-static li, .notes.bw .tag{background:#fff; border:1px solid #000; color:#000}
+.notes.bw .steps li::before{background:#fff; color:#000; border:2px solid #000}
+.notes.bw .key b:first-child, .notes.bw .fx b, .notes.bw .box h4{color:#000}
+
+.footer{font-size:.85rem; color:var(--muted); text-align:center; padding:20px 0}
+
+@media (max-width:760px){
+  body{font-size:16px}
+  header.top{position:static}
+  .brand b{font-size:1.1rem}
+  .hero{grid-template-columns:1fr}
+  .hero h1{font-size:2rem}
+  .twocol,.grid2,.grid3{grid-template-columns:1fr}
+  .notes{padding:18px 16px}
+  .notes .toc ol{columns:1}
+  .score-big{font-size:3rem}
+}
+
+@media print{
+  @page{size:A4; margin:14mm 13mm}
+  body{background:#fff!important; font-size:11pt; line-height:1.45}
+  header.top, .no-print, .footer{display:none!important}
+  main{padding:0}
+  .wrap{max-width:none; padding:0}
+  .card, .notes{border:0!important; box-shadow:none!important; padding:0!important}
+  .notes:not(.bw){-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .notes .cover{break-after:page}
+  h2,h3,h4{break-after:avoid}
+  .activity,.key,.note,.box,.fig,.formula,.mantra,.quote,tr,.review-item{break-inside:avoid}
+  .tbl-scroll{overflow:visible}
+  a{color:inherit; text-decoration:none}
+  .review-item, .result-print *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="top-row">
+      <div class="brand">
+        <small data-i18n="subject">Tecnología y Digitalización · 1.º ESO</small>
+        <b data-i18n="unitTitle">U1 · El Proceso Tecnológico, el Taller y los Proyectos</b>
+      </div>
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="Secciones">
+      <a href="#inicio" data-view="inicio" data-i18n="navHome">Inicio</a>
+      <a href="#contenidos" data-view="contenidos" data-i18n="navContents">Contenidos</a>
+      <a href="#flashcards" data-view="flashcards" data-i18n="navFlash">Flashcards</a>
+      <a href="#practica" data-view="practica" data-i18n="navPractice">Práctica</a>
+      <a href="#examen" data-view="examen" data-i18n="navExam">Examen</a>
+      <a href="#apuntes" data-view="apuntes" data-i18n="navNotes">Apuntes (PDF)</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="view" id="view-inicio"></section>
+  <section class="view" id="view-contenidos"></section>
+  <section class="view" id="view-flashcards"></section>
+  <section class="view" id="view-practica"></section>
+  <section class="view" id="view-examen"></section>
+  <section class="view" id="view-apuntes"></section>
+</main>
+
+<div class="footer wrap" data-i18n="footer">Material de estudio basado exclusivamente en las presentaciones de la Unidad 1.</div>
+
+<script>
+"use strict";
+/* =========================================================
+   1. UI STRINGS
+   ========================================================= */
+const UI = {
+  es:{
+    subject:"Tecnología y Digitalización · 1.º ESO",
+    unitTitle:"U1 · El Proceso Tecnológico, el Taller y los Proyectos",
+    navHome:"Inicio", navContents:"Contenidos", navFlash:"Flashcards", navPractice:"Práctica", navExam:"Examen", navNotes:"Apuntes (PDF)",
+    footer:"Material de estudio basado exclusivamente en las presentaciones de la Unidad 1.",
+    heroKicker:"Unidad 1", heroTitle:"Del problema a la solución: bienvenidos al taller",
+    heroText:"Aquí tienes todo lo que necesitas para estudiar la unidad: los contenidos explicados, tarjetas de memoria, preguntas de práctica con corrección inmediata, un examen con nota y unos apuntes listos para imprimir.",
+    heroLang:"Puedes cambiar entre español e inglés en cualquier momento con el botón ES / EN.",
+    mContents:"Contenidos", mContentsD:"Toda la teoría de la unidad, organizada en apartados desplegables.",
+    mFlash:"Flashcards", mFlashD:"Tarjetas de pregunta y respuesta para memorizar. Pulsa para darles la vuelta.",
+    mPractice:"Práctica", mPracticeD:"Preguntas por temas con corrección y explicación al momento.",
+    mExam:"Examen", mExamD:"Ponte a prueba: preguntas al azar y nota final sobre 10.",
+    mNotes:"Apuntes (PDF)", mNotesD:"Apuntes desarrollados para imprimir o guardar en PDF, en color o en blanco y negro.",
+    go:"Entrar",
+    expandAll:"Desplegar todo", collapseAll:"Plegar todo",
+    contentsIntro:"Pulsa sobre cada apartado para desplegarlo. Las actividades tienen la solución escondida: intenta resolverlas antes de mirarla.",
+    showSol:"Ver solución", solution:"Solución",
+    topic:"Tema", allTopics:"Todos los temas",
+    shuffle:"Barajar", prev:"Anterior", next:"Siguiente", flip:"Dar la vuelta",
+    know:"Me la sé", review:"Repasar", onlyReview:"Solo las de repasar",
+    fcFront:"Pregunta", fcBack:"Respuesta", fcHint:"Pulsa la tarjeta (o la barra espaciadora) para verla por detrás.",
+    fcHint2:"Pulsa la tarjeta para volver a la pregunta.",
+    card:"Tarjeta", of:"de", known:"Me las sé", toReview:"Por repasar", resetFc:"Reiniciar marcas",
+    fcEmpty:"No hay tarjetas marcadas para repasar en este tema. ¡Buen trabajo!",
+    practiceIntro:"Elige un tema y responde. Verás al momento si has acertado y por qué.",
+    start:"Empezar", restart:"Volver a empezar",
+    question:"Pregunta", correct:"¡Correcto!", incorrect:"No es correcto.", rightAnswer:"Respuesta correcta:",
+    hits:"Aciertos", answered:"Respondidas",
+    practiceDone:"¡Has terminado todas las preguntas de este tema!",
+    examIntro:"El examen elige preguntas al azar de todos los temas. No verás si aciertas hasta el final. Puedes moverte entre preguntas y cambiar tus respuestas antes de entregar.",
+    yourName:"Tu nombre (opcional)", numQ:"Número de preguntas", startExam:"Comenzar examen",
+    finish:"Entregar examen", confirmFinish:"Tienes {n} pregunta(s) sin responder. ¿Quieres entregar igualmente?",
+    yourGrade:"Tu nota", outOf:"sobre 10", byTopic:"Resultados por tema", reviewTitle:"Revisión de tus respuestas",
+    yourAnswer:"Tu respuesta:", noAnswer:"Sin responder", repeatExam:"Hacer otro examen", printResult:"Imprimir resultado",
+    gradeMsg:[ [9,"¡Excelente! Dominas la unidad."],[7,"¡Muy bien! Repasa los fallos y estarás al 100 %."],[5,"Aprobado. Repasa los temas en los que has fallado más."],[0,"Necesitas repasar. Vuelve a Contenidos y Flashcards y prueba otra vez."] ],
+    examOf:"Examen", date:"Fecha", leaveExam:"Hay un examen en curso. Si cambias de sección se mantendrá hasta que lo entregues.",
+    notesIntro:"Estos apuntes desarrollan el contenido de las presentaciones. Elige las opciones y pulsa «Imprimir / Guardar PDF». En el cuadro de impresión elige «Guardar como PDF» como destino.",
+    printMode:"Modo de impresión", color:"Color", bw:"Blanco y negro",
+    include:"Incluir", incSol:"Soluciones de las actividades", incBank:"Banco de preguntas con respuestas",
+    printBtn:"Imprimir / Guardar PDF",
+    printTip:"Consejo: en color, activa «Gráficos de fondo» en «Más ajustes» del cuadro de impresión si los colores no aparecen.",
+    coverSub:"Apuntes de estudio · Tecnología y Digitalización · 1.º ESO",
+    name:"Nombre:", group:"Grupo:", toc:"Índice",
+    bankTitle:"Banco de preguntas con respuestas", solTitle:"Soluciones de las actividades",
+    answer:"Respuesta"
+  },
+  en:{
+    subject:"Technology and Digitalisation · Year 1 ESO",
+    unitTitle:"U1 · The Technological Process, the Workshop and Projects",
+    navHome:"Home", navContents:"Contents", navFlash:"Flashcards", navPractice:"Practice", navExam:"Exam", navNotes:"Notes (PDF)",
+    footer:"Study material based exclusively on the Unit 1 presentations.",
+    heroKicker:"Unit 1", heroTitle:"From problem to solution: welcome to the workshop",
+    heroText:"Here you have everything you need to study the unit: the contents explained, memory cards, practice questions with instant feedback, an exam with a final mark and printable notes.",
+    heroLang:"You can switch between Spanish and English at any time with the ES / EN button.",
+    mContents:"Contents", mContentsD:"All the theory of the unit, organised in sections you can open and close.",
+    mFlash:"Flashcards", mFlashD:"Question-and-answer cards to memorise. Tap them to turn them over.",
+    mPractice:"Practice", mPracticeD:"Questions by topic with instant correction and explanation.",
+    mExam:"Exam", mExamD:"Test yourself: random questions and a final mark out of 10.",
+    mNotes:"Notes (PDF)", mNotesD:"Detailed notes to print or save as PDF, in colour or black and white.",
+    go:"Open",
+    expandAll:"Open all", collapseAll:"Close all",
+    contentsIntro:"Tap each section to open it. The activities have hidden solutions: try to solve them before you look.",
+    showSol:"Show solution", solution:"Solution",
+    topic:"Topic", allTopics:"All topics",
+    shuffle:"Shuffle", prev:"Previous", next:"Next", flip:"Turn over",
+    know:"I know it", review:"Review", onlyReview:"Only cards to review",
+    fcFront:"Question", fcBack:"Answer", fcHint:"Tap the card (or press the space bar) to see the back.",
+    fcHint2:"Tap the card to go back to the question.",
+    card:"Card", of:"of", known:"Known", toReview:"To review", resetFc:"Reset marks",
+    fcEmpty:"There are no cards marked for review in this topic. Well done!",
+    practiceIntro:"Choose a topic and answer. You will see instantly whether you are right and why.",
+    start:"Start", restart:"Start again",
+    question:"Question", correct:"Correct!", incorrect:"Not correct.", rightAnswer:"Correct answer:",
+    hits:"Correct", answered:"Answered",
+    practiceDone:"You have finished all the questions in this topic!",
+    examIntro:"The exam picks random questions from all the topics. You will not see whether you are right until the end. You can move between questions and change your answers before you hand it in.",
+    yourName:"Your name (optional)", numQ:"Number of questions", startExam:"Start exam",
+    finish:"Hand in exam", confirmFinish:"You have {n} unanswered question(s). Do you want to hand in anyway?",
+    yourGrade:"Your mark", outOf:"out of 10", byTopic:"Results by topic", reviewTitle:"Review of your answers",
+    yourAnswer:"Your answer:", noAnswer:"Not answered", repeatExam:"Take another exam", printResult:"Print result",
+    gradeMsg:[ [9,"Excellent! You have mastered the unit."],[7,"Very good! Review your mistakes and you will be at 100%."],[5,"Pass. Review the topics where you made the most mistakes."],[0,"You need to review. Go back to Contents and Flashcards and try again."] ],
+    examOf:"Exam", date:"Date", leaveExam:"There is an exam in progress. It will be kept if you change section, until you hand it in.",
+    notesIntro:"These notes develop the content of the presentations. Choose your options and press “Print / Save PDF”. In the print window choose “Save as PDF” as the destination.",
+    printMode:"Print mode", color:"Colour", bw:"Black and white",
+    include:"Include", incSol:"Activity solutions", incBank:"Question bank with answers",
+    printBtn:"Print / Save PDF",
+    printTip:"Tip: in colour mode, turn on “Background graphics” under “More settings” in the print window if the colours do not appear.",
+    coverSub:"Study notes · Technology and Digitalisation · Year 1 ESO",
+    name:"Name:", group:"Class:", toc:"Contents",
+    bankTitle:"Question bank with answers", solTitle:"Activity solutions",
+    answer:"Answer"
+  }
+};
+
+/* =========================================================
+   2. TOPICS
+   ========================================================= */
+const TOPICS = [
+  {id:"tech",     es:"¿Qué es la tecnología?",      en:"What is technology?"},
+  {id:"needs",    es:"Necesidades humanas",          en:"Human needs"},
+  {id:"products", es:"Productos tecnológicos",       en:"Technological products"},
+  {id:"analysis", es:"Análisis de objetos",          en:"Analysing objects"},
+  {id:"process",  es:"El proceso tecnológico",       en:"The technological process"},
+  {id:"team",     es:"Trabajo en equipo en el taller", en:"Teamwork in the workshop"},
+  {id:"tools",    es:"Herramientas del taller",      en:"Workshop tools"},
+  {id:"safety",   es:"Seguridad en el taller",       en:"Workshop safety"},
+  {id:"drawing",  es:"Expresión gráfica",            en:"Graphic expression"},
+  {id:"docs",     es:"Documentación del proyecto",   en:"Project documentation"},
+  {id:"project",  es:"Nuestro proyecto: el organizador", en:"Our project: the organiser"},
+  {id:"summary",  es:"Lo esencial de la unidad",     en:"Unit essentials"}
+];
+const topicName = (id,L)=> (TOPICS.find(t=>t.id===id)||{})[L] || id;
+
+/* =========================================================
+   3. FIGURES (SVG, language-aware, colour via CSS variables)
+   ========================================================= */
+function processSVG(L){
+  const labels = L==="es"
+    ? [["Identificar","el problema"],["Buscar","información"],["Generar","ideas"],["Elegir la","mejor solución"],["Planificar y","organizar"],["Construir el","prototipo"],["Evaluar y","comprobar"],["Presentar y","comercializar"]]
+    : [["Identify","the problem"],["Research","information"],["Generate","ideas"],["Choose the","best solution"],["Plan and","organise"],["Build the","prototype"],["Test and","evaluate"],["Present and","market"]];
+  const center = L==="es" ? ["Si falla,","rediseña"] : ["If it fails,","redesign"];
+  const cx=320, cy=232, R=184, r=44, n=8;
+  let s = `<svg viewBox="0 0 640 464" role="img" aria-label="${L==="es"?"Ciclo del proceso tecnológico en 8 fases":"8-stage technological process cycle"}" xmlns="http://www.w3.org/2000/svg">`;
+  s += `<defs><marker id="arw-${L}" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--orange)"/></marker></defs>`;
+  const ang = i => -Math.PI/2 + i*2*Math.PI/n;
+  const d = (r+5)/R;
+  for(let i=0;i<n;i++){
+    const a1=ang(i)+d, a2=ang(i+1)-d;
+    const x1=cx+R*Math.cos(a1), y1=cy+R*Math.sin(a1), x2=cx+R*Math.cos(a2), y2=cy+R*Math.sin(a2);
+    s += `<path d="M${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 0 1 ${x2.toFixed(1)},${y2.toFixed(1)}" style="fill:none;stroke:var(--orange);stroke-width:4" marker-end="url(#arw-${L})"/>`;
+  }
+  // redesign arrow: from node 7 (index 6) back toward node 3 (index 2), through centre
+  const p7={x:cx+R*Math.cos(ang(6)), y:cy+R*Math.sin(ang(6))}, p3={x:cx+R*Math.cos(ang(2)), y:cy+R*Math.sin(ang(2))};
+  s += `<path d="M${(p7.x+r+6).toFixed(1)},${(p7.y+14).toFixed(1)} Q${cx},${cy+70} ${(p3.x-r-8).toFixed(1)},${(p3.y+14).toFixed(1)}" style="fill:none;stroke:var(--red);stroke-width:3;stroke-dasharray:8 6" marker-end="url(#arw-${L})"/>`;
+  s += `<text x="${cx}" y="${cy-8}" text-anchor="middle" style="font:700 22px var(--font-head);fill:var(--red)">${center[0]}</text>`;
+  s += `<text x="${cx}" y="${cy+18}" text-anchor="middle" style="font:700 22px var(--font-head);fill:var(--red)">${center[1]}</text>`;
+  for(let i=0;i<n;i++){
+    const x=cx+R*Math.cos(ang(i)), y=cy+R*Math.sin(ang(i));
+    s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" style="fill:var(--card,#fff);stroke:var(--navy);stroke-width:3"/>`;
+    s += `<text x="${x.toFixed(1)}" y="${(y-15).toFixed(1)}" text-anchor="middle" style="font:700 17px var(--font-head);fill:var(--orange)">${i+1}</text>`;
+    s += `<text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" text-anchor="middle" style="font:700 11.5px var(--font-body);fill:var(--navy)">${labels[i][0]}</text>`;
+    s += `<text x="${x.toFixed(1)}" y="${(y+18).toFixed(1)}" text-anchor="middle" style="font:700 11.5px var(--font-body);fill:var(--navy)">${labels[i][1]}</text>`;
+  }
+  return s + `</svg>`;
+}
+function linesSVG(L){
+  const t = L==="es"
+    ? [["Continua gruesa","contornos visibles"],["Continua fina","líneas auxiliares / de cota"],["Discontinua","aristas ocultas que no vemos desde ese ángulo"]]
+    : [["Thick continuous","visible outlines"],["Thin continuous","auxiliary / dimension lines"],["Dashed","hidden edges we cannot see from that angle"]];
+  return `<svg viewBox="0 0 620 150" role="img" aria-label="${L==="es"?"Tipos de línea":"Line types"}" xmlns="http://www.w3.org/2000/svg">
+    <line x1="10" y1="25" x2="190" y2="25" style="stroke:var(--ink);stroke-width:5"/>
+    <text x="210" y="31" style="font:700 16px var(--font-body);fill:var(--ink)">${t[0][0]}: <tspan style="font-weight:400">${t[0][1]}</tspan></text>
+    <line x1="10" y1="75" x2="190" y2="75" style="stroke:var(--ink);stroke-width:1.5"/>
+    <text x="210" y="81" style="font:700 16px var(--font-body);fill:var(--ink)">${t[1][0]}: <tspan style="font-weight:400">${t[1][1]}</tspan></text>
+    <line x1="10" y1="125" x2="190" y2="125" style="stroke:var(--ink);stroke-width:3;stroke-dasharray:14 9"/>
+    <text x="210" y="131" style="font:700 16px var(--font-body);fill:var(--ink)">${t[2][0]}: <tspan style="font-weight:400">${t[2][1]}</tspan></text>
+  </svg>`;
+}
+
+/* =========================================================
+   4. CONTENT SECTIONS (shared by Contents + Notes)
+   Only content from the Unit 1 presentations.
+   ========================================================= */
+const CIRCUIT = { // the 8 cards in the order shown on the slide, and correct order
+  shown:[
+    {es:"Construimos una caseta de madera reciclada.", en:"We build a kennel out of recycled wood.", pos:6},
+    {es:"Dibujamos tres opciones diferentes de casetas.", en:"We draw three different kennel options.", pos:3},
+    {es:"Nos damos cuenta de que los perros pasan frío.", en:"We realise that the dogs are cold.", pos:1},
+    {es:"Probamos si un perro cabe dentro y está caliente.", en:"We test whether a dog fits inside and stays warm.", pos:7},
+    {es:"Elegimos la caseta con techo inclinado para la lluvia.", en:"We choose the kennel with a sloping roof for the rain.", pos:4},
+    {es:"Hacemos una lista de la madera y clavos necesarios.", en:"We make a list of the wood and nails we need.", pos:5},
+    {es:"Buscamos en internet medidas estándar de perros.", en:"We look up standard dog sizes on the internet.", pos:2},
+    {es:"Hacemos un cartel para enseñársela a los vecinos.", en:"We make a poster to show it to the neighbours.", pos:8}
+  ]
+};
+const STEP_NAMES = {
+  es:["Identificar el problema","Buscar información","Generar ideas","Elegir la mejor solución","Planificar y organizar","Construir el prototipo","Evaluar y comprobar","Presentar y comercializar"],
+  en:["Identify the problem","Research information","Generate ideas","Choose the best solution","Plan and organise","Build the prototype","Test and evaluate","Present and market"]
+};
+function circuitSolution(L){
+  const sorted = CIRCUIT.shown.slice().sort((a,b)=>a.pos-b.pos);
+  return `<ol>${sorted.map(c=>`<li>${c[L]} <span class="muted">(${STEP_NAMES[L][c.pos-1]})</span></li>`).join("")}</ol>`;
+}
+
+const SECTIONS = [
+/* 1 ------------------------------------------------------------------ */
+{ id:"tech", es:{ title:"¿Qué es la tecnología?", html:()=>`
+<p>La <b>tecnología</b> es la combinación de conocimientos, técnicas y habilidades que permite <b>resolver problemas</b> y <b>satisfacer necesidades humanas</b>. Podemos entenderla como una suma de tres ingredientes que, juntos, dan como resultado soluciones útiles:</p>
+<div class="formula">
+  <div class="fx c"><b>Ciencia</b>Conocer el mundo</div><div class="op">+</div>
+  <div class="fx t"><b>Técnica</b>Herramientas y procesos</div><div class="op">+</div>
+  <div class="fx h"><b>Habilidad</b>Destreza humana</div><div class="op">=</div>
+  <div class="fx r"><b>TECNOLOGÍA</b>Soluciones útiles</div>
+</div>
+<ul>
+  <li><b>Ciencia:</b> es el conocimiento; nos sirve para conocer el mundo.</li>
+  <li><b>Técnica:</b> son las herramientas y los procesos que usamos para hacer las cosas.</li>
+  <li><b>Habilidad:</b> es la destreza humana, nuestra capacidad para usar bien esas herramientas.</li>
+</ul>
+<p>Ninguno de los tres ingredientes basta por sí solo: solo cuando se combinan obtenemos una solución útil a un problema o a una necesidad.</p>
+<div class="key"><b>Recuerda:</b> C + T + H = Tecnología (resolución de necesidades).</div>
+`}, en:{ title:"What is technology?", html:()=>`
+<p><b>Technology</b> is the combination of knowledge, techniques and skills that allows us to <b>solve problems</b> and <b>meet human needs</b>. We can think of it as a sum of three ingredients which, together, give us useful solutions:</p>
+<div class="formula">
+  <div class="fx c"><b>Science</b>Knowing the world</div><div class="op">+</div>
+  <div class="fx t"><b>Technique</b>Tools and processes</div><div class="op">+</div>
+  <div class="fx h"><b>Skill</b>Human dexterity</div><div class="op">=</div>
+  <div class="fx r"><b>TECHNOLOGY</b>Useful solutions</div>
+</div>
+<ul>
+  <li><b>Science:</b> this is knowledge; it helps us to know the world.</li>
+  <li><b>Technique:</b> these are the tools and processes we use to make things.</li>
+  <li><b>Skill:</b> this is human dexterity, our ability to use those tools well.</li>
+</ul>
+<p>None of the three ingredients is enough on its own: only when they are combined do we get a useful solution to a problem or a need.</p>
+<div class="key"><b>Remember:</b> Science + Technique + Skill = Technology (meeting needs).</div>
+`}},
+/* 2 ------------------------------------------------------------------ */
+{ id:"needs", es:{ title:"Necesidades humanas", html:()=>`
+<p>La tecnología existe para satisfacer necesidades humanas. Distinguimos dos tipos de necesidades:</p>
+<div class="twocol">
+  <div class="box blue"><h4>Necesidades básicas (supervivencia)</h4>
+    <p>Son las que necesitamos cubrir para sobrevivir.</p>
+    <ul><li>Alimentación</li><li>Vivienda</li><li>Vestido</li><li>Salud</li><li>Seguridad</li></ul></div>
+  <div class="box orange"><h4>Necesidades secundarias (calidad de vida)</h4>
+    <p>No son imprescindibles para sobrevivir, pero mejoran nuestra calidad de vida.</p>
+    <ul><li>Ocio</li><li>Transporte</li><li>Comunicación</li><li>Entretenimiento</li><li>Cultura</li></ul></div>
+</div>
+<div class="activity"><span class="tag orange">Actividad</span>
+  <h4>Clasifica mentalmente: ¿básica o secundaria?</h4>
+  <p>¿Qué tipo de necesidad satisface cada uno de estos objetos? <b>Un router wifi · Un abrigo · Una vacuna · Una consola de videojuegos</b>.</p>
+  <details class="sol"><summary>Ver solución</summary>
+    <ul><li><b>Router wifi:</b> secundaria (comunicación).</li><li><b>Abrigo:</b> básica (vestido).</li><li><b>Vacuna:</b> básica (salud).</li><li><b>Consola:</b> secundaria (ocio / entretenimiento).</li></ul>
+  </details>
+</div>
+`}, en:{ title:"Human needs", html:()=>`
+<p>Technology exists to meet human needs. We distinguish two types of needs:</p>
+<div class="twocol">
+  <div class="box blue"><h4>Basic needs (survival)</h4>
+    <p>These are the needs we must meet in order to survive.</p>
+    <ul><li>Food</li><li>Housing</li><li>Clothing</li><li>Health</li><li>Safety</li></ul></div>
+  <div class="box orange"><h4>Secondary needs (quality of life)</h4>
+    <p>They are not essential for survival, but they improve our quality of life.</p>
+    <ul><li>Leisure</li><li>Transport</li><li>Communication</li><li>Entertainment</li><li>Culture</li></ul></div>
+</div>
+<div class="activity"><span class="tag orange">Activity</span>
+  <h4>Classify in your head: basic or secondary?</h4>
+  <p>What type of need does each of these objects meet? <b>A wifi router · A coat · A vaccine · A games console</b>.</p>
+  <details class="sol"><summary>Show solution</summary>
+    <ul><li><b>Wifi router:</b> secondary (communication).</li><li><b>Coat:</b> basic (clothing).</li><li><b>Vaccine:</b> basic (health).</li><li><b>Games console:</b> secondary (leisure / entertainment).</li></ul>
+  </details>
+</div>
+`}},
+/* 3 ------------------------------------------------------------------ */
+{ id:"products", es:{ title:"Productos tecnológicos", html:()=>`
+<p>Lo que la tecnología produce para satisfacer nuestras necesidades no siempre es un objeto que se pueda tocar. Los <b>productos tecnológicos</b> se clasifican en tres grupos:</p>
+<div class="grid3">
+  <div class="box blue"><h4>1. Bienes</h4><p><b>Objetos físicos.</b></p><p>Ejemplos: una bicicleta, un teléfono móvil.</p></div>
+  <div class="box green"><h4>2. Servicios</h4><p><b>Intangibles</b> (no son un objeto que se pueda tocar).</p><p>Ejemplos: la conexión wifi, el autobús urbano.</p></div>
+  <div class="box orange"><h4>3. Procesos</h4><p><b>Sistemas.</b></p><p>Ejemplo: el reciclaje de botellas de plástico.</p></div>
+</div>
+`}, en:{ title:"Technological products", html:()=>`
+<p>What technology produces to meet our needs is not always an object you can touch. <b>Technological products</b> are classified into three groups:</p>
+<div class="grid3">
+  <div class="box blue"><h4>1. Goods</h4><p><b>Physical objects.</b></p><p>Examples: a bicycle, a mobile phone.</p></div>
+  <div class="box green"><h4>2. Services</h4><p><b>Intangible</b> (they are not an object you can touch).</p><p>Examples: a wifi connection, the city bus.</p></div>
+  <div class="box orange"><h4>3. Processes</h4><p><b>Systems.</b></p><p>Example: recycling plastic bottles.</p></div>
+</div>
+`}},
+/* 4 ------------------------------------------------------------------ */
+{ id:"analysis", es:{ title:"Análisis de objetos", html:()=>`
+<p>Para entender bien un objeto tecnológico hay que mirarlo con «visión de rayos X»: lo diseccionamos aplicándole <b>5 tipos de análisis</b> (las «5 lupas»). Cada análisis responde a una pregunta distinta. Como ejemplo, analizamos una <b>mochila</b>:</p>
+<div class="tbl-scroll"><table>
+<tr><th>Análisis</th><th>Qué estudia</th><th>Pregunta clave</th><th>Ejemplo: la mochila</th></tr>
+<tr><td><b>1. Anatómico</b></td><td>Forma y piezas que lo componen.</td><td>¿Qué forma tiene y de qué partes está compuesto?</td><td>Correas, bolsillos, cremalleras.</td></tr>
+<tr><td><b>2. Técnico</b></td><td>Materiales y herramientas usadas en su fabricación.</td><td>¿De qué materiales está hecho? ¿Qué técnicas se han usado para fabricarlo?</td><td>Tela de nailon, plástico resistente.</td></tr>
+<tr><td><b>3. Funcional</b></td><td>Utilidad y función principal.</td><td>¿Para qué sirve? ¿Cuál es su función principal?</td><td>Transportar libros sin dañar la espalda.</td></tr>
+<tr><td><b>4. Estético</b></td><td>Belleza, color y acabado exterior.</td><td>¿Cómo es su apariencia? ¿Qué colores y acabados tiene?</td><td>Colores llamativos, diseño deportivo.</td></tr>
+<tr><td><b>5. Económico-social</b></td><td>Coste económico e impacto en la sociedad y el medio ambiente.</td><td>¿Cuánto cuesta y qué impacto tiene en la sociedad y en el medio ambiente?</td><td>Precio accesible, huella de carbono de sus materiales.</td></tr>
+</table></div>
+<div class="activity"><span class="tag orange">Actividad</span>
+  <h4>Análisis forense (3 minutos)</h4>
+  <p>Observa el objeto que el profesor muestre en pantalla. En voz alta y levantando la mano, aplícale los 5 análisis tecnológicos: anatómico, técnico, funcional, estético y económico-social. ¿Quién se atreve?</p>
+</div>
+<div class="activity"><span class="tag orange">Actividad</span>
+  <h4>Análisis rápido en vivo</h4>
+  <p>Elige UNO de estos dos objetos que tienes delante, <b>un bolígrafo</b> o <b>un pupitre</b>, y aplícale las 5 lupas. Copia esta tabla en tu cuaderno y complétala:</p>
+  <table><tr><th style="width:30%">Análisis</th><th>Mi objeto: ____________</th></tr>
+  <tr><td>Anatómico</td><td>&nbsp;</td></tr><tr><td>Técnico</td><td>&nbsp;</td></tr><tr><td>Funcional</td><td>&nbsp;</td></tr><tr><td>Estético</td><td>&nbsp;</td></tr><tr><td>Económico-social</td><td>&nbsp;</td></tr></table>
+</div>
+`}, en:{ title:"Analysing objects", html:()=>`
+<p>To understand a technological object properly, we look at it with “X-ray vision”: we dissect it by applying <b>5 types of analysis</b> (the “5 magnifying glasses”). Each analysis answers a different question. As an example, we analyse a <b>backpack</b>:</p>
+<div class="tbl-scroll"><table>
+<tr><th>Analysis</th><th>What it studies</th><th>Key question</th><th>Example: the backpack</th></tr>
+<tr><td><b>1. Anatomical</b></td><td>Shape and the parts it is made of.</td><td>What shape is it and what parts is it made of?</td><td>Straps, pockets, zips.</td></tr>
+<tr><td><b>2. Technical</b></td><td>Materials and tools used to make it.</td><td>What materials is it made of? What techniques were used to make it?</td><td>Nylon fabric, strong plastic.</td></tr>
+<tr><td><b>3. Functional</b></td><td>Usefulness and main function.</td><td>What is it for? What is its main function?</td><td>Carrying books without hurting your back.</td></tr>
+<tr><td><b>4. Aesthetic</b></td><td>Beauty, colour and outer finish.</td><td>What does it look like? What colours and finishes does it have?</td><td>Bright colours, sporty design.</td></tr>
+<tr><td><b>5. Socio-economic</b></td><td>Economic cost and impact on society and the environment.</td><td>How much does it cost and what impact does it have on society and the environment?</td><td>Affordable price, carbon footprint of its materials.</td></tr>
+</table></div>
+<div class="activity"><span class="tag orange">Activity</span>
+  <h4>Forensic analysis (3 minutes)</h4>
+  <p>Look at the object your teacher shows on the screen. Out loud, raising your hand, apply the 5 technological analyses: anatomical, technical, functional, aesthetic and socio-economic. Who dares?</p>
+</div>
+<div class="activity"><span class="tag orange">Activity</span>
+  <h4>Quick live analysis</h4>
+  <p>Choose ONE of these two objects in front of you, <b>a ballpoint pen</b> or <b>a school desk</b>, and apply the 5 magnifying glasses. Copy this table into your notebook and fill it in:</p>
+  <table><tr><th style="width:30%">Analysis</th><th>My object: ____________</th></tr>
+  <tr><td>Anatomical</td><td>&nbsp;</td></tr><tr><td>Technical</td><td>&nbsp;</td></tr><tr><td>Functional</td><td>&nbsp;</td></tr><tr><td>Aesthetic</td><td>&nbsp;</td></tr><tr><td>Socio-economic</td><td>&nbsp;</td></tr></table>
+</div>
+`}},
+/* 5 ------------------------------------------------------------------ */
+{ id:"process", es:{ title:"El proceso tecnológico", html:()=>`
+<p>Los inventores no improvisan: siguen un método ordenado, el <b>proceso tecnológico</b> (también llamado <b>método de proyectos</b>). Es como una brújula que nos guía desde el problema hasta la solución. Tiene <b>8 fases</b>:</p>
+<figure class="fig">${processSVG("es")}<figcaption>La brújula del inventor: el proceso tecnológico.</figcaption></figure>
+<ol class="steps">
+  <li><b>Identificar el problema:</b> ¿qué necesidad tenemos?</li>
+  <li><b>Buscar información:</b> investigar cómo lo han resuelto otros.</li>
+  <li><b>Generar ideas:</b> tormenta de ideas (bocetos).</li>
+  <li><b>Elegir la mejor solución:</b> seleccionar la más viable.</li>
+  <li><b>Planificar y organizar:</b> tareas, herramientas y materiales.</li>
+  <li><b>Construir el prototipo:</b> ¡manos a la obra en el taller!</li>
+  <li><b>Evaluar y comprobar:</b> ¿funciona? ¿resuelve el problema?</li>
+  <li><b>Presentar y comercializar:</b> elaborar la memoria y mostrarlo.</li>
+</ol>
+<div class="key"><b>Importante:</b> el proceso es un ciclo. Si al evaluar descubrimos que el prototipo falla, <b>volvemos atrás y rediseñamos</b>.</div>
+<div class="activity"><span class="tag orange">Actividad</span>
+  <h4>El circuito roto</h4>
+  <p><b>Planteamiento:</b> los perros del barrio pasan mucho frío en invierno y ensucian las calles buscando refugio.</p>
+  <p><b>Reto:</b> aquí tenéis 8 tarjetas de acción desordenadas. Ordenadlas del 1 al 8 siguiendo las fases del proceso tecnológico.</p>
+  <div data-widget="circuit"></div>
+  <details class="sol"><summary>Ver solución</summary>${circuitSolution("es")}</details>
+</div>
+`}, en:{ title:"The technological process", html:()=>`
+<p>Inventors do not improvise: they follow an orderly method, the <b>technological process</b> (also called the <b>project method</b>). It is like a compass that guides us from the problem to the solution. It has <b>8 stages</b>:</p>
+<figure class="fig">${processSVG("en")}<figcaption>The inventor’s compass: the technological process.</figcaption></figure>
+<ol class="steps">
+  <li><b>Identify the problem:</b> what need do we have?</li>
+  <li><b>Research information:</b> find out how others have solved it.</li>
+  <li><b>Generate ideas:</b> brainstorming (sketches).</li>
+  <li><b>Choose the best solution:</b> select the most viable one.</li>
+  <li><b>Plan and organise:</b> tasks, tools and materials.</li>
+  <li><b>Build the prototype:</b> get to work in the workshop!</li>
+  <li><b>Test and evaluate:</b> does it work? Does it solve the problem?</li>
+  <li><b>Present and market:</b> write the report and show it.</li>
+</ol>
+<div class="key"><b>Important:</b> the process is a cycle. If we discover during testing that the prototype fails, <b>we go back and redesign</b>.</div>
+<div class="activity"><span class="tag orange">Activity</span>
+  <h4>The broken circuit</h4>
+  <p><b>Situation:</b> the dogs in the neighbourhood are very cold in winter and make the streets dirty looking for shelter.</p>
+  <p><b>Challenge:</b> here are 8 action cards in the wrong order. Put them in order from 1 to 8 following the stages of the technological process.</p>
+  <div data-widget="circuit"></div>
+  <details class="sol"><summary>Show solution</summary>${circuitSolution("en")}</details>
+</div>
+`}},
+/* 6 ------------------------------------------------------------------ */
+{ id:"team", es:{ title:"Trabajo en equipo en el taller", html:()=>`
+<p>El taller no es de solitarios. Al igual que en el equipo de boxes de la Fórmula 1, <b>nadie gana solo</b>: cada miembro tiene una tarea y todos dependen de todos. En el taller trabajaréis en equipo y <b>rotaréis por 4 roles fundamentales</b>:</p>
+<div class="grid2">
+  <div class="box blue"><h4>Coordinador/a – Secretario/a</h4><p>Dirige al equipo, toma decisiones, completa los documentos y lleva el registro.</p></div>
+  <div class="box yellow"><h4>Materiales y herramientas</h4><p>Vigila, recoge, reparte y asegura el buen estado del instrumental.</p></div>
+  <div class="box red"><h4>Orden, limpieza y seguridad</h4><p>Su superpoder es la prevención: garantiza que la mesa esté despejada y que se cumplan las normas.</p></div>
+  <div class="box green"><h4>Calidad y convivencia</h4><p>Fomenta el respeto, revisa que el trabajo esté bien hecho y media en los conflictos.</p></div>
+</div>
+`}, en:{ title:"Teamwork in the workshop", html:()=>`
+<p>The workshop is not for loners. Just like a Formula 1 pit crew, <b>nobody wins alone</b>: each member has a job and everyone depends on everyone else. In the workshop you will work in teams and <b>rotate through 4 key roles</b>:</p>
+<div class="grid2">
+  <div class="box blue"><h4>Coordinator – Secretary</h4><p>Leads the team, makes decisions, fills in the documents and keeps the records.</p></div>
+  <div class="box yellow"><h4>Materials and tools</h4><p>Watches over, collects, hands out and makes sure the tools are in good condition.</p></div>
+  <div class="box red"><h4>Order, cleaning and safety</h4><p>Their superpower is prevention: they make sure the table is clear and the rules are followed.</p></div>
+  <div class="box green"><h4>Quality and coexistence</h4><p>Encourages respect, checks that the work is well done and mediates in conflicts.</p></div>
+</div>
+`}},
+/* 7 ------------------------------------------------------------------ */
+{ id:"tools", es:{ title:"Herramientas del taller", html:()=>`
+<h3>El arsenal del taller: clasificación básica</h3>
+<p>Las herramientas del taller se agrupan en <b>tres familias</b> según el momento del trabajo en que se usan, y cubren <b>8 operaciones</b>:</p>
+<div class="grid3">
+  <div class="box blue"><h4>La Mente (preparación)</h4><ol><li>Medir</li><li>Marcar</li><li>Sujetar</li></ol></div>
+  <div class="box orange"><h4>La Fuerza (transformación)</h4><ol start="4"><li>Golpear</li><li>Cortar / serrar</li></ol></div>
+  <div class="box green"><h4>La Precisión (finalización)</h4><ol start="6"><li>Perforar</li><li>Unir</li><li>Acabar</li></ol></div>
+</div>
+<div class="mantra">Antes de fabricar, sigue SIEMPRE este orden:<br>Mide → Marca → Corta → Perfora → Monta → Acaba</div>
+
+<h3>Familia 1: La Mente (preparar la pieza)</h3>
+<div class="tbl-scroll"><table>
+<tr><th>Operación</th><th>Herramienta</th><th>Para qué sirve</th></tr>
+<tr><td rowspan="4">Medir y marcar</td><td>Regla metálica</td><td>Medir.</td></tr>
+<tr><td>Escuadra</td><td>Comprobar ángulos rectos (90º).</td></tr>
+<tr><td>Compás</td><td>Trazar circunferencias.</td></tr>
+<tr><td>Lápiz / punzón</td><td>Marcar.</td></tr>
+<tr><td rowspan="2">Sujetar</td><td>Tornillo de banco</td><td>Sujetar la pieza; va fijo en la mesa.</td></tr>
+<tr><td>Gato o sargento</td><td>Sujeción móvil, para fijar la pieza.</td></tr>
+</table></div>
+<div class="note"><b>Consejo experto:</b> mide dos veces, corta una vez. Una pieza mal sujeta es una pieza arruinada… y un peligro.</div>
+
+<h3>Familia 2: La Fuerza (transformar la pieza)</h3>
+<div class="tbl-scroll"><table>
+<tr><th>Operación</th><th>Herramienta</th><th>Para qué sirve</th></tr>
+<tr><td>Golpear</td><td>Martillo</td><td>Clavar.</td></tr>
+<tr><td rowspan="2">Cortar y serrar</td><td>Serrucho</td><td>Cortes rectos y largos en madera.</td></tr>
+<tr><td>Sierra de calar / segueta</td><td>Cortes curvos o finos.</td></tr>
+</table></div>
+<p>Al serrar, la pieza debe estar bien sujeta a la mesa (por ejemplo, con un gato o sargento).</p>
+
+<h3>Familia 3: La Precisión (el toque final)</h3>
+<div class="tbl-scroll"><table>
+<tr><th>Operación</th><th>Herramienta</th><th>Para qué sirve</th></tr>
+<tr><td>Perforar</td><td>Taladro y brocas de madera (por ejemplo, la broca Forstner)</td><td>Hacer agujeros; la broca Forstner, para agujeros anchos.</td></tr>
+<tr><td rowspan="3">Unir</td><td>Cola térmica</td><td>Unir piezas.</td></tr>
+<tr><td>Cola para madera</td><td>Unir piezas de madera: lenta, pero fortísima.</td></tr>
+<tr><td>Destornilladores</td><td>Unir piezas con tornillos.</td></tr>
+<tr><td rowspan="2">Acabar</td><td>Limas</td><td>Desbastar bordes duros.</td></tr>
+<tr><td>Papel de lija</td><td>Suavizar superficies.</td></tr>
+</table></div>
+<div class="note"><b>Nota:</b> el acabado es la diferencia entre un trabajo de principiante y uno de maestro.</div>
+
+<div class="activity"><span class="tag orange">Actividad</span>
+  <h4>El cirujano del taller (10 segundos)</h4>
+  <p>Se plantea una operación de taller. Tenéis 10 segundos para decir qué herramienta necesita el «cirujano».</p>
+  <ol>
+    <li>Quiero comprobar si esta esquina tiene exactamente 90 grados.</li>
+    <li>Necesito hacer un corte curvo en una chapa de contrachapado fino.</li>
+    <li>Voy a serrar un listón, pero se mueve mucho encima de la mesa.</li>
+    <li>Necesito suavizar un borde de madera que está lleno de astillas.</li>
+  </ol>
+  <details class="sol"><summary>Ver solución</summary>
+    <ol><li>La escuadra.</li><li>La sierra de calar / segueta.</li><li>El tornillo de banco o el gato / sargento (para sujetar la pieza).</li><li>El papel de lija.</li></ol>
+  </details>
+</div>
+`}, en:{ title:"Workshop tools", html:()=>`
+<h3>The workshop arsenal: basic classification</h3>
+<p>Workshop tools are grouped into <b>three families</b> according to the moment of the work when they are used, and they cover <b>8 operations</b>:</p>
+<div class="grid3">
+  <div class="box blue"><h4>The Mind (preparation)</h4><ol><li>Measure</li><li>Mark</li><li>Hold</li></ol></div>
+  <div class="box orange"><h4>The Strength (transformation)</h4><ol start="4"><li>Hit</li><li>Cut / saw</li></ol></div>
+  <div class="box green"><h4>The Precision (finishing)</h4><ol start="6"><li>Drill</li><li>Join</li><li>Finish</li></ol></div>
+</div>
+<div class="mantra">Before making anything, ALWAYS follow this order:<br>Measure → Mark → Cut → Drill → Assemble → Finish</div>
+
+<h3>Family 1: The Mind (preparing the piece)</h3>
+<div class="tbl-scroll"><table>
+<tr><th>Operation</th><th>Tool</th><th>What it is for</th></tr>
+<tr><td rowspan="4">Measure and mark</td><td>Steel ruler</td><td>Measuring.</td></tr>
+<tr><td>Try square</td><td>Checking right angles (90º).</td></tr>
+<tr><td>Compass</td><td>Drawing circles.</td></tr>
+<tr><td>Pencil / awl</td><td>Marking.</td></tr>
+<tr><td rowspan="2">Hold</td><td>Bench vice</td><td>Holding the piece; it is fixed to the table.</td></tr>
+<tr><td>Clamp (G-clamp)</td><td>Movable holding tool, to fix the piece.</td></tr>
+</table></div>
+<div class="note"><b>Expert tip:</b> measure twice, cut once. A badly held piece is a ruined piece… and a danger.</div>
+
+<h3>Family 2: The Strength (transforming the piece)</h3>
+<div class="tbl-scroll"><table>
+<tr><th>Operation</th><th>Tool</th><th>What it is for</th></tr>
+<tr><td>Hit</td><td>Hammer</td><td>Driving nails.</td></tr>
+<tr><td rowspan="2">Cut and saw</td><td>Handsaw</td><td>Long, straight cuts in wood.</td></tr>
+<tr><td>Coping saw / fretsaw</td><td>Curved or fine cuts.</td></tr>
+</table></div>
+<p>When sawing, the piece must be held firmly to the table (for example, with a clamp).</p>
+
+<h3>Family 3: The Precision (the final touch)</h3>
+<div class="tbl-scroll"><table>
+<tr><th>Operation</th><th>Tool</th><th>What it is for</th></tr>
+<tr><td>Drill</td><td>Drill and wood drill bits (for example, the Forstner bit)</td><td>Making holes; the Forstner bit, for wide holes.</td></tr>
+<tr><td rowspan="3">Join</td><td>Hot glue</td><td>Joining pieces.</td></tr>
+<tr><td>Wood glue</td><td>Joining wooden pieces: slow, but super strong.</td></tr>
+<tr><td>Screwdrivers</td><td>Joining pieces with screws.</td></tr>
+<tr><td rowspan="2">Finish</td><td>Files</td><td>Smoothing down hard edges.</td></tr>
+<tr><td>Sandpaper</td><td>Smoothing surfaces.</td></tr>
+</table></div>
+<div class="note"><b>Note:</b> the finish is the difference between a beginner’s work and a master’s.</div>
+
+<div class="activity"><span class="tag orange">Activity</span>
+  <h4>The workshop surgeon (10 seconds)</h4>
+  <p>A workshop operation is described. You have 10 seconds to say which tool the “surgeon” needs.</p>
+  <ol>
+    <li>I want to check whether this corner is exactly 90 degrees.</li>
+    <li>I need to make a curved cut in a thin sheet of plywood.</li>
+    <li>I am going to saw a wooden strip, but it moves a lot on the table.</li>
+    <li>I need to smooth a wooden edge that is full of splinters.</li>
+  </ol>
+  <details class="sol"><summary>Show solution</summary>
+    <ol><li>The try square.</li><li>The coping saw / fretsaw.</li><li>The bench vice or the clamp (to hold the piece).</li><li>Sandpaper.</li></ol>
+  </details>
+</div>
+`}},
+/* 8 ------------------------------------------------------------------ */
+{ id:"safety", es:{ title:"Seguridad en el taller", html:()=>`
+<h3>El decálogo de supervivencia: 5 normas básicas</h3>
+<ol class="steps">
+  <li><b>Orden y tranquilidad:</b> entra sin correr, escucha al profesor y mantén tu mesa limpia de objetos innecesarios.</li>
+  <li><b>Uso correcto:</b> utiliza cada herramienta SOLO para su función real (¡nunca uses un destornillador como martillo!).</li>
+  <li><b>Seguridad al cortar:</b> sujeta firmemente la pieza y corta siempre alejándote de tu cuerpo, manteniendo los dedos lejos de la hoja.</li>
+  <li><b>Máquinas eléctricas:</b> utilízalas de uno en uno, únicamente con autorización y bajo la supervisión del profesor.</li>
+  <li><b>Indumentaria:</b> pelo recogido, sin bufandas ni ropa suelta que pueda engancharse en las máquinas.</li>
+</ol>
+<h3>Tolerancia cero al riesgo</h3>
+<div class="twocol">
+  <div class="box green"><h4>✔ Qué hacer</h4><ul><li>Entrar con tranquilidad (no corras).</li><li>Sujetar bien la pieza antes de cortar.</li><li>Cortar alejándote del cuerpo.</li><li>Mantener la mesa despejada.</li></ul></div>
+  <div class="box red"><h4>✘ Qué no hacer</h4><ul><li>Correr o jugar con las herramientas.</li><li>Usar una herramienta para lo que no fue diseñada (nunca improvises).</li><li>Colocar la mano delante de la herramienta.</li><li>Ocultar un accidente al profesor.</li></ul></div>
+</div>
+<div class="activity"><span class="tag orange">Actividad</span>
+  <h4>Encuentra el peligro</h4>
+  <p>En la ilustración de la presentación aparece un taller lleno de errores. Señala las <b>5 infracciones críticas de seguridad</b>. ¿Qué norma están rompiendo?</p>
+  <details class="sol"><summary>Ver solución</summary>
+    <ul>
+      <li>Un alumno <b>corre con unas tijeras</b> en la mano → Norma 1 (orden y tranquilidad: no correr ni jugar con las herramientas).</li>
+      <li>Hay <b>herramientas tiradas por el suelo</b> → Norma 1 (orden: puesto de trabajo despejado).</li>
+      <li>Un alumno <b>sierra sin sujetar bien la pieza</b>, con la mano delante de la herramienta → Norma 3 (seguridad al cortar).</li>
+      <li>Una alumna usa el <b>taladro con el pelo largo suelto</b> → Norma 5 (indumentaria: pelo recogido).</li>
+      <li>Un alumno <b>manipula el enchufe de una máquina eléctrica</b> por su cuenta → Norma 4 (máquinas eléctricas: solo con autorización y supervisión del profesor).</li>
+    </ul>
+  </details>
+</div>
+`}, en:{ title:"Workshop safety", html:()=>`
+<h3>The survival code: 5 basic rules</h3>
+<ol class="steps">
+  <li><b>Order and calm:</b> come in without running, listen to the teacher and keep your table free of unnecessary objects.</li>
+  <li><b>Correct use:</b> use each tool ONLY for its real purpose (never use a screwdriver as a hammer!).</li>
+  <li><b>Cutting safely:</b> hold the piece firmly and always cut away from your body, keeping your fingers away from the blade.</li>
+  <li><b>Electric machines:</b> use them one person at a time, only with permission and under the teacher’s supervision.</li>
+  <li><b>Clothing:</b> hair tied back, no scarves or loose clothes that could get caught in the machines.</li>
+</ol>
+<h3>Zero tolerance for risk</h3>
+<div class="twocol">
+  <div class="box green"><h4>✔ What to do</h4><ul><li>Come in calmly (do not run).</li><li>Hold the piece firmly before cutting.</li><li>Cut away from your body.</li><li>Keep the table clear.</li></ul></div>
+  <div class="box red"><h4>✘ What not to do</h4><ul><li>Run or play with the tools.</li><li>Use a tool for something it was not designed for (never improvise).</li><li>Put your hand in front of the tool.</li><li>Hide an accident from the teacher.</li></ul></div>
+</div>
+<div class="activity"><span class="tag orange">Activity</span>
+  <h4>Spot the danger</h4>
+  <p>The illustration in the presentation shows a workshop full of mistakes. Point out the <b>5 critical safety breaches</b>. Which rule are they breaking?</p>
+  <details class="sol"><summary>Show solution</summary>
+    <ul>
+      <li>A student is <b>running with scissors</b> in his hand → Rule 1 (order and calm: do not run or play with tools).</li>
+      <li>There are <b>tools lying on the floor</b> → Rule 1 (order: a clear workspace).</li>
+      <li>A student is <b>sawing without holding the piece firmly</b>, with his hand in front of the tool → Rule 3 (cutting safely).</li>
+      <li>A student is using the <b>drill with her long hair loose</b> → Rule 5 (clothing: hair tied back).</li>
+      <li>A student is <b>handling the plug of an electric machine</b> on his own → Rule 4 (electric machines: only with permission and the teacher’s supervision).</li>
+    </ul>
+  </details>
+</div>
+`}},
+/* 9 ------------------------------------------------------------------ */
+{ id:"drawing", es:{ title:"Expresión gráfica", html:()=>`
+<p>El dibujo es el <b>idioma universal</b> de la tecnología: nos permite comunicar una idea antes de construirla. Para pasar de la idea al objeto se siguen <b>3 pasos</b>, cada uno más preciso que el anterior:</p>
+<div class="tbl-scroll"><table>
+<tr><th>Paso</th><th>Cómo se hace</th><th>Características</th></tr>
+<tr><td><b>1. Boceto</b></td><td>Dibujo rápido a mano alzada.</td><td>Muestra la idea principal, pero sin reglas ni medidas exactas.</td></tr>
+<tr><td><b>2. Croquis</b></td><td>A mano alzada.</td><td>Incorpora proporciones reales y <b>acotación</b> (las medidas del objeto en milímetros).</td></tr>
+<tr><td><b>3. Dibujo técnico</b></td><td>Con instrumentos (regla, escuadra).</td><td>Preciso y exacto, empleando los tipos de línea normalizados.</td></tr>
+</table></div>
+<h3>Tipos de línea</h3>
+<figure class="fig">${linesSVG("es")}</figure>
+<div class="key"><b>Recuerda:</b> el croquis SIEMPRE lleva medidas (cotas).</div>
+<div class="activity"><span class="tag orange">Actividad</span>
+  <h4>El escritorio del caos (5 minutos)</h4>
+  <p><b>Planteamiento:</b> vuestro escritorio está lleno de cosas sueltas: un teléfono móvil, tres lápices, unas llaves y unos clips.</p>
+  <p><b>Reto:</b> abrid el cuaderno. Tenéis 5 minutos exactos para dibujar un <b>BOCETO</b> (a mano alzada, rápido pero claro) de un objeto único capaz de organizar y sujetar esos cuatro elementos a la vez.</p>
+</div>
+`}, en:{ title:"Graphic expression", html:()=>`
+<p>Drawing is the <b>universal language</b> of technology: it lets us communicate an idea before we build it. To go from the idea to the object we follow <b>3 steps</b>, each one more precise than the one before:</p>
+<div class="tbl-scroll"><table>
+<tr><th>Step</th><th>How it is done</th><th>Features</th></tr>
+<tr><td><b>1. Sketch</b> (boceto)</td><td>Quick freehand drawing.</td><td>Shows the main idea, but without rulers or exact measurements.</td></tr>
+<tr><td><b>2. Dimensioned sketch</b> (croquis)</td><td>Freehand.</td><td>Includes real proportions and <b>dimensions</b> (the measurements of the object in millimetres).</td></tr>
+<tr><td><b>3. Technical drawing</b></td><td>With instruments (ruler, try square).</td><td>Precise and exact, using the standard line types.</td></tr>
+</table></div>
+<h3>Line types</h3>
+<figure class="fig">${linesSVG("en")}</figure>
+<div class="key"><b>Remember:</b> a dimensioned sketch ALWAYS has measurements (dimensions).</div>
+<div class="activity"><span class="tag orange">Activity</span>
+  <h4>The chaos desk (5 minutes)</h4>
+  <p><b>Situation:</b> your desk is full of loose things: a mobile phone, three pencils, some keys and some paper clips.</p>
+  <p><b>Challenge:</b> open your notebook. You have exactly 5 minutes to draw a <b>SKETCH</b> (freehand, quick but clear) of a single object that can organise and hold those four things at the same time.</p>
+</div>
+`}},
+/* 10 ----------------------------------------------------------------- */
+{ id:"docs", es:{ title:"Documentación del proyecto", html:()=>`
+<p>«El papeleo que salva proyectos»: <b>un proyecto sin documentación es solo un pasatiempo</b>. Todo proyecto requiere <b>6 documentos básicos</b>:</p>
+<div class="tbl-scroll"><table>
+<tr><th>Documento</th><th>Qué es</th></tr>
+<tr><td><b>1. Boceto y croquis</b></td><td>La idea visual (antes de construir).</td></tr>
+<tr><td><b>2. Lista de materiales y herramientas</b></td><td>Todo lo que necesitaremos.</td></tr>
+<tr><td><b>3. Plan de trabajo y reparto</b></td><td>Quién hace qué y cuándo.</td></tr>
+<tr><td><b>4. Hoja de proceso</b></td><td>El diario de a bordo durante la fabricación.</td></tr>
+<tr><td><b>5. Presupuesto</b></td><td>Cálculo de cuánto nos costaría fabricarlo.</td></tr>
+<tr><td><b>6. Memoria final</b></td><td>Documento de evaluación tras terminar el objeto.</td></tr>
+</table></div>
+<h3>Documentación: del papel a la realidad</h3>
+<p><b>Si no está en papel, no existe.</b> La documentación acompaña al proyecto en tres momentos:</p>
+<div class="grid3">
+  <div class="box blue"><h4>Antes de construir</h4><ul><li>Bocetos e ideas iniciales</li><li>Croquis y planos</li><li>Lista de materiales</li><li>Presupuesto</li></ul></div>
+  <div class="box green"><h4>Durante la construcción</h4><ul><li>Diario de trabajo</li><li>Fotografías y anotaciones</li><li>Hoja de procesos</li><li>Control de tiempos</li></ul></div>
+  <div class="box orange"><h4>Después de construir</h4><ul><li>Memoria final</li><li>Resultados y conclusiones</li><li>Mejoras posibles</li><li>Presentación del proyecto</li></ul></div>
+</div>
+`}, en:{ title:"Project documentation", html:()=>`
+<p>“The paperwork that saves projects”: <b>a project without documentation is just a hobby</b>. Every project needs <b>6 basic documents</b>:</p>
+<div class="tbl-scroll"><table>
+<tr><th>Document</th><th>What it is</th></tr>
+<tr><td><b>1. Sketch and dimensioned sketch</b></td><td>The visual idea (before building).</td></tr>
+<tr><td><b>2. List of materials and tools</b></td><td>Everything we will need.</td></tr>
+<tr><td><b>3. Work plan and task allocation</b></td><td>Who does what and when.</td></tr>
+<tr><td><b>4. Process sheet</b></td><td>The logbook during manufacturing.</td></tr>
+<tr><td><b>5. Budget</b></td><td>Calculation of how much it would cost us to make it.</td></tr>
+<tr><td><b>6. Final report</b></td><td>Evaluation document after finishing the object.</td></tr>
+</table></div>
+<h3>Documentation: from paper to reality</h3>
+<p><b>If it is not on paper, it does not exist.</b> Documentation goes with the project at three moments:</p>
+<div class="grid3">
+  <div class="box blue"><h4>Before building</h4><ul><li>Sketches and first ideas</li><li>Dimensioned sketches and plans</li><li>List of materials</li><li>Budget</li></ul></div>
+  <div class="box green"><h4>During construction</h4><ul><li>Work diary</li><li>Photos and notes</li><li>Process sheet</li><li>Time control</li></ul></div>
+  <div class="box orange"><h4>After building</h4><ul><li>Final report</li><li>Results and conclusions</li><li>Possible improvements</li><li>Project presentation</li></ul></div>
+</div>
+`}},
+/* 11 ----------------------------------------------------------------- */
+{ id:"project", es:{ title:"Nuestro proyecto: el organizador", html:()=>`
+<p>Nuestra misión final es construir el <b>Organizador OPITEC 122.979</b>: esto es lo que construiréis con vuestras propias manos. Sus partes son:</p>
+<div class="tbl-scroll"><table>
+<tr><th>Parte</th><th>Descripción</th></tr>
+<tr><td><b>Soporte principal</b></td><td>Madera de contrachapado resistente.</td></tr>
+<tr><td><b>Fijaciones cilíndricas</b></td><td>Varillas de madera redondas (para llaves y soporte).</td></tr>
+<tr><td><b>Listones de freno</b></td><td>Piezas de madera rectangulares para evitar que el móvil deslice.</td></tr>
+<tr><td><b>Base ranurada</b></td><td>Diseñada milimétricamente para encajar el respaldo.</td></tr>
+</table></div>
+<h3>Hoja de ruta del proyecto: de la teoría a la práctica</h3>
+<ol class="steps">
+  <li><b>Medir y cortar</b> (fase La Fuerza): transportar las medidas a los listones y varillas. Uso preciso del serrucho / segueta.</li>
+  <li><b>Marcar y perforar</b> (fase La Precisión): marcar con punzón los orificios del contrachapado y taladrar las muescas (orificios de ø10 mm y ø15 mm).</li>
+  <li><b>Unir y encolar</b> (fase de ensamblaje): fijar las varillas de retención asegurando que las muescas miren hacia arriba.</li>
+  <li><b>Montar el soporte</b> (geometría): encajar ortogonalmente la placa base en el respaldo ranurado.</li>
+  <li><b>Acabar</b> (estética): lijar exhaustivamente todos los bordes de corte y aplicar el diseño estético final.</li>
+</ol>
+`}, en:{ title:"Our project: the organiser", html:()=>`
+<p>Our final mission is to build the <b>OPITEC 122.979 Organiser</b>: this is what you will build with your own hands. Its parts are:</p>
+<div class="tbl-scroll"><table>
+<tr><th>Part</th><th>Description</th></tr>
+<tr><td><b>Main support</b></td><td>Strong plywood.</td></tr>
+<tr><td><b>Cylindrical fixings</b></td><td>Round wooden rods (for keys and as a support).</td></tr>
+<tr><td><b>Stopper strips</b></td><td>Rectangular wooden pieces to stop the mobile phone from sliding.</td></tr>
+<tr><td><b>Slotted base</b></td><td>Designed to the millimetre to fit the backrest.</td></tr>
+</table></div>
+<h3>Project roadmap: from theory to practice</h3>
+<ol class="steps">
+  <li><b>Measure and cut</b> (The Strength stage): transfer the measurements to the strips and rods. Precise use of the handsaw / fretsaw.</li>
+  <li><b>Mark and drill</b> (The Precision stage): mark the holes in the plywood with an awl and drill the notches (holes of ø10 mm and ø15 mm).</li>
+  <li><b>Join and glue</b> (assembly stage): fix the retaining rods, making sure the notches face upwards.</li>
+  <li><b>Assemble the support</b> (geometry): fit the base plate at right angles into the slotted backrest.</li>
+  <li><b>Finish</b> (aesthetics): sand all the cut edges thoroughly and apply the final aesthetic design.</li>
+</ol>
+`}},
+/* 12 ----------------------------------------------------------------- */
+{ id:"summary", es:{ title:"Lo esencial de la unidad", html:()=>`
+<p>Tu mapa de supervivencia: la unidad se apoya en <b>4 pilares</b>.</p>
+<div class="grid2">
+  <div class="box blue"><h4>Pilar 1 · Definición</h4><p><b>C + T + H = Tecnología</b>: conocimiento, técnica y habilidad para la resolución de necesidades.</p></div>
+  <div class="box orange"><h4>Pilar 2 · Proceso</h4><p>Identificar → Buscar → Generar → Elegir → Planificar → Construir → Evaluar → Presentar.</p></div>
+  <div class="box green"><h4>Pilar 3 · Herramientas y dibujo</h4><p>El mantra del taller: <b>Mide → Marca → Corta → Perfora → Monta → Acaba</b>. El croquis SIEMPRE lleva medidas (cotas).</p></div>
+  <div class="box red"><h4>Pilar 4 · Seguridad suprema</h4><p>Sentido común, puesto ordenado, uso específico de cada herramienta y trabajo en equipo.</p></div>
+</div>
+<div class="quote">En el taller no demuestra más habilidad quien trabaja más rápido, sino quien trabaja mejor, seguro y en equipo.</div>
+`}, en:{ title:"Unit essentials", html:()=>`
+<p>Your survival map: the unit rests on <b>4 pillars</b>.</p>
+<div class="grid2">
+  <div class="box blue"><h4>Pillar 1 · Definition</h4><p><b>Science + Technique + Skill = Technology</b>: knowledge, technique and skill for meeting needs.</p></div>
+  <div class="box orange"><h4>Pillar 2 · Process</h4><p>Identify → Research → Generate → Choose → Plan → Build → Test → Present.</p></div>
+  <div class="box green"><h4>Pillar 3 · Tools and drawing</h4><p>The workshop mantra: <b>Measure → Mark → Cut → Drill → Assemble → Finish</b>. A dimensioned sketch ALWAYS has measurements (dimensions).</p></div>
+  <div class="box red"><h4>Pillar 4 · Safety first</h4><p>Common sense, a tidy workspace, using each tool for its specific purpose and teamwork.</p></div>
+</div>
+<div class="quote">In the workshop, the most skilled person is not the one who works fastest, but the one who works best, safely and as part of a team.</div>
+`}}
+];
+
+/* =========================================================
+   5. QUESTION BANK — option [0] is ALWAYS the correct one
+   (options are shuffled when shown)
+   ========================================================= */
+const RAW_Q = [
+// tech
+["tech","¿Qué es la tecnología?","What is technology?",
+ [["La combinación de conocimientos, técnicas y habilidades que permite resolver problemas y satisfacer necesidades humanas","The combination of knowledge, techniques and skills that allows us to solve problems and meet human needs"],
+  ["El conjunto de aparatos electrónicos modernos","The set of modern electronic devices"],
+  ["La ciencia que solo estudia cómo es el mundo","The science that only studies what the world is like"],
+  ["La destreza de las manos para fabricar objetos","The dexterity of our hands to make objects"]],
+ ["Es la definición de la unidad: conocimientos + técnicas + habilidades para resolver problemas y necesidades.","This is the unit’s definition: knowledge + techniques + skills to solve problems and meet needs."]],
+["tech","En la fórmula de la tecnología, ¿qué aporta la Ciencia?","In the technology formula, what does Science contribute?",
+ [["Conocer el mundo","Knowing the world"],["Herramientas y procesos","Tools and processes"],["Destreza humana","Human dexterity"],["Soluciones útiles","Useful solutions"]],
+ ["Ciencia = conocer el mundo; Técnica = herramientas y procesos; Habilidad = destreza humana.","Science = knowing the world; Technique = tools and processes; Skill = human dexterity."]],
+["tech","En la fórmula de la tecnología, ¿qué aporta la Técnica?","In the technology formula, what does Technique contribute?",
+ [["Herramientas y procesos","Tools and processes"],["Conocer el mundo","Knowing the world"],["Destreza humana","Human dexterity"],["Calidad de vida","Quality of life"]],
+ ["La Técnica aporta las herramientas y los procesos.","Technique contributes the tools and processes."]],
+["tech","En la fórmula de la tecnología, ¿qué aporta la Habilidad?","In the technology formula, what does Skill contribute?",
+ [["Destreza humana","Human dexterity"],["Herramientas y procesos","Tools and processes"],["Conocer el mundo","Knowing the world"],["Materiales resistentes","Strong materials"]],
+ ["La Habilidad es la destreza humana.","Skill is human dexterity."]],
+["tech","Ciencia + Técnica + Habilidad dan como resultado…","Science + Technique + Skill result in…",
+ [["Tecnología: soluciones útiles","Technology: useful solutions"],["Necesidades secundarias","Secondary needs"],["Un boceto","A sketch"],["Un presupuesto","A budget"]],
+ ["C + T + H = Tecnología, es decir, soluciones útiles para resolver necesidades.","Science + Technique + Skill = Technology, that is, useful solutions to meet needs."]],
+// needs
+["needs","Las necesidades básicas son las relacionadas con…","Basic needs are related to…",
+ [["La supervivencia","Survival"],["La calidad de vida","Quality of life"],["El ocio y la diversión","Leisure and fun"],["La moda","Fashion"]],
+ ["Básicas = supervivencia; secundarias = calidad de vida.","Basic = survival; secondary = quality of life."]],
+["needs","Las necesidades secundarias son las relacionadas con…","Secondary needs are related to…",
+ [["La calidad de vida","Quality of life"],["La supervivencia","Survival"],["La alimentación","Food"],["La seguridad","Safety"]],
+ ["Las secundarias no son imprescindibles para sobrevivir, pero mejoran la calidad de vida.","Secondary needs are not essential for survival, but they improve quality of life."]],
+["needs","¿Cuál de estas es una necesidad BÁSICA?","Which of these is a BASIC need?",
+ [["Vivienda","Housing"],["Ocio","Leisure"],["Transporte","Transport"],["Entretenimiento","Entertainment"]],
+ ["Las básicas son: alimentación, vivienda, vestido, salud y seguridad.","The basic needs are: food, housing, clothing, health and safety."]],
+["needs","¿Cuál de estas es una necesidad SECUNDARIA?","Which of these is a SECONDARY need?",
+ [["Comunicación","Communication"],["Alimentación","Food"],["Salud","Health"],["Vestido","Clothing"]],
+ ["Las secundarias son: ocio, transporte, comunicación, entretenimiento y cultura.","The secondary needs are: leisure, transport, communication, entertainment and culture."]],
+["needs","Un abrigo de invierno satisface una necesidad…","A winter coat meets a…",
+ [["Básica (vestido)","Basic need (clothing)"],["Secundaria (cultura)","Secondary need (culture)"],["Secundaria (ocio)","Secondary need (leisure)"],["Básica (alimentación)","Basic need (food)"]],
+ ["El vestido es una necesidad básica.","Clothing is a basic need."]],
+["needs","Una vacuna satisface una necesidad…","A vaccine meets a…",
+ [["Básica (salud)","Basic need (health)"],["Secundaria (entretenimiento)","Secondary need (entertainment)"],["Secundaria (transporte)","Secondary need (transport)"],["Básica (vivienda)","Basic need (housing)"]],
+ ["La salud es una necesidad básica.","Health is a basic need."]],
+["needs","Una consola de videojuegos satisface una necesidad…","A games console meets a…",
+ [["Secundaria (ocio / entretenimiento)","Secondary need (leisure / entertainment)"],["Básica (seguridad)","Basic need (safety)"],["Básica (salud)","Basic need (health)"],["Básica (vestido)","Basic need (clothing)"]],
+ ["El ocio y el entretenimiento son necesidades secundarias.","Leisure and entertainment are secondary needs."]],
+["needs","Un router wifi satisface una necesidad…","A wifi router meets a…",
+ [["Secundaria (comunicación)","Secondary need (communication)"],["Básica (alimentación)","Basic need (food)"],["Básica (vivienda)","Basic need (housing)"],["Básica (vestido)","Basic need (clothing)"]],
+ ["La comunicación es una necesidad secundaria.","Communication is a secondary need."]],
+// products
+["products","Los productos tecnológicos se clasifican en…","Technological products are classified into…",
+ [["Bienes, servicios y procesos","Goods, services and processes"],["Básicos y secundarios","Basic and secondary"],["Bocetos, croquis y planos","Sketches, dimensioned sketches and plans"],["Mente, fuerza y precisión","Mind, strength and precision"]],
+ ["Hay 3 tipos de productos tecnológicos: bienes, servicios y procesos.","There are 3 types of technological products: goods, services and processes."]],
+["products","Una bicicleta y un teléfono móvil son…","A bicycle and a mobile phone are…",
+ [["Bienes (objetos físicos)","Goods (physical objects)"],["Servicios (intangibles)","Services (intangible)"],["Procesos (sistemas)","Processes (systems)"],["Necesidades básicas","Basic needs"]],
+ ["Los bienes son objetos físicos.","Goods are physical objects."]],
+["products","La conexión wifi y el autobús urbano son…","A wifi connection and the city bus are…",
+ [["Servicios (intangibles)","Services (intangible)"],["Bienes (objetos físicos)","Goods (physical objects)"],["Procesos (sistemas)","Processes (systems)"],["Herramientas","Tools"]],
+ ["Los servicios son intangibles.","Services are intangible."]],
+["products","El reciclaje de botellas de plástico es un ejemplo de…","Recycling plastic bottles is an example of…",
+ [["Proceso (sistema)","A process (system)"],["Bien (objeto físico)","A good (physical object)"],["Servicio (intangible)","A service (intangible)"],["Necesidad básica","A basic need"]],
+ ["Los procesos son sistemas, como el reciclaje.","Processes are systems, such as recycling."]],
+["products","¿Qué tipo de producto tecnológico es intangible?","Which type of technological product is intangible?",
+ [["Los servicios","Services"],["Los bienes","Goods"],["Las herramientas","Tools"],["Los prototipos","Prototypes"]],
+ ["Los servicios son intangibles; los bienes son objetos físicos.","Services are intangible; goods are physical objects."]],
+// analysis
+["analysis","¿Cuántos tipos de análisis tecnológico estudiamos?","How many types of technological analysis do we study?",
+ [["5","5"],["3","3"],["4","4"],["8","8"]],
+ ["Anatómico, técnico, funcional, estético y económico-social.","Anatomical, technical, functional, aesthetic and socio-economic."]],
+["analysis","El análisis ANATÓMICO estudia…","ANATOMICAL analysis studies…",
+ [["La forma y las piezas que lo componen","The shape and the parts it is made of"],["Los materiales y herramientas usados en su fabricación","The materials and tools used to make it"],["La utilidad y función principal","Its usefulness and main function"],["El coste económico","Its economic cost"]],
+ ["Anatómico: forma y piezas.","Anatomical: shape and parts."]],
+["analysis","El análisis TÉCNICO estudia…","TECHNICAL analysis studies…",
+ [["Los materiales y herramientas usados en su fabricación","The materials and tools used to make it"],["La forma y las piezas que lo componen","The shape and the parts it is made of"],["La belleza, el color y el acabado exterior","Its beauty, colour and outer finish"],["El impacto en el medio ambiente","Its impact on the environment"]],
+ ["Técnico: materiales y herramientas (y técnicas) de fabricación.","Technical: materials and tools (and techniques) used to make it."]],
+["analysis","El análisis FUNCIONAL estudia…","FUNCTIONAL analysis studies…",
+ [["La utilidad y función principal","Its usefulness and main function"],["La belleza, el color y el acabado exterior","Its beauty, colour and outer finish"],["Los materiales usados en su fabricación","The materials used to make it"],["La forma y las piezas","Its shape and parts"]],
+ ["Funcional: ¿para qué sirve?","Functional: what is it for?"]],
+["analysis","El análisis ESTÉTICO estudia…","AESTHETIC analysis studies…",
+ [["La belleza, el color y el acabado exterior","Its beauty, colour and outer finish"],["La utilidad y función principal","Its usefulness and main function"],["El coste económico","Its economic cost"],["Las piezas que lo componen","The parts it is made of"]],
+ ["Estético: ¿cómo es su apariencia?","Aesthetic: what does it look like?"]],
+["analysis","El análisis ECONÓMICO-SOCIAL estudia…","SOCIO-ECONOMIC analysis studies…",
+ [["El coste económico y el impacto en la sociedad y el medio ambiente","Its economic cost and its impact on society and the environment"],["Los materiales usados en su fabricación","The materials used to make it"],["La forma y las piezas","Its shape and parts"],["El color y el acabado","Its colour and finish"]],
+ ["Económico-social: ¿cuánto cuesta y qué impacto tiene?","Socio-economic: how much does it cost and what impact does it have?"]],
+["analysis","«La mochila está hecha de tela de nailon y plástico resistente». ¿Qué análisis es?","“The backpack is made of nylon fabric and strong plastic.” Which analysis is this?",
+ [["Técnico","Technical"],["Anatómico","Anatomical"],["Estético","Aesthetic"],["Funcional","Functional"]],
+ ["Hablar de los materiales corresponde al análisis técnico.","Talking about materials is technical analysis."]],
+["analysis","«La mochila tiene correas, bolsillos y cremalleras». ¿Qué análisis es?","“The backpack has straps, pockets and zips.” Which analysis is this?",
+ [["Anatómico","Anatomical"],["Técnico","Technical"],["Económico-social","Socio-economic"],["Funcional","Functional"]],
+ ["Describir las partes que componen el objeto es el análisis anatómico.","Describing the parts the object is made of is anatomical analysis."]],
+["analysis","«Sirve para transportar libros sin dañar la espalda». ¿Qué análisis es?","“It is for carrying books without hurting your back.” Which analysis is this?",
+ [["Funcional","Functional"],["Estético","Aesthetic"],["Anatómico","Anatomical"],["Técnico","Technical"]],
+ ["Explicar para qué sirve es el análisis funcional.","Explaining what it is for is functional analysis."]],
+["analysis","«Tiene colores llamativos y un diseño deportivo». ¿Qué análisis es?","“It has bright colours and a sporty design.” Which analysis is this?",
+ [["Estético","Aesthetic"],["Funcional","Functional"],["Técnico","Technical"],["Económico-social","Socio-economic"]],
+ ["La apariencia, los colores y el acabado son el análisis estético.","Appearance, colours and finish are aesthetic analysis."]],
+["analysis","«Tiene un precio accesible, pero sus materiales dejan huella de carbono». ¿Qué análisis es?","“It has an affordable price, but its materials leave a carbon footprint.” Which analysis is this?",
+ [["Económico-social","Socio-economic"],["Técnico","Technical"],["Estético","Aesthetic"],["Anatómico","Anatomical"]],
+ ["El precio y el impacto en la sociedad y el medio ambiente son el análisis económico-social.","Price and impact on society and the environment are socio-economic analysis."]],
+// process
+["process","¿Cuál es la PRIMERA fase del proceso tecnológico?","What is the FIRST stage of the technological process?",
+ [["Identificar el problema","Identify the problem"],["Buscar información","Research information"],["Construir el prototipo","Build the prototype"],["Generar ideas","Generate ideas"]],
+ ["Todo empieza preguntándonos: ¿qué necesidad tenemos?","Everything starts by asking: what need do we have?"]],
+["process","¿Cuántas fases tiene el proceso tecnológico (la brújula del inventor)?","How many stages does the technological process (the inventor’s compass) have?",
+ [["8","8"],["5","5"],["6","6"],["4","4"]],
+ ["Identificar, buscar, generar, elegir, planificar, construir, evaluar y presentar.","Identify, research, generate, choose, plan, build, test and present."]],
+["process","¿Qué fase va justo DESPUÉS de «Buscar información»?","Which stage comes right AFTER “Research information”?",
+ [["Generar ideas","Generate ideas"],["Construir el prototipo","Build the prototype"],["Identificar el problema","Identify the problem"],["Evaluar y comprobar","Test and evaluate"]],
+ ["Orden: 1 Identificar, 2 Buscar información, 3 Generar ideas…","Order: 1 Identify, 2 Research information, 3 Generate ideas…"]],
+["process","¿En qué consiste la fase «Generar ideas»?","What does the “Generate ideas” stage consist of?",
+ [["En hacer una tormenta de ideas (bocetos)","Brainstorming (sketches)"],["En investigar cómo lo han resuelto otros","Finding out how others have solved it"],["En comprobar si funciona","Checking whether it works"],["En elaborar la memoria","Writing the report"]],
+ ["Generar ideas = tormenta de ideas con bocetos.","Generate ideas = brainstorming with sketches."]],
+["process","¿En qué fase decimos «manos a la obra en el taller»?","In which stage do we “get to work in the workshop”?",
+ [["Construir el prototipo","Build the prototype"],["Planificar y organizar","Plan and organise"],["Presentar y comercializar","Present and market"],["Buscar información","Research information"]],
+ ["La fase 6, construir el prototipo, se realiza en el taller.","Stage 6, building the prototype, is done in the workshop."]],
+["process","Si al evaluar descubrimos que el prototipo falla, ¿qué hacemos?","If we discover during testing that the prototype fails, what do we do?",
+ [["Volvemos atrás y rediseñamos","We go back and redesign"],["Lo presentamos igualmente","We present it anyway"],["Abandonamos el proyecto","We abandon the project"],["Pasamos directamente a comercializarlo","We go straight to marketing it"]],
+ ["El proceso es un ciclo: «si falla, rediseña».","The process is a cycle: “if it fails, redesign”."]],
+["process","¿Cuál es la ÚLTIMA fase del proceso tecnológico?","What is the LAST stage of the technological process?",
+ [["Presentar y comercializar","Present and market"],["Evaluar y comprobar","Test and evaluate"],["Construir el prototipo","Build the prototype"],["Elegir la mejor solución","Choose the best solution"]],
+ ["En la fase 8 se elabora la memoria y se muestra el producto.","In stage 8 we write the report and show the product."]],
+["process","La fase «Planificar y organizar» se ocupa de…","The “Plan and organise” stage deals with…",
+ [["Las tareas, las herramientas y los materiales","Tasks, tools and materials"],["Investigar cómo lo han resuelto otros","Finding out how others have solved it"],["Comprobar si resuelve el problema","Checking whether it solves the problem"],["Hacer una tormenta de ideas","Brainstorming"]],
+ ["Planificar = organizar tareas, herramientas y materiales.","Planning = organising tasks, tools and materials."]],
+["process","En la fase «Elegir la mejor solución» debemos…","In the “Choose the best solution” stage we must…",
+ [["Seleccionar la solución más viable","Select the most viable solution"],["Elegir la más bonita, aunque no funcione","Choose the prettiest one, even if it does not work"],["Construir todas las ideas","Build all the ideas"],["Mostrar el producto a los vecinos","Show the product to the neighbours"]],
+ ["Se selecciona la más viable.","We select the most viable one."]],
+["process","Circuito roto: «Probamos si un perro cabe dentro y está caliente». ¿Qué fase es?","Broken circuit: “We test whether a dog fits inside and stays warm.” Which stage is it?",
+ [["Evaluar y comprobar","Test and evaluate"],["Construir el prototipo","Build the prototype"],["Identificar el problema","Identify the problem"],["Buscar información","Research information"]],
+ ["Comprobar si funciona y resuelve el problema es la fase 7.","Checking whether it works and solves the problem is stage 7."]],
+["process","Circuito roto: «Elegimos la caseta con techo inclinado para la lluvia». ¿Qué fase es?","Broken circuit: “We choose the kennel with a sloping roof for the rain.” Which stage is it?",
+ [["Elegir la mejor solución","Choose the best solution"],["Generar ideas","Generate ideas"],["Planificar y organizar","Plan and organise"],["Presentar y comercializar","Present and market"]],
+ ["Entre las opciones dibujadas se elige la más viable (fase 4).","From the options drawn, we choose the most viable one (stage 4)."]],
+["process","Circuito roto: «Buscamos en internet medidas estándar de perros». ¿Qué fase es?","Broken circuit: “We look up standard dog sizes on the internet.” Which stage is it?",
+ [["Buscar información","Research information"],["Identificar el problema","Identify the problem"],["Evaluar y comprobar","Test and evaluate"],["Construir el prototipo","Build the prototype"]],
+ ["Investigar es la fase 2.","Researching is stage 2."]],
+["process","Circuito roto: «Hacemos una lista de la madera y clavos necesarios». ¿Qué fase es?","Broken circuit: “We make a list of the wood and nails we need.” Which stage is it?",
+ [["Planificar y organizar","Plan and organise"],["Generar ideas","Generate ideas"],["Construir el prototipo","Build the prototype"],["Presentar y comercializar","Present and market"]],
+ ["Organizar materiales es la fase 5.","Organising materials is stage 5."]],
+// team
+["team","¿Por cuántos roles fundamentales rotaréis en el equipo de taller?","How many key roles will you rotate through in the workshop team?",
+ [["4","4"],["2","2"],["5","5"],["8","8"]],
+ ["Coordinador/a-Secretario/a; Materiales y herramientas; Orden, limpieza y seguridad; Calidad y convivencia.","Coordinator–Secretary; Materials and tools; Order, cleaning and safety; Quality and coexistence."]],
+["team","Dirige al equipo, toma decisiones, completa los documentos y lleva el registro. ¿Qué rol es?","Leads the team, makes decisions, fills in the documents and keeps the records. Which role is it?",
+ [["Coordinador/a – Secretario/a","Coordinator – Secretary"],["Materiales y herramientas","Materials and tools"],["Orden, limpieza y seguridad","Order, cleaning and safety"],["Calidad y convivencia","Quality and coexistence"]],
+ ["Es la función del coordinador/a – secretario/a.","This is the coordinator – secretary’s job."]],
+["team","Vigila, recoge, reparte y asegura el buen estado del instrumental. ¿Qué rol es?","Watches over, collects, hands out and makes sure the tools are in good condition. Which role is it?",
+ [["Materiales y herramientas","Materials and tools"],["Calidad y convivencia","Quality and coexistence"],["Coordinador/a – Secretario/a","Coordinator – Secretary"],["Orden, limpieza y seguridad","Order, cleaning and safety"]],
+ ["Es la función del responsable de materiales y herramientas.","This is the materials and tools manager’s job."]],
+["team","Su superpoder es la prevención: garantiza que la mesa esté despejada y se cumplan las normas. ¿Qué rol es?","Their superpower is prevention: they make sure the table is clear and the rules are followed. Which role is it?",
+ [["Orden, limpieza y seguridad","Order, cleaning and safety"],["Materiales y herramientas","Materials and tools"],["Calidad y convivencia","Quality and coexistence"],["Coordinador/a – Secretario/a","Coordinator – Secretary"]],
+ ["Es la función del responsable de orden, limpieza y seguridad.","This is the order, cleaning and safety manager’s job."]],
+["team","Fomenta el respeto, revisa que el trabajo esté bien hecho y media en los conflictos. ¿Qué rol es?","Encourages respect, checks the work is well done and mediates in conflicts. Which role is it?",
+ [["Calidad y convivencia","Quality and coexistence"],["Orden, limpieza y seguridad","Order, cleaning and safety"],["Coordinador/a – Secretario/a","Coordinator – Secretary"],["Materiales y herramientas","Materials and tools"]],
+ ["Es la función del responsable de calidad y convivencia.","This is the quality and coexistence manager’s job."]],
+// tools
+["tools","La familia «La Mente» (preparación) agrupa las operaciones de…","The “Mind” family (preparation) groups the operations of…",
+ [["Medir, marcar y sujetar","Measuring, marking and holding"],["Golpear y cortar","Hitting and cutting"],["Perforar, unir y acabar","Drilling, joining and finishing"],["Lijar y pintar","Sanding and painting"]],
+ ["La Mente: 1 medir, 2 marcar, 3 sujetar.","The Mind: 1 measure, 2 mark, 3 hold."]],
+["tools","La familia «La Fuerza» (transformación) agrupa las operaciones de…","The “Strength” family (transformation) groups the operations of…",
+ [["Golpear y cortar / serrar","Hitting and cutting / sawing"],["Medir, marcar y sujetar","Measuring, marking and holding"],["Perforar, unir y acabar","Drilling, joining and finishing"],["Dibujar y acotar","Drawing and dimensioning"]],
+ ["La Fuerza: 4 golpear, 5 cortar / serrar.","The Strength: 4 hit, 5 cut / saw."]],
+["tools","La familia «La Precisión» (finalización) agrupa las operaciones de…","The “Precision” family (finishing) groups the operations of…",
+ [["Perforar, unir y acabar","Drilling, joining and finishing"],["Golpear y cortar","Hitting and cutting"],["Medir, marcar y sujetar","Measuring, marking and holding"],["Planificar y presupuestar","Planning and budgeting"]],
+ ["La Precisión: 6 perforar, 7 unir, 8 acabar.","The Precision: 6 drill, 7 join, 8 finish."]],
+["tools","¿Cuál es el orden que hay que seguir SIEMPRE antes de fabricar?","What order must you ALWAYS follow before making something?",
+ [["Mide → Marca → Corta → Perfora → Monta → Acaba","Measure → Mark → Cut → Drill → Assemble → Finish"],["Corta → Mide → Marca → Monta → Perfora → Acaba","Cut → Measure → Mark → Assemble → Drill → Finish"],["Marca → Corta → Mide → Acaba → Monta → Perfora","Mark → Cut → Measure → Finish → Assemble → Drill"],["Mide → Corta → Monta → Marca → Acaba → Perfora","Measure → Cut → Assemble → Mark → Finish → Drill"]],
+ ["Es el mantra del taller.","This is the workshop mantra."]],
+["tools","¿Qué herramienta sirve para comprobar ángulos rectos de 90º?","Which tool is used to check 90º right angles?",
+ [["La escuadra","The try square"],["El compás","The compass"],["La regla metálica","The steel ruler"],["El punzón","The awl"]],
+ ["La escuadra comprueba ángulos rectos (90º).","The try square checks right angles (90º)."]],
+["tools","¿Qué herramienta sirve para trazar circunferencias?","Which tool is used to draw circles?",
+ [["El compás","The compass"],["La escuadra","The try square"],["La lima","The file"],["La segueta","The fretsaw"]],
+ ["El compás traza circunferencias.","The compass draws circles."]],
+["tools","¿Qué herramienta de sujeción va fija en la mesa?","Which holding tool is fixed to the table?",
+ [["El tornillo de banco","The bench vice"],["El gato o sargento","The clamp"],["El destornillador","The screwdriver"],["El taladro","The drill"]],
+ ["El tornillo de banco es fijo; el gato o sargento es móvil.","The bench vice is fixed; the clamp is movable."]],
+["tools","¿Qué herramienta de sujeción es MÓVIL y sirve para fijar la pieza?","Which holding tool is MOVABLE and is used to fix the piece?",
+ [["El gato o sargento","The clamp"],["El tornillo de banco","The bench vice"],["La escuadra","The try square"],["El martillo","The hammer"]],
+ ["El gato o sargento es la sujeción móvil.","The clamp is the movable holding tool."]],
+["tools","¿Qué herramienta usamos para hacer cortes rectos y largos en madera?","Which tool do we use for long, straight cuts in wood?",
+ [["El serrucho","The handsaw"],["La sierra de calar / segueta","The coping saw / fretsaw"],["La lima","The file"],["La broca Forstner","The Forstner bit"]],
+ ["El serrucho: cortes rectos y largos en madera.","The handsaw: long, straight cuts in wood."]],
+["tools","Necesito hacer un corte curvo en una chapa de contrachapado fino. ¿Qué herramienta uso?","I need to make a curved cut in a thin sheet of plywood. Which tool do I use?",
+ [["La sierra de calar / segueta","The coping saw / fretsaw"],["El serrucho","The handsaw"],["El martillo","The hammer"],["La escuadra","The try square"]],
+ ["La sierra de calar o segueta sirve para cortes curvos o finos.","The coping saw or fretsaw is for curved or fine cuts."]],
+["tools","¿Para qué sirve el martillo?","What is the hammer for?",
+ [["Para clavar","Driving nails"],["Para cortar","Cutting"],["Para medir","Measuring"],["Para lijar","Sanding"]],
+ ["El martillo (operación «golpear») sirve para clavar.","The hammer (the “hit” operation) is for driving nails."]],
+["tools","¿Qué broca usamos para hacer agujeros anchos en madera?","Which bit do we use to make wide holes in wood?",
+ [["La broca Forstner","The Forstner bit"],["Cualquier destornillador","Any screwdriver"],["La lima","The file"],["El punzón","The awl"]],
+ ["La broca Forstner es para agujeros anchos.","The Forstner bit is for wide holes."]],
+["tools","¿Qué adhesivo es «lento pero fortísimo»?","Which adhesive is “slow but super strong”?",
+ [["La cola para madera","Wood glue"],["La cola térmica","Hot glue"],["El papel de lija","Sandpaper"],["Los clavos","Nails"]],
+ ["La cola para madera es lenta, pero fortísima.","Wood glue is slow, but super strong."]],
+["tools","¿Qué herramienta sirve para desbastar bordes duros?","Which tool is used to smooth down hard edges?",
+ [["Las limas","Files"],["El compás","The compass"],["La cola térmica","Hot glue"],["El tornillo de banco","The bench vice"]],
+ ["Las limas desbastan bordes duros.","Files smooth down hard edges."]],
+["tools","Necesito suavizar un borde de madera que está lleno de astillas. ¿Qué uso?","I need to smooth a wooden edge that is full of splinters. What do I use?",
+ [["Papel de lija","Sandpaper"],["El serrucho","The handsaw"],["La escuadra","The try square"],["El martillo","The hammer"]],
+ ["El papel de lija sirve para suavizar superficies.","Sandpaper is for smoothing surfaces."]],
+["tools","Voy a serrar un listón, pero se mueve mucho encima de la mesa. ¿Qué necesito?","I am going to saw a wooden strip, but it moves a lot on the table. What do I need?",
+ [["Un tornillo de banco o un gato / sargento","A bench vice or a clamp"],["Un compás","A compass"],["Una lima","A file"],["Cola térmica","Hot glue"]],
+ ["Hay que sujetar la pieza: una pieza mal sujeta es una pieza arruinada… y un peligro.","You must hold the piece: a badly held piece is a ruined piece… and a danger."]],
+["tools","¿Cuál es el «consejo experto» del taller?","What is the workshop’s “expert tip”?",
+ [["Mide dos veces, corta una vez","Measure twice, cut once"],["Corta rápido y mide después","Cut quickly and measure afterwards"],["Mide una vez, corta dos veces","Measure once, cut twice"],["No hace falta medir si tienes buen ojo","You do not need to measure if you have a good eye"]],
+ ["Mide dos veces, corta una vez.","Measure twice, cut once."]],
+["tools","¿Qué herramienta de la familia «La Mente» usamos para marcar, por ejemplo, los orificios del contrachapado?","Which tool from the “Mind” family do we use to mark, for example, the holes in the plywood?",
+ [["El punzón","The awl"],["El serrucho","The handsaw"],["El taladro","The drill"],["La cola para madera","Wood glue"]],
+ ["El lápiz y el punzón sirven para marcar.","The pencil and the awl are used for marking."]],
+["tools","Según la unidad, ¿qué marca la diferencia entre un trabajo de principiante y uno de maestro?","According to the unit, what makes the difference between a beginner’s work and a master’s?",
+ [["El acabado","The finish"],["La velocidad","Speed"],["El precio de las herramientas","The price of the tools"],["El tamaño del objeto","The size of the object"]],
+ ["El acabado es la diferencia entre un trabajo de principiante y uno de maestro.","The finish is the difference between a beginner’s work and a master’s."]],
+// safety
+["safety","¿Cuántas normas básicas tiene el «decálogo de supervivencia» del taller?","How many basic rules does the workshop “survival code” have?",
+ [["5","5"],["10","10"],["3","3"],["8","8"]],
+ ["Orden y tranquilidad, uso correcto, seguridad al cortar, máquinas eléctricas e indumentaria.","Order and calm, correct use, cutting safely, electric machines and clothing."]],
+["safety","Según la norma de «uso correcto», ¿qué NUNCA debes hacer?","According to the “correct use” rule, what must you NEVER do?",
+ [["Usar un destornillador como martillo","Use a screwdriver as a hammer"],["Usar la escuadra para comprobar 90º","Use the try square to check 90º"],["Lijar los bordes","Sand the edges"],["Medir dos veces","Measure twice"]],
+ ["Cada herramienta se usa SOLO para su función real.","Each tool is used ONLY for its real purpose."]],
+["safety","¿Cómo debes cortar con seguridad?","How should you cut safely?",
+ [["Sujetando firmemente la pieza y cortando siempre alejándote de tu cuerpo","Holding the piece firmly and always cutting away from your body"],["Sujetando la pieza con la mano delante de la hoja","Holding the piece with your hand in front of the blade"],["Cortando hacia tu cuerpo para tener más fuerza","Cutting towards your body to have more strength"],["Cortando lo más rápido posible","Cutting as fast as possible"]],
+ ["Norma 3: sujeta firmemente la pieza, corta alejándote del cuerpo y mantén los dedos lejos de la hoja.","Rule 3: hold the piece firmly, cut away from your body and keep your fingers away from the blade."]],
+["safety","¿Cómo se usan las máquinas eléctricas del taller?","How are the electric machines in the workshop used?",
+ [["De uno en uno, solo con autorización y bajo la supervisión del profesor","One person at a time, only with permission and under the teacher’s supervision"],["Libremente, cuando las necesites","Freely, whenever you need them"],["En grupo, todos a la vez para ir más rápido","In a group, all at once to go faster"],["Solo si el coordinador del equipo lo permite","Only if the team coordinator allows it"]],
+ ["Norma 4: máquinas eléctricas solo con autorización y supervisión del profesor.","Rule 4: electric machines only with permission and the teacher’s supervision."]],
+["safety","¿Qué dice la norma de indumentaria?","What does the clothing rule say?",
+ [["Pelo recogido, sin bufandas ni ropa suelta que pueda engancharse en las máquinas","Hair tied back, no scarves or loose clothes that could get caught in the machines"],["Hay que llevar ropa ancha para estar cómodo","You must wear loose clothes to be comfortable"],["Se puede llevar bufanda si hace frío","You can wear a scarf if it is cold"],["El pelo largo debe ir suelto","Long hair must be worn loose"]],
+ ["Norma 5: indumentaria adecuada para no engancharse en las máquinas.","Rule 5: suitable clothing so nothing gets caught in the machines."]],
+["safety","¿Cuál de estas acciones está en la lista de «QUÉ NO HACER»?","Which of these actions is on the “WHAT NOT TO DO” list?",
+ [["Ocultar un accidente al profesor","Hiding an accident from the teacher"],["Mantener la mesa despejada","Keeping the table clear"],["Sujetar bien la pieza antes de cortar","Holding the piece firmly before cutting"],["Entrar con tranquilidad","Coming in calmly"]],
+ ["Nunca se oculta un accidente al profesor.","You must never hide an accident from the teacher."]],
+["safety","¿Cuál de estas acciones está en la lista de «QUÉ HACER»?","Which of these actions is on the “WHAT TO DO” list?",
+ [["Mantener la mesa despejada","Keeping the table clear"],["Colocar la mano delante de la herramienta","Putting your hand in front of the tool"],["Correr o jugar con las herramientas","Running or playing with the tools"],["Improvisar con las herramientas","Improvising with the tools"]],
+ ["Qué hacer: entrar con tranquilidad, sujetar la pieza, cortar alejándote del cuerpo y mantener la mesa despejada.","What to do: come in calmly, hold the piece, cut away from your body and keep the table clear."]],
+["safety","Un alumno cruza el taller corriendo con unas tijeras en la mano. ¿Qué norma rompe?","A student runs across the workshop with scissors in his hand. Which rule is he breaking?",
+ [["Norma 1: orden y tranquilidad","Rule 1: order and calm"],["Norma 4: máquinas eléctricas","Rule 4: electric machines"],["Norma 5: indumentaria","Rule 5: clothing"],["Ninguna, si tiene cuidado","None, if he is careful"]],
+ ["Hay que entrar sin correr y no correr ni jugar con las herramientas.","You must come in without running and never run or play with tools."]],
+["safety","Una alumna trabaja en el taladro con el pelo largo suelto. ¿Qué norma rompe?","A student works at the drill with her long hair loose. Which rule is she breaking?",
+ [["Norma 5: indumentaria","Rule 5: clothing"],["Norma 2: uso correcto","Rule 2: correct use"],["Norma 3: seguridad al cortar","Rule 3: cutting safely"],["Ninguna","None"]],
+ ["El pelo debe ir recogido para que no se enganche en las máquinas.","Hair must be tied back so it does not get caught in the machines."]],
+// drawing
+["drawing","Dibujo rápido a mano alzada que muestra la idea principal sin reglas ni medidas exactas. ¿Qué es?","A quick freehand drawing that shows the main idea without rulers or exact measurements. What is it?",
+ [["El boceto","A sketch (boceto)"],["El croquis","A dimensioned sketch (croquis)"],["El dibujo técnico","A technical drawing"],["El presupuesto","A budget"]],
+ ["Paso 1: el boceto.","Step 1: the sketch."]],
+["drawing","Dibujo a mano alzada con proporciones reales y acotación. ¿Qué es?","A freehand drawing with real proportions and dimensions. What is it?",
+ [["El croquis","A dimensioned sketch (croquis)"],["El boceto","A sketch (boceto)"],["El dibujo técnico","A technical drawing"],["La memoria final","The final report"]],
+ ["Paso 2: el croquis, que incorpora las medidas.","Step 2: the dimensioned sketch, which includes measurements."]],
+["drawing","Dibujo preciso y exacto, hecho con instrumentos y con tipos de línea normalizados. ¿Qué es?","A precise and exact drawing, made with instruments and standard line types. What is it?",
+ [["El dibujo técnico","A technical drawing"],["El boceto","A sketch (boceto)"],["El croquis","A dimensioned sketch (croquis)"],["La hoja de proceso","The process sheet"]],
+ ["Paso 3: el dibujo técnico.","Step 3: the technical drawing."]],
+["drawing","¿Cuál es el orden correcto de la expresión gráfica?","What is the correct order in graphic expression?",
+ [["Boceto → croquis → dibujo técnico","Sketch → dimensioned sketch → technical drawing"],["Croquis → boceto → dibujo técnico","Dimensioned sketch → sketch → technical drawing"],["Dibujo técnico → croquis → boceto","Technical drawing → dimensioned sketch → sketch"],["Boceto → dibujo técnico → croquis","Sketch → technical drawing → dimensioned sketch"]],
+ ["Paso 1 boceto, paso 2 croquis, paso 3 dibujo técnico.","Step 1 sketch, step 2 dimensioned sketch, step 3 technical drawing."]],
+["drawing","En el croquis, las medidas del objeto se expresan en…","In a dimensioned sketch, the object’s measurements are given in…",
+ [["Milímetros","Millimetres"],["Metros","Metres"],["Kilómetros","Kilometres"],["No lleva medidas","It has no measurements"]],
+ ["La acotación son las medidas del objeto en milímetros.","Dimensions are the object’s measurements in millimetres."]],
+["drawing","¿Qué representa la línea CONTINUA GRUESA?","What does the THICK CONTINUOUS line represent?",
+ [["Los contornos visibles","Visible outlines"],["Las aristas ocultas","Hidden edges"],["Las líneas auxiliares y de cota","Auxiliary and dimension lines"],["Los ejes de simetría","Lines of symmetry"]],
+ ["Continua gruesa = contornos visibles.","Thick continuous = visible outlines."]],
+["drawing","¿Qué representa la línea DISCONTINUA?","What does the DASHED line represent?",
+ [["Las aristas ocultas que no vemos desde ese ángulo","Hidden edges we cannot see from that angle"],["Los contornos visibles","Visible outlines"],["Las líneas de cota","Dimension lines"],["El borde del papel","The edge of the paper"]],
+ ["Discontinua = aristas ocultas.","Dashed = hidden edges."]],
+["drawing","¿Qué representa la línea CONTINUA FINA?","What does the THIN CONTINUOUS line represent?",
+ [["Las líneas auxiliares y de cota","Auxiliary and dimension lines"],["Los contornos visibles","Visible outlines"],["Las aristas ocultas","Hidden edges"],["Las zonas cortadas","Cut areas"]],
+ ["Continua fina = líneas auxiliares / de cota.","Thin continuous = auxiliary / dimension lines."]],
+["drawing","¿Qué lleva SIEMPRE el croquis?","What does a dimensioned sketch ALWAYS have?",
+ [["Medidas (cotas)","Measurements (dimensions)"],["Colores","Colours"],["El precio del objeto","The price of the object"],["La firma del profesor","The teacher’s signature"]],
+ ["El croquis SIEMPRE lleva medidas (cotas).","A dimensioned sketch ALWAYS has measurements (dimensions)."]],
+// docs
+["docs","¿Cuántos documentos básicos requiere todo proyecto?","How many basic documents does every project need?",
+ [["6","6"],["3","3"],["4","4"],["8","8"]],
+ ["Boceto y croquis, lista de materiales y herramientas, plan de trabajo, hoja de proceso, presupuesto y memoria final.","Sketch and dimensioned sketch, list of materials and tools, work plan, process sheet, budget and final report."]],
+["docs","«Quién hace qué y cuándo». ¿Qué documento es?","“Who does what and when.” Which document is it?",
+ [["El plan de trabajo y reparto","The work plan and task allocation"],["La hoja de proceso","The process sheet"],["El presupuesto","The budget"],["La memoria final","The final report"]],
+ ["El plan de trabajo reparte las tareas y los tiempos.","The work plan allocates tasks and times."]],
+["docs","«El diario de a bordo durante la fabricación». ¿Qué documento es?","“The logbook during manufacturing.” Which document is it?",
+ [["La hoja de proceso","The process sheet"],["El presupuesto","The budget"],["El boceto","The sketch"],["La lista de materiales","The list of materials"]],
+ ["La hoja de proceso se rellena mientras se fabrica.","The process sheet is filled in while making the object."]],
+["docs","«Cálculo de cuánto nos costaría fabricarlo». ¿Qué documento es?","“Calculation of how much it would cost us to make it.” Which document is it?",
+ [["El presupuesto","The budget"],["La memoria final","The final report"],["El plan de trabajo","The work plan"],["El croquis","The dimensioned sketch"]],
+ ["El presupuesto calcula el coste.","The budget calculates the cost."]],
+["docs","«Documento de evaluación tras terminar el objeto». ¿Qué documento es?","“Evaluation document after finishing the object.” Which document is it?",
+ [["La memoria final","The final report"],["La hoja de proceso","The process sheet"],["El boceto y croquis","The sketch and dimensioned sketch"],["La lista de herramientas","The list of tools"]],
+ ["La memoria final se hace al terminar.","The final report is written at the end."]],
+["docs","Según la unidad, un proyecto sin documentación es…","According to the unit, a project without documentation is…",
+ [["Solo un pasatiempo","Just a hobby"],["Un proyecto perfecto","A perfect project"],["Más rápido y mejor","Faster and better"],["Un prototipo","A prototype"]],
+ ["Un proyecto sin documentación es solo un pasatiempo: «si no está en papel, no existe».","A project without documentation is just a hobby: “if it is not on paper, it does not exist”."]],
+["docs","¿Qué documento se elabora ANTES de construir?","Which document is prepared BEFORE building?",
+ [["El presupuesto","The budget"],["El control de tiempos","The time control"],["La memoria final","The final report"],["Las mejoras posibles","The possible improvements"]],
+ ["Antes: bocetos e ideas, croquis y planos, lista de materiales y presupuesto.","Before: sketches and ideas, dimensioned sketches and plans, list of materials and budget."]],
+["docs","¿Qué se documenta DURANTE la construcción?","What is documented DURING construction?",
+ [["El control de tiempos","The time control"],["El presupuesto","The budget"],["Los bocetos e ideas iniciales","Sketches and first ideas"],["Los resultados y conclusiones","Results and conclusions"]],
+ ["Durante: diario de trabajo, fotografías y anotaciones, hoja de procesos y control de tiempos.","During: work diary, photos and notes, process sheet and time control."]],
+["docs","¿Qué se documenta DESPUÉS de construir?","What is documented AFTER building?",
+ [["Las mejoras posibles","Possible improvements"],["La lista de materiales","The list of materials"],["El diario de trabajo","The work diary"],["Los croquis y planos","Dimensioned sketches and plans"]],
+ ["Después: memoria final, resultados y conclusiones, mejoras posibles y presentación del proyecto.","After: final report, results and conclusions, possible improvements and project presentation."]],
+// project
+["project","¿Cuál es nuestra misión final (el proyecto de la unidad)?","What is our final mission (the unit project)?",
+ [["El Organizador OPITEC 122.979","The OPITEC 122.979 Organiser"],["Una caseta para perros","A dog kennel"],["Una mochila","A backpack"],["Un router wifi","A wifi router"]],
+ ["Construiremos el Organizador OPITEC 122.979.","We will build the OPITEC 122.979 Organiser."]],
+["project","¿De qué material es el soporte principal del organizador?","What material is the organiser’s main support made of?",
+ [["Madera de contrachapado resistente","Strong plywood"],["Plástico","Plastic"],["Metal","Metal"],["Cartón","Cardboard"]],
+ ["El soporte principal es de contrachapado resistente.","The main support is made of strong plywood."]],
+["project","¿Para qué sirven las fijaciones cilíndricas (varillas de madera redondas)?","What are the cylindrical fixings (round wooden rods) for?",
+ [["Para las llaves y como soporte","For keys and as a support"],["Para evitar que el móvil deslice","To stop the phone from sliding"],["Para encajar el respaldo","To fit the backrest"],["Para decorar","For decoration"]],
+ ["Las varillas redondas sirven para llaves y soporte.","The round rods are for keys and as a support."]],
+["project","¿Para qué sirven los listones de freno?","What are the stopper strips for?",
+ [["Para evitar que el móvil deslice","To stop the mobile phone from sliding"],["Para colgar las llaves","To hang the keys"],["Para sujetar la pieza al serrar","To hold the piece while sawing"],["Para medir","For measuring"]],
+ ["Son piezas rectangulares de madera que frenan el móvil.","They are rectangular wooden pieces that stop the phone."]],
+["project","¿Qué diámetros tienen los orificios que se taladran en el proyecto?","What diameters do the holes drilled in the project have?",
+ [["ø10 mm y ø15 mm","ø10 mm and ø15 mm"],["ø1 mm y ø5 mm","ø1 mm and ø5 mm"],["ø10 cm y ø15 cm","ø10 cm and ø15 cm"],["ø20 mm y ø30 mm","ø20 mm and ø30 mm"]],
+ ["Fase 2: taladrar muescas (orificios de ø10 mm y ø15 mm).","Stage 2: drill notches (holes of ø10 mm and ø15 mm)."]],
+["project","Al fijar las varillas de retención, ¿hacia dónde deben mirar las muescas?","When fixing the retaining rods, which way must the notches face?",
+ [["Hacia arriba","Upwards"],["Hacia abajo","Downwards"],["Hacia la pared","Towards the wall"],["Da igual","It does not matter"]],
+ ["Fase 3: asegurando que las muescas miren hacia arriba.","Stage 3: making sure the notches face upwards."]],
+["project","¿Cuál es la primera fase de la hoja de ruta del proyecto?","What is the first stage of the project roadmap?",
+ [["Medir y cortar","Measure and cut"],["Acabar","Finish"],["Unir y encolar","Join and glue"],["Montar el soporte","Assemble the support"]],
+ ["Hoja de ruta: medir y cortar → marcar y perforar → unir y encolar → montar soporte → acabar.","Roadmap: measure and cut → mark and drill → join and glue → assemble support → finish."]],
+["project","En la fase «Montar soporte», ¿qué hacemos?","In the “Assemble the support” stage, what do we do?",
+ [["Encajar ortogonalmente la placa base en el respaldo ranurado","Fit the base plate at right angles into the slotted backrest"],["Lijar todos los bordes","Sand all the edges"],["Marcar con punzón los orificios","Mark the holes with an awl"],["Transportar medidas a los listones","Transfer measurements to the strips"]],
+ ["Fase 4 (geometría): encajar ortogonalmente la placa base.","Stage 4 (geometry): fit the base plate at right angles."]],
+["project","En la última fase del proyecto («Acabar»), ¿qué hacemos?","In the last project stage (“Finish”), what do we do?",
+ [["Lijar todos los bordes de corte y aplicar el diseño estético final","Sand all the cut edges and apply the final aesthetic design"],["Taladrar los orificios","Drill the holes"],["Cortar los listones","Cut the strips"],["Encolar las varillas","Glue the rods"]],
+ ["Fase 5 (estética): lijar exhaustivamente y aplicar el diseño final.","Stage 5 (aesthetics): sand thoroughly and apply the final design."]],
+// summary
+["summary","Según la idea final de la unidad, en el taller demuestra más habilidad quien…","According to the unit’s final idea, in the workshop the most skilled person is the one who…",
+ [["Trabaja mejor, seguro y en equipo","Works best, safely and as part of a team"],["Trabaja más rápido","Works fastest"],["Trabaja solo","Works alone"],["Usa más herramientas","Uses the most tools"]],
+ ["No demuestra más habilidad quien trabaja más rápido, sino quien trabaja mejor, seguro y en equipo.","The most skilled is not the fastest, but the one who works best, safely and as part of a team."]],
+["summary","¿Cuáles son los 4 pilares de la unidad?","What are the 4 pillars of the unit?",
+ [["Definición, proceso, herramientas y dibujo, seguridad","Definition, process, tools and drawing, safety"],["Ciencia, técnica, habilidad, tecnología","Science, technique, skill, technology"],["Bienes, servicios, procesos, sistemas","Goods, services, processes, systems"],["Medir, marcar, cortar, acabar","Measure, mark, cut, finish"]],
+ ["Pilar 1 definición, pilar 2 proceso, pilar 3 herramientas y dibujo, pilar 4 seguridad.","Pillar 1 definition, pillar 2 process, pillar 3 tools and drawing, pillar 4 safety."]]
+];
+const QUESTIONS = RAW_Q.map((r,i)=>({
+  id:i, t:r[0], q:{es:r[1],en:r[2]},
+  o:r[3].map(p=>({es:p[0],en:p[1]})),
+  x:{es:r[4][0],en:r[4][1]}
+}));
+
+/* =========================================================
+   6. STATE, STORAGE, HELPERS
+   ========================================================= */
+const store = {
+  get(k,d){ try{ const v=localStorage.getItem("u1pt_"+k); return v===null?d:JSON.parse(v);}catch(e){return d;} },
+  set(k,v){ try{ localStorage.setItem("u1pt_"+k, JSON.stringify(v)); }catch(e){} }
+};
+let LANG = (function(){
+  try{ const p=new URLSearchParams(location.search).get("lang"); if(p==="es"||p==="en") return p; }catch(e){}
+  const s = store.get("lang", null); return (s==="es"||s==="en") ? s : "es";
+})();
+const T = k => (UI[LANG] && UI[LANG][k] !== undefined) ? UI[LANG][k] : k;
+const $ = (s,el=document)=>el.querySelector(s);
+const $$ = (s,el=document)=>Array.from(el.querySelectorAll(s));
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+const LETTERS = ["A","B","C","D","E","F"];
+function topicOptions(selected, withAll=true){
+  let h = withAll ? `<option value="all"${selected==="all"?" selected":""}>${T("allTopics")}</option>` : "";
+  TOPICS.forEach((t,i)=>{ h += `<option value="${t.id}"${selected===t.id?" selected":""}>${i+1}. ${esc(t[LANG])}</option>`; });
+  return h;
+}
+const qsByTopic = t => QUESTIONS.filter(q=> t==="all" || q.t===t);
+
+/* =========================================================
+   7. VIEWS
+   ========================================================= */
+// ---------- HOME ----------
+function renderHome(){
+  $("#view-inicio").innerHTML = `
+  <div class="hero">
+    <div>
+      <span class="tag orange">${T("heroKicker")}</span>
+      <h1 style="margin-top:8px">${T("heroTitle")}</h1>
+      <p>${T("heroText")}</p>
+      <p class="muted">${T("heroLang")}</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="formula-mini">${LANG==="es"?"Ciencia + Técnica + Habilidad":"Science + Technique + Skill"}</div>
+      <div style="font-family:var(--font-head);font-size:2.2rem;color:var(--orange);font-weight:700">= ${LANG==="es"?"TECNOLOGÍA":"TECHNOLOGY"}</div>
+      <p class="muted" style="margin:0">${QUESTIONS.length} ${LANG==="es"?"preguntas":"questions"} · ${SECTIONS.length} ${LANG==="es"?"apartados":"sections"}</p>
+    </div>
+  </div>
+  <div class="modes">
+    <a class="card mode" href="#contenidos"><span class="ico" aria-hidden="true">📘</span><h3>${T("mContents")}</h3><span>${T("mContentsD")}</span></a>
+    <a class="card mode c2" href="#flashcards"><span class="ico" aria-hidden="true">🃏</span><h3>${T("mFlash")}</h3><span>${T("mFlashD")}</span></a>
+    <a class="card mode c3" href="#practica"><span class="ico" aria-hidden="true">🎯</span><h3>${T("mPractice")}</h3><span>${T("mPracticeD")}</span></a>
+    <a class="card mode c4" href="#examen"><span class="ico" aria-hidden="true">📝</span><h3>${T("mExam")}</h3><span>${T("mExamD")}</span></a>
+    <a class="card mode c5" href="#apuntes"><span class="ico" aria-hidden="true">🖨️</span><h3>${T("mNotes")}</h3><span>${T("mNotesD")}</span></a>
+  </div>`;
+}
+
+// ---------- CONTENTS ----------
+let openSections = new Set();
+function renderContents(){
+  const v = $("#view-contenidos");
+  v.innerHTML = `
+    <h2>${T("navContents")}</h2>
+    <p class="muted">${T("contentsIntro")}</p>
+    <div class="acc-tools"><button class="btn ghost" id="accOpen" type="button">${T("expandAll")}</button><button class="btn ghost" id="accClose" type="button">${T("collapseAll")}</button></div>
+    ${SECTIONS.map((s,i)=>`
+      <details class="sec" data-sid="${s.id}"${openSections.has(s.id)?" open":""}>
+        <summary><span class="num">${i+1}</span>${s[LANG].title}</summary>
+        <div class="sec-body doc">${s[LANG].html()}</div>
+      </details>`).join("")}`;
+  $$("details.sec",v).forEach(d=>d.addEventListener("toggle",()=>{ d.open?openSections.add(d.dataset.sid):openSections.delete(d.dataset.sid); }));
+  $("#accOpen").onclick = ()=> $$("details.sec",v).forEach(d=>d.open=true);
+  $("#accClose").onclick = ()=> $$("details.sec",v).forEach(d=>d.open=false);
+  $$('[data-widget="circuit"]',v).forEach(mountCircuit);
+}
+// Broken-circuit interactive ordering
+let circuitOrder = null;
+function mountCircuit(host){
+  if(!circuitOrder) circuitOrder = CIRCUIT.shown.map((_,i)=>i); // start in slide order (already mixed)
+  const draw = (check=false)=>{
+    host.innerHTML = `<ol class="circuit">${circuitOrder.map((ci,idx)=>{
+      const c = CIRCUIT.shown[ci];
+      const cls = check ? (c.pos===idx+1?"ok":"bad") : "";
+      return `<li class="${cls}"><span class="pos">${idx+1}</span><span class="txt">${esc(c[LANG])}</span>
+        <button type="button" data-mv="up" data-i="${idx}" aria-label="${LANG==="es"?"Subir":"Move up"}"${idx===0?" disabled":""}>▲</button>
+        <button type="button" data-mv="down" data-i="${idx}" aria-label="${LANG==="es"?"Bajar":"Move down"}"${idx===circuitOrder.length-1?" disabled":""}>▼</button></li>`;}).join("")}</ol>
+      <div class="row"><button type="button" class="btn green" data-act="check">${LANG==="es"?"Comprobar orden":"Check order"}</button>
+      <button type="button" class="btn ghost" data-act="mix">${T("shuffle")}</button>
+      <span class="muted" data-res></span></div>`;
+    if(check){
+      const ok = circuitOrder.filter((ci,idx)=>CIRCUIT.shown[ci].pos===idx+1).length;
+      $("[data-res]",host).textContent = (LANG==="es"?`Bien colocadas: ${ok} de 8`:`Correctly placed: ${ok} of 8`) + (ok===8?" 🎉":"");
+    }
+  };
+  host.onclick = e=>{
+    const b = e.target.closest("button"); if(!b) return;
+    if(b.dataset.mv){
+      const i=+b.dataset.i, j = b.dataset.mv==="up"? i-1 : i+1;
+      if(j<0||j>=circuitOrder.length) return;
+      [circuitOrder[i],circuitOrder[j]]=[circuitOrder[j],circuitOrder[i]];
+      draw(); const btn = host.querySelector(`button[data-mv="${b.dataset.mv}"][data-i="${j}"]`); if(btn && !btn.disabled) btn.focus();
+    } else if(b.dataset.act==="check"){ draw(true); }
+    else if(b.dataset.act==="mix"){ circuitOrder = shuffle(circuitOrder); draw(); }
+  };
+  draw();
+}
+
+// ---------- FLASHCARDS ----------
+const fc = { topic:"all", deck:[], i:0, flipped:false, onlyReview:false, marks: store.get("fcmarks",{}) };
+function buildDeck(){
+  let d = qsByTopic(fc.topic).map(q=>q.id);
+  if(fc.onlyReview) d = d.filter(id=>fc.marks[id]!=="k");
+  fc.deck = d; fc.i = 0; fc.flipped=false;
+}
+function renderFlash(){
+  const v = $("#view-flashcards");
+  if(!fc.deck.length && !fc.onlyReview) buildDeck();
+  const total = fc.deck.length;
+  const all = qsByTopic(fc.topic);
+  const known = all.filter(q=>fc.marks[q.id]==="k").length, rev = all.filter(q=>fc.marks[q.id]==="r").length;
+  let cardHTML;
+  if(!total){
+    cardHTML = `<div class="card" style="max-width:720px;margin:14px auto;text-align:center">${T("fcEmpty")}</div>`;
+  } else {
+    const q = QUESTIONS[fc.deck[fc.i]];
+    const m = fc.marks[q.id];
+    cardHTML = `
+    <div class="fc-stage">
+      <div class="fc${fc.flipped?" flipped":""}" id="fcCard" tabindex="0" role="button" aria-label="${T("flip")}">
+        <div class="fc-face front" aria-hidden="${fc.flipped}">
+          <span class="lbl">${T("fcFront")} · ${esc(topicName(q.t,LANG))}${m==="k"?" · ✔":m==="r"?" · ↻":""}</span>
+          <div class="big">${esc(q.q[LANG])}</div>
+          <span class="hint">${T("fcHint")}</span>
+        </div>
+        <div class="fc-face back" aria-hidden="${!fc.flipped}">
+          <span class="lbl">${T("fcBack")}</span>
+          <div class="big">${esc(q.o[0][LANG])}</div>
+          <div>${esc(q.x[LANG])}</div>
+          <span class="hint">${T("fcHint2")}</span>
+        </div>
+      </div>
+    </div>
+    <div class="fc-nav">
+      <button class="btn ghost" type="button" id="fcPrev"${fc.i===0?" disabled":""}>◀ ${T("prev")}</button>
+      <div class="row">
+        <button class="btn red" type="button" id="fcRev">↻ ${T("review")}</button>
+        <button class="btn green" type="button" id="fcKnow">✔ ${T("know")}</button>
+      </div>
+      <button class="btn ghost" type="button" id="fcNext"${fc.i>=total-1?" disabled":""}>${T("next")} ▶</button>
+    </div>`;
+  }
+  v.innerHTML = `
+    <h2>${T("navFlash")}</h2>
+    <div class="card no-print">
+      <div class="row">
+        <label class="field">${T("topic")}<select id="fcTopic">${topicOptions(fc.topic)}</select></label>
+        <label style="display:flex;gap:6px;align-items:center;margin-top:18px"><input type="checkbox" id="fcOnly"${fc.onlyReview?" checked":""}> ${T("onlyReview")}</label>
+        <button class="btn ghost" type="button" id="fcShuffle" style="margin-top:18px">🔀 ${T("shuffle")}</button>
+        <button class="btn ghost" type="button" id="fcReset" style="margin-top:18px">${T("resetFc")}</button>
+      </div>
+      <div style="margin-top:12px" class="row muted">
+        <span><b>${T("card")} ${total?fc.i+1:0} ${T("of")} ${total}</b></span>
+        <span>✔ ${T("known")}: ${known}</span><span>↻ ${T("toReview")}: ${rev}</span>
+      </div>
+      <div class="progress" style="margin-top:8px"><span style="width:${total?((fc.i+1)/total*100):0}%"></span></div>
+    </div>
+    ${cardHTML}`;
+  $("#fcTopic").onchange = e=>{ fc.topic=e.target.value; buildDeck(); renderFlash(); };
+  $("#fcOnly").onchange = e=>{ fc.onlyReview=e.target.checked; buildDeck(); renderFlash(); };
+  $("#fcShuffle").onclick = ()=>{ buildDeck(); fc.deck=shuffle(fc.deck); renderFlash(); };
+  $("#fcReset").onclick = ()=>{ fc.marks={}; store.set("fcmarks",fc.marks); buildDeck(); renderFlash(); };
+  if(total){
+    const card=$("#fcCard");
+    const flip=()=>{ fc.flipped=!fc.flipped; card.classList.toggle("flipped",fc.flipped);
+      $(".front",card).setAttribute("aria-hidden",fc.flipped); $(".back",card).setAttribute("aria-hidden",!fc.flipped); };
+    card.onclick = flip;
+    card.onkeydown = e=>{ if(e.key===" "||e.key==="Enter"){ e.preventDefault(); flip(); } };
+    $("#fcPrev").onclick = ()=>{ if(fc.i>0){fc.i--; fc.flipped=false; renderFlash(); focusCard();} };
+    $("#fcNext").onclick = ()=>{ if(fc.i<total-1){fc.i++; fc.flipped=false; renderFlash(); focusCard();} };
+    const mark = val=>{
+      const id = fc.deck[fc.i]; fc.marks[id]=val; store.set("fcmarks",fc.marks);
+      if(fc.onlyReview && val==="k"){ fc.deck.splice(fc.i,1); if(fc.i>=fc.deck.length) fc.i=Math.max(0,fc.deck.length-1); }
+      else if(fc.i<fc.deck.length-1) fc.i++;
+      fc.flipped=false; renderFlash(); focusCard();
+    };
+    $("#fcKnow").onclick = ()=>mark("k");
+    $("#fcRev").onclick = ()=>mark("r");
+  }
+}
+function focusCard(){ const c=$("#fcCard"); if(c) c.focus({preventScroll:true}); }
+document.addEventListener("keydown", e=>{
+  if(currentView!=="flashcards") return;
+  const tag=(e.target.tagName||"").toLowerCase(); if(tag==="select"||tag==="input") return;
+  if(e.key==="ArrowRight"){ const b=$("#fcNext"); if(b&&!b.disabled){ e.preventDefault(); b.click(); } }
+  if(e.key==="ArrowLeft"){ const b=$("#fcPrev"); if(b&&!b.disabled){ e.preventDefault(); b.click(); } }
+  if(e.key===" " && e.target===document.body){ const c=$("#fcCard"); if(c){ e.preventDefault(); c.click(); } }
+});
+
+// ---------- PRACTICE ----------
+const pr = { topic:"all", list:[], i:0, orders:{}, answers:{}, started:false };
+function startPractice(){
+  pr.list = shuffle(qsByTopic(pr.topic).map(q=>q.id));
+  pr.orders = {}; pr.list.forEach(id=>pr.orders[id]=shuffle([0,1,2,3].slice(0,QUESTIONS[id].o.length)));
+  pr.answers = {}; pr.i=0; pr.started=true;
+}
+function renderPractice(){
+  const v=$("#view-practica");
+  const head = `<h2>${T("navPractice")}</h2>
+    <div class="card no-print"><p class="muted" style="margin-top:0">${T("practiceIntro")}</p>
+    <div class="row"><label class="field">${T("topic")}<select id="prTopic">${topicOptions(pr.topic)}</select></label>
+    <button class="btn orange" type="button" id="prStart" style="margin-top:18px">${pr.started?T("restart"):T("start")}</button></div></div>`;
+  if(!pr.started){ v.innerHTML = head; bindPrHead(); return; }
+  const answered = Object.keys(pr.answers).length;
+  const hits = Object.entries(pr.answers).filter(([id,a])=>a===0).length;
+  let body;
+  if(pr.i>=pr.list.length){
+    body = `<div class="card q-card" style="margin-top:16px;text-align:center"><h3>${T("practiceDone")}</h3>
+      <div class="score-big">${hits}/${pr.list.length}</div><p class="muted">${T("hits")}</p>
+      <button class="btn orange" type="button" id="prAgain">${T("restart")}</button></div>`;
+  } else {
+    const id = pr.list[pr.i], q = QUESTIONS[id], ord = pr.orders[id], ans = pr.answers[id];
+    const done = ans!==undefined;
+    body = `<div class="card q-card" style="margin-top:16px">
+      <div class="q-meta"><span>${T("question")} ${pr.i+1} ${T("of")} ${pr.list.length} · ${esc(topicName(q.t,LANG))}</span>
+      <span class="stats"><span>✔ ${hits}</span><span>${T("answered")}: ${answered}</span></span></div>
+      <div class="progress" style="margin-bottom:14px"><span style="width:${(pr.i/pr.list.length*100)}%"></span></div>
+      <div class="q-text">${esc(q.q[LANG])}</div>
+      <div class="opts">${ord.map((oi,k)=>{
+        let cls=""; if(done){ if(oi===0) cls=" right"; else if(oi===ans) cls=" wrong"; }
+        return `<button type="button" class="opt${cls}" data-oi="${oi}"${done?" disabled":""}><span class="lt">${LETTERS[k]}</span><span>${esc(q.o[oi][LANG])}</span></button>`;}).join("")}</div>
+      ${done?`<div class="fb ${ans===0?"ok":"ko"}" role="status"><b>${ans===0?T("correct"):T("incorrect")}</b> ${ans===0?"":`${T("rightAnswer")} <b>${esc(q.o[0][LANG])}</b>. `}${esc(q.x[LANG])}</div>
+        <div class="row" style="margin-top:12px;justify-content:flex-end"><button class="btn" type="button" id="prNext">${T("next")} ▶</button></div>`:""}
+    </div>`;
+  }
+  v.innerHTML = head + body;
+  bindPrHead();
+  $$(".opt",v).forEach(b=>b.onclick=()=>{ const id=pr.list[pr.i]; if(pr.answers[id]!==undefined) return; pr.answers[id]=+b.dataset.oi; renderPractice(); const n=$("#prNext"); if(n) n.focus({preventScroll:true}); });
+  const n=$("#prNext"); if(n) n.onclick=()=>{ pr.i++; renderPractice(); };
+  const ag=$("#prAgain"); if(ag) ag.onclick=()=>{ startPractice(); renderPractice(); };
+}
+function bindPrHead(){
+  $("#prTopic").onchange = e=>{ pr.topic=e.target.value; if(pr.started){ startPractice(); } renderPractice(); };
+  $("#prStart").onclick = ()=>{ startPractice(); renderPractice(); };
+}
+
+// ---------- EXAM ----------
+const ex = { phase:"setup", n:20, name:"", list:[], orders:{}, answers:{}, i:0, date:null };
+function pickExam(n){
+  // round-robin over topics so every topic is represented
+  const pools = TOPICS.map(t=>shuffle(QUESTIONS.filter(q=>q.t===t.id).map(q=>q.id))).filter(p=>p.length);
+  const out=[]; let k=0;
+  const order = shuffle(pools.map((_,i)=>i));
+  while(out.length<n && pools.some(p=>p.length)){
+    const p = pools[order[k%order.length]]; if(p.length) out.push(p.shift()); k++;
+  }
+  return shuffle(out);
+}
+function renderExam(){
+  const v=$("#view-examen");
+  if(ex.phase==="setup"){
+    v.innerHTML = `<h2>${T("navExam")}</h2>
+    <div class="card q-card"><p style="margin-top:0">${T("examIntro")}</p>
+      <div class="row">
+        <label class="field">${T("yourName")}<input type="text" id="exName" maxlength="60" autocomplete="off"></label>
+        <label class="field">${T("numQ")}<select id="exN">${[10,20,30,QUESTIONS.length].map(n=>`<option value="${n}"${n===ex.n?" selected":""}>${n===QUESTIONS.length?(LANG==="es"?`Todas (${n})`:`All (${n})`):n}</option>`).join("")}</select></label>
+      </div>
+      <div style="margin-top:16px"><button class="btn orange" type="button" id="exStart">${T("startExam")} ▶</button></div>
+    </div>`;
+    $("#exName").value = ex.name;
+    $("#exStart").onclick = ()=>{
+      ex.name = $("#exName").value.trim().slice(0,60);
+      ex.n = +$("#exN").value;
+      ex.list = pickExam(ex.n);
+      ex.orders={}; ex.list.forEach(id=>ex.orders[id]=shuffle([0,1,2,3].slice(0,QUESTIONS[id].o.length)));
+      ex.answers={}; ex.i=0; ex.phase="run"; ex.date=new Date();
+      renderExam(); window.scrollTo({top:0});
+    };
+    return;
+  }
+  if(ex.phase==="run"){
+    const id=ex.list[ex.i], q=QUESTIONS[id], ord=ex.orders[id], ans=ex.answers[id];
+    const nAns = Object.keys(ex.answers).length;
+    v.innerHTML = `<h2>${T("navExam")}</h2>
+    <div class="card q-card">
+      <div class="q-meta"><span><b>${T("question")} ${ex.i+1} ${T("of")} ${ex.list.length}</b></span><span>${T("answered")}: ${nAns}/${ex.list.length}</span></div>
+      <div class="progress" style="margin-bottom:14px"><span style="width:${nAns/ex.list.length*100}%"></span></div>
+      <div class="q-text">${esc(q.q[LANG])}</div>
+      <div class="opts">${ord.map((oi,k)=>`<button type="button" class="opt${ans===oi?" sel":""}" data-oi="${oi}" aria-pressed="${ans===oi}"><span class="lt">${LETTERS[k]}</span><span>${esc(q.o[oi][LANG])}</span></button>`).join("")}</div>
+      <div class="dots" aria-label="${LANG==="es"?"Ir a la pregunta":"Go to question"}">${ex.list.map((qid,k)=>`<button type="button" data-go="${k}" class="${ex.answers[qid]!==undefined?"ans":""}${k===ex.i?" cur":""}" aria-label="${T("question")} ${k+1}">${k+1}</button>`).join("")}</div>
+      <div class="row" style="justify-content:space-between">
+        <button class="btn ghost" type="button" id="exPrev"${ex.i===0?" disabled":""}>◀ ${T("prev")}</button>
+        <button class="btn red" type="button" id="exFinish">${T("finish")}</button>
+        <button class="btn ghost" type="button" id="exNext"${ex.i>=ex.list.length-1?" disabled":""}>${T("next")} ▶</button>
+      </div>
+    </div>`;
+    $$(".opt",v).forEach(b=>b.onclick=()=>{ ex.answers[id]=+b.dataset.oi; renderExam(); });
+    $$("[data-go]",v).forEach(b=>b.onclick=()=>{ ex.i=+b.dataset.go; renderExam(); });
+    $("#exPrev").onclick=()=>{ if(ex.i>0){ex.i--; renderExam();} };
+    $("#exNext").onclick=()=>{ if(ex.i<ex.list.length-1){ex.i++; renderExam();} };
+    $("#exFinish").onclick=()=>{
+      const missing = ex.list.length - Object.keys(ex.answers).length;
+      if(missing>0 && !window.confirm(T("confirmFinish").replace("{n}",missing))) return;
+      ex.phase="done"; renderExam(); window.scrollTo({top:0});
+    };
+    return;
+  }
+  // results
+  const total=ex.list.length;
+  const hits = ex.list.filter(id=>ex.answers[id]===0).length;
+  const grade = Math.round(hits/total*100)/10; // one decimal, 0–10
+  const msg = T("gradeMsg").find(([min])=>grade>=min)[1];
+  const byT = {}; ex.list.forEach(id=>{ const t=QUESTIONS[id].t; byT[t]=byT[t]||{h:0,n:0}; byT[t].n++; if(ex.answers[id]===0) byT[t].h++; });
+  const dateStr = ex.date ? ex.date.toLocaleDateString(LANG==="es"?"es-ES":"en-GB",{day:"2-digit",month:"2-digit",year:"numeric"})+" "+ex.date.toLocaleTimeString(LANG==="es"?"es-ES":"en-GB",{hour:"2-digit",minute:"2-digit"}) : "";
+  v.innerHTML = `<h2 class="no-print">${T("navExam")}</h2>
+  <div class="card result-print">
+    <p class="muted" style="margin:0 0 6px">${T("examOf")} · ${esc(T("unitTitle"))}<br>${ex.name?`<b id="exNameOut"></b> · `:""}${T("date")}: ${dateStr}</p>
+    <div class="score-wrap">
+      <div><div class="muted">${T("yourGrade")}</div><div class="score-big">${grade.toLocaleString(LANG==="es"?"es-ES":"en-GB",{minimumFractionDigits:1,maximumFractionDigits:1})}</div><div class="muted">${T("outOf")}</div></div>
+      <div style="flex:1;min-width:220px"><p style="font-size:1.15rem;font-weight:700;color:var(--navy)">${msg}</p>
+        <div class="stats"><span>✔ ${hits}</span><span>✘ ${total-hits}</span><span>${Math.round(hits/total*100)} %</span></div></div>
+    </div>
+    <h3 style="margin-top:18px">${T("byTopic")}</h3>
+    <div class="doc tbl-scroll"><table><tr><th>${T("topic")}</th><th style="width:120px">${T("hits")}</th></tr>
+      ${TOPICS.filter(t=>byT[t.id]).map(t=>`<tr><td>${esc(t[LANG])}</td><td>${byT[t.id].h} / ${byT[t.id].n}</td></tr>`).join("")}</table></div>
+    <div class="row no-print" style="margin:8px 0 6px">
+      <button class="btn orange" type="button" id="exAgain">${T("repeatExam")}</button>
+      <button class="btn ghost" type="button" id="exPrint">🖨️ ${T("printResult")}</button>
+    </div>
+    <h3 style="margin-top:18px">${T("reviewTitle")}</h3>
+    ${ex.list.map((id,k)=>{ const q=QUESTIONS[id], a=ex.answers[id], ok=a===0;
+      return `<div class="review-item ${ok?"ok":"ko"}"><b>${k+1}. ${esc(q.q[LANG])}</b><br>
+        ${T("yourAnswer")} ${a===undefined?`<i>${T("noAnswer")}</i>`:esc(q.o[a][LANG])} ${ok?"✔":"✘"}
+        ${ok?"":`<br>${T("rightAnswer")} <b>${esc(q.o[0][LANG])}</b>`}
+        <br><span class="muted">${esc(q.x[LANG])}</span></div>`;}).join("")}
+  </div>`;
+  const no=$("#exNameOut"); if(no) no.textContent = ex.name;
+  $("#exAgain").onclick=()=>{ ex.phase="setup"; renderExam(); };
+  $("#exPrint").onclick=()=>window.print();
+}
+
+// ---------- NOTES (printable) ----------
+const nt = { bw: store.get("bw",false), sol: store.get("incSol",true), bank: store.get("incBank",false) };
+function renderNotes(){
+  const v=$("#view-apuntes");
+  const secs = SECTIONS.map((s,i)=>`
+    <section class="nsec doc"><h2><span class="n">${i+1}.</span> ${s[LANG].title}</h2>${s[LANG].html()}</section>`).join("");
+  const bank = !nt.bank ? "" : `<section class="nsec doc"><h2>${T("bankTitle")}</h2>
+    ${TOPICS.map((t,ti)=>{ const qs=QUESTIONS.filter(q=>q.t===t.id); return `<h3>${ti+1}. ${esc(t[LANG])}</h3>`+
+      qs.map((q,k)=>`<div class="bank-q"><b>${k+1}. ${esc(q.q[LANG])}</b><br>✔ ${esc(q.o[0][LANG])}</div>`).join(""); }).join("")}</section>`;
+  v.innerHTML = `
+  <h2 class="no-print">${T("navNotes")}</h2>
+  <div class="card print-controls no-print">
+    <p style="margin-top:0">${T("notesIntro")}</p>
+    <div class="row" style="gap:28px;align-items:flex-start">
+      <fieldset><legend>${T("printMode")}</legend>
+        <label><input type="radio" name="pm" value="color"${!nt.bw?" checked":""}> ${T("color")}</label>
+        <label><input type="radio" name="pm" value="bw"${nt.bw?" checked":""}> ${T("bw")}</label></fieldset>
+      <fieldset><legend>${T("include")}</legend>
+        <label><input type="checkbox" id="ntSol"${nt.sol?" checked":""}> ${T("incSol")}</label>
+        <label><input type="checkbox" id="ntBank"${nt.bank?" checked":""}> ${T("incBank")}</label></fieldset>
+    </div>
+    <div class="row" style="margin-top:14px"><button class="btn orange" type="button" id="ntPrint">🖨️ ${T("printBtn")}</button></div>
+    <p class="muted" style="margin:10px 0 0;font-size:.9rem">${T("printTip")}</p>
+  </div>
+  <article class="notes${nt.bw?" bw":""}${nt.sol?" show-sol":""}" id="notesDoc">
+    <div class="cover">
+      <span class="tag orange">${T("heroKicker")}</span>
+      <h1>${T("unitTitle").replace(/^U1 · /,"")}</h1>
+      <div class="sub">${T("coverSub")}</div>
+      <div class="student"><div>${T("name")} <span>&nbsp;</span></div><div>${T("group")} <span style="min-width:90px">&nbsp;</span></div></div>
+      <div class="toc doc" style="text-align:left;margin-top:22px"><h3>${T("toc")}</h3>
+        <ol>${SECTIONS.map(s=>`<li>${s[LANG].title}</li>`).join("")}${nt.bank?`<li>${T("bankTitle")}</li>`:""}</ol></div>
+    </div>
+    ${secs}
+    ${bank}
+  </article>`;
+  // static versions of interactive bits
+  const doc=$("#notesDoc");
+  $$('[data-widget="circuit"]',doc).forEach(h=>{
+    h.innerHTML = `<ul class="circuit-static">${CIRCUIT.shown.map(c=>`<li><span class="blank"></span>${esc(c[LANG])}</li>`).join("")}</ul>`;
+  });
+  $$("details.sol",doc).forEach(d=>{
+    const div=document.createElement("div"); div.className="sol-print";
+    const sm=d.querySelector("summary"); if(sm) sm.remove();
+    div.innerHTML = `<b class="sl">${T("solution")}:</b>` + d.innerHTML;
+    d.replaceWith(div);
+  });
+  $$('input[name="pm"]',v).forEach(r=>r.onchange=()=>{ if(!r.checked) return; nt.bw = (r.value==="bw"); store.set("bw",nt.bw); doc.classList.toggle("bw",nt.bw); });
+  $("#ntSol").onchange=e=>{ nt.sol=e.target.checked; store.set("incSol",nt.sol); doc.classList.toggle("show-sol",nt.sol); };
+  $("#ntBank").onchange=e=>{ nt.bank=e.target.checked; store.set("incBank",nt.bank); renderNotes(); };
+  $("#ntPrint").onclick=()=>window.print();
+}
+
+/* =========================================================
+   8. ROUTER + LANGUAGE
+   ========================================================= */
+const VIEWS = {inicio:renderHome, contenidos:renderContents, flashcards:renderFlash, practica:renderPractice, examen:renderExam, apuntes:renderNotes};
+let currentView = "inicio";
+function applyStaticI18n(){
+  document.documentElement.lang = LANG;
+  $$("[data-i18n]").forEach(el=>{ el.textContent = T(el.dataset.i18n); });
+  $$(".lang button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang===LANG)));
+  document.title = T("unitTitle");
+}
+function route(){
+  const h = (location.hash||"#inicio").slice(1).split("?")[0];
+  currentView = VIEWS[h] ? h : "inicio";
+  $$(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+currentView));
+  $$("nav.tabs a").forEach(a=>{ if(a.dataset.view===currentView) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  VIEWS[currentView]();
+}
+function setLang(l){
+  if(l!=="es" && l!=="en") return;
+  LANG=l; store.set("lang",l);
+  try{ const u=new URL(location.href); if(u.searchParams.has("lang")){ u.searchParams.set("lang",l); history.replaceState(null,"",u.toString()); } }catch(e){}
+  applyStaticI18n(); VIEWS[currentView]();
+}
+$$(".lang button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+window.addEventListener("hashchange", ()=>{ route(); window.scrollTo({top:0}); });
+applyStaticI18n();
+route();
+</script>
+</body>
+</html>
