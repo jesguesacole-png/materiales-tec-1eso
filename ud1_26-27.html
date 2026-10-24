@@ -194,6 +194,24 @@ details.sol > summary{cursor:pointer; font-weight:700; color:var(--green)}
 .review-item{border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin-bottom:8px; background:#fff}
 .review-item.ok{border-left:6px solid var(--green)}
 .review-item.ko{border-left:6px solid var(--red)}
+.review-item.part{border-left:6px solid var(--yellow)}
+.fb.part{background:var(--yellow-soft); border-left:6px solid var(--yellow)}
+.fill-text{font-size:1.15rem; line-height:2.2; color:var(--ink)}
+input.blank{font:inherit; font-weight:700; width:12ch; max-width:100%; padding:2px 8px; border:0; border-bottom:3px solid var(--blue); background:var(--blue-soft); border-radius:6px 6px 0 0; color:var(--navy); text-align:center}
+input.blank.right{border-color:var(--green); background:var(--green-soft)}
+input.blank.wrong{border-color:var(--red); background:var(--red-soft)}
+.match{display:flex; flex-direction:column; gap:8px}
+.match-row{display:grid; grid-template-columns:1fr minmax(200px,1fr); gap:8px; align-items:center; border:2px solid var(--line); border-radius:10px; padding:8px 10px; background:#fff}
+.match-row select{min-width:0; width:100%}
+.match-row.right{border-color:var(--green); background:var(--green-soft)}
+.match-row.wrong{border-color:var(--red); background:var(--red-soft)}
+.match-row .mfix{grid-column:1/-1; color:var(--green); font-weight:700; font-size:.92rem}
+textarea.open-ans{width:100%; font:inherit; padding:10px 12px; border:2px solid var(--line); border-radius:10px; resize:vertical; min-height:120px}
+textarea.open-ans:focus{border-color:var(--blue); outline:none}
+ul.ideas{list-style:none; padding-left:0; margin:4px 0 8px}
+ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
+.fc-list{font-size:.95rem; color:var(--ink)}
+.bank-q .fc-list{font-size:.9rem; color:var(--muted)}
 .stats{display:flex; gap:14px; flex-wrap:wrap; font-weight:700}
 .stats span{background:#fff; border:1px solid var(--line); border-radius:8px; padding:6px 12px}
 
@@ -238,6 +256,7 @@ details.sol > summary{cursor:pointer; font-weight:700; color:var(--green)}
   .hero{grid-template-columns:1fr}
   .hero h1{font-size:2rem}
   .twocol,.grid2,.grid3{grid-template-columns:1fr}
+  .match-row{grid-template-columns:1fr}
   .notes{padding:18px 16px}
   .notes .toc ol{columns:1}
   .score-big{font-size:3rem}
@@ -313,7 +332,7 @@ const UI = {
     mContents:"Contenidos", mContentsD:"Toda la teoría de la unidad, organizada en apartados desplegables.",
     mFlash:"Flashcards", mFlashD:"Tarjetas de pregunta y respuesta para memorizar. Pulsa para darles la vuelta.",
     mPractice:"Práctica", mPracticeD:"Preguntas por temas con corrección y explicación al momento.",
-    mExam:"Examen", mExamD:"Ponte a prueba: preguntas al azar y nota final sobre 10.",
+    mExam:"Examen", mExamD:"Ponte a prueba con preguntas tipo test y para escribir, o con el modelo de examen completo. Nota sobre 10.",
     mNotes:"Apuntes (PDF)", mNotesD:"Apuntes desarrollados para imprimir o guardar en PDF, en color o en blanco y negro.",
     go:"Entrar",
     expandAll:"Desplegar todo", collapseAll:"Plegar todo",
@@ -326,12 +345,12 @@ const UI = {
     fcHint2:"Pulsa la tarjeta para volver a la pregunta.",
     card:"Tarjeta", of:"de", known:"Me las sé", toReview:"Por repasar", resetFc:"Reiniciar marcas",
     fcEmpty:"No hay tarjetas marcadas para repasar en este tema. ¡Buen trabajo!",
-    practiceIntro:"Elige un tema y responde. Verás al momento si has acertado y por qué.",
+    practiceIntro:"Elige un tema y un tipo de pregunta y responde. Verás al momento si has acertado y por qué.",
     start:"Empezar", restart:"Volver a empezar",
     question:"Pregunta", correct:"¡Correcto!", incorrect:"No es correcto.", rightAnswer:"Respuesta correcta:",
     hits:"Aciertos", answered:"Respondidas",
     practiceDone:"¡Has terminado todas las preguntas de este tema!",
-    examIntro:"El examen elige preguntas al azar de todos los temas. No verás si aciertas hasta el final. Puedes moverte entre preguntas y cambiar tus respuestas antes de entregar.",
+    examIntro:"Elige el tipo de examen. El aleatorio coge preguntas al azar de todos los temas; el modelo de examen tiene las preguntas del examen modelo de la unidad. No verás si aciertas hasta el final. Puedes moverte entre preguntas y cambiar tus respuestas antes de entregar.",
     yourName:"Tu nombre (opcional)", numQ:"Número de preguntas", startExam:"Comenzar examen",
     finish:"Entregar examen", confirmFinish:"Tienes {n} pregunta(s) sin responder. ¿Quieres entregar igualmente?",
     yourGrade:"Tu nota", outOf:"sobre 10", byTopic:"Resultados por tema", reviewTitle:"Revisión de tus respuestas",
@@ -346,7 +365,15 @@ const UI = {
     coverSub:"Apuntes de estudio · Tecnología y Digitalización · 1.º ESO",
     name:"Nombre:", group:"Grupo:", toc:"Índice",
     bankTitle:"Banco de preguntas con respuestas", solTitle:"Soluciones de las actividades",
-    answer:"Respuesta"
+    answer:"Respuesta",
+    qType:"Tipo de pregunta", qt_all:"Todas", qt_test:"Solo tipo test", qt_written:"Solo para escribir, relacionar y ordenar",
+    lbl_mc:"Test", lbl_tf:"Verdadero / falso", lbl_fill:"Completar", lbl_match:"Relacionar", lbl_order:"Ordenar", lbl_open:"Respuesta escrita",
+    examKind:"Tipo de examen", ek_mix:"Mixto (test y escritas)", ek_test:"Solo tipo test", ek_written:"Solo escribir, relacionar y ordenar", ek_model:"Modelo de examen completo",
+    writtenNote:"En las preguntas escritas no importan las mayúsculas, las tildes ni los signos de puntuación, y se perdona una pequeña falta de ortografía. Las de respuesta larga se corrigen buscando las ideas clave, y pueden puntuar parcialmente.",
+    check:"Comprobar", partial:"Parcialmente correcto.", ptsShort:"p", points:"Puntos", keyIdeas:"Ideas clave", needed:"necesarias", modelAnswer:"Respuesta modelo:",
+    openNote:"Corrección automática orientativa: compara tu respuesta con la respuesta modelo.",
+    fillIntro:"Completa los huecos:", blank:"Hueco", choose:"— Elige —", goesIn:"va en el", moveUp:"Subir", moveDown:"Bajar",
+    writeHere:"Escribe aquí tu respuesta…", goTo:"Ir a la pregunta", noQuestions:"No hay preguntas con esos filtros."
   },
   en:{
     subject:"Technology and Digitalisation · Year 1 ESO",
@@ -359,7 +386,7 @@ const UI = {
     mContents:"Contents", mContentsD:"All the theory of the unit, organised in sections you can open and close.",
     mFlash:"Flashcards", mFlashD:"Question-and-answer cards to memorise. Tap them to turn them over.",
     mPractice:"Practice", mPracticeD:"Questions by topic with instant correction and explanation.",
-    mExam:"Exam", mExamD:"Test yourself: random questions and a final mark out of 10.",
+    mExam:"Exam", mExamD:"Test yourself with multiple-choice and written questions, or with the full model exam. Mark out of 10.",
     mNotes:"Notes (PDF)", mNotesD:"Detailed notes to print or save as PDF, in colour or black and white.",
     go:"Open",
     expandAll:"Open all", collapseAll:"Close all",
@@ -372,12 +399,12 @@ const UI = {
     fcHint2:"Tap the card to go back to the question.",
     card:"Card", of:"of", known:"Known", toReview:"To review", resetFc:"Reset marks",
     fcEmpty:"There are no cards marked for review in this topic. Well done!",
-    practiceIntro:"Choose a topic and answer. You will see instantly whether you are right and why.",
+    practiceIntro:"Choose a topic and a question type and answer. You will see instantly whether you are right and why.",
     start:"Start", restart:"Start again",
     question:"Question", correct:"Correct!", incorrect:"Not correct.", rightAnswer:"Correct answer:",
     hits:"Correct", answered:"Answered",
     practiceDone:"You have finished all the questions in this topic!",
-    examIntro:"The exam picks random questions from all the topics. You will not see whether you are right until the end. You can move between questions and change your answers before you hand it in.",
+    examIntro:"Choose the exam type. The random ones pick questions from all the topics; the model exam has the questions of the unit’s model exam. You will not see whether you are right until the end. You can move between questions and change your answers before you hand it in.",
     yourName:"Your name (optional)", numQ:"Number of questions", startExam:"Start exam",
     finish:"Hand in exam", confirmFinish:"You have {n} unanswered question(s). Do you want to hand in anyway?",
     yourGrade:"Your mark", outOf:"out of 10", byTopic:"Results by topic", reviewTitle:"Review of your answers",
@@ -392,7 +419,15 @@ const UI = {
     coverSub:"Study notes · Technology and Digitalisation · Year 1 ESO",
     name:"Name:", group:"Class:", toc:"Contents",
     bankTitle:"Question bank with answers", solTitle:"Activity solutions",
-    answer:"Answer"
+    answer:"Answer",
+    qType:"Question type", qt_all:"All", qt_test:"Multiple choice only", qt_written:"Only writing, matching and ordering",
+    lbl_mc:"Multiple choice", lbl_tf:"True / false", lbl_fill:"Fill in", lbl_match:"Matching", lbl_order:"Ordering", lbl_open:"Written answer",
+    examKind:"Exam type", ek_mix:"Mixed (multiple choice and written)", ek_test:"Multiple choice only", ek_written:"Only writing, matching and ordering", ek_model:"Full model exam",
+    writtenNote:"In written questions, capital letters, accents and punctuation do not matter, and one small spelling mistake is forgiven. Long answers are marked by looking for the key ideas and can get partial marks.",
+    check:"Check", partial:"Partly correct.", ptsShort:"pts", points:"Points", keyIdeas:"Key ideas", needed:"needed", modelAnswer:"Model answer:",
+    openNote:"Automatic marking is only a guide: compare your answer with the model answer.",
+    fillIntro:"Fill in the gaps:", blank:"Gap", choose:"— Choose —", goesIn:"goes in", moveUp:"Move up", moveDown:"Move down",
+    writeHere:"Write your answer here…", goTo:"Go to question", noQuestions:"There are no questions with those filters."
   }
 };
 
@@ -627,6 +662,7 @@ const SECTIONS = [
   <li><b>Evaluar y comprobar:</b> ¿funciona? ¿resuelve el problema?</li>
   <li><b>Presentar y comercializar:</b> elaborar la memoria y mostrarlo.</li>
 </ol>
+<div class="note"><b>Otra forma de verlo: el método de proyectos.</b> En otro esquema de la unidad las 8 fases se nombran así: <b>1.</b> Identificar la necesidad → <b>2.</b> Buscar información → <b>3.</b> Generar ideas → <b>4.</b> Diseñar → <b>5.</b> Planificar → <b>6.</b> Construir → <b>7.</b> Evaluar → <b>8.</b> Presentar la memoria. Es el mismo camino, con algunas fases nombradas de otra forma.</div>
 <div class="key"><b>Importante:</b> el proceso es un ciclo. Si al evaluar descubrimos que el prototipo falla, <b>volvemos atrás y rediseñamos</b>.</div>
 <div class="activity"><span class="tag orange">Actividad</span>
   <h4>El circuito roto</h4>
@@ -648,6 +684,7 @@ const SECTIONS = [
   <li><b>Test and evaluate:</b> does it work? Does it solve the problem?</li>
   <li><b>Present and market:</b> write the report and show it.</li>
 </ol>
+<div class="note"><b>Another way to see it: the project method.</b> In another diagram of the unit the 8 stages are named like this: <b>1.</b> Identify the need → <b>2.</b> Research information → <b>3.</b> Generate ideas → <b>4.</b> Design → <b>5.</b> Plan → <b>6.</b> Build → <b>7.</b> Evaluate → <b>8.</b> Present the report. It is the same path, with some stages named differently.</div>
 <div class="key"><b>Important:</b> the process is a cycle. If we discover during testing that the prototype fails, <b>we go back and redesign</b>.</div>
 <div class="activity"><span class="tag orange">Activity</span>
   <h4>The broken circuit</h4>
@@ -1308,11 +1345,344 @@ const RAW_Q = [
  [["Definición, proceso, herramientas y dibujo, seguridad","Definition, process, tools and drawing, safety"],["Ciencia, técnica, habilidad, tecnología","Science, technique, skill, technology"],["Bienes, servicios, procesos, sistemas","Goods, services, processes, systems"],["Medir, marcar, cortar, acabar","Measure, mark, cut, finish"]],
  ["Pilar 1 definición, pilar 2 proceso, pilar 3 herramientas y dibujo, pilar 4 seguridad.","Pillar 1 definition, pillar 2 process, pillar 3 tools and drawing, pillar 4 safety."]]
 ];
+/* ---- Model-exam questions (from the teacher's answer key, reviewed against the unit) ----
+   types: mc (a = correct index, fixed = keep option order), fill ({{n}} = blank),
+          match (ans = option index per item), order (items in correct order, start = initial order),
+          open (graded by key ideas: groups of accepted stems, need = groups required for full marks) */
+const MODEL_Q = [
+{t:"tech", type:"mc", pts:1, n:1,
+ q:{es:"¿Cuál de las siguientes fórmulas define correctamente la tecnología?", en:"Which of the following formulas correctly defines technology?"},
+ o:[["Ciencia + Arte + Matemáticas","Science + Art + Maths"],["Ciencia + Técnica + Habilidad","Science + Technique + Skill"],["Informática + Dibujo + Herramientas","Computing + Drawing + Tools"],["Técnica + Electricidad + Manuales","Technique + Electricity + Manuals"]], a:1,
+ x:["C + T + H = Tecnología.","Science + Technique + Skill = Technology."]},
+{t:"needs", type:"mc", pts:0.5, n:2, fixed:true,
+ q:{es:"Verdadero o falso: las necesidades básicas son aquellas de las que depende la supervivencia del ser humano, como la alimentación, la vivienda y la salud.", en:"True or false: basic needs are the ones human survival depends on, such as food, housing and health."},
+ o:[["Verdadero","True"],["Falso","False"]], a:0,
+ x:["Las necesidades básicas son las de supervivencia.","Basic needs are survival needs."]},
+{t:"needs", type:"mc", pts:1, n:3,
+ q:{es:"¿A qué tipo de necesidad pertenecen el transporte, el ocio y la comunicación?", en:"What type of need do transport, leisure and communication belong to?"},
+ o:[["Necesidades primarias","Primary needs"],["Necesidades básicas","Basic needs"],["Necesidades secundarias","Secondary needs"],["Necesidades biológicas","Biological needs"]], a:2,
+ x:["Son necesidades secundarias (calidad de vida).","They are secondary needs (quality of life)."]},
+{t:"products", type:"match", pts:1.5, n:4,
+ q:{es:"Relaciona cada tipo de producto tecnológico con su ejemplo correspondiente.", en:"Match each type of technological product with its example."},
+ items:[["Bienes (objetos físicos)","Goods (physical objects)"],["Servicios (intangibles)","Services (intangible)"],["Procesos (sistemas)","Processes (systems)"]],
+ opts:[["Red wifi y transporte público","Wifi network and public transport"],["Reciclaje de plástico","Plastic recycling"],["Teléfono móvil y bicicleta","Mobile phone and bicycle"]],
+ ans:[2,0,1]},
+{t:"tech", type:"fill", pts:1, n:5,
+ q:{es:"La tecnología es la combinación de conocimientos, {{0}} y habilidades que permite resolver problemas y satisfacer {{1}} humanas.", en:"Technology is the combination of knowledge, {{0}} and skills that allows us to solve problems and meet human {{1}}."},
+ blanks:[{es:["técnicas"],en:["techniques"],alt:["tecnica","technique"]},{es:["necesidades"],en:["needs"],alt:["necesidad","need"]}]},
+{t:"needs", type:"open", pts:1.5, n:6,
+ q:{es:"Explica brevemente la diferencia entre una necesidad básica y una necesidad secundaria, poniendo un ejemplo de cada una.", en:"Briefly explain the difference between a basic need and a secondary need, giving an example of each."},
+ model:["Básica: es imprescindible para sobrevivir (por ejemplo, la alimentación o la salud). Secundaria: no es imprescindible, pero mejora la calidad de vida (por ejemplo, el ocio o el transporte).","Basic: it is essential to survive (for example, food or health). Secondary: it is not essential, but it improves quality of life (for example, leisure or transport)."],
+ groups:[
+  {es:"Básica = supervivencia / imprescindible",en:"Basic = survival / essential",k:["sobreviv","supervivencia","imprescindible","necesari","vivir","surviv","essential","necessary","live"]},
+  {es:"Secundaria = calidad de vida",en:"Secondary = quality of life",k:["calidad de vida","mejora","comod","quality of life","improve","better life","comfort"]},
+  {es:"Ejemplo de básica",en:"Example of a basic need",k:["aliment","comida","comer","agua","vivienda","casa","vestido","ropa","abrigo","salud","vacuna","seguridad","food","eat","water","housing","house","home","cloth","coat","health","vaccine","safety"]},
+  {es:"Ejemplo de secundaria",en:"Example of a secondary need",k:["ocio","transporte","comunicacion","entretenimiento","cultura","movil","consola","videojuego","bici","coche","autobus","router","wifi","leisure","transport","communication","entertainment","culture","mobile","phone","console","game","bike","bicycle","car","bus"]}
+ ], need:4},
+{t:"analysis", type:"mc", pts:1, n:7,
+ q:{es:"¿Qué estudia el análisis anatómico de un objeto tecnológico?", en:"What does the anatomical analysis of a technological object study?"},
+ o:[["Su precio y mercado","Its price and market"],["Su utilidad y función principal","Its usefulness and main function"],["Su forma física y las partes que lo componen","Its physical shape and the parts it is made of"],["Los materiales empleados","The materials used"]], a:2,
+ x:["Anatómico: forma y piezas.","Anatomical: shape and parts."]},
+{t:"analysis", type:"mc", pts:0.5, n:8, fixed:true,
+ q:{es:"Verdadero o falso: el análisis técnico se encarga de estudiar el impacto medioambiental y el precio de venta de un producto.", en:"True or false: technical analysis studies the environmental impact and the selling price of a product."},
+ o:[["Verdadero","True"],["Falso","False"]], a:1,
+ x:["Falso: eso es el análisis económico-social. El técnico estudia los materiales y herramientas.","False: that is socio-economic analysis. Technical analysis studies materials and tools."]},
+{t:"analysis", type:"mc", pts:1, n:9,
+ q:{es:"Si nos preguntamos «¿Para qué sirve este objeto y cuál es su utilidad principal?», ¿qué tipo de análisis estamos realizando?", en:"If we ask “What is this object for and what is its main use?”, what type of analysis are we doing?"},
+ o:[["Análisis anatómico","Anatomical analysis"],["Análisis funcional","Functional analysis"],["Análisis estético","Aesthetic analysis"],["Análisis económico","Economic analysis"]], a:1,
+ x:["Funcional: utilidad y función principal.","Functional: usefulness and main function."]},
+{t:"analysis", type:"fill", pts:1, n:10,
+ q:{es:"El análisis {{0}} evalúa aspectos como el color, la belleza y el acabado exterior del objeto.", en:"{{0}} analysis evaluates aspects such as the colour, beauty and outer finish of the object."},
+ blanks:[{es:["estético"],en:["aesthetic"],alt:["estetica","esthetic"]}]},
+{t:"analysis", type:"match", pts:1.5, n:11,
+ q:{es:"Indica qué tipo de análisis tecnológico corresponde a cada pregunta sobre una mochila.", en:"Say which type of technological analysis matches each question about a backpack."},
+ items:[["¿De qué materiales está hecha?","What materials is it made of?"],["¿Qué forma y bolsillos tiene?","What shape and pockets does it have?"],["¿Cuánto cuesta y qué impacto ambiental tiene?","How much does it cost and what environmental impact does it have?"],["¿Cómo es su apariencia exterior?","What does it look like on the outside?"]],
+ opts:[["Análisis anatómico","Anatomical analysis"],["Análisis técnico","Technical analysis"],["Análisis estético","Aesthetic analysis"],["Análisis económico-social","Socio-economic analysis"]],
+ ans:[1,0,3,2]},
+{t:"analysis", type:"open", pts:2, n:12,
+ q:{es:"Aplica las 5 lupas del análisis tecnológico (anatómico, técnico, funcional, estético y económico-social) a un bolígrafo convencional.", en:"Apply the 5 magnifying glasses of technological analysis (anatomical, technical, functional, aesthetic and socio-economic) to an ordinary ballpoint pen."},
+ model:["Anatómico: cuerpo, carga y capuchón. Técnico: plástico y tinta. Funcional: sirve para escribir. Estético: transparente, de color azul. Económico-social: es barato y su plástico se puede reciclar.","Anatomical: body, refill and cap. Technical: plastic and ink. Functional: it is used for writing. Aesthetic: transparent, blue. Socio-economic: it is cheap and its plastic can be recycled."],
+ groups:[
+  {es:"Anatómico: partes (cuerpo, carga, capuchón…)",en:"Anatomical: parts (body, refill, cap…)",k:["capuchon","tapa","carga","cuerpo","tubo","punta","bola","cap","lid","refill","body","barrel","tube","tip","ball"]},
+  {es:"Técnico: materiales (plástico, tinta…)",en:"Technical: materials (plastic, ink…)",k:["plastic","tinta","metal","ink"]},
+  {es:"Funcional: escribir",en:"Functional: writing",k:["escrib","write","writing"]},
+  {es:"Estético: color, aspecto",en:"Aesthetic: colour, appearance",k:["color","colour","transparent","azul","blue","bonit","pretty","diseno","design"]},
+  {es:"Económico-social: precio o impacto",en:"Socio-economic: price or impact",k:["barat","precio","euro","€","cuesta","coste","recicl","contamin","residuo","medio ambiente","cheap","price","cost","recycl","pollut","waste","environment"]}
+ ], need:5},
+{t:"process", type:"mc", pts:1, n:13,
+ q:{es:"¿Cuál es la primera fase del proceso tecnológico o método de proyectos?", en:"What is the first stage of the technological process or project method?"},
+ o:[["Buscar información","Research information"],["Diseñar","Design"],["Identificar la necesidad o problema","Identify the need or problem"],["Construir el prototipo","Build the prototype"]], a:2,
+ x:["Todo empieza identificando la necesidad o el problema.","Everything starts by identifying the need or problem."]},
+{t:"process", type:"mc", pts:1, n:14,
+ q:{es:"Según el esquema del método de proyectos, ¿en qué fase dibujamos los bocetos y planos del objeto?", en:"According to the project method diagram, in which stage do we draw the sketches and plans of the object?"},
+ o:[["Planificar","Plan"],["Diseñar","Design"],["Evaluar","Evaluate"],["Buscar información","Research information"]], a:1,
+ x:["En el método de proyectos, la fase «Diseñar» va después de generar ideas y antes de planificar.","In the project method, the “Design” stage comes after generating ideas and before planning."]},
+{t:"process", type:"mc", pts:0.5, n:15, fixed:true,
+ q:{es:"Verdadero o falso: en la fase de planificación elegimos las herramientas, repartimos las tareas y calculamos el tiempo antes de empezar a construir.", en:"True or false: in the planning stage we choose the tools, share out the tasks and work out the time before we start building."},
+ o:[["Verdadero","True"],["Falso","False"]], a:0,
+ x:["Planificar y organizar: tareas, herramientas y materiales; el plan de trabajo dice quién hace qué y cuándo.","Plan and organise: tasks, tools and materials; the work plan says who does what and when."]},
+{t:"process", type:"order", pts:2, n:25,
+ q:{es:"Ordena cronológicamente, del 1 al 8, las fases del proceso tecnológico (método de proyectos). Usa las flechas para mover cada fase.", en:"Put the stages of the technological process (project method) in chronological order, from 1 to 8. Use the arrows to move each stage."},
+ items:[["Identificar la necesidad","Identify the need"],["Buscar información","Research information"],["Generar ideas","Generate ideas"],["Diseñar","Design"],["Planificar","Plan"],["Construir","Build"],["Evaluar","Evaluate"],["Presentar la memoria","Present the report"]],
+ start:[3,0,5,1,7,2,6,4]},
+{t:"process", type:"mc", pts:1, n:26,
+ q:{es:"¿Qué debemos hacer en la fase de evaluación si el objeto construido no funciona correctamente?", en:"What must we do in the evaluation stage if the object we built does not work properly?"},
+ o:[["Tirarlo a la basura y aprobar","Throw it in the bin and pass"],["Modificar el diseño, corregir errores o buscar otra solución","Change the design, correct the mistakes or look for another solution"],["Pasarle el proyecto a otro grupo","Give the project to another group"],["Cambiar de profesor","Change teacher"]], a:1,
+ x:["Si falla, rediseña: el proceso es un ciclo.","If it fails, redesign: the process is a cycle."]},
+{t:"docs", type:"fill", pts:1, n:27,
+ q:{es:"El documento de evaluación en el que se recoge todo el trabajo realizado tras terminar el proyecto se llama {{0}} final.", en:"The evaluation document that collects all the work done after finishing the project is called the final {{0}}."},
+ blanks:[{es:["memoria"],en:["report"],alt:[]}]},
+{t:"process", type:"mc", pts:1, n:28,
+ q:{es:"En la actividad «El circuito roto», un grupo detecta que los perros del barrio pasan frío. ¿A qué fase corresponde la acción «Buscar en internet las medidas estándar de perros»?", en:"In the “Broken circuit” activity, a group notices that the neighbourhood dogs are cold. Which stage does the action “Look up standard dog sizes on the internet” belong to?"},
+ o:[["Identificar la necesidad","Identify the need"],["Buscar información","Research information"],["Construcción","Building"],["Presupuesto","Budget"]], a:1,
+ x:["Investigar es buscar información.","Researching is gathering information."]},
+{t:"process", type:"open", pts:1.5, n:29,
+ q:{es:"¿Por qué se dice que el proceso tecnológico no es una línea recta sino un ciclo? Explícalo brevemente.", en:"Why do we say that the technological process is not a straight line but a cycle? Explain briefly."},
+ model:["Porque, tras evaluar el prototipo, si se detectan fallos o posibles mejoras, hay que volver atrás y rediseñar o corregir.","Because, after testing the prototype, if faults or possible improvements are found, we must go back and redesign or correct it."],
+ groups:[
+  {es:"Al evaluar / comprobar",en:"When testing / evaluating",k:["evalu","comprob","prueba","probar","test","check","evaluat","try"]},
+  {es:"Si hay fallos o mejoras",en:"If there are faults or improvements",k:["fall","error","mejor","no funciona","mal","fail","fault","mistake","improv","wrong","does not work","doesnt work","not work","problem"]},
+  {es:"Se vuelve atrás / se rediseña",en:"We go back / redesign",k:["volv","vuelv","redisen","repet","corregi","corrig","otra vez","de nuevo","modific","cambi","go back","redesign","repeat","again","correct","fix","change","modif","start over"]}
+ ], need:3},
+{t:"team", type:"mc", pts:1, n:30,
+ q:{es:"¿Cuántos roles rotativos fundamentales se establecen para el trabajo en equipo en el taller de Tecnología?", en:"How many key rotating roles are set up for teamwork in the Technology workshop?"},
+ o:[["2 roles","2 roles"],["3 roles","3 roles"],["4 roles","4 roles"],["6 roles","6 roles"]], a:2,
+ x:["Hay 4 roles y se rotan.","There are 4 roles and they rotate."]},
+{t:"team", type:"match", pts:1.5, n:31,
+ q:{es:"Relaciona cada rol de equipo con su función principal en el taller.", en:"Match each team role with its main job in the workshop."},
+ items:[["Coordinador/a – Secretario/a","Coordinator – Secretary"],["Encargado/a de materiales y herramientas","Materials and tools manager"],["Encargado/a de orden, limpieza y seguridad","Order, cleaning and safety manager"],["Encargado/a de calidad y convivencia","Quality and coexistence manager"]],
+ opts:[["Garantiza que la mesa esté despejada y se cumplan las normas","Makes sure the table is clear and the rules are followed"],["Dirige el equipo, toma decisiones y completa los documentos","Leads the team, makes decisions and fills in the documents"],["Fomenta el respeto y revisa que el trabajo esté bien hecho","Encourages respect and checks the work is well done"],["Vigila, recoge, reparte y asegura el buen estado del instrumental","Watches over, collects, hands out and keeps the tools in good condition"]],
+ ans:[1,3,0,2]},
+{t:"team", type:"mc", pts:0.5, n:32, fixed:true,
+ q:{es:"Verdadero o falso: en el taller de Tecnología los roles de equipo son fijos para todo el curso y nadie debe cambiar de función.", en:"True or false: in the Technology workshop the team roles are fixed for the whole year and nobody should change job."},
+ o:[["Verdadero","True"],["Falso","False"]], a:1,
+ x:["Falso: rotaréis por los 4 roles.","False: you will rotate through the 4 roles."]},
+{t:"team", type:"mc", pts:1, n:33,
+ q:{es:"¿Quién es el responsable de vigilar, recoger y repartir las herramientas, y de asegurar que están en buen estado?", en:"Who is responsible for watching over, collecting and handing out the tools, and making sure they are in good condition?"},
+ o:[["El coordinador/a","The coordinator"],["El encargado/a de materiales y herramientas","The materials and tools manager"],["El encargado/a de calidad","The quality manager"],["Todos individualmente, sin avisar","Everyone on their own, without telling anyone"]], a:1,
+ x:["Es la función del encargado/a de materiales y herramientas.","This is the materials and tools manager’s job."]},
+{t:"team", type:"fill", pts:1, n:34,
+ q:{es:"El «superpoder» del encargado de orden, limpieza y seguridad es la {{0}}, garantizando que la mesa esté despejada.", en:"The “superpower” of the order, cleaning and safety manager is {{0}}, making sure the table is clear."},
+ blanks:[{es:["prevención"],en:["prevention"],alt:["prevenir","prevent"]}]},
+{t:"team", type:"open", pts:1.5, n:35,
+ q:{es:"¿Por qué es importante que en el taller de Tecnología se trabaje en equipo y no de manera individual o «solitaria»?", en:"Why is it important to work as a team in the Technology workshop and not individually or “alone”?"},
+ model:["Porque, como en un equipo de boxes de Fórmula 1, nadie gana solo: se reparten las tareas, se pueden hacer proyectos más complejos, se mejora la seguridad y se aprende a cooperar.","Because, as in a Formula 1 pit crew, nobody wins alone: tasks are shared out, more complex projects can be built, safety improves and we learn to cooperate."],
+ groups:[
+  {es:"Repartir tareas / roles",en:"Sharing out tasks / roles",k:["repart","tarea","rol","funcion","divid","share","task","role","job","divide"]},
+  {es:"Proyectos más complejos o mejores",en:"More complex or better projects",k:["complej","grande","mejor","mas rapido","dificil","complex","bigger","better","difficult","faster"]},
+  {es:"Más seguridad",en:"More safety",k:["segur","peligro","accidente","safe","danger","accident"]},
+  {es:"Cooperar / nadie gana solo",en:"Cooperating / nobody wins alone",k:["cooper","colabor","ayud","junto","respet","nadie gana solo","companer","help","together","respect","nobody wins"]}
+ ], need:3},
+{t:"tools", type:"mc", pts:1, n:36,
+ q:{es:"¿En qué orden se deben ejecutar las operaciones básicas en el taller para fabricar una pieza?", en:"In what order should the basic workshop operations be carried out to make a piece?"},
+ o:[["Corta → Mide → Perfora → Marca → Acaba","Cut → Measure → Drill → Mark → Finish"],["Mide → Marca → Corta → Perfora → Monta → Acaba","Measure → Mark → Cut → Drill → Assemble → Finish"],["Monta → Perfora → Corta → Marca → Mide","Assemble → Drill → Cut → Mark → Measure"],["Corta → Mide → Monta → Acaba","Cut → Measure → Assemble → Finish"]], a:1,
+ x:["Es el mantra del taller.","This is the workshop mantra."]},
+{t:"tools", type:"mc", pts:1, n:37,
+ q:{es:"¿Qué herramienta se utiliza para comprobar si una esquina forma un ángulo recto de 90 grados?", en:"Which tool is used to check whether a corner forms a 90-degree right angle?"},
+ o:[["Regla metálica","Steel ruler"],["Compás","Compass"],["Escuadra","Try square"],["Transportador","Protractor"]], a:2,
+ x:["La escuadra comprueba ángulos rectos (90º).","The try square checks right angles (90º)."]},
+{t:"tools", type:"mc", pts:1, n:38,
+ q:{es:"Para sujetar firmemente una pieza de madera a la mesa de trabajo de manera móvil y provisional, utilizamos…", en:"To hold a piece of wood firmly to the workbench in a movable, temporary way, we use…"},
+ o:[["Tornillo de banco","Bench vice"],["Gato o sargento","Clamp (G-clamp)"],["Martillo","Hammer"],["Alicates","Pliers"]], a:1,
+ x:["El gato o sargento es la sujeción móvil; el tornillo de banco va fijo en la mesa.","The clamp is movable; the bench vice is fixed to the table."]},
+{t:"tools", type:"mc", pts:0.5, n:39, fixed:true,
+ q:{es:"Verdadero o falso: el serrucho está diseñado principalmente para realizar cortes curvos y finos en contrachapado.", en:"True or false: the handsaw is mainly designed for curved, fine cuts in plywood."},
+ o:[["Verdadero","True"],["Falso","False"]], a:1,
+ x:["Falso: el serrucho hace cortes rectos y largos; los curvos o finos, la sierra de calar / segueta.","False: the handsaw makes long, straight cuts; curved or fine cuts are for the coping saw / fretsaw."]},
+{t:"tools", type:"mc", pts:1, n:40,
+ q:{es:"¿Qué herramienta de corte se utiliza para hacer cortes curvos en maderas finas o contrachapado?", en:"Which cutting tool is used to make curved cuts in thin wood or plywood?"},
+ o:[["Serrucho","Handsaw"],["Sierra de calar / segueta","Coping saw / fretsaw"],["Alicates de corte","Cutting pliers"],["Destornillador","Screwdriver"]], a:1,
+ x:["Sierra de calar / segueta: cortes curvos o finos.","Coping saw / fretsaw: curved or fine cuts."]},
+{t:"tools", type:"fill", pts:1, n:41,
+ q:{es:"Para hacer agujeros en madera utilizamos el taladro con brocas específicas, como la broca {{0}} para orificios anchos.", en:"To make holes in wood we use the drill with special bits, such as the {{0}} bit for wide holes."},
+ blanks:[{es:["Forstner"],en:["Forstner"],alt:["forsner","fostner"]}]},
+{t:"tools", type:"match", pts:1.5, n:42,
+ q:{es:"Clasifica las siguientes herramientas según su función.", en:"Classify these tools according to their function."},
+ items:[["Martillo","Hammer"],["Papel de lija y lima","Sandpaper and file"],["Cola térmica (pistola de cola)","Hot glue (glue gun)"],["Tornillo de banco","Bench vice"]],
+ opts:[["Sujetar","Hold"],["Golpear","Hit"],["Unir","Join"],["Acabar","Finish"]],
+ ans:[1,3,2,0]},
+{t:"tools", type:"mc", pts:1, n:43,
+ q:{es:"¿Cuál es la función del papel de lija y las limas en la fase final de trabajo?", en:"What is the job of sandpaper and files in the final stage of work?"},
+ o:[["Unir piezas con presión","Joining pieces under pressure"],["Desbastar bordes duros y suavizar superficies","Smoothing down hard edges and smoothing surfaces"],["Marcar líneas de corte","Marking cutting lines"],["Perforar orificios","Drilling holes"]], a:1,
+ x:["Limas: desbastar bordes duros. Lija: suavizar superficies.","Files: smooth down hard edges. Sandpaper: smooth surfaces."]},
+{t:"tools", type:"mc", pts:1, n:44,
+ q:{es:"Un alumno necesita cortar un listón de madera, pero se mueve mucho sobre la mesa. ¿Qué herramienta debe utilizar antes de serrar?", en:"A student needs to cut a wooden strip, but it moves a lot on the table. Which tool should he use before sawing?"},
+ o:[["Un martillo","A hammer"],["Un gato o sargento (o tornillo de banco)","A clamp (or bench vice)"],["Una lima","A file"],["Una escuadra","A try square"]], a:1,
+ x:["Una pieza mal sujeta es una pieza arruinada… y un peligro.","A badly held piece is a ruined piece… and a danger."]},
+{t:"tools", type:"open", pts:1.5, n:45,
+ q:{es:"Explica el consejo experto del taller: «Mide dos veces, corta una vez. Una pieza mal sujeta es una pieza arruinada… y un peligro».", en:"Explain the workshop’s expert tip: “Measure twice, cut once. A badly held piece is a ruined piece… and a danger.”"},
+ model:["Medir bien antes de cortar evita errores y desperdiciar material. Sujetar bien la pieza hace que el corte sea preciso y evita que la herramienta resbale y cause lesiones.","Measuring carefully before cutting avoids mistakes and wasting material. Holding the piece firmly makes the cut precise and stops the tool slipping and causing injuries."],
+ groups:[
+  {es:"Medir bien evita errores o desperdiciar material",en:"Measuring well avoids mistakes or wasted material",k:["desperdic","malgast","estrope","error","equivoc","precis","exact","material","waste","mistake","wrong","ruin","accura"]},
+  {es:"Hay que sujetar bien la pieza",en:"The piece must be held firmly",k:["sujet","fij","agarr","hold","clamp","fix","held","secure","vice"]},
+  {es:"Si no, es peligroso (lesiones, resbala…)",en:"Otherwise it is dangerous (injuries, slipping…)",k:["peligr","lesion","herid","accident","resbal","mueve","cortar","hacer dano","danger","injur","hurt","slip","move","accident","cut yourself"]}
+ ], need:3},
+{t:"safety", type:"mc", pts:1, n:46,
+ q:{es:"¿Cuál de las siguientes es una norma básica de seguridad al cortar en el taller?", en:"Which of the following is a basic safety rule when cutting in the workshop?"},
+ o:[["Cortar siempre en dirección hacia tu cuerpo","Always cut towards your body"],["Sujetar la pieza firmemente y cortar alejándote del cuerpo","Hold the piece firmly and cut away from your body"],["Soplar el serrín mientras se corta","Blow the sawdust while cutting"],["No usar protección","Do not use protection"]], a:1,
+ x:["Norma 3: seguridad al cortar.","Rule 3: cutting safely."]},
+{t:"safety", type:"mc", pts:0.5, n:47, fixed:true,
+ q:{es:"Verdadero o falso: en el taller está permitido utilizar un destornillador como martillo si no encontramos uno cerca.", en:"True or false: in the workshop you may use a screwdriver as a hammer if there is no hammer nearby."},
+ o:[["Verdadero","True"],["Falso","False"]], a:1,
+ x:["Falso: cada herramienta se usa SOLO para su función real.","False: each tool is used ONLY for its real purpose."]},
+{t:"safety", type:"mc", pts:1, n:48,
+ q:{es:"¿Qué se debe hacer si ocurre un pequeño accidente o se rompe una herramienta en el taller?", en:"What must you do if there is a small accident or a tool breaks in the workshop?"},
+ o:[["Ocultárselo al profesor para que no se enfade","Hide it from the teacher so they do not get angry"],["Guardar la herramienta rota en el cajón","Put the broken tool in the drawer"],["Comunicárselo inmediatamente al profesor","Tell the teacher immediately"],["Salir corriendo del taller","Run out of the workshop"]], a:2,
+ x:["Nunca se oculta un accidente al profesor.","You must never hide an accident from the teacher."]},
+{t:"safety", type:"fill", pts:1, n:49,
+ q:{es:"Respecto a la indumentaria, se debe llevar el pelo {{0}} y evitar ropa suelta o bufandas que puedan engancharse en las máquinas.", en:"About clothing, your hair must be {{0}} and you must avoid loose clothes or scarves that could get caught in the machines."},
+ blanks:[{es:["recogido"],en:["tied back"],alt:["recogida","tied up","tied","tied back up"]}]},
+{t:"safety", type:"match", pts:1, n:50,
+ q:{es:"Clasifica cada comportamiento como CORRECTO o INCORRECTO.", en:"Classify each behaviour as CORRECT or INCORRECT."},
+ items:[["Entrar sin correr y mantener la mesa limpia","Come in without running and keep the table clean"],["Colocar la mano delante de la sierra al cortar","Put your hand in front of the saw when cutting"],["Usar máquinas eléctricas solo con autorización","Use electric machines only with permission"],["Correr o jugar con las tijeras en la mano","Run or play with scissors in your hand"]],
+ opts:[["CORRECTO","CORRECT"],["INCORRECTO","INCORRECT"]],
+ ans:[0,1,0,1]},
+{t:"safety", type:"mc", pts:1, n:51,
+ q:{es:"Un compañero quiere utilizar el taladro de columna del taller por su cuenta. ¿Qué norma de seguridad está a punto de incumplir?", en:"A classmate wants to use the workshop pillar drill on his own. Which safety rule is he about to break?"},
+ o:[["La norma de uso de tijeras","The scissors rule"],["Usar las máquinas eléctricas únicamente con autorización y supervisión del profesor","Use electric machines only with the teacher’s permission and supervision"],["La norma de limpieza del suelo","The floor-cleaning rule"],["Ninguna norma","No rule"]], a:1,
+ x:["Norma 4: máquinas eléctricas.","Rule 4: electric machines."]},
+{t:"safety", type:"open", pts:2, n:52,
+ q:{es:"Nombra las 5 normas básicas del «decálogo de supervivencia» del taller de Tecnología.", en:"Name the 5 basic rules of the workshop “survival code”."},
+ model:["1. Orden y tranquilidad. 2. Uso correcto de las herramientas. 3. Seguridad al cortar. 4. Máquinas eléctricas solo con autorización y supervisión. 5. Indumentaria adecuada.","1. Order and calm. 2. Correct use of tools. 3. Cutting safely. 4. Electric machines only with permission and supervision. 5. Suitable clothing."],
+ groups:[
+  {es:"Orden y tranquilidad",en:"Order and calm",k:["orden","tranquil","correr","order","calm","run","tidy"]},
+  {es:"Uso correcto",en:"Correct use",k:["uso","usar cada","funcion","destornillador","correct use","use each","purpose","screwdriver","proper use"]},
+  {es:"Seguridad al cortar",en:"Cutting safely",k:["cort","cut","sierra","saw"]},
+  {es:"Máquinas eléctricas",en:"Electric machines",k:["maquina","electric","autoriz","supervis","machine","permission"]},
+  {es:"Indumentaria",en:"Clothing",k:["indumentaria","ropa","pelo","bufanda","vestimenta","vestir","clothing","clothes","hair","scarf","dress"]}
+ ], need:5},
+{t:"drawing", type:"mc", pts:1, n:53,
+ q:{es:"¿Qué diferencia principal existe entre un boceto y un croquis?", en:"What is the main difference between a sketch (boceto) and a dimensioned sketch (croquis)?"},
+ o:[["El boceto se hace con regla y el croquis a mano alzada","The sketch is drawn with a ruler and the dimensioned sketch freehand"],["El croquis lleva las medidas reales (cotas) y el boceto es un dibujo rápido sin medidas","The dimensioned sketch has the real measurements (dimensions) and the sketch is a quick drawing without measurements"],["El boceto es en 3D y el croquis en 2D","The sketch is 3D and the dimensioned sketch is 2D"],["No hay ninguna diferencia","There is no difference"]], a:1,
+ x:["Los dos se hacen a mano alzada, pero el croquis SIEMPRE lleva medidas (cotas).","Both are freehand, but the dimensioned sketch ALWAYS has measurements (dimensions)."]},
+{t:"docs", type:"mc", pts:0.5, n:54, fixed:true,
+ q:{es:"Verdadero o falso: la hoja de proceso es el «diario de a bordo» que se completa durante la fabricación, junto con el control de tiempos.", en:"True or false: the process sheet is the “logbook” that is filled in during manufacturing, together with the time control."},
+ o:[["Verdadero","True"],["Falso","False"]], a:0,
+ x:["La hoja de proceso y el control de tiempos se hacen durante la construcción.","The process sheet and the time control are done during construction."]},
+{t:"docs", type:"mc", pts:1, n:55,
+ q:{es:"¿Qué documento sirve para calcular cuánto nos costaría fabricar el proyecto?", en:"Which document is used to calculate how much it would cost us to make the project?"},
+ o:[["Memoria final","Final report"],["Presupuesto","Budget"],["Croquis","Dimensioned sketch"],["Decálogo de seguridad","Safety code"]], a:1,
+ x:["El presupuesto calcula el coste.","The budget calculates the cost."]},
+{t:"docs", type:"match", pts:1.5, n:56,
+ q:{es:"Clasifica los siguientes documentos según se elaboren ANTES, DURANTE o DESPUÉS de construir.", en:"Classify these documents according to whether they are prepared BEFORE, DURING or AFTER building."},
+ items:[["Bocetos y lista de materiales","Sketches and list of materials"],["Diario de trabajo y hoja de procesos","Work diary and process sheet"],["Memoria final y conclusiones","Final report and conclusions"]],
+ opts:[["Antes de construir","Before building"],["Durante la construcción","During construction"],["Después de construir","After building"]],
+ ans:[0,1,2]},
+{t:"docs", type:"open", pts:2, n:57,
+ q:{es:"Menciona los 6 documentos básicos que componen la documentación de un proyecto tecnológico.", en:"Name the 6 basic documents that make up the documentation of a technological project."},
+ model:["1. Boceto y croquis. 2. Lista de materiales y herramientas. 3. Plan de trabajo y reparto. 4. Hoja de proceso. 5. Presupuesto. 6. Memoria final.","1. Sketch and dimensioned sketch. 2. List of materials and tools. 3. Work plan and task allocation. 4. Process sheet. 5. Budget. 6. Final report."],
+ groups:[
+  {es:"Boceto y croquis",en:"Sketch and dimensioned sketch",k:["boceto","croquis","sketch","drawing"]},
+  {es:"Lista de materiales y herramientas",en:"List of materials and tools",k:["lista","material","list"]},
+  {es:"Plan de trabajo y reparto",en:"Work plan and task allocation",k:["plan","reparto","work plan","allocation"]},
+  {es:"Hoja de proceso",en:"Process sheet",k:["hoja de proceso","proceso","diario","process","logbook","diary"]},
+  {es:"Presupuesto",en:"Budget",k:["presupuesto","budget"]},
+  {es:"Memoria final",en:"Final report",k:["memoria","report"]}
+ ], need:6},
+{t:"project", type:"mc", pts:1, n:58,
+ q:{es:"En el proyecto del organizador (kit OPITEC 122.979), ¿qué material se utiliza para el soporte principal?", en:"In the organiser project (OPITEC 122.979 kit), what material is used for the main support?"},
+ o:[["Plástico","Plastic"],["Madera de contrachapado","Plywood"],["Chapa de aluminio","Aluminium sheet"],["Cartón","Cardboard"]], a:1,
+ x:["Soporte principal: madera de contrachapado resistente.","Main support: strong plywood."]},
+{t:"summary", type:"open", pts:1.5, n:59,
+ q:{es:"Completa la frase que resume la filosofía de trabajo en el taller: «En el taller no demuestra más habilidad quien trabaja más rápido, sino…»", en:"Complete the sentence that sums up the way we work in the workshop: “In the workshop, the most skilled person is not the one who works fastest, but…”"},
+ model:["…quien trabaja mejor, seguro y en equipo.","…the one who works best, safely and as part of a team."],
+ groups:[
+  {es:"mejor",en:"best",k:["mejor","best","better","bien","well"]},
+  {es:"seguro",en:"safely",k:["segur","safe"]},
+  {es:"en equipo",en:"as a team",k:["equipo","team","grupo","group"]}
+ ], need:3}
+];
+
 const QUESTIONS = RAW_Q.map((r,i)=>({
-  id:i, t:r[0], q:{es:r[1],en:r[2]},
+  id:i, src:"bank", type:"mc", pts:1, a:0, t:r[0], q:{es:r[1],en:r[2]},
   o:r[3].map(p=>({es:p[0],en:p[1]})),
   x:{es:r[4][0],en:r[4][1]}
 }));
+MODEL_Q.forEach(m=>{
+  const q = {id:QUESTIONS.length, src:"model", type:m.type, pts:m.pts, n:m.n, t:m.t, q:m.q, fixed:!!m.fixed};
+  const pair = p=>({es:p[0],en:p[1]});
+  if(m.type==="mc"){ q.o=m.o.map(pair); q.a=m.a; }
+  if(m.type==="fill"){ q.blanks=m.blanks; }
+  if(m.type==="match"){ q.items=m.items.map(pair); q.opts=m.opts.map(pair); q.ans=m.ans; }
+  if(m.type==="order"){ q.items=m.items.map(pair); q.start=m.start; }
+  if(m.type==="open"){ q.model=pair(m.model); q.groups=m.groups; q.need=m.need; }
+  q.x = m.x ? pair(m.x) : null;
+  QUESTIONS.push(q);
+});
+
+/* ---------- answer checking (case, accents and punctuation are ignored) ---------- */
+function norm(s){
+  return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")
+    .replace(/[^a-z0-9€\s]/g," ").replace(/\s+/g," ").trim();
+}
+function stripArt(s){ return s.replace(/^(el|la|los|las|un|una|unos|unas|lo|the|a|an) /,""); }
+function stem(s){ return s.replace(/(es|s)$/,""); }
+function blankOK(input, b){
+  const v = stripArt(norm(input)); if(!v) return false;
+  const alts = [].concat(b.es||[], b.en||[], b.alt||[]);
+  return alts.some(a=>{ const w=stripArt(norm(a));
+    if(v===w || stem(v)===stem(w)) return true;
+    return w.length>=5 && lev(v,w)<=1; // tolerate one small typo in longer words
+  });
+}
+function lev(a,b){
+  if(Math.abs(a.length-b.length)>1) return 2;
+  let prev=Array.from({length:b.length+1},(_,j)=>j);
+  for(let i=1;i<=a.length;i++){ const cur=[i];
+    for(let j=1;j<=b.length;j++) cur[j]=Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+(a[i-1]===b[j-1]?0:1));
+    prev=cur; }
+  return prev[b.length];
+}
+function openFound(q, text){
+  const t = " "+norm(text)+" ";
+  return q.groups.map(g=>g.k.some(k=>{ const n=norm(k); return n && t.includes(n); }));
+}
+/* returns fraction 0..1 */
+function scoreQ(q, ans){
+  if(ans===undefined || ans===null) return 0;
+  switch(q.type){
+    case "mc":    return ans===q.a ? 1 : 0;
+    case "fill":  return q.blanks.filter((b,i)=>blankOK((ans||[])[i], b)).length / q.blanks.length;
+    case "match": return q.ans.filter((c,i)=>ans[i]===c).length / q.ans.length;
+    case "order": return ans.filter((it,pos)=>it===pos).length / q.items.length;
+    case "open":  { const f=openFound(q,ans).filter(Boolean).length; return Math.min(1, f/q.need); }
+  }
+  return 0;
+}
+function isAnswered(q, ans){
+  if(ans===undefined || ans===null) return false;
+  switch(q.type){
+    case "mc": return true;
+    case "fill": return ans.some(v=>String(v||"").trim()!=="");
+    case "match": return ans.some(v=>v>=0);
+    case "order": return true;
+    case "open": return String(ans).trim()!=="";
+  }
+  return false;
+}
+function promptText(q, L){ return q.q[L].replace(/\{\{\d+\}\}/g, "________"); }
+function answerText(q, L){
+  switch(q.type){
+    case "mc": return q.o[q.a][L];
+    case "fill": return q.blanks.map(b=>b[L][0]).join(" / ");
+    case "match": return q.items.map((it,i)=>`${it[L]} → ${q.opts[q.ans[i]][L]}`).join(" · ");
+    case "order": return q.items.map((it,i)=>`${i+1}. ${it[L]}`).join(" → ");
+    case "open": return q.model[L];
+  }
+  return "";
+}
+function givenText(q, ans, L){
+  if(!isAnswered(q,ans)) return null;
+  switch(q.type){
+    case "mc": return q.o[ans][L];
+    case "fill": return ans.map(v=>String(v||"").trim()||"—").join(" / ");
+    case "match": return q.items.map((it,i)=>`${it[L]} → ${ans[i]>=0?q.opts[ans[i]][L]:"—"}`).join(" · ");
+    case "order": return ans.map((it,i)=>`${i+1}. ${q.items[it][L]}`).join(" → ");
+    case "open": return String(ans);
+  }
+  return "";
+}
+function fmtPts(n){ return (Math.round(n*100)/100).toLocaleString(LANG==="es"?"es-ES":"en-GB",{maximumFractionDigits:2}); }
 
 /* =========================================================
    6. STATE, STORAGE, HELPERS
@@ -1440,13 +1810,13 @@ function renderFlash(){
       <div class="fc${fc.flipped?" flipped":""}" id="fcCard" tabindex="0" role="button" aria-label="${T("flip")}">
         <div class="fc-face front" aria-hidden="${fc.flipped}">
           <span class="lbl">${T("fcFront")} · ${esc(topicName(q.t,LANG))}${m==="k"?" · ✔":m==="r"?" · ↻":""}</span>
-          <div class="big">${esc(q.q[LANG])}</div>
+          <div class="big">${esc(promptText(q,LANG))}</div>${fcExtra(q,LANG)}
           <span class="hint">${T("fcHint")}</span>
         </div>
         <div class="fc-face back" aria-hidden="${!fc.flipped}">
           <span class="lbl">${T("fcBack")}</span>
-          <div class="big">${esc(q.o[0][LANG])}</div>
-          <div>${esc(q.x[LANG])}</div>
+          <div class="big">${esc(answerText(q,LANG))}</div>
+          ${q.x?`<div>${esc(q.x[LANG])}</div>`:""}
           <span class="hint">${T("fcHint2")}</span>
         </div>
       </div>
@@ -1498,6 +1868,12 @@ function renderFlash(){
     $("#fcRev").onclick = ()=>mark("r");
   }
 }
+function fcExtra(q,L){
+  if(q.type==="match") return `<div class="fc-list"><b>1…${q.items.length}:</b> ${q.items.map((it,i)=>`${i+1}. ${esc(it[L])}`).join(" · ")}<br><b>A…${LETTERS[q.opts.length-1]}:</b> ${q.opts.map((o,k)=>`${LETTERS[k]}) ${esc(o[L])}`).join(" · ")}</div>`;
+  if(q.type==="order") return `<div class="fc-list">${q.start.map(i=>esc(q.items[i][L])).join(" · ")}</div>`;
+  if(q.type==="mc" && q.fixed) return `<div class="fc-list">${q.o.map(o=>esc(o[L])).join(" / ")}</div>`;
+  return "";
+}
 function focusCard(){ const c=$("#fcCard"); if(c) c.focus({preventScroll:true}); }
 document.addEventListener("keydown", e=>{
   if(currentView!=="flashcards") return;
@@ -1507,142 +1883,299 @@ document.addEventListener("keydown", e=>{
   if(e.key===" " && e.target===document.body){ const c=$("#fcCard"); if(c){ e.preventDefault(); c.click(); } }
 });
 
-// ---------- PRACTICE ----------
-const pr = { topic:"all", list:[], i:0, orders:{}, answers:{}, started:false };
-function startPractice(){
-  pr.list = shuffle(qsByTopic(pr.topic).map(q=>q.id));
-  pr.orders = {}; pr.list.forEach(id=>pr.orders[id]=shuffle([0,1,2,3].slice(0,QUESTIONS[id].o.length)));
-  pr.answers = {}; pr.i=0; pr.started=true;
+// ---------- QUESTION RENDERING (shared by Practice + Exam) ----------
+const TYPE_GROUPS = { all:()=>true, test:q=>q.type==="mc", written:q=>q.type!=="mc" };
+function typeOptions(sel){
+  return ["all","test","written"].map(k=>`<option value="${k}"${sel===k?" selected":""}>${T("qt_"+k)}</option>`).join("");
 }
-function renderPractice(){
+function typeLabel(q){
+  if(q.type==="mc") return q.fixed ? T("lbl_tf") : T("lbl_mc");
+  return T("lbl_"+q.type);
+}
+/* st = {ans, order(for mc), done(bool, show correction)} */
+function answerAreaHTML(q, st){
+  const ans = st.ans, done = st.done, L = LANG;
+  if(q.type==="mc"){
+    const ord = q.fixed ? q.o.map((_,i)=>i) : st.order;
+    return `<div class="opts">${ord.map((oi,k)=>{
+      let cls="";
+      if(done){ if(oi===q.a) cls=" right"; else if(oi===ans) cls=" wrong"; }
+      else if(ans===oi) cls=" sel";
+      return `<button type="button" class="opt${cls}" data-oi="${oi}" aria-pressed="${ans===oi}"${done?" disabled":""}><span class="lt">${LETTERS[k]}</span><span>${esc(q.o[oi][L])}</span></button>`;}).join("")}</div>`;
+  }
+  if(q.type==="fill"){
+    let i=-1;
+    const parts = esc(q.q[L]).split(/\{\{\d+\}\}/);
+    let h = "";
+    parts.forEach((p,k)=>{
+      h += p;
+      if(k<parts.length-1){ i++;
+        const v = (ans||[])[i]||"";
+        let cls = ""; if(done) cls = blankOK(v,q.blanks[i]) ? " right" : " wrong";
+        h += `<input type="text" class="blank${cls}" data-b="${i}" value="${esc(v)}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${T("blank")} ${i+1}"${done?" disabled":""}>`;
+      }
+    });
+    return `<p class="fill-text">${h}</p>`;
+  }
+  if(q.type==="match"){
+    return `<div class="match">${q.items.map((it,i)=>{
+      const v = ans ? ans[i] : -1;
+      let cls=""; if(done) cls = v===q.ans[i] ? " right" : " wrong";
+      return `<div class="match-row${cls}"><span class="mi"><b>${i+1}.</b> ${esc(it[L])}</span>
+        <select data-m="${i}"${done?" disabled":""} aria-label="${esc(it[L])}"><option value="-1">${T("choose")}</option>${q.opts.map((o,k)=>`<option value="${k}"${v===k?" selected":""}>${LETTERS[k]}) ${esc(o[L])}</option>`).join("")}</select>
+        ${done && v!==q.ans[i] ? `<span class="mfix">✔ ${esc(q.opts[q.ans[i]][L])}</span>`:""}</div>`;}).join("")}</div>`;
+  }
+  if(q.type==="order"){
+    const cur = ans || q.start;
+    return `<ol class="circuit qorder">${cur.map((it,pos)=>{
+      let cls=""; if(done) cls = it===pos ? "ok" : "bad";
+      return `<li class="${cls}"><span class="pos">${pos+1}</span><span class="txt">${esc(q.items[it][L])}${done&&it!==pos?` <span class="muted">(${T("goesIn")} ${it+1})</span>`:""}</span>
+        <button type="button" data-mv="up" data-i="${pos}" aria-label="${T("moveUp")}"${pos===0||done?" disabled":""}>▲</button>
+        <button type="button" data-mv="down" data-i="${pos}" aria-label="${T("moveDown")}"${pos===cur.length-1||done?" disabled":""}>▼</button></li>`;}).join("")}</ol>`;
+  }
+  if(q.type==="open"){
+    return `<textarea class="open-ans" rows="5" placeholder="${T("writeHere")}"${done?" disabled":""}>${esc(ans||"")}</textarea>`;
+  }
+  return "";
+}
+/* wire inputs; onChange(newAns, rerender) */
+function bindAnswerArea(host, q, st, onChange){
+  if(q.type==="mc"){
+    $$(".opt",host).forEach(b=>b.onclick=()=>onChange(+b.dataset.oi, true));
+  } else if(q.type==="fill"){
+    $$("input.blank",host).forEach(inp=>inp.addEventListener("input",()=>{
+      const a = q.blanks.map((_,i)=>{ const el=host.querySelector(`input.blank[data-b="${i}"]`); return el?el.value:""; });
+      onChange(a, false);
+    }));
+  } else if(q.type==="match"){
+    $$("select[data-m]",host).forEach(sel=>sel.addEventListener("change",()=>{
+      const a = q.items.map((_,i)=>{ const el=host.querySelector(`select[data-m="${i}"]`); return el?+el.value:-1; });
+      onChange(a, false);
+    }));
+  } else if(q.type==="order"){
+    $$("button[data-mv]",host).forEach(b=>b.onclick=()=>{
+      const cur = (st.ans || q.start).slice();
+      const i=+b.dataset.i, j = b.dataset.mv==="up"? i-1 : i+1;
+      if(j<0||j>=cur.length) return;
+      [cur[i],cur[j]]=[cur[j],cur[i]];
+      onChange(cur, true, `button[data-mv="${b.dataset.mv}"][data-i="${j}"]`);
+    });
+  } else if(q.type==="open"){
+    const ta=$("textarea.open-ans",host); if(ta) ta.addEventListener("input",()=>onChange(ta.value,false));
+  }
+}
+function feedbackHTML(q, ans){
+  const f = scoreQ(q, ans), L=LANG;
+  const pts = f*q.pts;
+  const cls = f===1 ? "ok" : (f>0 ? "part" : "ko");
+  const head = f===1 ? T("correct") : (f>0 ? T("partial") : T("incorrect"));
+  let h = `<div class="fb ${cls}" role="status"><b>${head}</b> ${q.type!=="mc"||q.src==="model"?`<span class="muted">(${fmtPts(pts)} / ${fmtPts(q.pts)} ${T("ptsShort")})</span>`:""}`;
+  if(q.type==="mc"){
+    if(f<1) h += `<br>${T("rightAnswer")} <b>${esc(q.o[q.a][L])}</b>.`;
+  } else if(q.type==="open"){
+    const found = openFound(q, ans);
+    h += `<div style="margin-top:6px">${T("keyIdeas")} (${found.filter(Boolean).length}/${q.groups.length}, ${T("needed")} ${q.need}):</div><ul class="ideas">${q.groups.map((g,i)=>`<li class="${found[i]?"yes":"no"}">${found[i]?"✔":"✘"} ${esc(g[L])}</li>`).join("")}</ul>
+      <div>${T("modelAnswer")} <i>${esc(q.model[L])}</i></div><div class="muted" style="font-size:.88rem;margin-top:4px">${T("openNote")}</div>`;
+  } else if(f<1){
+    h += `<br>${T("rightAnswer")} <b>${esc(answerText(q,L))}</b>`;
+  }
+  if(q.x) h += `<div style="margin-top:4px">${esc(q.x[L])}</div>`;
+  return h + `</div>`;
+}
+
+// ---------- PRACTICE ----------
+const pr = { topic:"all", qtype:"all", list:[], i:0, orders:{}, answers:{}, checked:{}, started:false };
+function startPractice(){
+  pr.list = shuffle(QUESTIONS.filter(q=>(pr.topic==="all"||q.t===pr.topic) && TYPE_GROUPS[pr.qtype](q)).map(q=>q.id));
+  pr.orders = {}; pr.list.forEach(id=>{ const q=QUESTIONS[id]; if(q.type==="mc") pr.orders[id]=shuffle(q.o.map((_,i)=>i)); });
+  pr.answers = {}; pr.checked = {}; pr.i=0; pr.started=true;
+}
+function renderPractice(focusSel){
   const v=$("#view-practica");
   const head = `<h2>${T("navPractice")}</h2>
     <div class="card no-print"><p class="muted" style="margin-top:0">${T("practiceIntro")}</p>
     <div class="row"><label class="field">${T("topic")}<select id="prTopic">${topicOptions(pr.topic)}</select></label>
+    <label class="field">${T("qType")}<select id="prType">${typeOptions(pr.qtype)}</select></label>
     <button class="btn orange" type="button" id="prStart" style="margin-top:18px">${pr.started?T("restart"):T("start")}</button></div></div>`;
   if(!pr.started){ v.innerHTML = head; bindPrHead(); return; }
-  const answered = Object.keys(pr.answers).length;
-  const hits = Object.entries(pr.answers).filter(([id,a])=>a===0).length;
+  const ids = Object.keys(pr.checked).map(Number);
+  const got = ids.reduce((s,id)=>s+scoreQ(QUESTIONS[id],pr.answers[id])*QUESTIONS[id].pts,0);
+  const max = ids.reduce((s,id)=>s+QUESTIONS[id].pts,0);
   let body;
-  if(pr.i>=pr.list.length){
+  if(!pr.list.length){
+    body = `<div class="card q-card" style="margin-top:16px">${T("noQuestions")}</div>`;
+  } else if(pr.i>=pr.list.length){
     body = `<div class="card q-card" style="margin-top:16px;text-align:center"><h3>${T("practiceDone")}</h3>
-      <div class="score-big">${hits}/${pr.list.length}</div><p class="muted">${T("hits")}</p>
+      <div class="score-big">${fmtPts(got)} / ${fmtPts(max)}</div><p class="muted">${T("points")}</p>
       <button class="btn orange" type="button" id="prAgain">${T("restart")}</button></div>`;
   } else {
-    const id = pr.list[pr.i], q = QUESTIONS[id], ord = pr.orders[id], ans = pr.answers[id];
-    const done = ans!==undefined;
+    const id = pr.list[pr.i], q = QUESTIONS[id], done = !!pr.checked[id];
+    const st = {ans:pr.answers[id], order:pr.orders[id], done};
     body = `<div class="card q-card" style="margin-top:16px">
-      <div class="q-meta"><span>${T("question")} ${pr.i+1} ${T("of")} ${pr.list.length} · ${esc(topicName(q.t,LANG))}</span>
-      <span class="stats"><span>✔ ${hits}</span><span>${T("answered")}: ${answered}</span></span></div>
+      <div class="q-meta"><span>${T("question")} ${pr.i+1} ${T("of")} ${pr.list.length} · ${esc(topicName(q.t,LANG))} · <span class="tag">${typeLabel(q)}</span></span>
+      <span class="stats"><span>${T("points")}: ${fmtPts(got)} / ${fmtPts(max)}</span></span></div>
       <div class="progress" style="margin-bottom:14px"><span style="width:${(pr.i/pr.list.length*100)}%"></span></div>
-      <div class="q-text">${esc(q.q[LANG])}</div>
-      <div class="opts">${ord.map((oi,k)=>{
-        let cls=""; if(done){ if(oi===0) cls=" right"; else if(oi===ans) cls=" wrong"; }
-        return `<button type="button" class="opt${cls}" data-oi="${oi}"${done?" disabled":""}><span class="lt">${LETTERS[k]}</span><span>${esc(q.o[oi][LANG])}</span></button>`;}).join("")}</div>
-      ${done?`<div class="fb ${ans===0?"ok":"ko"}" role="status"><b>${ans===0?T("correct"):T("incorrect")}</b> ${ans===0?"":`${T("rightAnswer")} <b>${esc(q.o[0][LANG])}</b>. `}${esc(q.x[LANG])}</div>
-        <div class="row" style="margin-top:12px;justify-content:flex-end"><button class="btn" type="button" id="prNext">${T("next")} ▶</button></div>`:""}
+      ${q.type==="fill"?`<div class="q-text">${T("fillIntro")}</div>`:`<div class="q-text">${esc(q.q[LANG])}</div>`}
+      <div id="prArea">${answerAreaHTML(q, st)}</div>
+      ${done ? feedbackHTML(q, pr.answers[id]) : ""}
+      <div class="row" style="margin-top:12px;justify-content:flex-end">
+        ${!done && q.type!=="mc" ? `<button class="btn green" type="button" id="prCheck">${T("check")}</button>`:""}
+        ${done ? `<button class="btn" type="button" id="prNext">${T("next")} ▶</button>`:""}
+      </div>
     </div>`;
   }
   v.innerHTML = head + body;
   bindPrHead();
-  $$(".opt",v).forEach(b=>b.onclick=()=>{ const id=pr.list[pr.i]; if(pr.answers[id]!==undefined) return; pr.answers[id]=+b.dataset.oi; renderPractice(); const n=$("#prNext"); if(n) n.focus({preventScroll:true}); });
-  const n=$("#prNext"); if(n) n.onclick=()=>{ pr.i++; renderPractice(); };
+  if(pr.started && pr.i<pr.list.length && pr.list.length){
+    const id = pr.list[pr.i], q = QUESTIONS[id];
+    const st = {ans:pr.answers[id], order:pr.orders[id], done:!!pr.checked[id]};
+    if(!st.done){
+      bindAnswerArea($("#prArea"), q, st, (a, rerender, fsel)=>{
+        pr.answers[id]=a;
+        if(q.type==="mc"){ pr.checked[id]=true; renderPractice("#prNext"); }
+        else if(rerender) renderPractice(fsel);
+      });
+      $$("input.blank",v).forEach(inp=>inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); const c=$("#prCheck"); if(c) c.click(); } }));
+    }
+    const c=$("#prCheck"); if(c) c.onclick=()=>{
+      if(pr.answers[id]===undefined && q.type==="order") pr.answers[id]=q.start.slice();
+      pr.checked[id]=true; renderPractice("#prNext");
+    };
+  }
+  const n=$("#prNext"); if(n) n.onclick=()=>{ pr.i++; renderPractice(); window.scrollTo({top:0}); };
   const ag=$("#prAgain"); if(ag) ag.onclick=()=>{ startPractice(); renderPractice(); };
+  if(focusSel){ const f=v.querySelector(focusSel); if(f) f.focus({preventScroll:true}); }
 }
 function bindPrHead(){
   $("#prTopic").onchange = e=>{ pr.topic=e.target.value; if(pr.started){ startPractice(); } renderPractice(); };
+  $("#prType").onchange = e=>{ pr.qtype=e.target.value; if(pr.started){ startPractice(); } renderPractice(); };
   $("#prStart").onclick = ()=>{ startPractice(); renderPractice(); };
 }
 
 // ---------- EXAM ----------
-const ex = { phase:"setup", n:20, name:"", list:[], orders:{}, answers:{}, i:0, date:null };
-function pickExam(n){
-  // round-robin over topics so every topic is represented
-  const pools = TOPICS.map(t=>shuffle(QUESTIONS.filter(q=>q.t===t.id).map(q=>q.id))).filter(p=>p.length);
-  const out=[]; let k=0;
-  const order = shuffle(pools.map((_,i)=>i));
-  while(out.length<n && pools.some(p=>p.length)){
-    const p = pools[order[k%order.length]]; if(p.length) out.push(p.shift()); k++;
-  }
-  return shuffle(out);
+const ex = { phase:"setup", n:20, kind:"mix", name:"", list:[], orders:{}, answers:{}, i:0, date:null };
+function roundRobin(pool, n){
+  const byT = TOPICS.map(t=>shuffle(pool.filter(q=>q.t===t.id).map(q=>q.id))).filter(p=>p.length);
+  const order = shuffle(byT.map((_,i)=>i)); const out=[]; let k=0;
+  while(out.length<n && byT.some(p=>p.length)){ const p=byT[order[k%order.length]]; if(p.length) out.push(p.shift()); k++; }
+  return out;
 }
-function renderExam(){
+function pickExam(n, kind){
+  if(kind==="model") return QUESTIONS.filter(q=>q.src==="model").sort((a,b)=>a.n-b.n).map(q=>q.id);
+  if(kind==="test") return shuffle(roundRobin(QUESTIONS.filter(TYPE_GROUPS.test), n));
+  if(kind==="written") return shuffle(roundRobin(QUESTIONS.filter(TYPE_GROUPS.written), n));
+  const written = QUESTIONS.filter(TYPE_GROUPS.written);
+  const nW = Math.min(written.length, Math.round(n*0.4));
+  return shuffle(roundRobin(written, nW).concat(roundRobin(QUESTIONS.filter(TYPE_GROUPS.test), n-nW)));
+}
+function examMaxN(kind){
+  if(kind==="test") return QUESTIONS.filter(TYPE_GROUPS.test).length;
+  if(kind==="written") return QUESTIONS.filter(TYPE_GROUPS.written).length;
+  if(kind==="model") return QUESTIONS.filter(q=>q.src==="model").length;
+  return QUESTIONS.length;
+}
+function renderExam(focusSel){
   const v=$("#view-examen");
   if(ex.phase==="setup"){
+    const max = examMaxN(ex.kind);
+    const counts = [10,20,30].filter(n=>n<max).concat([max]);
+    if(!counts.includes(ex.n)) ex.n = counts.includes(20)?20:counts[0];
     v.innerHTML = `<h2>${T("navExam")}</h2>
     <div class="card q-card"><p style="margin-top:0">${T("examIntro")}</p>
       <div class="row">
         <label class="field">${T("yourName")}<input type="text" id="exName" maxlength="60" autocomplete="off"></label>
-        <label class="field">${T("numQ")}<select id="exN">${[10,20,30,QUESTIONS.length].map(n=>`<option value="${n}"${n===ex.n?" selected":""}>${n===QUESTIONS.length?(LANG==="es"?`Todas (${n})`:`All (${n})`):n}</option>`).join("")}</select></label>
+        <label class="field">${T("examKind")}<select id="exKind">${["mix","test","written","model"].map(k=>`<option value="${k}"${ex.kind===k?" selected":""}>${T("ek_"+k)}</option>`).join("")}</select></label>
+        <label class="field">${T("numQ")}<select id="exN"${ex.kind==="model"?" disabled":""}>${counts.map(n=>`<option value="${n}"${n===ex.n?" selected":""}>${n===max&&n>30?(LANG==="es"?`Todas (${n})`:`All (${n})`):n}</option>`).join("")}</select></label>
       </div>
-      <div style="margin-top:16px"><button class="btn orange" type="button" id="exStart">${T("startExam")} ▶</button></div>
+      <p class="muted" style="font-size:.92rem">${T("writtenNote")}</p>
+      <div style="margin-top:12px"><button class="btn orange" type="button" id="exStart">${T("startExam")} ▶</button></div>
     </div>`;
     $("#exName").value = ex.name;
+    $("#exName").oninput = e=>{ ex.name = e.target.value; };
+    $("#exKind").onchange = e=>{ ex.kind=e.target.value; renderExam(); };
+    $("#exN").onchange = e=>{ ex.n=+e.target.value; };
     $("#exStart").onclick = ()=>{
       ex.name = $("#exName").value.trim().slice(0,60);
       ex.n = +$("#exN").value;
-      ex.list = pickExam(ex.n);
-      ex.orders={}; ex.list.forEach(id=>ex.orders[id]=shuffle([0,1,2,3].slice(0,QUESTIONS[id].o.length)));
+      ex.list = pickExam(ex.n, ex.kind);
+      ex.orders={}; ex.list.forEach(id=>{ const q=QUESTIONS[id]; if(q.type==="mc") ex.orders[id]=shuffle(q.o.map((_,i)=>i)); });
       ex.answers={}; ex.i=0; ex.phase="run"; ex.date=new Date();
       renderExam(); window.scrollTo({top:0});
     };
     return;
   }
   if(ex.phase==="run"){
-    const id=ex.list[ex.i], q=QUESTIONS[id], ord=ex.orders[id], ans=ex.answers[id];
-    const nAns = Object.keys(ex.answers).length;
+    const id=ex.list[ex.i], q=QUESTIONS[id];
+    const st={ans:ex.answers[id], order:ex.orders[id], done:false};
+    const nAns = ex.list.filter(x=>isAnswered(QUESTIONS[x],ex.answers[x])).length;
     v.innerHTML = `<h2>${T("navExam")}</h2>
     <div class="card q-card">
-      <div class="q-meta"><span><b>${T("question")} ${ex.i+1} ${T("of")} ${ex.list.length}</b></span><span>${T("answered")}: ${nAns}/${ex.list.length}</span></div>
-      <div class="progress" style="margin-bottom:14px"><span style="width:${nAns/ex.list.length*100}%"></span></div>
-      <div class="q-text">${esc(q.q[LANG])}</div>
-      <div class="opts">${ord.map((oi,k)=>`<button type="button" class="opt${ans===oi?" sel":""}" data-oi="${oi}" aria-pressed="${ans===oi}"><span class="lt">${LETTERS[k]}</span><span>${esc(q.o[oi][LANG])}</span></button>`).join("")}</div>
-      <div class="dots" aria-label="${LANG==="es"?"Ir a la pregunta":"Go to question"}">${ex.list.map((qid,k)=>`<button type="button" data-go="${k}" class="${ex.answers[qid]!==undefined?"ans":""}${k===ex.i?" cur":""}" aria-label="${T("question")} ${k+1}">${k+1}</button>`).join("")}</div>
+      <div class="q-meta"><span><b>${T("question")} ${ex.i+1} ${T("of")} ${ex.list.length}</b> · <span class="tag">${typeLabel(q)}</span> · ${fmtPts(q.pts)} ${T("ptsShort")}</span><span id="exAnsCount">${T("answered")}: ${nAns}/${ex.list.length}</span></div>
+      <div class="progress" style="margin-bottom:14px"><span id="exBar" style="width:${nAns/ex.list.length*100}%"></span></div>
+      ${q.type==="fill"?`<div class="q-text">${T("fillIntro")}</div>`:`<div class="q-text">${esc(q.q[LANG])}</div>`}
+      <div id="exArea">${answerAreaHTML(q, st)}</div>
+      <div class="dots" aria-label="${T("goTo")}">${ex.list.map((qid,k)=>`<button type="button" data-go="${k}" class="${isAnswered(QUESTIONS[qid],ex.answers[qid])?"ans":""}${k===ex.i?" cur":""}" aria-label="${T("question")} ${k+1}">${k+1}</button>`).join("")}</div>
       <div class="row" style="justify-content:space-between">
         <button class="btn ghost" type="button" id="exPrev"${ex.i===0?" disabled":""}>◀ ${T("prev")}</button>
         <button class="btn red" type="button" id="exFinish">${T("finish")}</button>
         <button class="btn ghost" type="button" id="exNext"${ex.i>=ex.list.length-1?" disabled":""}>${T("next")} ▶</button>
       </div>
     </div>`;
-    $$(".opt",v).forEach(b=>b.onclick=()=>{ ex.answers[id]=+b.dataset.oi; renderExam(); });
+    bindAnswerArea($("#exArea"), q, st, (a, rerender, fsel)=>{
+      ex.answers[id]=a;
+      if(rerender){ renderExam(fsel); return; }
+      // light update without re-rendering (keeps typing focus)
+      const n = ex.list.filter(x=>isAnswered(QUESTIONS[x],ex.answers[x])).length;
+      $("#exAnsCount").textContent = `${T("answered")}: ${n}/${ex.list.length}`;
+      $("#exBar").style.width = (n/ex.list.length*100)+"%";
+      const dot = v.querySelector(`[data-go="${ex.i}"]`); if(dot) dot.classList.toggle("ans", isAnswered(q,a));
+    });
     $$("[data-go]",v).forEach(b=>b.onclick=()=>{ ex.i=+b.dataset.go; renderExam(); });
     $("#exPrev").onclick=()=>{ if(ex.i>0){ex.i--; renderExam();} };
     $("#exNext").onclick=()=>{ if(ex.i<ex.list.length-1){ex.i++; renderExam();} };
     $("#exFinish").onclick=()=>{
-      const missing = ex.list.length - Object.keys(ex.answers).length;
+      const missing = ex.list.filter(x=>!isAnswered(QUESTIONS[x],ex.answers[x])).length;
       if(missing>0 && !window.confirm(T("confirmFinish").replace("{n}",missing))) return;
       ex.phase="done"; renderExam(); window.scrollTo({top:0});
     };
+    if(focusSel){ const f=v.querySelector(focusSel); if(f && !f.disabled) f.focus({preventScroll:true}); }
     return;
   }
   // results
+  const L=LANG;
   const total=ex.list.length;
-  const hits = ex.list.filter(id=>ex.answers[id]===0).length;
-  const grade = Math.round(hits/total*100)/10; // one decimal, 0–10
+  const max = ex.list.reduce((s,id)=>s+QUESTIONS[id].pts,0);
+  const got = ex.list.reduce((s,id)=>s+scoreQ(QUESTIONS[id],ex.answers[id])*QUESTIONS[id].pts,0);
+  const full = ex.list.filter(id=>scoreQ(QUESTIONS[id],ex.answers[id])===1).length;
+  const grade = Math.round(got/max*100)/10;
   const msg = T("gradeMsg").find(([min])=>grade>=min)[1];
-  const byT = {}; ex.list.forEach(id=>{ const t=QUESTIONS[id].t; byT[t]=byT[t]||{h:0,n:0}; byT[t].n++; if(ex.answers[id]===0) byT[t].h++; });
-  const dateStr = ex.date ? ex.date.toLocaleDateString(LANG==="es"?"es-ES":"en-GB",{day:"2-digit",month:"2-digit",year:"numeric"})+" "+ex.date.toLocaleTimeString(LANG==="es"?"es-ES":"en-GB",{hour:"2-digit",minute:"2-digit"}) : "";
+  const byT = {}; ex.list.forEach(id=>{ const q=QUESTIONS[id]; byT[q.t]=byT[q.t]||{h:0,n:0}; byT[q.t].n+=q.pts; byT[q.t].h+=scoreQ(q,ex.answers[id])*q.pts; });
+  const loc = L==="es"?"es-ES":"en-GB";
+  const dateStr = ex.date ? ex.date.toLocaleDateString(loc,{day:"2-digit",month:"2-digit",year:"numeric"})+" "+ex.date.toLocaleTimeString(loc,{hour:"2-digit",minute:"2-digit"}) : "";
   v.innerHTML = `<h2 class="no-print">${T("navExam")}</h2>
   <div class="card result-print">
-    <p class="muted" style="margin:0 0 6px">${T("examOf")} · ${esc(T("unitTitle"))}<br>${ex.name?`<b id="exNameOut"></b> · `:""}${T("date")}: ${dateStr}</p>
+    <p class="muted" style="margin:0 0 6px">${T("examOf")} · ${esc(T("unitTitle"))} · ${T("ek_"+ex.kind)}<br>${ex.name?`<b id="exNameOut"></b> · `:""}${T("date")}: ${dateStr}</p>
     <div class="score-wrap">
-      <div><div class="muted">${T("yourGrade")}</div><div class="score-big">${grade.toLocaleString(LANG==="es"?"es-ES":"en-GB",{minimumFractionDigits:1,maximumFractionDigits:1})}</div><div class="muted">${T("outOf")}</div></div>
+      <div><div class="muted">${T("yourGrade")}</div><div class="score-big">${grade.toLocaleString(loc,{minimumFractionDigits:1,maximumFractionDigits:1})}</div><div class="muted">${T("outOf")}</div></div>
       <div style="flex:1;min-width:220px"><p style="font-size:1.15rem;font-weight:700;color:var(--navy)">${msg}</p>
-        <div class="stats"><span>✔ ${hits}</span><span>✘ ${total-hits}</span><span>${Math.round(hits/total*100)} %</span></div></div>
+        <div class="stats"><span>${T("points")}: ${fmtPts(got)} / ${fmtPts(max)}</span><span>✔ ${full} / ${total}</span><span>${Math.round(got/max*100)} %</span></div></div>
     </div>
     <h3 style="margin-top:18px">${T("byTopic")}</h3>
-    <div class="doc tbl-scroll"><table><tr><th>${T("topic")}</th><th style="width:120px">${T("hits")}</th></tr>
-      ${TOPICS.filter(t=>byT[t.id]).map(t=>`<tr><td>${esc(t[LANG])}</td><td>${byT[t.id].h} / ${byT[t.id].n}</td></tr>`).join("")}</table></div>
+    <div class="doc tbl-scroll"><table><tr><th>${T("topic")}</th><th style="width:140px">${T("points")}</th></tr>
+      ${TOPICS.filter(t=>byT[t.id]).map(t=>`<tr><td>${esc(t[L])}</td><td>${fmtPts(byT[t.id].h)} / ${fmtPts(byT[t.id].n)}</td></tr>`).join("")}</table></div>
     <div class="row no-print" style="margin:8px 0 6px">
       <button class="btn orange" type="button" id="exAgain">${T("repeatExam")}</button>
       <button class="btn ghost" type="button" id="exPrint">🖨️ ${T("printResult")}</button>
     </div>
     <h3 style="margin-top:18px">${T("reviewTitle")}</h3>
-    ${ex.list.map((id,k)=>{ const q=QUESTIONS[id], a=ex.answers[id], ok=a===0;
-      return `<div class="review-item ${ok?"ok":"ko"}"><b>${k+1}. ${esc(q.q[LANG])}</b><br>
-        ${T("yourAnswer")} ${a===undefined?`<i>${T("noAnswer")}</i>`:esc(q.o[a][LANG])} ${ok?"✔":"✘"}
-        ${ok?"":`<br>${T("rightAnswer")} <b>${esc(q.o[0][LANG])}</b>`}
-        <br><span class="muted">${esc(q.x[LANG])}</span></div>`;}).join("")}
+    ${ex.list.map((id,k)=>{ const q=QUESTIONS[id], a=ex.answers[id], f=scoreQ(q,a), gt=givenText(q,a,L);
+      const cls = f===1?"ok":(f>0?"part":"ko");
+      let extra = "";
+      if(q.type==="open" && isAnswered(q,a)){ const found=openFound(q,a); extra = `<br><span class="muted">${T("keyIdeas")}: ${q.groups.map((g,i)=>`${found[i]?"✔":"✘"} ${esc(g[L])}`).join(" · ")}</span>`; }
+      return `<div class="review-item ${cls}"><b>${k+1}. ${esc(promptText(q,L))}</b> <span class="muted">(${fmtPts(f*q.pts)} / ${fmtPts(q.pts)} ${T("ptsShort")})</span><br>
+        ${T("yourAnswer")} ${gt===null?`<i>${T("noAnswer")}</i>`:esc(gt)} ${f===1?"✔":(f>0?"◐":"✘")}${extra}
+        ${f<1?`<br>${q.type==="open"?T("modelAnswer"):T("rightAnswer")} <b>${esc(answerText(q,L))}</b>`:""}
+        ${q.x?`<br><span class="muted">${esc(q.x[L])}</span>`:""}</div>`;}).join("")}
   </div>`;
   const no=$("#exNameOut"); if(no) no.textContent = ex.name;
   $("#exAgain").onclick=()=>{ ex.phase="setup"; renderExam(); };
@@ -1657,7 +2190,7 @@ function renderNotes(){
     <section class="nsec doc"><h2><span class="n">${i+1}.</span> ${s[LANG].title}</h2>${s[LANG].html()}</section>`).join("");
   const bank = !nt.bank ? "" : `<section class="nsec doc"><h2>${T("bankTitle")}</h2>
     ${TOPICS.map((t,ti)=>{ const qs=QUESTIONS.filter(q=>q.t===t.id); return `<h3>${ti+1}. ${esc(t[LANG])}</h3>`+
-      qs.map((q,k)=>`<div class="bank-q"><b>${k+1}. ${esc(q.q[LANG])}</b><br>✔ ${esc(q.o[0][LANG])}</div>`).join(""); }).join("")}</section>`;
+      qs.map((q,k)=>`<div class="bank-q"><b>${k+1}. ${esc(promptText(q,LANG))}</b>${fcExtra(q,LANG)}✔ ${esc(answerText(q,LANG))}</div>`).join(""); }).join("")}</section>`;
   v.innerHTML = `
   <h2 class="no-print">${T("navNotes")}</h2>
   <div class="card print-controls no-print">
