@@ -4283,6 +4283,7 @@ function vlVoxels(p){
 function vlRandom(N){
   const L = [];
   const h = Array.from({length:N},()=>Array.from({length:N},()=>1+Math.floor(Math.random()*N)));
+  h[Math.floor(Math.random()*N)][Math.floor(Math.random()*N)] = N;   // exactly N × N × N
   for(let z=0; z<N; z++){ const layer=[]; for(let r=0;r<N;r++){ let row=""; for(let x=0;x<N;x++) row += h[x][N-1-r]>z ? "#" : "."; layer.push(row); } if(layer.some(r=>r.includes("#"))) L.push(layer); }
   return { es:`Aleatoria ${N}×${N}`, en:`Random ${N}×${N}`, L };
 }
@@ -4308,11 +4309,13 @@ function vlViewLines(cells){
 }
 function vlSolution(V){
   const mx = Math.max(...V.map(v=>v[0])), my = Math.max(...V.map(v=>v[1])), mz = Math.max(...V.map(v=>v[2]));
+  const W = mx+1, D = my+1, H = mz+1;
   return {
-    A: vlViewLines(V.map(([x,y,z])=>[x, z, y])),          // alzado: from the front
-    P: vlViewLines(V.map(([x,y,z])=>[x, y, mz-z])),       // planta: from above, front at the bottom
-    S: vlViewLines(V.map(([x,y,z])=>[my-y, z, x])),       // perfil izquierdo: from the left, front on the right
-    G: Math.max(mx, my, mz) + 2                           // grid size (cells)
+    A: vlViewLines(V.map(([x,y,z])=>[x, z, y])),          // alzado: from the front        (W × H)
+    P: vlViewLines(V.map(([x,y,z])=>[x, y, mz-z])),       // planta: from above, front at the bottom (W × D)
+    S: vlViewLines(V.map(([x,y,z])=>[my-y, z, x])),       // perfil izquierdo: from the left, front on the right (D × H)
+    W, D, H,
+    dims: { A:[W,H], P:[W,D], S:[D,H] }
   };
 }
 /* student lines → unit segments */
@@ -4326,23 +4329,16 @@ function vlSegs(lines){
   });
   return {m, diag};
 }
-function vlShift(map){   // translation-independent: move to the origin
-  const pts=[]; map.forEach((t,k)=>{ const [d,rest]=k.split(":"), [i,j]=rest.split(",").map(Number); pts.push([i,j]); if(d==="h") pts.push([i+1,j]); else pts.push([i,j+1]); });
-  if(!pts.length) return {map:new Map(), dx:0, dy:0};
-  const dx=Math.min(...pts.map(p=>p[0])), dy=Math.min(...pts.map(p=>p[1]));
-  const out=new Map(); map.forEach((t,k)=>{ const [d,rest]=k.split(":"), [i,j]=rest.split(",").map(Number); out.set(d+":"+(i-dx)+","+(j-dy), t); });
-  return {map:out, dx, dy};
-}
+/* exact comparison: each grid has exactly the size of its view, so there is only one correct drawing */
 function vlCompare(lines, sol){
-  const st = vlSegs(lines), A = vlShift(st.m), B = vlShift(sol);
-  let ok=0, wrong=0, extra=0, miss=0; const status = new Map();   // status per student segment key (original coords)
-  A.map.forEach((t,k)=>{ const s=B.map.get(k); let r; if(!s){ extra++; r="x"; } else if(s===t){ ok++; r="ok"; } else { wrong++; r="t"; }
-    const [d,rest]=k.split(":"), [i,j]=rest.split(",").map(Number); status.set(d+":"+(i+A.dx)+","+(j+A.dy), r); });
-  B.map.forEach((t,k)=>{ if(!A.map.has(k)) miss++; });
+  const st = vlSegs(lines);
+  let ok=0, wrong=0, extra=0, miss=0; const status = new Map();
+  st.m.forEach((t,k)=>{ const s=sol.get(k); let r; if(!s){ extra++; r="x"; } else if(s===t){ ok++; r="ok"; } else { wrong++; r="t"; } status.set(k,r); });
+  sol.forEach((t,k)=>{ if(!st.m.has(k)) miss++; });
   return { ok, wrong, extra, miss, diag: st.diag, perfect: wrong===0 && extra===0 && miss===0 && st.diag===0 && ok>0, status };
 }
 
-const vl = { lvl:"easy", i:0, size:4, rnd:null, yaw:35, pitch:28, tool:"v",
+const vl = { lvl:"easy", i:0, size:3, rnd:null, yaw:35, pitch:28, tools:{A:"v",P:"v",S:"v"},
              lines:{A:[],P:[],S:[]}, hist:[], checked:false, sol:false, done:null };
 function vlDone(){ if(!vl.done){ const d=store.get("vlab2",{}); vl.done=(d&&typeof d==="object")?d:{}; } return vl.done; }
 function vlPiece(){ if(vl.lvl==="rand"){ if(!vl.rnd) vl.rnd=vlRandom(vl.size); return vl.rnd; } return VL_PIECES[vl.lvl][vl.i]; }
@@ -4353,7 +4349,7 @@ function vlRender3D(svg, V){
   const mx=Math.max(...V.map(v=>v[0]))+1, my=Math.max(...V.map(v=>v[1]))+1, mz=Math.max(...V.map(v=>v[2]))+1;
   const cx=mx/2, cy=my/2, cz=mz/2;
   const th = vl.yaw*Math.PI/180, ph = vl.pitch*Math.PI/180, ct=Math.cos(th), st=Math.sin(th), cp=Math.cos(ph), sp=Math.sin(ph);
-  const S = Math.min(40, 120/Math.max(mx,my,mz));
+  const S = Math.min(46, 150/Math.max(mx,my,mz));
   const proj = (x,y,z)=>{ x-=cx; y-=cy; z-=cz; const x1 = x*ct - y*st, y1 = x*st + y*ct; const d = y1*cp - z*sp, z2 = y1*sp + z*cp; return [x1*S, -z2*S, d]; };
   const has = new Set(V.map(v=>v.join(",")));
   const DIRS = [[1,0,0,"var(--orange-soft)"],[-1,0,0,"var(--orange-soft)"],[0,1,0,"var(--blue-soft)"],[0,-1,0,"var(--blue)"],[0,0,1,"var(--green-soft)"],[0,0,-1,"var(--green-soft)"]];
@@ -4371,83 +4367,105 @@ function vlRender3D(svg, V){
     });
   });
   faces.sort((a,b)=>b.d-a.d);
-  const f1 = proj(mx/2, -2.2, 0), f2 = proj(mx/2, -0.25, 0), lab = proj(mx/2, -2.9, 0);
+  // floor grid under the piece (only when looking from above)
+  let floor = "";
+  if(vl.pitch > 2){
+    const pts = (a,b)=>{ const p1=proj(...a), p2=proj(...b); return `<line x1="${p1[0].toFixed(1)}" y1="${p1[1].toFixed(1)}" x2="${p2[0].toFixed(1)}" y2="${p2[1].toFixed(1)}" style="stroke:var(--line);stroke-width:1"/>`; };
+    for(let x=0;x<=mx;x++) floor += pts([x,0,0],[x,my,0]);
+    for(let y=0;y<=my;y++) floor += pts([0,y,0],[mx,y,0]);
+  }
+  const f1 = proj(mx/2, -2.0, 0), f2 = proj(mx/2, -0.2, 0), lab = proj(mx/2, -2.7, 0);
   svg.innerHTML = `<defs><marker id="vlArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--red)"/></marker></defs>
-  <g transform="translate(130,125)">
+  <g transform="translate(150,135)">
+    ${floor}
     ${faces.map(f=>`<polygon points="${f.P.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")}" style="fill:${f.fill};${f.front?"fill-opacity:.55;":""}stroke:var(--ink);stroke-width:1.2;stroke-linejoin:round"/>`).join("")}
     <line x1="${f1[0].toFixed(1)}" y1="${f1[1].toFixed(1)}" x2="${f2[0].toFixed(1)}" y2="${f2[1].toFixed(1)}" style="stroke:var(--red);stroke-width:3" marker-end="url(#vlArrow)"/>
     <text x="${lab[0].toFixed(1)}" y="${(lab[1]+5).toFixed(1)}" text-anchor="middle" style="font:700 13px var(--font-body);fill:var(--red);paint-order:stroke;stroke:var(--card,#fff);stroke-width:3px">${es?"ALZADO":"FRONT VIEW"}</text>
   </g>`;
 }
 
-const VL_PAD = 14;
-const vlC = G => Math.round(Math.min(46, 290/G));
-function vlPanelSVG(key, sol, G){
-  const C=vlC(G), P=VL_PAD, W=G*C+2*P;
-  const X = x=>P+x*C, Y = y=>P+(G-y)*C;
-  let dots=""; for(let x=0;x<=G;x++) for(let y=0;y<=G;y++) dots+=`<circle cx="${X(x)}" cy="${Y(y)}" r="2.2" style="fill:var(--muted);opacity:.55"/>`;
-  const lineEl = (a,b,t,color,extra="")=>`<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" style="stroke:${color};stroke-linecap:round;${t==="v"?"stroke-width:3.6":"stroke-width:2.2;stroke-dasharray:7 5"};${extra}"/>`;
+const VL_PAD = 12;
+function vlPanelSVG(key, sol, w, h, C){
+  const P=VL_PAD, W=w*C+2*P, H=h*C+2*P;
+  const X = x=>P+x*C, Y = y=>P+(h-y)*C;
+  let dots=""; for(let x=0;x<=w;x++) for(let y=0;y<=h;y++) dots+=`<circle cx="${X(x)}" cy="${Y(y)}" r="${C>34?3:2.4}" style="fill:var(--muted);opacity:.6"/>`;
+  const lineEl = (a,b,t,color)=>`<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" style="stroke:${color};stroke-linecap:round;${t==="v"?"stroke-width:3.6":"stroke-width:2.2;stroke-dasharray:7 5"}"/>`;
+  const segEnds = k=>{ const [d,rest]=k.split(":"), [i,j]=rest.split(",").map(Number); return [[i,j], d==="h"?[i+1,j]:[i,j+1]]; };
   let body="";
   if(vl.sol){
-    // solution, placed at bottom-left with a one-cell margin
-    sol.forEach((t,k)=>{ const [d,rest]=k.split(":"), [i,j]=rest.split(",").map(Number); const a=[i+1,j+1], b=d==="h"?[i+2,j+1]:[i+1,j+2]; body+=lineEl(a,b,t,"var(--green)"); });
+    sol.forEach((t,k)=>{ const [a,b]=segEnds(k); body+=lineEl(a,b,t,"var(--green)"); });
   } else if(vl.checked){
-    const cmp = vlCompare(vl.lines[key], sol);
-    cmp.status.forEach((r,k)=>{ const [d,rest]=k.split(":"), [i,j]=rest.split(",").map(Number); const a=[i,j], b=d==="h"?[i+1,j]:[i,j+1];
-      const seg = vlSegs(vl.lines[key]).m.get(k);
-      body+=lineEl(a,b,seg, r==="ok"?"var(--green)":r==="t"?"var(--orange)":"var(--red)"); });
+    const cmp = vlCompare(vl.lines[key], sol), segs = vlSegs(vl.lines[key]).m;
+    cmp.status.forEach((r,k)=>{ const [a,b]=segEnds(k); body+=lineEl(a,b,segs.get(k), r==="ok"?"var(--green)":r==="t"?"var(--orange)":"var(--red)"); });
     vl.lines[key].forEach(l=>{ if(l.a[0]!==l.b[0] && l.a[1]!==l.b[1]) body+=lineEl(l.a,l.b,l.t,"var(--red)"); });
   } else {
     vl.lines[key].forEach(l=>{ body+=lineEl(l.a,l.b,l.t,"var(--ink)"); });
   }
-  return `<svg viewBox="0 0 ${W} ${W}" class="vl-pad" data-g="${key}" data-n="${G}" style="touch-action:none;width:100%;max-width:${W}px;display:block;background:var(--card,#fff);border:2px solid var(--ink);border-radius:6px">
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" class="vl-pad" data-g="${key}" data-w="${w}" data-h="${h}" data-c="${C}" style="touch-action:none;display:block;background:var(--card,#fff);border:2px solid var(--ink);border-radius:6px">
     ${dots}<g data-lines>${body}</g><g data-prev></g></svg>`;
 }
 function vlFeedback(cmp, es){
   if(cmp.perfect) return `<span style="color:var(--green);font-weight:700">✔ ${es?"Correcta":"Correct"}</span>`;
   const parts=[];
-  if(cmp.miss) parts.push(`${cmp.miss} ${es?"tramo(s) que faltan":"missing segment(s)"}`);
-  if(cmp.extra) parts.push(`<span style="color:var(--red)">${cmp.extra} ${es?"que sobran":"extra"}</span>`);
-  if(cmp.wrong) parts.push(`<span style="color:#b85600">${cmp.wrong} ${es?"vista/oculta equivocada":"wrong visible/hidden"}</span>`);
-  if(cmp.diag) parts.push(`<span style="color:var(--red)">${cmp.diag} ${es?"inclinada(s)":"sloping"}</span>`);
+  if(cmp.miss) parts.push(`${cmp.miss} ${es?"faltan":"missing"}`);
+  if(cmp.extra) parts.push(`<span style="color:var(--red)">${cmp.extra} ${es?"sobran":"extra"}</span>`);
+  if(cmp.wrong) parts.push(`<span style="color:#b85600">${cmp.wrong} ${es?"vista/oculta mal":"wrong type"}</span>`);
+  if(cmp.diag) parts.push(`<span style="color:var(--red)">${cmp.diag} ${es?"inclinadas":"sloping"}</span>`);
   return `<span style="color:var(--red);font-weight:700">✘</span> ${parts.join(" · ")||(es?"Sin dibujar":"Not drawn")}`;
+}
+function vlToolBtns(key, es){
+  const t = vl.tools[key];
+  const b = (id, title, icon)=>`<button type="button" class="vl-tool${t===id?" on":""}" data-tool="${id}" data-k="${key}" title="${title}" aria-label="${title}" aria-pressed="${t===id}">${icon}</button>`;
+  return `<div class="vl-tb">
+    ${b("v", es?"Línea vista (continua gruesa)":"Visible line (thick continuous)", `✏️<svg width="18" height="8" aria-hidden="true"><line x1="1" y1="4" x2="17" y2="4" style="stroke:currentColor;stroke-width:3.5"/></svg>`)}
+    ${b("h", es?"Línea oculta (discontinua)":"Hidden line (dashed)", `✏️<svg width="18" height="8" aria-hidden="true"><line x1="1" y1="4" x2="17" y2="4" style="stroke:currentColor;stroke-width:2;stroke-dasharray:4 3"/></svg>`)}
+    ${b("e", es?"Borrar línea":"Erase line", `🧽`)}
+  </div>`;
 }
 function viewsLab(el){
   const es = LANG==="es";
-  const p = vlPiece(), V = vlVoxels(p), sol = vlSolution(V), G = sol.G, done = vlDone();
+  const p = vlPiece(), V = vlVoxels(p), sol = vlSolution(V), done = vlDone();
   const id = vl.lvl==="rand" ? null : vl.lvl+vl.i;
   const lvlName = {easy: es?"Fácil":"Easy", medium: es?"Media":"Medium", hard: es?"Difícil":"Hard", rand: es?"Aleatoria":"Random"};
   const nm = {A: es?"Alzado":"Front view", P: es?"Planta":"Top view", S: es?"Perfil izquierdo":"Left side view"};
+  const colr = {A:"var(--blue)", P:"var(--green)", S:"#b85600"};
+  // one cell size for the three views so they line up exactly (alzado–planta share width, alzado–perfil share height)
+  const avail = Math.min(Math.max(el.clientWidth || 900, 300), 1040);
+  const C = Math.max(16, Math.min(60, Math.floor((avail - 4*VL_PAD - 60) / (sol.W + sol.D)), Math.floor(460 / (sol.H + sol.D))));
   let result = "", fb = {A:"",P:"",S:""};
   if(vl.checked){
     const c = {A:vlCompare(vl.lines.A, sol.A), P:vlCompare(vl.lines.P, sol.P), S:vlCompare(vl.lines.S, sol.S)};
     ["A","P","S"].forEach(k=>fb[k]=vlFeedback(c[k],es));
     const all = c.A.perfect && c.P.perfect && c.S.perfect;
     if(all && id && !done[id]){ done[id]=true; store.set("vlab2",done); }
-    result = `<div class="fb ${all?"ok":"ko"}" role="status"><b>${all?(es?"¡Las tres vistas son correctas!":"All three views are correct!"):(es?"Todavía hay errores.":"There are still mistakes.")}</b>
-      <div class="muted" style="font-size:.9rem">${es?"Verde: bien · naranja: debería ser vista/oculta al revés · rojo: sobra. Toca una cuadrícula para seguir corrigiendo.":"Green: correct · orange: should be the other type (visible/hidden) · red: extra. Touch a grid to keep correcting."}</div></div>`;
+    result = `<div class="fb ${all?"ok":"ko"}" role="status" style="margin-top:0"><b>${all?(es?"¡Las tres vistas son correctas!":"All three views are correct!"):(es?"Todavía hay errores.":"There are still mistakes.")}</b>
+      <span class="muted" style="font-size:.88rem"> ${es?"Verde: bien · naranja: vista/oculta al revés · rojo: sobra. Toca una cuadrícula para seguir.":"Green: correct · orange: visible/hidden swapped · red: extra. Touch a grid to continue."}</span></div>`;
   }
   const nDone = Object.keys(done).length, total = Object.values(VL_PIECES).reduce((s,a)=>s+a.length,0);
-  const panel = k=>`<div class="vl-cell"><div class="vl-head"><h4 style="color:${k==="A"?"var(--blue)":k==="P"?"var(--green)":"#b85600"}">${nm[k]}</h4><span class="vl-fb">${fb[k]}</span></div>${vlPanelSVG(k, sol[k], G)}</div>`;
+  const panel = k=>{ const [w,h]=sol.dims[k];
+    return `<div class="vl-cell vl-${k}">
+      <div class="vl-head"><h4 style="color:${colr[k]}">${nm[k]}</h4>${vlToolBtns(k, es)}</div>
+      ${vlPanelSVG(k, sol[k], w, h, C)}
+      <div class="vl-fb">${fb[k]}</div></div>`; };
   el.innerHTML = `<h2>${es?"Taller de vistas":"Views lab"}</h2>
-  <div class="card no-print" style="margin-bottom:12px">
-    <p style="margin-top:0">${es
-      ? "Observa la pieza (puedes girarla) y dibuja sus tres vistas uniendo puntos: elige <b>Línea vista</b> (continua gruesa) o <b>Línea oculta</b> (discontinua), pulsa un punto y después otro. La flecha roja marca desde dónde se ve el <b>alzado</b>. Da igual en qué parte de la cuadrícula dibujes."
-      : "Look at the piece (you can rotate it) and draw its three views by joining dots: choose <b>Visible line</b> (thick continuous) or <b>Hidden line</b> (dashed), press one dot and then another. The red arrow shows where the <b>front view</b> is seen from. It does not matter where on the grid you draw."}</p>
+  <div class="card no-print" style="margin-bottom:10px;padding:12px 16px">
     <div class="row">
       ${["easy","medium","hard","rand"].map(l=>`<button type="button" class="btn ${vl.lvl===l?"":"ghost"}" data-lvl="${l}">${lvlName[l]}</button>`).join("")}
-      ${vl.lvl==="rand" ? `<label class="field" style="min-width:0">${es?"Tamaño":"Size"}<select data-size>${[2,3,4,5,6,7,8].map(n=>`<option value="${n}"${n===vl.size?" selected":""}>${n} × ${n}</option>`).join("")}</select></label>` : `<span class="muted">${es?"Piezas resueltas":"Pieces solved"}: <b>${nDone} / ${total}</b></span>`}
+      ${vl.lvl==="rand" ? `<label class="field" style="min-width:0">${es?"Tamaño":"Size"}<select data-size>${[2,3,4,5,6,7,8].map(n=>`<option value="${n}"${n===vl.size?" selected":""}>${n} × ${n}</option>`).join("")}</select></label>` : `<span class="muted">${es?"Resueltas":"Solved"}: <b>${nDone} / ${total}</b></span>`}
     </div>
-    ${vl.lvl==="rand" ? "" : `<div class="row" style="margin-top:10px">${VL_PIECES[vl.lvl].map((q,k)=>`<button type="button" class="btn ${k===vl.i?"orange":"ghost"}" data-pc="${k}" style="padding:6px 12px">${done[vl.lvl+k]?"✔ ":""}${k+1}. ${esc(q[LANG])}</button>`).join("")}</div>`}
+    ${vl.lvl==="rand" ? "" : `<div class="row" style="margin-top:8px">${VL_PIECES[vl.lvl].map((q,k)=>`<button type="button" class="btn ${k===vl.i?"orange":"ghost"} vl-sm" data-pc="${k}">${done[vl.lvl+k]?"✔ ":""}${k+1}. ${esc(q[LANG])}</button>`).join("")}</div>`}
+    <p class="muted" style="font-size:.88rem;margin:8px 0 0">${es
+      ? "Dibuja cada vista uniendo puntos: elige el lápiz de <b>línea vista</b> o de <b>línea oculta</b> junto a cada vista, pulsa un punto y después otro. Cada cuadrícula tiene exactamente el tamaño de su vista."
+      : "Draw each view by joining dots: choose the <b>visible line</b> or <b>hidden line</b> pencil next to each view, press one dot and then another. Each grid is exactly the size of its view."}</p>
   </div>
-  <div class="vl-grid4">
+  <div class="vl-scroll"><div class="vl-board">
     ${panel("A")}
     ${panel("S")}
     ${panel("P")}
-    <div class="vl-cell vl-3dcell">
-      <div class="vl-head"><h4>${esc(p[LANG])} <span class="tag">${lvlName[vl.lvl]}</span></h4></div>
-      <svg id="vl3d" viewBox="0 0 260 250" style="width:100%;max-width:300px;touch-action:none;cursor:grab;display:block;margin:0 auto;background:var(--card,#fff);border:1px solid var(--line);border-radius:6px" role="img" aria-label="${es?"Pieza en 3D: arrástrala para girarla":"3D piece: drag it to rotate"}"></svg>
-      <div class="row" style="justify-content:center;margin-top:6px;gap:6px">
+    <div class="vl-cell vl-3d">
+      <div class="vl-head"><h4>${esc(p[LANG])} <span class="tag">${lvlName[vl.lvl]}</span> <span class="muted" style="font-size:.85rem;font-weight:400">${sol.W}×${sol.D}×${sol.H}</span></h4></div>
+      <svg id="vl3d" viewBox="0 0 300 280" style="width:300px;max-width:100%;touch-action:none;cursor:grab;display:block" role="img" aria-label="${es?"Pieza en 3D: arrástrala para girarla":"3D piece: drag it to rotate"}"></svg>
+      <div class="row" style="justify-content:center;gap:6px">
         <button type="button" class="btn ghost vl-sm" data-rot="l" aria-label="${es?"Girar a la izquierda":"Rotate left"}">⟲</button>
         <button type="button" class="btn ghost vl-sm" data-rot="u" aria-label="${es?"Ver más desde arriba":"View more from above"}">▲</button>
         <button type="button" class="btn ghost vl-sm" data-rot="d" aria-label="${es?"Ver más desde abajo":"View more from below"}">▼</button>
@@ -4455,24 +4473,19 @@ function viewsLab(el){
         <button type="button" class="btn ghost vl-sm" data-rot="0">${es?"Inicio":"Reset"}</button>
       </div>
     </div>
-  </div>
-  <div class="card vl-tools no-print">
+  </div></div>
+  <div class="card vl-bar no-print">
     <div class="row">
-      <button type="button" class="btn ${vl.tool==="v"?"":"ghost"}" data-tool="v"><svg width="34" height="10" aria-hidden="true"><line x1="2" y1="5" x2="32" y2="5" style="stroke:currentColor;stroke-width:4"/></svg> ${es?"Línea vista":"Visible line"}</button>
-      <button type="button" class="btn ${vl.tool==="h"?"":"ghost"}" data-tool="h"><svg width="34" height="10" aria-hidden="true"><line x1="2" y1="5" x2="32" y2="5" style="stroke:currentColor;stroke-width:2.4;stroke-dasharray:6 4"/></svg> ${es?"Línea oculta":"Hidden line"}</button>
-      <button type="button" class="btn ${vl.tool==="e"?"":"ghost"}" data-tool="e">🧽 ${es?"Borrar línea":"Erase line"}</button>
+      <button type="button" class="btn green" data-act="check">✔ ${es?"Comprobar":"Check"}</button>
       <button type="button" class="btn ghost" data-act="undo">↶ ${es?"Deshacer":"Undo"}</button>
       <button type="button" class="btn ghost" data-act="clear">${es?"Borrar todo":"Clear all"}</button>
-    </div>
-    <div class="row" style="margin-top:10px">
-      <button type="button" class="btn green" data-act="check">✔ ${es?"Comprobar":"Check"}</button>
       <button type="button" class="btn ghost" data-act="sol">${vl.sol?(es?"Ocultar solución":"Hide solution"):(es?"Ver solución":"Show solution")}</button>
-      <button type="button" class="btn ghost" data-act="next">${vl.lvl==="rand"?(es?"Otra pieza aleatoria":"Another random piece"):(es?"Siguiente pieza":"Next piece")} ▶</button>
+      <button type="button" class="btn ghost" data-act="next">${vl.lvl==="rand"?(es?"Otra pieza":"Another piece"):(es?"Siguiente pieza":"Next piece")} ▶</button>
     </div>
-    ${result}
-    <p class="muted" style="font-size:.86rem;margin:8px 0 0">${es
-      ? "Recuerda (sistema europeo): la planta va debajo del alzado y el frente de la pieza queda abajo; el perfil izquierdo va a la derecha del alzado y el frente queda a la derecha. Si una arista vista y una oculta coinciden, se dibuja la vista."
-      : "Remember (European system): the top view goes below the front view and the front of the piece is at the bottom; the left side view goes to the right of the front view and the front is on the right. If a visible and a hidden edge coincide, draw the visible one."}</p>
+    ${result ? `<div style="margin-top:10px">${result}</div>` : ""}
+    <p class="muted" style="font-size:.85rem;margin:8px 0 0">${es
+      ? "Sistema europeo: la planta va debajo del alzado (el frente de la pieza queda abajo) y el perfil izquierdo a la derecha del alzado (el frente queda a la derecha). Si una arista vista y una oculta coinciden, se dibuja la vista."
+      : "European system: the top view goes below the front view (the front of the piece at the bottom) and the left side view to the right of the front view (the front on the right). If a visible and a hidden edge coincide, draw the visible one."}</p>
   </div>`;
 
   // --- 3D rotation ---
@@ -4488,39 +4501,41 @@ function viewsLab(el){
 
   // --- drawing on the dot grids ---
   $$(".vl-pad",el).forEach(pad=>{
-    const key=pad.dataset.g, Gs=+pad.dataset.n, C=vlC(Gs), P=VL_PAD, W=Gs*C+2*P;
-    const toGrid = e=>{ const r=pad.getBoundingClientRect(), sx=(e.clientX-r.left)*W/r.width, sy=(e.clientY-r.top)*W/r.height;
-      return [Math.max(0,Math.min(Gs,Math.round((sx-P)/C))), Math.max(0,Math.min(Gs,Math.round(Gs-(sy-P)/C))), sx, sy]; };
-    const X = x=>P+x*C, Y = y=>P+(Gs-y)*C;
+    const key=pad.dataset.g, w=+pad.dataset.w, h=+pad.dataset.h, Cc=+pad.dataset.c, P=VL_PAD, Wpx=w*Cc+2*P, Hpx=h*Cc+2*P;
+    const toGrid = e=>{ const r=pad.getBoundingClientRect(), sx=(e.clientX-r.left)*Wpx/r.width, sy=(e.clientY-r.top)*Hpx/r.height;
+      return [Math.max(0,Math.min(w,Math.round((sx-P)/Cc))), Math.max(0,Math.min(h,Math.round(h-(sy-P)/Cc))), sx, sy]; };
+    const X = x=>P+x*Cc, Y = y=>P+(h-y)*Cc;
     const snap = (a,b)=>{ const dx=Math.abs(b[0]-a[0]), dy=Math.abs(b[1]-a[1]); return dx>=dy ? [b[0],a[1]] : [a[0],b[1]]; };
     const prev = pad.querySelector("[data-prev]");
-    let start=null, moved=false;
-    const showPrev = (a,b)=>{ prev.innerHTML = `<circle cx="${X(a[0])}" cy="${Y(a[1])}" r="5" style="fill:var(--orange)"/>` + (b && (b[0]!==a[0]||b[1]!==a[1]) ? `<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" style="stroke:var(--orange);stroke-linecap:round;${vl.tool==="h"?"stroke-width:2.2;stroke-dasharray:7 5":"stroke-width:3.6"}"/>` : ""); };
-    const addLine = (a,b)=>{ if(a[0]===b[0] && a[1]===b[1]) return; vl.lines[key].push({a:[...a], b:[...b], t:vl.tool}); vl.hist.push(key); redraw(); };
-    const redraw = ()=>{ const tmp=document.createElement("div"); tmp.innerHTML=vlPanelSVG(key, sol[key], Gs); pad.querySelector("[data-lines]").innerHTML = tmp.querySelector("[data-lines]").innerHTML; };
+    let start=null;
+    const tool = ()=>vl.tools[key];
+    const showPrev = (a,b)=>{ prev.innerHTML = `<circle cx="${X(a[0])}" cy="${Y(a[1])}" r="5" style="fill:var(--orange)"/>` + (b && (b[0]!==a[0]||b[1]!==a[1]) ? `<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" style="stroke:var(--orange);stroke-linecap:round;${tool()==="h"?"stroke-width:2.2;stroke-dasharray:7 5":"stroke-width:3.6"}"/>` : ""); };
+    const redraw = ()=>{ const tmp=document.createElement("div"); tmp.innerHTML=vlPanelSVG(key, sol[key], w, h, Cc); pad.querySelector("[data-lines]").innerHTML = tmp.querySelector("[data-lines]").innerHTML; };
+    const addLine = (a,b)=>{ if(a[0]===b[0] && a[1]===b[1]) return; vl.lines[key].push({a:[...a], b:[...b], t:tool()}); vl.hist.push(key); redraw(); };
     const eraseAt = (sx,sy)=>{ let best=-1, bd=1e9;
       vl.lines[key].forEach((l,i)=>{ const x1=X(l.a[0]),y1=Y(l.a[1]),x2=X(l.b[0]),y2=Y(l.b[1]); const L2=(x2-x1)**2+(y2-y1)**2; let t=L2?((sx-x1)*(x2-x1)+(sy-y1)*(y2-y1))/L2:0; t=Math.max(0,Math.min(1,t)); const d=Math.hypot(sx-(x1+t*(x2-x1)), sy-(y1+t*(y2-y1))); if(d<bd){bd=d;best=i;} });
-      if(best>=0 && bd<12){ vl.lines[key].splice(best,1); const h=vl.hist.lastIndexOf(key); if(h>=0) vl.hist.splice(h,1); redraw(); } };
+      if(best>=0 && bd<12){ vl.lines[key].splice(best,1); const hh=vl.hist.lastIndexOf(key); if(hh>=0) vl.hist.splice(hh,1); redraw(); } };
     pad.addEventListener("pointerdown", e=>{
       e.preventDefault();
       if(vl.sol) return;
       if(vl.checked){ vl.checked=false; viewsLab(el); return; }
       const [gx,gy,sx,sy]=toGrid(e);
-      if(vl.tool==="e"){ eraseAt(sx,sy); return; }
-      if(start){ const b=snap(start,[gx,gy]); addLine(start,b); start=null; prev.innerHTML=""; return; }   // second click
-      start=[gx,gy]; moved=false; pad.setPointerCapture(e.pointerId); showPrev(start,null);
+      if(tool()==="e"){ eraseAt(sx,sy); return; }
+      if(start){ addLine(start, snap(start,[gx,gy])); start=null; prev.innerHTML=""; return; }
+      start=[gx,gy]; pad.setPointerCapture(e.pointerId); showPrev(start,null);
     });
-    pad.addEventListener("pointermove", e=>{ if(!start) return; const [gx,gy]=toGrid(e); const b=snap(start,[gx,gy]); if(b[0]!==start[0]||b[1]!==start[1]) moved=true; showPrev(start,b); });
+    pad.addEventListener("pointermove", e=>{ if(!start) return; const [gx,gy]=toGrid(e); showPrev(start, snap(start,[gx,gy])); });
     pad.addEventListener("pointerup", e=>{ if(!start) return; const [gx,gy]=toGrid(e); const b=snap(start,[gx,gy]);
-      if(b[0]!==start[0]||b[1]!==start[1]){ addLine(start,b); start=null; prev.innerHTML=""; } /* else: wait for a second click */ });
+      if(b[0]!==start[0]||b[1]!==start[1]){ addLine(start,b); start=null; prev.innerHTML=""; } });
     pad.addEventListener("pointercancel", ()=>{ start=null; prev.innerHTML=""; });
   });
 
   // --- controls ---
+  $$("[data-tool]",el).forEach(b=>b.onclick=()=>{ const k=b.dataset.k; vl.tools[k]=b.dataset.tool;
+    $$(`[data-tool][data-k="${k}"]`,el).forEach(x=>{ const on=x.dataset.tool===vl.tools[k]; x.classList.toggle("on",on); x.setAttribute("aria-pressed",on); }); });
   $$("[data-lvl]",el).forEach(b=>b.onclick=()=>{ vl.lvl=b.dataset.lvl; vl.i=0; vl.rnd=null; vlReset(); viewsLab(el); });
   $$("[data-pc]",el).forEach(b=>b.onclick=()=>{ vl.i=+b.dataset.pc; vlReset(); viewsLab(el); });
   const sz=$("[data-size]",el); if(sz) sz.onchange=e=>{ vl.size=+e.target.value; vl.rnd=null; vlReset(); viewsLab(el); };
-  $$("[data-tool]",el).forEach(b=>b.onclick=()=>{ vl.tool=b.dataset.tool; $$("[data-tool]",el).forEach(x=>x.classList.toggle("ghost", x.dataset.tool!==vl.tool)); });
   $$("[data-act]",el).forEach(b=>b.onclick=()=>{ const a=b.dataset.act;
     if(a==="undo"){ const k=vl.hist.pop(); if(k) vl.lines[k].pop(); vl.checked=false; }
     if(a==="clear"){ vl.lines={A:[],P:[],S:[]}; vl.hist=[]; vl.checked=false; vl.sol=false; }
@@ -4534,15 +4549,27 @@ UNIT.tabs = [{ id:"vistas3d", es:"Taller de vistas", en:"Views lab", icon:"🧊"
   descEn:"Look at 3D pieces and draw their front, top and side views with visible and hidden lines.",
   render: el=>viewsLab(el) }];
 UNIT.css = `
-.vl-grid4{display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:start; margin-bottom:12px}
-.vl-cell{background:var(--card,#fff); border:1px solid var(--line); border-radius:var(--radius); padding:10px 12px}
-.vl-head{display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:6px}
+.vl-scroll{overflow-x:auto; margin-bottom:10px; background:var(--card,#fff); border:1px solid var(--line); border-radius:var(--radius); padding:10px}
+.vl-board{display:grid; grid-template-columns:max-content max-content; gap:14px 14px; justify-content:center; align-items:start}
+.vl-A{grid-column:1; grid-row:1; align-self:end}
+.vl-S{grid-column:2; grid-row:1; align-self:end}
+.vl-P{grid-column:1; grid-row:2}
+.vl-3d{grid-column:2; grid-row:2}
+.vl-cell{padding:0}
+.vl-3d{border-left:1px dashed var(--line); border-top:1px dashed var(--line); padding:6px 0 0 10px}
+.vl-head{display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin-bottom:6px}
 .vl-head h4{margin:0; font-size:1.05rem}
-.vl-fb{font-size:.85rem}
+.vl-fb{font-size:.85rem; min-height:1.3em; margin-top:4px; white-space:nowrap}
+.vl-tb{display:flex; gap:4px}
+.vl-tool{display:inline-flex; align-items:center; gap:1px; border:2px solid var(--line); background:#fff; color:var(--ink); border-radius:8px; padding:3px 5px; font-size:.9rem; line-height:1}
+.vl-tool.on{border-color:var(--navy); background:var(--navy); color:#fff}
 .vl-sm{padding:6px 10px}
 .vl-pad{cursor:crosshair}
-.vl-3dcell{align-self:stretch}
-@media (max-width:760px){ .vl-grid4{grid-template-columns:1fr} .vl-3dcell{order:-1} }`;
+@media (max-width:760px){
+  .vl-3d{grid-column:1 / span 2; grid-row:1; border:0; padding:0}
+  .vl-A{grid-row:2} .vl-S{grid-row:2} .vl-P{grid-row:3}
+  .vl-3d svg{margin:0 auto}
+}`;
 
 ["es","en"].forEach(l=>Object.assign(UI[l], (UNIT.ui||{})[l]||{}));
 const topicName = (id,L)=> (TOPICS.find(t=>t.id===id)||{})[L] || id;
