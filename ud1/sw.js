@@ -1,0 +1,10 @@
+/* offline cache for one unit — network first, cache as fallback */
+const VERSION = "u1-91147733";
+const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
+self.addEventListener("install", e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
+self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith("u1-") && k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener("fetch", e => {
+  const r = e.request; if (r.method !== "GET" || new URL(r.url).origin !== self.location.origin) return;
+  e.respondWith(fetch(r).then(res => { if (res && res.ok) { const c = res.clone(); caches.open(VERSION).then(x => x.put(r, c)); } return res; })
+    .catch(() => caches.match(r, { ignoreSearch: true }).then(m => m || (r.mode === "navigate" ? caches.match("./index.html") : Response.error()))));
+});
