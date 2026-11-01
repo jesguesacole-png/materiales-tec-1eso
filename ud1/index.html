@@ -284,6 +284,18 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
 .qstat.ok{color:var(--green)} .qstat.part{color:#8a6900} .qstat.ko{color:var(--red)}
 .fsum{border-left:6px solid var(--orange)}
 .print-only{display:none}
+.txt-state{background:#f3f6fa; border:1px solid var(--line); border-radius:10px; padding:8px 12px; font-size:.93rem}
+.txt-res{list-style:none; padding:0; margin:0; max-height:520px; overflow:auto; border:1px solid var(--line); border-radius:10px}
+.txt-res li{padding:8px 12px; border-bottom:1px solid var(--line)}
+.txt-res li:last-child{border-bottom:0}
+.txt-chk{display:flex; gap:6px; align-items:center; flex-wrap:wrap; font-size:.92rem}
+.txt-ctx{font-size:.92rem; margin:4px 0 2px 26px; color:var(--ink)}
+.txt-ctx mark{background:#ffe58a; padding:0 2px; border-radius:3px}
+.txt-full{padding:4px 10px; font-size:.85rem; margin-left:26px}
+.txt-ed{margin:6px 0 0 26px} .txt-ed textarea{width:100%; font:inherit; padding:6px 8px; border:2px solid var(--line); border-radius:8px; margin-bottom:6px}
+.txt-list{margin:0; padding-left:22px} .txt-list li{margin:4px 0}
+.txt-f{text-decoration:line-through; color:var(--red)} .txt-r{color:var(--green); font-weight:600}
+.txt-del{padding:2px 8px; margin-left:4px}
 .rep-head h1{font-size:1.8rem; margin:.1em 0 .4em}
 .rep-top{display:flex; gap:18px; align-items:flex-start; margin-bottom:12px}
 .rep-data{border-collapse:collapse; flex:1}
@@ -2972,7 +2984,6 @@ const TOPICS = [
   {id:"project",  es:"Nuestro proyecto: el organizador", en:"Our project: the organiser"},
   {id:"summary",  es:"Lo esencial de la unidad",     en:"Unit essentials"}
 ];
-const topicName = (id,L)=> (TOPICS.find(t=>t.id===id)||{})[L] || id;
 
 /* =========================================================
    3. FIGURES (SVG, language-aware, colour via CSS variables)
@@ -4311,7 +4322,70 @@ const WIDGETS = {
              static: L => `<ul class="circuit-static">${CIRCUIT.shown.map(c=>`<li><span class="blank"></span>${esc(c[L])}</li>`).join("")}</ul>` }
 };
 
+/* ---------- TEXT CORRECTIONS ----------
+   The teacher can correct any text of the unit (contents, questions, answers, fichas, notebook guide…) from the
+   teacher page. The corrections are a list of changes {f: text to find, r: replacement, only: [places] | absent = everywhere}.
+   They are saved in a file «textos.json» that the teacher uploads next to index.html: every student device downloads it
+   when it opens the unit with internet and keeps a copy for offline use. While editing, the teacher sees a draft kept
+   only on his/her device. The changes are applied here, to the unit data, before anything is built or shown. */
+const TXT = (function(){
+  const K = UNIT.key+"_";
+  const read = k=>{ try{ const v=localStorage.getItem(K+k); return v ? JSON.parse(v) : null; }catch(e){ return null; } };
+  const valid = f=>!!(f && typeof f==="object" && f.unidad===UNIT.code && Array.isArray(f.cambios));
+  let teacher=false; try{ teacher = localStorage.getItem("tyd1_teacher")==="true"; }catch(e){}
+  const pub = read("txtPub"), draft = teacher ? read("txtDraft") : null;
+  const usingDraft = valid(draft);
+  const active = usingDraft ? draft : (valid(pub) ? pub : null);
+  const clean = list=>(list||[]).filter(c=>c && typeof c.f==="string" && c.f.length>0 && typeof c.r==="string" && (!c.only || Array.isArray(c.only)));
+  const rules = active ? clean(active.cambios) : [];
+  const SKIP = new Set(["t","type","sec","id"]);
+  /* every editable text of the unit: {path, get(), set(v), html, sec} */
+  function sources(){
+    const out=[];
+    const walk=(o, path, isCode)=>{
+      if(typeof o==="string"){ if(!isCode(path)) { const parent=walk.stack[walk.stack.length-1], key=path[path.length-1]; out.push({path:path.join("."), get:()=>parent[key], set:v=>{ parent[key]=v; }, html:false}); } return; }
+      if(!o || typeof o!=="object") return;
+      walk.stack.push(o);
+      for(const k of Object.keys(o)){ if(!Array.isArray(o) && SKIP.has(k)) continue; walk(o[k], path.concat(k), isCode); }
+      walk.stack.pop();
+    };
+    walk.stack=[];
+    walk(TOPICS, ["TOPICS"], ()=>false);
+    walk(RAW_Q, ["RAW_Q"], p=>p.length===3 && p[2]==="0");
+    if(typeof MODEL_Q!=="undefined") walk(MODEL_Q, ["MODEL_Q"], ()=>false);
+    walk(FICHA_DEF, ["FICHA_DEF"], ()=>false);
+    if(typeof GUIDE!=="undefined") walk(GUIDE, ["GUIDE"], p=>p.length===5 && p[2]==="e" && p[4]==="0");
+    SECTIONS.forEach(s=>["es","en"].forEach(l=>{
+      const o=s[l]; if(!o) return;
+      out.push({path:`SEC.${s.id}.${l}.title`, get:()=>o.title, set:v=>{ o.title=v; }, html:false, sec:s.id});
+      out.push({path:`SEC.${s.id}.${l}.html`, get:()=>o.html(), html:true, sec:s.id});
+    }));
+    return out;
+  }
+  const repPlain=(s,f,r)=>s.split(f).join(r);
+  const repHTML=(s,f,r)=>s.split(/(<[^>]*>)/).map((seg,i)=> i%2 ? seg : seg.split(f).join(r)).join("");   // only in text, never inside tags
+  const applies=(c,path)=>!c.only || c.only.includes(path);
+  if(rules.length){
+    const src = sources();
+    src.forEach(e=>{
+      if(e.html){
+        const [_, id, l] = e.path.split("."), o = SECTIONS.find(s=>s.id===id)[l], orig = o.html;
+        const mine = rules.filter(c=>applies(c, e.path)); if(!mine.length) return;
+        o.html = (...a)=>mine.reduce((h,c)=>repHTML(h,c.f,c.r), orig(...a));
+      } else {
+        let v=e.get(); const v0=v;
+        rules.forEach(c=>{ if(applies(c,e.path) && v.includes(c.f)) v=repPlain(v,c.f,c.r); });
+        if(v!==v0) e.set(v);
+      }
+    });
+  }
+  return { K, valid, pub, draft, usingDraft, active, rules, sources, clean,
+    textOf: e=> e.html ? e.get().split(/(<[^>]*>)/).filter((x,i)=>i%2===0).join("") : e.get(),
+    findIn: (e,f)=> e.html ? e.get().split(/(<[^>]*>)/).some((x,i)=>i%2===0 && x.includes(f)) : e.get().includes(f) };
+})();
 ["es","en"].forEach(l=>Object.assign(UI[l], (UNIT.ui||{})[l]||{}));
+const topicName = (id,L)=> (TOPICS.find(t=>t.id===id)||{})[L] || id;
+if(UNIT.css){ const st=document.createElement("style"); st.textContent=UNIT.css; document.head.appendChild(st); }
 const MODEL_LIST = (typeof MODEL_Q!=="undefined") ? MODEL_Q : [];
 const QUESTIONS = RAW_Q.map((r,i)=>({
   id:i, src:"bank", type:"mc", pts:1, a:0, t:r[0], q:{es:r[1],en:r[2]},
@@ -4340,7 +4414,7 @@ const STUDY = QUESTIONS.filter(q=>q.src!=="ficha");
 
 /* ---------- answer checking (case, accents and punctuation are ignored) ---------- */
 function norm(s){
-  return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")
+  return String(s==null?"":s).toLowerCase().replace(/ø/g,"o").normalize("NFD").replace(/[̀-ͯ]/g,"")
     .replace(/[^a-z0-9€\s]/g," ").replace(/\s+/g," ").trim();
 }
 function stripArt(s){ return s.replace(/^(el|la|los|las|un|una|unos|unas|lo|the|a|an) /,""); }
@@ -4536,6 +4610,7 @@ function renderHome(){
     <a class="card mode c3" href="#practica"><span class="ico" aria-hidden="true">🎯</span><h3>${T("mPractice")}</h3><span>${T("mPracticeD")}</span></a>
     <a class="card mode c4" href="#examen"><span class="ico" aria-hidden="true">📝</span><h3>${T("mExam")}</h3><span>${T("mExamD")}</span></a>
     <a class="card mode c5" href="#apuntes"><span class="ico" aria-hidden="true">🖨️</span><h3>${T("mNotes")}</h3><span>${T("mNotesD")}</span></a>
+    ${(UNIT.tabs||[]).map(tb=>`<a class="card mode c2" href="#${tb.id}"><span class="ico" aria-hidden="true">${tb.icon||"⭐"}</span><h3>${esc(tb[LANG])}</h3><span>${esc(LANG==="es"?tb.descEs:tb.descEn)}</span></a>`).join("")}
   </div>`;
   bindOpenCode($("#view-inicio"));
 }
@@ -5317,6 +5392,7 @@ function renderProfesor(){
       <div class="doc tbl-scroll"><table class="codes-tbl"><tr><th>${T("session")}</th><th>${T("codeEs")}</th><th>${T("codeEn")}</th></tr>
       ${UNLOCK_KEYS.map(k=>`<tr><td>${esc(keyLabel(k))}</td><td class="code">${unlockCode(k,"es")}</td><td class="code">${unlockCode(k,"en")}</td></tr>`).join("")}</table></div>` : ""}
   </div>
+  ${TEACHER ? txtPanelHTML() : ""}
   <div class="card no-print" style="margin-bottom:16px">
     <h3 style="margin-top:0">${T("lockTitle")}</h3>
     <p style="margin-top:0">${T("lockState")}: <b>${LOCK?T("lockedEn"):T("unlocked")}</b> · ${T("device")}: <b>${DEVICE}</b></p>
@@ -5354,6 +5430,7 @@ function renderProfesor(){
       <p style="margin:6px 0 0" class="muted">${T("verifyNote")}</p></div>`;
   };
   $("#pvGo").onclick=run;
+  if(TEACHER) txtBind(v);
   const tOn=$("#pvTOn"); if(tOn) tOn.onclick=()=>{ if($("#pvTPin").value!==String(CONFIG.TEACHER_PIN)){ $("#pvTMsg").textContent=T("badPin"); return; } TEACHER=true; store.set("teacher",true); applyStaticI18n(); renderProfesor(); };
   const tOff=$("#pvTOff"); if(tOff) tOff.onclick=()=>{ TEACHER=false; store.set("teacher",null); if(LOCK){ LANG=LOCK; } applyStaticI18n(); renderProfesor(); };
   $("#pvReset").onclick=()=>{ UNL={}; store.set("unl",null); $("#pvTMsg").textContent=T("resetDone"); };
@@ -5419,7 +5496,140 @@ function renderNotes(){
 /* =========================================================
    8. ROUTER + LANGUAGE
    ========================================================= */
+/* ---------- teacher page: correct texts ---------- */
+const txtUI = { q:"", lang:"all", res:[], edit:null };
+function txtPlace(path, L){
+  const es=L==="es", p=path.split("."), n=k=>+p[k]+1;
+  const part = {q:es?"enunciado":"question", o:es?"opciones":"options", x:es?"explicación":"explanation", items:es?"elementos":"items", opts:es?"opciones":"options",
+    blanks:es?"respuesta de un hueco":"gap answer", model:es?"respuesta modelo":"model answer", groups:es?"ideas clave":"key ideas", e:"", title:es?"título":"title", html:es?"texto":"text"};
+  const secName = id=>{ const i=SECTIONS.findIndex(s=>s.id===id); return `${i+1}. ${SECTIONS[i][L].title}`; };
+  if(p[0]==="SEC") return `${es?"Contenidos":"Contents"} · ${secName(p[1])} · ${part[p[3]]}`;
+  if(p[0]==="TOPICS") return `${es?"Nombre del apartado":"Section name"} ${n(1)}`;
+  if(p[0]==="RAW_Q"){ const k=+p[2]; return `${es?"Banco de preguntas":"Question bank"} nº ${n(1)} · ${k===1||k===2?part.q:k===3?(+p[3]===0?(es?"opción correcta":"correct option"):(es?"opción incorrecta":"wrong option")):part.x}`; }
+  if(p[0]==="MODEL_Q") return `${es?"Examen modelo, pregunta":"Model exam, question"} ${MODEL_Q[+p[1]].n} · ${part[p[2]]||p[2]}`;
+  if(p[0]==="FICHA_DEF") return `${es?"Ficha":"Worksheet"} ${n(1)}, ${es?"actividad":"activity"} ${n(3)} · ${part[p[4]]||p[4]}`;
+  if(p[0]==="GUIDE") return `${es?"Guía del cuaderno":"Notebook guide"} · ${secName(GUIDE[+p[1]].sec)}`;
+  return path;
+}
+function txtLang(path){
+  const p=path.split("."), last=p[p.length-1];
+  if(last==="es"||last==="en") return last;
+  if(p[0]==="SEC") return p[2];
+  if(p[0]==="RAW_Q"){ if(p.length===3) return p[2]==="1"?"es":"en"; return p[p.length-1]==="0"?"es":"en"; }
+  if(p[0]==="GUIDE") return p[4]==="1"?"es":"en";
+  if(p.includes("alt")) return "es/en";
+  if(p.includes("k")) return "clave";
+  if(p.includes("es")) return "es"; if(p.includes("en")) return "en";
+  return /^[01]$/.test(last) ? (last==="0"?"es":"en") : "—";
+}
+function txtSave(list){
+  const f = { unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:list };
+  try{ localStorage.setItem(TXT.K+"txtDraft", JSON.stringify(f)); }catch(e){}
+  try{ sessionStorage.setItem("txtScroll","1"); }catch(e){}
+  location.reload();
+}
+function txtDraftList(){ return TXT.usingDraft ? TXT.clean(TXT.draft.cambios).slice() : (TXT.valid(TXT.pub) ? TXT.clean(TXT.pub.cambios).slice() : []); }
+function txtPanelHTML(){
+  const es=LANG==="es", pubN = TXT.valid(TXT.pub) ? TXT.clean(TXT.pub.cambios).length : 0, list = TXT.active ? TXT.rules : [];
+  const fmt = d=>{ try{ return new Date(d).toLocaleString(es?"es-ES":"en-GB"); }catch(e){ return ""; } };
+  return `<div class="card no-print" id="txtBox" style="margin-bottom:16px">
+    <h3 style="margin-top:0">✏️ ${es?"Corregir textos de la unidad":"Correct the texts of the unit"}</h3>
+    <p class="muted" style="margin-top:0">${es
+      ? "Busca un texto en todo el material (contenidos, preguntas, respuestas, fichas, guía del cuaderno…), cámbialo y descarga el archivo <b>textos.json</b>. Súbelo a la carpeta de esta unidad en GitHub (junto a index.html) y todos los alumnos verán los textos corregidos la próxima vez que abran la unidad con internet. Las imágenes y los talleres no se editan aquí."
+      : "Search for a text in the whole unit (contents, questions, answers, worksheets, notebook guide…), change it and download the file <b>textos.json</b>. Upload it to this unit's folder on GitHub (next to index.html) and every student will see the corrected texts the next time they open the unit online. Images and workshops are not edited here."}</p>
+    <div class="txt-state">${TXT.usingDraft
+      ? `<b>${es?"Estás viendo tu borrador":"You are viewing your draft"}</b> (${list.length} ${es?(list.length===1?"cambio":"cambios")+", solo en este dispositivo":(list.length===1?"change":"changes")+", only on this device"}). ${es?"Archivo publicado":"Published file"}: ${pubN ? `${pubN} ${es?(pubN===1?"cambio":"cambios"):(pubN===1?"change":"changes")} (${fmt(TXT.pub.fecha)})` : (es?"ninguno":"none")}.`
+      : (pubN ? `${es?"Archivo publicado en uso":"Published file in use"}: <b>${pubN} ${es?(pubN===1?"cambio":"cambios"):(pubN===1?"change":"changes")}</b> (${fmt(TXT.pub.fecha)}).` : `${es?"Todavía no hay ningún archivo de textos publicado para esta unidad.":"There is no published text file for this unit yet."}`)}</div>
+    <div class="row" style="margin-top:10px">
+      <label class="field" style="flex:1;min-width:220px">${es?"Buscar":"Search for"}<input type="text" id="txtQ" value="${esc(txtUI.q)}" autocomplete="off" placeholder="${es?"p. ej.: comunicar objetos":"e.g.: communicate objects"}"></label>
+      <label class="field" style="min-width:0">${es?"Idioma":"Language"}<select id="txtL">${[["all",es?"Los dos":"Both"],["es","Español"],["en","English"]].map(([v,t])=>`<option value="${v}"${txtUI.lang===v?" selected":""}>${t}</option>`).join("")}</select></label>
+      <button class="btn" type="button" id="txtGo" style="margin-top:18px">🔍 ${es?"Buscar":"Search"}</button>
+    </div>
+    <div id="txtRes"></div>
+    <h4 style="margin:16px 0 6px">${es?"Cambios":"Changes"} ${TXT.usingDraft?(es?"del borrador":"in the draft"):(es?"publicados":"published")} (${list.length})</h4>
+    ${list.length ? `<ol class="txt-list">${list.map((c,i)=>`<li><span class="txt-f">${esc(c.f.length>140?c.f.slice(0,140)+"…":c.f)}</span> → <span class="txt-r">${esc(c.r.length>140?c.r.slice(0,140)+"…":c.r)||"<i>"+(es?"(borrado)":"(deleted)")+"</i>"}</span>
+        <span class="muted">· ${c.only ? (c.only.length===1 ? esc(txtPlace(c.only[0],LANG)) : `${c.only.length} ${es?"sitios":"places"}`) : (es?"en todo el material":"everywhere")}</span>
+        <button type="button" class="btn ghost txt-del" data-del="${i}" aria-label="${es?"Quitar este cambio":"Remove this change"}">🗑️</button></li>`).join("")}</ol>` : `<p class="muted" style="margin:0">${es?"Ninguno.":"None."}</p>`}
+    <div class="row" style="margin-top:12px">
+      <button class="btn green" type="button" id="txtDown"${list.length?"":" disabled"}>⬇️ ${es?"Descargar textos.json":"Download textos.json"}</button>
+      <label class="btn ghost" style="cursor:pointer">⬆️ ${es?"Abrir un textos.json":"Open a textos.json"}<input type="file" id="txtUp" accept=".json,application/json" hidden></label>
+      ${TXT.usingDraft ? `<button class="btn ghost" type="button" id="txtDiscard">${es?"Descartar el borrador (volver al publicado)":"Discard the draft (back to the published file)"}</button>` : ""}
+      <span id="txtMsg" class="muted" role="status"></span>
+    </div>
+    <details style="margin-top:10px"><summary>${es?"Cómo publicar los cambios para los alumnos":"How to publish the changes for the students"}</summary>
+      <ol style="margin:6px 0 0">${es
+        ? `<li>Pulsa <b>Descargar textos.json</b>. No le cambies el nombre.</li><li>En GitHub entra en la carpeta <b>${esc(location.pathname.split("/").filter(Boolean).slice(-2,-1)[0]||"de la unidad")}</b> → <b>Add file → Upload files</b>, arrastra el archivo y pulsa <b>Commit changes</b>.</li><li>En unos minutos los alumnos verán los textos corregidos al abrir la unidad con internet (también los profesores que compartís el material).</li><li>Para seguir corrigiendo otro día: abre aquí el textos.json, añade cambios y vuelve a subirlo (sustituye al anterior).</li><li>Mándame también el archivo cuando quieras y lo incorporo al material para las próximas versiones.</li>`
+        : `<li>Press <b>Download textos.json</b>. Do not rename it.</li><li>On GitHub open this unit's folder → <b>Add file → Upload files</b>, drop the file and press <b>Commit changes</b>.</li><li>In a few minutes the students will see the corrected texts when they open the unit online.</li><li>To keep correcting another day: open the textos.json here, add changes and upload it again (it replaces the old one).</li>`}</ol></details>
+  </div>`;
+}
+function txtBind(v){
+  const es=LANG==="es", box=$("#txtBox",v); if(!box) return;
+  const res=$("#txtRes",box), msg=$("#txtMsg",box);
+  const ctx=(text,f)=>{ const i=text.indexOf(f); if(i<0) return esc(text.slice(0,160)); const a=Math.max(0,i-70), b=Math.min(text.length,i+f.length+70);
+    return (a>0?"…":"")+esc(text.slice(a,i))+"<mark>"+esc(f)+"</mark>"+esc(text.slice(i+f.length,b)).replace(/\s+/g," ")+(b<text.length?"…":""); };
+  const search=()=>{
+    txtUI.q=$("#txtQ",box).value; txtUI.lang=$("#txtL",box).value; const f=txtUI.q;
+    if(!f.trim()){ res.innerHTML=""; return; }
+    txtUI.res = TXT.sources().filter(e=>TXT.findIn(e,f) && (txtUI.lang==="all" || txtLang(e.path)===txtUI.lang || txtLang(e.path)==="es/en"));
+    if(!txtUI.res.length){ res.innerHTML=`<p class="muted">${es?"No aparece en ningún texto. Revisa mayúsculas y tildes: la búsqueda es exacta.":"It does not appear in any text. Check capitals and accents: the search is exact."}</p>`; return; }
+    res.innerHTML = `<p style="margin:10px 0 6px"><b>${txtUI.res.length}</b> ${es?(txtUI.res.length===1?"sitio":"sitios"):(txtUI.res.length===1?"place":"places")}. ${es?"Desmarca los que no quieras cambiar.":"Untick the ones you do not want to change."}</p>
+      <ul class="txt-res">${txtUI.res.map((e,i)=>`<li><label class="txt-chk"><input type="checkbox" data-k="${i}" checked> <span class="tag">${esc(txtLang(e.path).toUpperCase())}</span> <b>${esc(txtPlace(e.path,LANG))}</b></label>
+        <div class="txt-ctx">${ctx(TXT.textOf(e),f)}</div>
+        ${e.html ? "" : `<button type="button" class="btn ghost txt-full" data-full="${i}">✏️ ${es?"Editar el texto completo":"Edit the whole text"}</button><div class="txt-ed" data-ed="${i}" hidden><textarea rows="3">${esc(e.get())}</textarea><button type="button" class="btn green" data-saveone="${i}">${es?"Guardar este texto":"Save this text"}</button></div>`}</li>`).join("")}</ul>
+      <div class="row" style="margin-top:8px"><label class="field" style="flex:1;min-width:220px">${es?"Cambiar por":"Replace with"}<input type="text" id="txtR" autocomplete="off"></label>
+      <button class="btn green" type="button" id="txtApply" style="margin-top:18px">${es?"Cambiar en los sitios marcados":"Change in the ticked places"}</button></div>`;
+    $$("[data-full]",res).forEach(b=>b.onclick=()=>{ const d=res.querySelector(`[data-ed="${b.dataset.full}"]`); d.hidden=!d.hidden; });
+    $$("[data-saveone]",res).forEach(b=>b.onclick=()=>{ const e=txtUI.res[+b.dataset.saveone], nv=res.querySelector(`[data-ed="${b.dataset.saveone}"] textarea`).value;
+      if(nv===e.get()) return; const list=txtDraftList(); list.push({f:e.get(), r:nv, only:[e.path]}); txtSave(list); });
+    $("#txtApply",res).onclick=()=>{
+      const r=$("#txtR",res).value, ticked=$$("input[data-k]",res).filter(c=>c.checked).map(c=>txtUI.res[+c.dataset.k].path);
+      if(!ticked.length){ msg.textContent=es?"No hay ningún sitio marcado.":"No place is ticked."; return; }
+      if(r===f) return;
+      if(r==="" && !confirm(es?"¿Borrar ese texto en los sitios marcados?":"Delete that text in the ticked places?")) return;
+      const list=txtDraftList(); list.push(ticked.length===txtUI.res.length && txtUI.lang==="all" ? {f, r} : {f, r, only:ticked}); txtSave(list); };
+  };
+  $("#txtGo",box).onclick=search;
+  $("#txtQ",box).onkeydown=e=>{ if(e.key==="Enter"){ e.preventDefault(); search(); } };
+  if(txtUI.q) search();
+  $$("[data-del]",box).forEach(b=>b.onclick=()=>{ const list=txtDraftList(); list.splice(+b.dataset.del,1); txtSave(list); });
+  $("#txtDown",box).onclick=()=>{
+    const f={ unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:TXT.rules };
+    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(f,null,1)],{type:"application/json"})); a.download="textos.json";
+    document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    msg.textContent=es?"Descargado. Ahora súbelo a la carpeta de la unidad en GitHub.":"Downloaded. Now upload it to the unit's folder on GitHub."; };
+  $("#txtUp",box).onchange=e=>{ const file=e.target.files[0]; if(!file) return; const rd=new FileReader();
+    rd.onload=()=>{ let f=null; try{ f=JSON.parse(rd.result); }catch(err){}
+      if(!f || !Array.isArray(f.cambios)){ msg.textContent=es?"Ese archivo no es un textos.json válido.":"That file is not a valid textos.json."; return; }
+      if(f.unidad!==UNIT.code){ msg.textContent=(es?"Ese archivo es de otra unidad: ":"That file belongs to another unit: ")+(f.unidad||"?"); return; }
+      txtSave(TXT.clean(f.cambios)); };
+    rd.readAsText(file); };
+  const dis=$("#txtDiscard",box); if(dis) dis.onclick=()=>{ if(!confirm(es?"¿Descartar el borrador de este dispositivo?":"Discard the draft on this device?")) return; try{ localStorage.removeItem(TXT.K+"txtDraft"); sessionStorage.setItem("txtScroll","1"); }catch(e){} location.reload(); };
+  try{ if(sessionStorage.getItem("txtScroll")){ sessionStorage.removeItem("txtScroll"); setTimeout(()=>box.scrollIntoView({block:"start"}),60); } }catch(e){}
+}
+/* students: download the published corrections (textos.json, next to index.html) */
+(function txtSync(){
+  if(location.protocol==="file:" || !window.fetch) return;
+  fetch("textos.json", {cache:"no-store"}).then(r=> r.ok ? r.text() : (r.status===404 ? "" : null)).then(t=>{
+    if(t===null) return;
+    let f=null; if(t){ try{ f=JSON.parse(t); }catch(e){ return; } if(!TXT.valid(f)) return; }
+    const now = f ? JSON.stringify(f) : null; let old=null; try{ old=localStorage.getItem(TXT.K+"txtPub"); }catch(e){}
+    if(now===old) return;
+    try{ if(now) localStorage.setItem(TXT.K+"txtPub", now); else localStorage.removeItem(TXT.K+"txtPub"); }catch(e){ return; }
+    if(TXT.usingDraft) return;
+    // reload once so the corrected texts are shown now (never twice for the same file)
+    let again=true; try{ again = sessionStorage.getItem("txtReloaded")===String(now); sessionStorage.setItem("txtReloaded", String(now)); }catch(e){}
+    if(!again && performance.now()<8000) location.reload();
+  }).catch(()=>{});
+})();
 const VIEWS = {inicio:renderHome, contenidos:renderContents, fichas:renderFichas, cuaderno:renderCuaderno, flashcards:renderFlash, practica:renderPractice, examen:renderExam, apuntes:renderNotes, profesor:renderProfesor};
+/* extra tabs defined by the unit: UNIT.tabs = [{id, es, en, icon, descEs, descEn, after, sec, render(el)}] */
+(UNIT.tabs||[]).forEach(tb=>{
+  UI.es["tab_"+tb.id]=tb.es; UI.en["tab_"+tb.id]=tb.en;
+  const a=document.createElement("a"); a.href="#"+tb.id; a.dataset.view=tb.id; a.dataset.i18n="tab_"+tb.id; a.textContent=tb.es;
+  const ref=document.querySelector(`nav.tabs a[data-view="${tb.after||"apuntes"}"]`); if(ref) ref.after(a); else $("nav.tabs").appendChild(a);
+  const sec=document.createElement("section"); sec.className="view"; sec.id="view-"+tb.id; $("main").appendChild(sec);
+  VIEWS[tb.id]=()=>{ const el=$("#view-"+tb.id); if(tb.sec && !secOpen(tb.sec)){ el.innerHTML=`<h2>${T("tab_"+tb.id)}</h2>`+lockedCardHTML(); bindOpenCode(el); return; } tb.render(el); };
+});
 window.addEventListener("beforeprint", ()=>{
   if(currentView==="fichas" && fs.open){ const r=$("#fReport"); if(r && !r.innerHTML.trim() && fd(fs.open).attempts && fs.ident.name && fs.ident.group) r.innerHTML = reportHTML(fs.open, new Date()).html; }
 });
