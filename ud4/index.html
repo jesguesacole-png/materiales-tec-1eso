@@ -3088,7 +3088,7 @@ const UNIT = {
     <div style="font-family:var(--font-head);font-size:1.7rem;color:var(--orange);font-weight:700">${L==="es"?"Estructuras y mecanismos":"Structures and mechanisms"}</div>`
 };
 UNIT.evaluation = {
-  crit: { "1.2":"FE", "2.1":"MFE", "2.2":"TMF", "3.1":"TFE", "4.1":"M", "7.1":"FE" },
+  crit: { "1.2":"FE", "2.1":"MFE", "2.2":"TMF", "3.1":"TFE", "4.1":"M", "7.1":"FE" , "6.1":"F", "6.2":"M", "6.3":"M" },
   sec: { struct:["1.2"], loads:["1.2"], cond:["1.2","2.1"], elements:["1.2","2.1"], types:["1.2","7.1"], machines:["1.2"],
          levers:["1.2","2.1"], pulleys:["1.2","2.1"], circular:["1.2","2.1"], transform:["1.2"], project:["2.1","2.2","3.1","4.1"], summary:["1.2","2.1","7.1"] },
   note: { es:"<b>Proyecto de la unidad:</b> una estructura tensegrítica (o una estructura resistente con barras y tensores). Construirla en el taller es el <b>trabajo de taller</b>; los bocetos, el análisis de esfuerzos, la lista de materiales y la planificación forman la <b>memoria técnica</b>.",
@@ -5129,6 +5129,12 @@ const EVAL_PARTS = [
   { id:"E", pct:25, ico:"📝", es:"Prueba escrita", en:"Written test",
     des:{es:"El examen de la unidad. Puedes prepararlo con Práctica, Flashcards y el Examen de esta web.", en:"The unit test. You can prepare it with Practice, Flashcards and the Exam on this website."} }
 ];
+/* criteria assessed all year round through everyday digital work (shown when a unit lists them but no section does) */
+const CE_HOW = {
+  "6.1":{es:"Se evalúa a lo largo de todo el curso: descargar el PDF de cada ficha y entregarlo en Classroom, y usar el ordenador y las aplicaciones de clase de forma segura.", en:"Assessed throughout the year: downloading the PDF of each worksheet and handing it in on Classroom, and using the computer and class apps safely."},
+  "6.2":{es:"Se evalúa a lo largo de todo el curso: elaborar la memoria técnica en formato digital y compartirla en Classroom, citando de dónde salen las imágenes que no son tuyas (derechos de autor).", en:"Assessed throughout the year: producing the technical report in digital format and sharing it on Classroom, saying where any images that are not yours come from (copyright)."},
+  "6.3":{es:"Se evalúa a lo largo de todo el curso: guardar las fotos y documentos del proyecto en una carpeta ordenada, con nombres claros, y tener una copia de seguridad.", en:"Assessed throughout the year: saving the project photos and documents in a tidy folder, with clear names, and keeping a backup copy."}
+};
 const EVAL = UNIT.evaluation || null;      // {crit:{"1.1":"MFE",...}, sec:{sectionId:["1.1",...]}, note:{es,en}}
 const ceList = ()=> EVAL ? Object.keys(EVAL.crit).sort((a,b)=>parseFloat(a)-parseFloat(b) || a.localeCompare(b,undefined,{numeric:true})) : [];
 function ceChips(list, L){
@@ -5142,7 +5148,7 @@ function evalTableHTML(L){
   const es=L==="es";
   return `<div class="doc tbl-scroll"><table class="ev-tbl">
     <tr><th>${es?"Criterio de evaluación":"Assessment criterion"}</th>${EVAL_PARTS.map(p=>`<th class="ev-c">${p.ico}<br>${esc(p[L])}<br><small>${p.pct}%</small></th>`).join("")}</tr>
-    ${ceList().map((c,i,a)=>(i===0||a[i-1].split(".")[0]!==c.split(".")[0] ? `<tr class="ev-comp"><td colspan="${EVAL_PARTS.length+1}">${es?"Competencia específica":"Specific competence"} ${c.split(".")[0]}: ${esc((COMP[c.split(".")[0]]||{})[L]||"")}</td></tr>` : "")+`<tr><td><b>${es?"Criterio":"Criterion"} ${esc(c)}.</b> ${esc((CE[c]||{})[L]||"")}${(()=>{ const s=SECTIONS.filter(x=>((EVAL.sec||{})[x.id]||[]).includes(c)).map(x=>SECTIONS.indexOf(x)+1); return s.length ? `<div class="ev-where">${es?"Apartados":"Sections"}: ${s.join(", ")}</div>` : ""; })()}</td>
+    ${ceList().map((c,i,a)=>(i===0||a[i-1].split(".")[0]!==c.split(".")[0] ? `<tr class="ev-comp"><td colspan="${EVAL_PARTS.length+1}">${es?"Competencia específica":"Specific competence"} ${c.split(".")[0]}: ${esc((COMP[c.split(".")[0]]||{})[L]||"")}</td></tr>` : "")+`<tr><td><b>${es?"Criterio":"Criterion"} ${esc(c)}.</b> ${esc((CE[c]||{})[L]||"")}${(()=>{ const s=SECTIONS.filter(x=>((EVAL.sec||{})[x.id]||[]).includes(c)).map(x=>SECTIONS.indexOf(x)+1); const how=((EVAL.how||{})[c]||CE_HOW[c]||{})[L]; return s.length ? `<div class="ev-where">${es?"Apartados":"Sections"}: ${s.join(", ")}</div>` : how ? `<div class="ev-where">${esc(how)}</div>` : ""; })()}</td>
       ${EVAL_PARTS.map(p=>`<td class="ev-c">${EVAL.crit[c].includes(p.id)?`<span class="ev-yes" aria-label="${es?"sí":"yes"}">✔</span>`:""}</td>`).join("")}</tr>`).join("")}
   </table></div>`;
 }

@@ -456,6 +456,94 @@ a.ev-home:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
 </main>
 
 <div class="footer wrap" data-i18n="footer"></div>
+<!-- ===== Sello de identidad (pie de página + ventana) — autocontenido, no depende del resto de la app ===== -->
+<style>
+.fe-foot{display:flex;flex-direction:column;align-items:center;gap:6px;padding:4px 16px 26px;text-align:center}
+.fe-seal{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid transparent;border-radius:999px;
+  padding:6px 14px;cursor:pointer;font:inherit;font-size:.86rem;color:var(--navy,#16365c);opacity:.82;transition:opacity .2s,border-color .2s,background .2s}
+.fe-seal:hover{opacity:1;border-color:var(--line,#c9d6e3);background:rgba(22,54,92,.04)}
+.fe-seal:focus-visible{outline:3px solid var(--orange,#e8710a);outline-offset:2px;opacity:1}
+.fe-cross{font-size:1.05rem;line-height:1;color:var(--orange,#e8710a);font-family:"Segoe UI Symbol","Noto Sans Symbols","DejaVu Sans",serif}
+.fe-seal i{font-style:italic;letter-spacing:.01em}
+.fe-copy{font-size:.78rem;color:var(--muted,#5b6876)}
+.fe-copy:empty{display:none}
+.fe-back{position:fixed;inset:0;z-index:1000;background:rgba(14,30,52,.55);display:flex;align-items:center;justify-content:center;padding:16px;
+  opacity:0;transition:opacity .2s}
+.fe-back[hidden]{display:none}
+.fe-back.on{opacity:1}
+.fe-modal{position:relative;background:#fff;color:#1d2733;max-width:560px;width:100%;max-height:calc(100vh - 32px);overflow:auto;
+  border-radius:16px;border-top:6px solid var(--orange,#e8710a);box-shadow:0 18px 50px rgba(0,0,0,.28);padding:28px 26px 22px;
+  transform:translateY(8px);transition:transform .2s;line-height:1.6}
+.fe-back.on .fe-modal{transform:none}
+.fe-modal h2{margin:0 36px 14px 0;font-size:1.3rem;color:var(--navy,#16365c);font-family:var(--font-head,inherit);display:flex;gap:10px;align-items:baseline}
+.fe-modal h2 .fe-cross{font-size:1.35rem}
+.fe-modal p{margin:0 0 12px}
+.fe-modal blockquote{margin:16px 0 0;padding:10px 14px;border-left:4px solid var(--orange,#e8710a);background:rgba(232,113,10,.07);border-radius:0 10px 10px 0}
+.fe-modal blockquote p{margin:0;font-style:italic}
+.fe-modal blockquote cite{display:block;margin-top:4px;font-style:normal;font-size:.86rem;font-weight:600;color:var(--navy,#16365c)}
+.fe-modal blockquote + blockquote{margin-top:10px}
+.fe-x{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line,#c9d6e3);background:#fff;
+  font-size:1.3rem;line-height:1;cursor:pointer;color:var(--navy,#16365c)}
+.fe-x:hover{background:rgba(22,54,92,.06)}
+.fe-x:focus-visible,.fe-ok:focus-visible{outline:3px solid var(--orange,#e8710a);outline-offset:2px}
+.fe-actions{display:flex;justify-content:flex-end;margin-top:18px}
+.fe-ok{border:0;border-radius:10px;background:var(--navy,#16365c);color:#fff;font:inherit;font-weight:600;padding:9px 18px;cursor:pointer}
+.fe-sign{margin-top:14px;font-size:.84rem;color:var(--muted,#5b6876)}
+.fe-sign:empty{display:none}
+@media (max-width:520px){.fe-modal{padding:24px 18px 18px;border-radius:14px}.fe-modal h2{font-size:1.15rem}}
+@media (prefers-reduced-motion:reduce){.fe-back,.fe-modal{transition:none}}
+@media print{.fe-foot,.fe-back{display:none!important}}
+</style>
+<div class="fe-foot">
+  <button type="button" class="fe-seal" id="feSeal" aria-haspopup="dialog" aria-controls="feBack">
+    <span class="fe-cross" aria-hidden="true">✝</span><i>Una inspiración, un don y un servicio</i>
+  </button>
+  <div class="fe-copy" id="feCopy">© 2026 Jesús · Todos los derechos reservados</div>
+</div>
+<div class="fe-back" id="feBack" hidden>
+  <div class="fe-modal" role="dialog" aria-modal="true" aria-labelledby="feTitle" tabindex="-1">
+    <button type="button" class="fe-x" id="feX" aria-label="Cerrar">×</button>
+    <h2 id="feTitle"><span class="fe-cross" aria-hidden="true">✝</span><span>Una inspiración, un don y un servicio</span></h2>
+    <p>Reconozco en Dios el origen de mis talentos, de mi creatividad y de la inspiración que me impulsa a desarrollar estas herramientas.</p>
+    <p>Con gratitud al Señor, pongo mi trabajo y sus frutos al servicio de los demás, con el deseo de facilitar tareas, resolver necesidades y contribuir, aunque sea modestamente, a mejorar la vida de las personas.</p>
+    <p>A Él ofrezco este trabajo, con sus aciertos, sus limitaciones y todo lo que aún queda por aprender y mejorar.</p>
+    <blockquote><p>«Todo buen regalo y todo don perfecto viene de arriba».</p><cite>Santiago 1,17</cite></blockquote>
+    <blockquote><p>«Poned al servicio de los demás el carisma que cada uno ha recibido».</p><cite>1 Pedro 4,10</cite></blockquote>
+    <div class="fe-sign">— Jesús</div>
+    <div class="fe-actions"><button type="button" class="fe-ok" id="feOk">Cerrar</button></div>
+  </div>
+</div>
+<script>
+(function(){
+  var seal=document.getElementById("feSeal"), back=document.getElementById("feBack");
+  if(!seal||!back) return;
+  var box=back.querySelector(".fe-modal"), last=null, prevOverflow="";
+  function focusables(){ return Array.prototype.filter.call(box.querySelectorAll("button,[href],input,select,textarea,[tabindex]:not([tabindex='-1'])"),function(e){return !e.disabled&&e.offsetParent!==null;}); }
+  function onKey(e){
+    if(e.key==="Escape"||e.key==="Esc"){ e.preventDefault(); e.stopPropagation(); close(); return; }
+    if(e.key==="Tab"){ var f=focusables(); if(!f.length) return; var a=f[0], z=f[f.length-1];
+      if(e.shiftKey && (document.activeElement===a||document.activeElement===box)){ e.preventDefault(); z.focus(); }
+      else if(!e.shiftKey && document.activeElement===z){ e.preventDefault(); a.focus(); } }
+  }
+  function open(){
+    last=document.activeElement; back.hidden=false; prevOverflow=document.body.style.overflow; document.body.style.overflow="hidden";
+    requestAnimationFrame(function(){ back.classList.add("on"); });
+    document.addEventListener("keydown",onKey,true); document.getElementById("feX").focus();
+  }
+  function close(){
+    if(back.hidden) return;
+    back.classList.remove("on"); back.hidden=true; document.body.style.overflow=prevOverflow;
+    document.removeEventListener("keydown",onKey,true);
+    if(last&&last.focus) last.focus(); else seal.focus();
+  }
+  seal.addEventListener("click",open);
+  document.getElementById("feX").addEventListener("click",close);
+  document.getElementById("feOk").addEventListener("click",close);
+  back.addEventListener("click",function(e){ if(e.target===back) close(); });
+})();
+</script>
+<!-- ===== fin del sello ===== -->
+
 
 <script>
 /* QR Code Generator for JavaScript — Copyright (c) 2009 Kazuhiko Arase — MIT License — https://github.com/kazuhikoarase/qrcode-generator */
@@ -3003,7 +3091,7 @@ const UNIT = {
 /* assessment: criteria of this unit, where each one is assessed (T taller · M memoria técnica · F tareas de clase/fichas · E prueba escrita)
    and the criteria of each content section (also shown on its ficha) */
 UNIT.evaluation = {
-  crit: { "1.1":"MF", "1.2":"FE", "2.2":"TMFE", "3.1":"TFE", "4.1":"M", "7.1":"MFE" },
+  crit: { "1.1":"MF", "1.2":"FE", "2.2":"TMFE", "3.1":"TFE", "4.1":"M", "7.1":"MFE" , "6.1":"F", "6.2":"M", "6.3":"M" },
   sec: { raw:["1.2"], phys:["1.2"], mech:["1.2"], wood:["1.2"], wood2:["2.2","3.1","7.1"], metals:["1.2","7.1"],
          nonfer:["1.2","3.1","7.1"], plastics:["1.2","7.1"], stone:["1.2","7.1"], textiles:["1.2","7.1"],
          project:["1.1","2.2","3.1","4.1"], summary:["1.2","2.2","7.1"] },
@@ -4934,6 +5022,12 @@ const EVAL_PARTS = [
   { id:"E", pct:25, ico:"📝", es:"Prueba escrita", en:"Written test",
     des:{es:"El examen de la unidad. Puedes prepararlo con Práctica, Flashcards y el Examen de esta web.", en:"The unit test. You can prepare it with Practice, Flashcards and the Exam on this website."} }
 ];
+/* criteria assessed all year round through everyday digital work (shown when a unit lists them but no section does) */
+const CE_HOW = {
+  "6.1":{es:"Se evalúa a lo largo de todo el curso: descargar el PDF de cada ficha y entregarlo en Classroom, y usar el ordenador y las aplicaciones de clase de forma segura.", en:"Assessed throughout the year: downloading the PDF of each worksheet and handing it in on Classroom, and using the computer and class apps safely."},
+  "6.2":{es:"Se evalúa a lo largo de todo el curso: elaborar la memoria técnica en formato digital y compartirla en Classroom, citando de dónde salen las imágenes que no son tuyas (derechos de autor).", en:"Assessed throughout the year: producing the technical report in digital format and sharing it on Classroom, saying where any images that are not yours come from (copyright)."},
+  "6.3":{es:"Se evalúa a lo largo de todo el curso: guardar las fotos y documentos del proyecto en una carpeta ordenada, con nombres claros, y tener una copia de seguridad.", en:"Assessed throughout the year: saving the project photos and documents in a tidy folder, with clear names, and keeping a backup copy."}
+};
 const EVAL = UNIT.evaluation || null;      // {crit:{"1.1":"MFE",...}, sec:{sectionId:["1.1",...]}, note:{es,en}}
 const ceList = ()=> EVAL ? Object.keys(EVAL.crit).sort((a,b)=>parseFloat(a)-parseFloat(b) || a.localeCompare(b,undefined,{numeric:true})) : [];
 function ceChips(list, L){
@@ -4947,7 +5041,7 @@ function evalTableHTML(L){
   const es=L==="es";
   return `<div class="doc tbl-scroll"><table class="ev-tbl">
     <tr><th>${es?"Criterio de evaluación":"Assessment criterion"}</th>${EVAL_PARTS.map(p=>`<th class="ev-c">${p.ico}<br>${esc(p[L])}<br><small>${p.pct}%</small></th>`).join("")}</tr>
-    ${ceList().map((c,i,a)=>(i===0||a[i-1].split(".")[0]!==c.split(".")[0] ? `<tr class="ev-comp"><td colspan="${EVAL_PARTS.length+1}">${es?"Competencia específica":"Specific competence"} ${c.split(".")[0]}: ${esc((COMP[c.split(".")[0]]||{})[L]||"")}</td></tr>` : "")+`<tr><td><b>${es?"Criterio":"Criterion"} ${esc(c)}.</b> ${esc((CE[c]||{})[L]||"")}${(()=>{ const s=SECTIONS.filter(x=>((EVAL.sec||{})[x.id]||[]).includes(c)).map(x=>SECTIONS.indexOf(x)+1); return s.length ? `<div class="ev-where">${es?"Apartados":"Sections"}: ${s.join(", ")}</div>` : ""; })()}</td>
+    ${ceList().map((c,i,a)=>(i===0||a[i-1].split(".")[0]!==c.split(".")[0] ? `<tr class="ev-comp"><td colspan="${EVAL_PARTS.length+1}">${es?"Competencia específica":"Specific competence"} ${c.split(".")[0]}: ${esc((COMP[c.split(".")[0]]||{})[L]||"")}</td></tr>` : "")+`<tr><td><b>${es?"Criterio":"Criterion"} ${esc(c)}.</b> ${esc((CE[c]||{})[L]||"")}${(()=>{ const s=SECTIONS.filter(x=>((EVAL.sec||{})[x.id]||[]).includes(c)).map(x=>SECTIONS.indexOf(x)+1); const how=((EVAL.how||{})[c]||CE_HOW[c]||{})[L]; return s.length ? `<div class="ev-where">${es?"Apartados":"Sections"}: ${s.join(", ")}</div>` : how ? `<div class="ev-where">${esc(how)}</div>` : ""; })()}</td>
       ${EVAL_PARTS.map(p=>`<td class="ev-c">${EVAL.crit[c].includes(p.id)?`<span class="ev-yes" aria-label="${es?"sí":"yes"}">✔</span>`:""}</td>`).join("")}</tr>`).join("")}
   </table></div>`;
 }
