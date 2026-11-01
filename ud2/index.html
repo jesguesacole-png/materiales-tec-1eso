@@ -284,6 +284,31 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
 .qstat.ok{color:var(--green)} .qstat.part{color:#8a6900} .qstat.ko{color:var(--red)}
 .fsum{border-left:6px solid var(--orange)}
 .print-only{display:none}
+.ce-chips{display:inline-flex; flex-wrap:wrap; gap:4px; vertical-align:middle}
+.ce{display:inline-block; background:#eef3fb; color:var(--navy); border:1px solid #c9d7ec; border-radius:999px; padding:1px 8px; font-size:.8rem; font-weight:700; white-space:nowrap; cursor:help}
+.ce-line{margin:0 0 10px; font-size:.9rem; color:var(--muted)}
+.fcard .ce-line{margin:6px 0 0}
+a.ev-home{display:block; text-decoration:none; color:inherit; margin-bottom:18px; border-left:6px solid var(--navy)}
+a.ev-home:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.ev-mini{display:flex; flex-wrap:wrap; gap:8px}
+.ev-mini span{border-radius:10px; padding:4px 10px; font-size:.92rem}
+.ev-more{color:var(--blue); font-weight:700; font-size:.9rem; white-space:nowrap}
+.ev-parts{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin:10px 0 14px}
+.ev-part{display:block; border-radius:12px; padding:12px 14px; border:1px solid var(--line); break-inside:avoid}
+.ev-pct{display:inline-block; font-family:var(--font-head); font-size:1.6rem; font-weight:700; line-height:1; margin-right:8px; vertical-align:-2px}
+.ev-des{font-size:.88rem; color:var(--muted); margin-top:6px}
+.ev-T{background:#fff3e6} .ev-T .ev-pct{color:#c25e00}
+.ev-M{background:#eaf2fc} .ev-M .ev-pct{color:var(--navy)}
+.ev-F{background:#eaf7ef} .ev-F .ev-pct{color:#1e8e45}
+.ev-E{background:#fdeeee} .ev-E .ev-pct{color:#b83227}
+.ev-tbl{border-collapse:collapse; width:100%}
+.ev-tbl th,.ev-tbl td{border:1px solid var(--line); padding:6px 8px; vertical-align:top; font-size:.92rem}
+.ev-tbl th{background:var(--navy); color:#fff; font-weight:700}
+.ev-tbl th small{color:#fff; opacity:.85}
+.ev-c{text-align:center; vertical-align:middle!important; width:92px}
+.ev-yes{color:#1e8e45; font-size:1.25rem; font-weight:700}
+.ev-where{font-size:.82rem; color:var(--muted); margin-top:2px}
+@media print{ .ev-part,.ev-tbl th{-webkit-print-color-adjust:exact; print-color-adjust:exact} .ev-tbl tr{break-inside:avoid} }
 .txt-state{background:#f3f6fa; border:1px solid var(--line); border-radius:10px; padding:8px 12px; font-size:.93rem}
 .txt-res{list-style:none; padding:0; margin:0; max-height:520px; overflow:auto; border:1px solid var(--line); border-radius:10px}
 .txt-res li{padding:8px 12px; border-bottom:1px solid var(--line)}
@@ -399,6 +424,7 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
     </div>
     <nav class="tabs" aria-label="Secciones">
       <a href="#inicio" data-view="inicio" data-i18n="navHome">Inicio</a>
+      <a href="#evaluacion" data-view="evaluacion" data-i18n="navEval">Evaluación</a>
       <a href="#contenidos" data-view="contenidos" data-i18n="navContents">Contenidos</a>
       <a href="#fichas" data-view="fichas" data-i18n="navFichas">Fichas</a>
       <a href="#cuaderno" data-view="cuaderno" data-i18n="navCuaderno">Cuaderno</a>
@@ -420,6 +446,7 @@ ul.ideas li.yes{color:var(--green)} ul.ideas li.no{color:var(--red)}
   <section class="view" id="view-examen"></section>
   <section class="view" id="view-apuntes"></section>
   <section class="view" id="view-profesor"></section>
+  <section class="view" id="view-evaluacion"></section>
 </main>
 
 <div class="footer wrap" data-i18n="footer"></div>
@@ -2792,7 +2819,7 @@ const UI = {
     bankTitle:"Banco de preguntas con respuestas", solTitle:"Soluciones de las actividades",
     answer:"Respuesta",
 
-    codeBtn:"Código", codePrompt:"Escribe el código que te ha dado tu profesor:", codeGo:"Desbloquear",
+    navEval:"Evaluación", codeBtn:"Código", codePrompt:"Escribe el código que te ha dado tu profesor:", codeGo:"Desbloquear",
     codeOk:"✔ Desbloqueado: {x}", codeAlready:"Ya tenías desbloqueado: {x}", codeBad:"✘ Código no válido para esta unidad. Revísalo.",
     codeEnLock:"Este dispositivo queda en inglés (grupo bilingüe).", codeEsOnEn:"✘ Este código es del grupo en español. Pide a tu profesor el código en inglés.",
     session:"Sesión", examKey:"Examen", lockedSec:"Bloqueado · pide el código a tu profesor",
@@ -2893,7 +2920,7 @@ const UI = {
     bankTitle:"Question bank with answers", solTitle:"Activity solutions",
     answer:"Answer",
 
-    codeBtn:"Code", codePrompt:"Type the code your teacher gave you:", codeGo:"Unlock",
+    navEval:"Assessment", codeBtn:"Code", codePrompt:"Type the code your teacher gave you:", codeGo:"Unlock",
     codeOk:"✔ Unlocked: {x}", codeAlready:"You had already unlocked: {x}", codeBad:"✘ This code is not valid for this unit. Check it.",
     codeEnLock:"This device stays in English (bilingual group).", codeEsOnEn:"✘ This code is for the Spanish group. Ask your teacher for the English code.",
     session:"Lesson", examKey:"Exam", lockedSec:"Locked · ask your teacher for the code",
@@ -2971,6 +2998,16 @@ const UNIT = {
 /* =========================================================
    TOPICS (one per content section)
    ========================================================= */
+/* assessment: criteria of this unit, where each one is assessed (T taller · M memoria técnica · F tareas de clase/fichas · E prueba escrita)
+   and the criteria of each content section (also shown on its ficha) */
+UNIT.evaluation = {
+  crit: { "2.1":"MFE", "2.2":"TM", "3.1":"T", "4.1":"MFE" },
+  sec: { why:["4.1"], steps:["2.1","4.1"], instr:["4.1"], din:["4.1"], lines:["4.1"], views:["4.1"], persp:["4.1"], dims:["4.1"],
+         scale:["4.1"], cad:["4.1"], project:["2.1","4.1"], summary:["4.1"] },
+  note: { es:"<b>Proyecto de la unidad:</b> el soporte para móvil. Los bocetos, el croquis y el plano acotado forman la <b>memoria técnica</b>; su fabricación en el taller a partir de tu plano es el <b>trabajo de taller</b>.",
+          en:"<b>Unit project:</b> the phone stand. The sketches, the dimensioned sketch and the dimensioned drawing make up the <b>technical report</b>; making it in the workshop from your drawing is the <b>workshop work</b>." }
+};
+
 const TOPICS = [
   {id:"why",     es:"¿Para qué sirve el dibujo técnico?", en:"What is technical drawing for?"},
   {id:"steps",   es:"Boceto, croquis y dibujo técnico",  en:"Sketch, dimensioned sketch and technical drawing"},
@@ -5060,6 +5097,64 @@ const TXT = (function(){
     textOf: e=> e.html ? e.get().split(/(<[^>]*>)/).filter((x,i)=>i%2===0).join("") : e.get(),
     findIn: (e,f)=> e.html ? e.get().split(/(<[^>]*>)/).some((x,i)=>i%2===0 && x.includes(f)) : e.get().includes(f) };
 })();
+/* ---------- ASSESSMENT: criteria of the subject (Región de Murcia) and the four parts of the mark ---------- */
+const CE = {
+  "1.1":{es:"Definir problemas o necesidades planteadas, buscando y contrastando información procedente de diferentes fuentes de manera crítica y segura, evaluando su fiabilidad y pertinencia.", en:"Define the problems or needs set out, searching for and comparing information from different sources critically and safely, assessing how reliable and relevant it is."},
+  "1.2":{es:"Comprender y examinar productos tecnológicos de uso habitual a través del análisis de objetos y sistemas, empleando el método científico y utilizando herramientas de simulación en la construcción de conocimiento.", en:"Understand and examine everyday technological products by analysing objects and systems, using the scientific method and simulation tools to build knowledge."},
+  "1.3":{es:"Adoptar medidas preventivas para la protección de los dispositivos, los datos y la salud personal, identificando problemas y riesgos relacionados con el uso de la tecnología y analizándolos de manera ética y crítica.", en:"Take preventive measures to protect devices, data and personal health, identifying problems and risks related to the use of technology and analysing them ethically and critically."},
+  "2.1":{es:"Idear y diseñar soluciones eficaces, innovadoras y sostenibles a problemas definidos, aplicando conceptos, técnicas y procedimientos interdisciplinares, así como criterios de sostenibilidad con actitud emprendedora, perseverante y creativa.", en:"Come up with and design effective, innovative and sustainable solutions to defined problems, applying interdisciplinary concepts, techniques and procedures and sustainability criteria, with an enterprising, persevering and creative attitude."},
+  "2.2":{es:"Seleccionar, planificar y organizar los materiales y herramientas, así como las tareas necesarias para la construcción de una solución a un problema planteado, trabajando individualmente o en grupo de manera cooperativa y colaborativa.", en:"Select, plan and organise the materials and tools, and the tasks needed to build a solution to a problem, working individually or in a group in a cooperative and collaborative way."},
+  "3.1":{es:"Fabricar objetos o modelos mediante la manipulación y conformación de materiales, empleando herramientas y máquinas adecuadas, aplicando los fundamentos de estructuras, mecanismos, electricidad y electrónica y respetando las normas de seguridad y salud correspondientes.", en:"Make objects or models by handling and shaping materials, using suitable tools and machines, applying the basics of structures, mechanisms, electricity and electronics and following the health and safety rules."},
+  "4.1":{es:"Representar y comunicar el proceso de creación de un producto desde su diseño hasta su difusión, elaborando documentación técnica y gráfica con la ayuda de herramientas digitales, empleando los formatos y el vocabulario técnico adecuados, de manera colaborativa, tanto presencialmente como en remoto.", en:"Represent and communicate the process of creating a product, from its design to its dissemination, producing technical and graphic documentation with the help of digital tools, using the right formats and technical vocabulary, collaboratively, both face to face and remotely."},
+  "5.1":{es:"Describir, interpretar y diseñar soluciones a problemas informáticos a través de algoritmos y diagramas de flujo, aplicando los elementos y técnicas de programación de manera creativa.", en:"Describe, interpret and design solutions to computing problems using algorithms and flowcharts, applying programming elements and techniques creatively."},
+  "5.2":{es:"Automatizar procesos, máquinas y objetos de manera autónoma, con conexión a internet, mediante el análisis, construcción y programación de robots y sistemas de control.", en:"Automate processes, machines and objects autonomously, with an internet connection, by analysing, building and programming robots and control systems."},
+  "6.1":{es:"Usar de manera eficiente y segura los dispositivos digitales de uso cotidiano en la resolución de problemas sencillos, analizando los componentes y los sistemas de comunicación, conociendo los riesgos y adoptando medidas de seguridad para la protección de datos y equipos.", en:"Use everyday digital devices efficiently and safely to solve simple problems, analysing their components and communication systems, knowing the risks and taking security measures to protect data and equipment."},
+  "6.2":{es:"Crear contenidos, elaborar materiales y difundirlos en distintas plataformas, configurando correctamente las herramientas digitales habituales del entorno de aprendizaje, ajustándolas a sus necesidades y respetando los derechos de autor y la etiqueta digital.", en:"Create content, produce materials and share them on different platforms, setting up the usual digital tools of the learning environment correctly, adapting them to their needs and respecting copyright and digital etiquette."},
+  "6.3":{es:"Organizar la información de manera estructurada, aplicando técnicas de almacenamiento seguro.", en:"Organise information in a structured way, applying safe storage techniques."},
+  "7.1":{es:"Reconocer la influencia de la actividad tecnológica en la sociedad y en la sostenibilidad ambiental a lo largo de su historia, identificando sus aportaciones y repercusiones y valorando su importancia para el desarrollo sostenible.", en:"Recognise the influence of technological activity on society and on environmental sustainability throughout history, identifying its contributions and effects and valuing its importance for sustainable development."}
+};
+const EVAL_PARTS = [
+  { id:"T", pct:25, ico:"🔨", es:"Trabajo de taller", en:"Workshop work",
+    des:{es:"Construcción del proyecto en el taller: uso correcto de materiales, herramientas y máquinas, organización del trabajo en equipo y normas de seguridad.", en:"Building the project in the workshop: correct use of materials, tools and machines, organisation of teamwork and safety rules."} },
+  { id:"M", pct:25, ico:"📁", es:"Memoria técnica", en:"Technical report",
+    des:{es:"Toda la documentación del proyecto: definición del problema, búsqueda de información, bocetos, planos, lista de materiales, planificación y conclusiones.", en:"All the project documents: definition of the problem, research, sketches, drawings, list of materials, planning and conclusions."} },
+  { id:"F", pct:25, ico:"✏️", es:"Tareas de clase", en:"Class tasks",
+    des:{es:"Las fichas de esta web (el PDF de cada ficha que entregas en Classroom) y el trabajo diario de clase.", en:"The worksheets on this website (the PDF of each worksheet you hand in on Classroom) and the daily class work."} },
+  { id:"E", pct:25, ico:"📝", es:"Prueba escrita", en:"Written test",
+    des:{es:"El examen de la unidad. Puedes prepararlo con Práctica, Flashcards y el Examen de esta web.", en:"The unit test. You can prepare it with Practice, Flashcards and the Exam on this website."} }
+];
+const EVAL = UNIT.evaluation || null;      // {crit:{"1.1":"MFE",...}, sec:{sectionId:["1.1",...]}, note:{es,en}}
+const ceList = ()=> EVAL ? Object.keys(EVAL.crit).sort((a,b)=>parseFloat(a)-parseFloat(b) || a.localeCompare(b,undefined,{numeric:true})) : [];
+function ceChips(list, L){
+  if(!list || !list.length) return "";
+  return `<span class="ce-chips">${list.map(c=>`<span class="ce" title="${esc((CE[c]||{})[L]||"")}">CE ${esc(c)}</span>`).join("")}</span>`;
+}
+function evalPartsHTML(L){
+  return `<div class="ev-parts">${EVAL_PARTS.map(p=>`<div class="ev-part ev-${p.id}"><div class="ev-h"><span class="ev-pct">${p.pct}%</span><b>${p.ico} ${esc(p[L])}</b></div><div class="ev-des">${esc(p.des[L])}</div></div>`).join("")}</div>`;
+}
+function evalTableHTML(L){
+  const es=L==="es";
+  return `<div class="doc tbl-scroll"><table class="ev-tbl">
+    <tr><th>${es?"Criterio de evaluación":"Assessment criterion"}</th>${EVAL_PARTS.map(p=>`<th class="ev-c">${p.ico}<br>${esc(p[L])}<br><small>${p.pct}%</small></th>`).join("")}</tr>
+    ${ceList().map(c=>`<tr><td><b>CE ${esc(c)}.</b> ${esc((CE[c]||{})[L]||"")}${(()=>{ const s=SECTIONS.filter(x=>((EVAL.sec||{})[x.id]||[]).includes(c)).map(x=>SECTIONS.indexOf(x)+1); return s.length ? `<div class="ev-where">${es?"Apartados":"Sections"}: ${s.join(", ")}</div>` : ""; })()}</td>
+      ${EVAL_PARTS.map(p=>`<td class="ev-c">${EVAL.crit[c].includes(p.id)?`<span class="ev-yes" aria-label="${es?"sí":"yes"}">✔</span>`:""}</td>`).join("")}</tr>`).join("")}
+  </table></div>`;
+}
+function evalSectionHTML(L, forPrint){
+  const es=L==="es";
+  if(!EVAL) return "";
+  return `<h2${forPrint?"":` style="margin-top:0"`}>${forPrint?"":"📊 "}${es?"Cómo se evalúa esta unidad":"How this unit is assessed"}</h2>
+    <p>${es?"La nota de la asignatura se reparte en <b>cuatro partes, cada una vale un 25&nbsp;%</b>:":"The subject mark is divided into <b>four parts, each worth 25&nbsp;%</b>:"}</p>
+    ${evalPartsHTML(L)}
+    <h3>${es?"Criterios de evaluación que se trabajan en esta unidad":"Assessment criteria worked on in this unit"}</h3>
+    <p class="muted">${es?"La tabla indica en qué parte se evalúa cada criterio.":"The table shows in which part each criterion is assessed."}</p>
+    ${evalTableHTML(L)}
+    ${EVAL.note ? `<div class="note" style="margin-top:12px">${EVAL.note[L]}</div>` : ""}`;
+}
+function renderEval(){
+  const v=$("#view-evaluacion");
+  v.innerHTML = EVAL ? `<div class="card ev-card">${evalSectionHTML(LANG,false)}</div>` : `<h2>${T("navEval")}</h2><div class="card">—</div>`;
+}
 ["es","en"].forEach(l=>Object.assign(UI[l], (UNIT.ui||{})[l]||{}));
 const topicName = (id,L)=> (TOPICS.find(t=>t.id===id)||{})[L] || id;
 if(UNIT.css){ const st=document.createElement("style"); st.textContent=UNIT.css; document.head.appendChild(st); }
@@ -5279,6 +5374,10 @@ function renderHome(){
     <div class="prog-row">${SESSIONS.map(s=>`<span class="${isOpen(s.key)?"on":""}" title="${esc(keyLabel(s.key))}">${s.n}</span>`).join("")}<span class="${isOpen("ex")?"on":""}" title="${esc(T("examKey"))}">📝</span></div>
     ${TEACHER?"":`<button type="button" class="btn orange" data-opencode style="margin-top:8px">${T("openCodeBtn")}</button>`}
   </div>
+  ${EVAL ? `<a class="card ev-home" href="#evaluacion">
+    <h3 style="margin:0 0 6px">📊 ${LANG==="es"?"Cómo se evalúa esta unidad":"How this unit is assessed"}</h3>
+    <div class="ev-mini">${EVAL_PARTS.map(p=>`<span class="ev-${p.id}">${p.ico} ${esc(p[LANG])} <b>${p.pct}%</b></span>`).join("")}</div>
+    <div style="margin-top:8px"><span class="muted">${LANG==="es"?"Criterios de evaluación":"Assessment criteria"}:</span> ${ceChips(ceList(),LANG)} <span class="ev-more">${LANG==="es"?"Ver en qué parte se evalúa cada uno":"See where each one is assessed"} →</span></div></a>` : ""}
   <div class="modes">
     <a class="card mode" href="#contenidos"><span class="ico" aria-hidden="true">📘</span><h3>${T("mContents")}</h3><span>${T("mContentsD")}</span></a>
     <a class="card mode c3" href="#fichas"><span class="ico" aria-hidden="true">✏️</span><h3>${T("mFichas")}</h3><span>${T("mFichasD")}</span></a>
@@ -5304,7 +5403,7 @@ function renderContents(){
       <div class="locked-sec"><span class="num">${i+1}</span><div><b>${s[LANG].title}</b><br>🔒 ${T("lockedSec")}</div></div>` : `
       <details class="sec" data-sid="${s.id}"${openSections.has(s.id)?" open":""}>
         <summary><span class="num">${i+1}</span>${s[LANG].title}</summary>
-        <div class="sec-body doc">${LOCK && !TEACHER && CONFIG.BIL_HELP ? `<button type="button" class="btn ghost es-help" data-esh="${s.id}">🇪🇸 Ver en español</button>`:""}<div class="sec-inner">${s[LANG].html()}</div>${nbBoxHTML(s.id,LANG)}</div>
+        <div class="sec-body doc">${LOCK && !TEACHER && CONFIG.BIL_HELP ? `<button type="button" class="btn ghost es-help" data-esh="${s.id}">🇪🇸 Ver en español</button>`:""}${EVAL && (EVAL.sec||{})[s.id] ? `<p class="ce-line">${LANG==="es"?"Criterios de evaluación":"Assessment criteria"}: ${ceChips(EVAL.sec[s.id],LANG)}</p>` : ""}<div class="sec-inner">${s[LANG].html()}</div>${nbBoxHTML(s.id,LANG)}</div>
       </details>`).join("")}`;
   $$("details.sec",v).forEach(d=>d.addEventListener("toggle",()=>{ d.open?openSections.add(d.dataset.sid):openSections.delete(d.dataset.sid); }));
   $("#accOpen").onclick = ()=> $$("details.sec",v).forEach(d=>d.open=true);
@@ -5813,6 +5912,7 @@ function renderFichas(){
       <div class="fnum">${T("ficha")} ${f.num}</div>
       <h3>${esc(fichaTitle(f,L))}</h3>
       <div class="muted">${f.ids.length} ${T("activities")}</div>
+      ${EVAL && (EVAL.sec||{})[f.sec] ? `<div class="ce-line">${ceChips(EVAL.sec[f.sec],L)}</div>` : ""}
       <div class="fstat"><span class="chip ${st}">${T("st_"+st)}</span>${d.attempts?` <span>${sc.pct} % · ${d.attempts} ${T("attemptsShort")}</span>`:""}</div>
       <button class="btn" type="button" data-open="${f.num}">${d.attempts||Object.keys(d.ans).length?T("continue"):T("startFicha")} ▶</button>
     </div>`;}).join("")}</div>`;
@@ -5934,6 +6034,7 @@ function reportHTML(num, date){
       <tr><th>${T("firstTry")}</th><td>${((d.first||0)/10).toLocaleString(loc,{maximumFractionDigits:1})} / 10</td></tr>
       <tr><th>${T("finalMark")}</th><td><b>${(sc.pct/10).toLocaleString(loc,{maximumFractionDigits:1})} / 10</b> (${fmtPts(sc.got)} / ${fmtPts(sc.max)} ${T("ptsShort")})</td></tr>
       <tr><th>${T("workTime")}</th><td>≈ ${mins} min</td></tr>
+      ${EVAL && (EVAL.sec||{})[f.sec] ? `<tr><th>${L==="es"?"Criterios de evaluación":"Assessment criteria"}</th><td>${EVAL.sec[f.sec].map(c=>"CE "+esc(c)).join(", ")} · ${L==="es"?"Tareas de clase (25 %)":"Class tasks (25 %)"}</td></tr>` : ""}
       <tr><th>${T("device")}</th><td>${DEVICE}</td></tr>
       <tr><th>${T("langDone")}</th><td>${L==="en"?"English":"Español"}${LOCK?` (${T("bilMode")})`:""}</td></tr>
     </table>
@@ -6152,6 +6253,7 @@ function renderNotes(){
       <div class="toc doc" style="text-align:left;margin-top:22px"><h3>${T("toc")}</h3>
         <ol>${openSecs().map(s=>`<li>${s[LANG].title}</li>`).join("")}${nt.bank?`<li>${T("bankTitle")}</li>`:""}</ol></div>
     </div>
+    ${EVAL ? `<section class="nsec doc">${evalSectionHTML(LANG,true)}</section>` : ""}
     ${secs}
     ${bank}
   </article>`;
@@ -6298,7 +6400,7 @@ function txtBind(v){
     if(!again && performance.now()<8000) location.reload();
   }).catch(()=>{});
 })();
-const VIEWS = {inicio:renderHome, contenidos:renderContents, fichas:renderFichas, cuaderno:renderCuaderno, flashcards:renderFlash, practica:renderPractice, examen:renderExam, apuntes:renderNotes, profesor:renderProfesor};
+const VIEWS = {inicio:renderHome, evaluacion:renderEval, contenidos:renderContents, fichas:renderFichas, cuaderno:renderCuaderno, flashcards:renderFlash, practica:renderPractice, examen:renderExam, apuntes:renderNotes, profesor:renderProfesor};
 /* extra tabs defined by the unit: UNIT.tabs = [{id, es, en, icon, descEs, descEn, after, sec, render(el)}] */
 (UNIT.tabs||[]).forEach(tb=>{
   UI.es["tab_"+tb.id]=tb.es; UI.en["tab_"+tb.id]=tb.en;
