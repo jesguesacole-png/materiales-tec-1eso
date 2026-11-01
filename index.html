@@ -2,19 +2,90 @@
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tecnología y Digitalización · 1.º ESO</title>
 <style>
-:root{--navy:#16365c;--orange:#e8710a;--line:#c9d6e3}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#fbfcfe;color:#1d2733}
+:root{--navy:#16365c;--orange:#e8710a;--line:#c9d6e3;--muted:#5b6876;--soft:#fdeedd;--blue:#e3eef9}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#fbfcfe;color:#1d2733;line-height:1.5}
 header{background:var(--navy);color:#fff;padding:22px 16px} header h1{margin:0;font-size:1.6rem} header p{margin:4px 0 0;opacity:.85}
-main{max-width:900px;margin:0 auto;padding:20px 16px;display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
-a.u{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-top:6px solid var(--orange);border-radius:12px;padding:16px}
-a.u b{color:var(--navy);font-size:1.1rem} a.u span{color:#5b6876;font-size:.92rem} a.u:hover{box-shadow:0 6px 16px rgba(22,54,92,.12)}
+main{max-width:960px;margin:0 auto;padding:20px 16px}
+.intro{margin:0 0 14px}
+.evrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 8px}
+.ev{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.ev b{display:block;color:var(--orange);font-size:1.3rem} .ev span{font-size:.9rem;color:var(--navy);font-weight:600}
+.note{font-size:.9rem;color:var(--muted);margin:0 0 18px}
+.tri{margin:22px 0 0;border-top:2px solid var(--line);padding-top:14px}
+.tri h2{margin:0 0 10px;color:var(--navy);font-size:1.35rem} .tri h2 .mes{font-size:.95rem;color:var(--muted);font-weight:500}
+.sa{background:#fff;border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:12px;padding:14px 16px}
+.kicker{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--orange);font-weight:700}
+.sa h3{margin:2px 0 6px;color:var(--navy);font-size:1.25rem}
+.reto{font-style:italic;background:var(--soft);border-radius:8px;padding:8px 12px;margin:6px 0 10px}
+.odsrow{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
+.ods{font-size:.8rem;background:var(--blue);color:var(--navy);border-radius:999px;padding:3px 10px;font-weight:600}
+details{margin-top:8px} summary{cursor:pointer;color:var(--navy);font-weight:700;padding:4px 0}
+summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:4px}
+details h4{margin:12px 0 4px;color:var(--navy)} details ol{margin:0;padding-left:1.3em}
+.ts{overflow-x:auto} table{border-collapse:collapse;width:100%;font-size:.92rem} th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--navy);color:#fff} td.c{text-align:center;white-space:nowrap}
+.units{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));margin-top:10px}
+.u{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-top:6px solid var(--navy);border-radius:12px;padding:14px 16px}
+.u b{color:var(--navy);font-size:1.05rem} .u span{color:var(--muted);font-size:.9rem}
+a.u:hover{box-shadow:0 6px 16px rgba(22,54,92,.12)} a.u:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.u.soon{opacity:.6;border-top-color:var(--line)}
+@media (max-width:560px){ .evrow{grid-template-columns:repeat(2,minmax(0,1fr))} header h1{font-size:1.35rem} }
+@media print{ details>summary{display:none} .u.soon{display:none} }
 </style></head><body>
 <header><h1>Tecnología y Digitalización · 1.º ESO</h1><p>Región de Murcia · Technology and Digitalisation · Year 1 ESO</p></header>
 <main>
-<a class="u" href="ud1/"><b>U1 · El Proceso Tecnológico, el Taller y los Proyectos</b><span>U1 · The Technological Process, the Workshop and Projects</span></a>
-<a class="u" href="ud2/"><b>U2 · Expresión y Comunicación Gráfica</b><span>U2 · Graphic Expression and Communication</span></a>
-<a class="u" href="ud3/"><b>U3 · Materiales Técnicos</b><span>U3 · Technical Materials</span></a>
-<a class="u" href="ud4/"><b>U4 · Estructuras y Mecanismos</b><span>U4 · Structures and Mechanisms</span></a>
+<p class="intro">El curso tiene seis unidades, dos por evaluación. Cada evaluación es una <b>situación de aprendizaje</b>: un reto que termina con un proyecto construido en el taller. Las apps de cada unidad son las actividades que preparan ese reto.</p>
+<div class="evrow" aria-label="Cómo se calcula la nota de cada evaluación"><div class="ev"><b>25 %</b><span>Trabajo de taller</span></div><div class="ev"><b>25 %</b><span>Memoria técnica</span></div><div class="ev"><b>25 %</b><span>Tareas de clase (fichas)</span></div><div class="ev"><b>25 %</b><span>Prueba escrita</span></div></div>
+<p class="note">Los criterios 6.1, 6.2 y 6.3 (entorno digital) se evalúan durante todo el curso: fichas en PDF entregadas en Classroom, memoria técnica digital citando las imágenes y carpeta del proyecto ordenada y con copia.</p>
+<section class="tri" aria-labelledby="t1">
+  <h2 id="t1"><span class="num">1.ª evaluación</span> <span class="mes">septiembre–diciembre</span></h2>
+  <div class="sa">
+    <div class="kicker">Situación de aprendizaje 1 · <i>Tidy up your study space</i></div>
+    <h3>Ordena tu espacio de estudio</h3>
+    <p class="reto">¿Cómo podemos ordenar nuestro espacio de estudio con un objeto que fabriquemos nosotros, con poco material y sin desperdiciar?</p>
+    <p><b>Producto final:</b> Organizador de escritorio en madera, con sus planos (vistas acotadas) y la memoria técnica.</p>
+    <div class="odsrow"><span class="ods">ODS 4 Educación de calidad</span><span class="ods">ODS 12 Producción y consumo responsables</span></div>
+    <details><summary>Ver la situación de aprendizaje completa</summary>
+      <h4>Objetivos</h4><ol><li>Identificar una necesidad del entorno y describirla con precisión.</li><li>Aplicar las fases del proceso tecnológico, desde la idea hasta la evaluación del producto.</li><li>Representar el objeto con bocetos, croquis y vistas acotadas y a escala.</li><li>Usar con seguridad las herramientas básicas del taller.</li><li>Trabajar en equipo repartiendo tareas y tiempos.</li><li>Documentar el proyecto en una memoria técnica digital y entregarla en Classroom.</li></ol>
+      <h4>Fases del proyecto</h4><div class="ts"><table><tr><th>Fase</th><th>Sesiones</th><th>Qué se hace</th></tr><tr><td><b>1. Punto de partida</b></td><td class='c'>1</td><td>Fotos de mesas de estudio, lluvia de ideas y presentación del reto y de la rúbrica.</td></tr><tr><td><b>2. Aprender lo necesario</b></td><td class='c'>8–10</td><td>Apartados, fichas y talleres de las apps U1 y U2.</td></tr><tr><td><b>3. Diseñar</b></td><td class='c'>2–3</td><td>Bocetos, elección del diseño del equipo, croquis y plano con vistas acotadas.</td></tr><tr><td><b>4. Planificar</b></td><td class='c'>1–2</td><td>Lista de materiales y herramientas, hoja de proceso, roles y presupuesto.</td></tr><tr><td><b>5. Construir</b></td><td class='c'>8–10</td><td>Medir, marcar, cortar, lijar, unir y dar acabado en el taller, con fotos del proceso.</td></tr><tr><td><b>6. Evaluar y presentar</b></td><td class='c'>2</td><td>Prueba en la mesa real, mejoras, presentación, autoevaluación y coevaluación.</td></tr></table></div>
+      <h4>Criterios de evaluación y evidencias</h4><div class="ts"><table><tr><th>Criterio</th><th>Cómo se demuestra</th></tr><tr><td class='c'><b>1.1</b></td><td>Descripción de la necesidad y búsqueda de organizadores existentes</td></tr><tr><td class='c'><b>1.2</b></td><td>Análisis de un objeto cotidiano</td></tr><tr><td class='c'><b>2.1</b></td><td>Bocetos de varias ideas y elección justificada</td></tr><tr><td class='c'><b>2.2</b></td><td>Lista de materiales, plan de trabajo y reparto de roles</td></tr><tr><td class='c'><b>3.1</b></td><td>Construcción del organizador con seguridad</td></tr><tr><td class='c'><b>4.1</b></td><td>Croquis, vistas acotadas y memoria final</td></tr><tr><td class='c'><b>6.1–6.3</b></td><td>Entrega digital de fichas y memoria; carpeta ordenada</td></tr><tr><td class='c'><b>7.1</b></td><td>Aprovechamiento del material e impacto del objeto</td></tr></table></div>
+    </details>
+  </div>
+  <div class="units"><a class="u" href="ud1/"><b>U1 · El Proceso Tecnológico, el Taller y los Proyectos</b><span>U1 · The Technological Process, the Workshop and Projects</span></a><a class="u" href="ud2/"><b>U2 · Expresión y Comunicación Gráfica</b><span>U2 · Graphic Expression and Communication</span></a></div>
+</section>
+<section class="tri" aria-labelledby="t2">
+  <h2 id="t2"><span class="num">2.ª evaluación</span> <span class="mes">enero–marzo</span></h2>
+  <div class="sa">
+    <div class="kicker">Situación de aprendizaje 2 · <i>Energy in motion</i></div>
+    <h3>Energía en movimiento</h3>
+    <p class="reto">¿Cómo conseguimos que un coche recorra la mayor distancia posible sin pilas ni motor, solo con la energía que guarda al girar?</p>
+    <p><b>Producto final:</b> Coche con motor de inercia (volante de inercia y transmisión por poleas o engranajes), su plano y la memoria técnica.</p>
+    <div class="odsrow"><span class="ods">ODS 9 Industria, innovación e infraestructura</span><span class="ods">ODS 11 Ciudades y comunidades sostenibles</span><span class="ods">ODS 12 Producción y consumo responsables</span></div>
+    <details><summary>Ver la situación de aprendizaje completa</summary>
+      <h4>Objetivos</h4><ol><li>Elegir los materiales del coche según sus propiedades y su impacto ambiental.</li><li>Diseñar un chasis estable y rígido, identificando los esfuerzos de cada pieza.</li><li>Explicar el volante de inercia y calcular la relación de transmisión.</li><li>Fabricar el coche siguiendo las normas de seguridad.</li><li>Probar el coche, medir la distancia recorrida y mejorarlo con los datos.</li><li>Documentar el proceso en una memoria técnica digital.</li></ol>
+      <h4>Fases del proyecto</h4><div class="ts"><table><tr><th>Fase</th><th>Sesiones</th><th>Qué se hace</th></tr><tr><td><b>1. Punto de partida</b></td><td class='c'>1</td><td>Vídeo de un coche de fricción y de un autobús con frenado regenerativo; presentación del reto.</td></tr><tr><td><b>2. Aprender lo necesario</b></td><td class='c'>10–12</td><td>Apartados, fichas, laboratorios y simuladores de las apps U3 y U4.</td></tr><tr><td><b>3. Diseñar</b></td><td class='c'>2</td><td>Bocetos, tabla comparativa de materiales y cálculo de la relación de transmisión.</td></tr><tr><td><b>4. Planificar</b></td><td class='c'>1</td><td>Plano acotado, lista de materiales y herramientas, hoja de proceso y roles.</td></tr><tr><td><b>5. Construir</b></td><td class='c'>10–12</td><td>Chasis, ejes, ruedas, volante de inercia y transmisión en el taller.</td></tr><tr><td><b>6. Probar, mejorar y presentar</b></td><td class='c'>2–3</td><td>Prueba de distancia, tabla y gráfica de resultados, mejoras y exposición final.</td></tr></table></div>
+      <h4>Criterios de evaluación y evidencias</h4><div class="ts"><table><tr><th>Criterio</th><th>Cómo se demuestra</th></tr><tr><td class='c'><b>1.1</b></td><td>Investigación sobre volantes de inercia y frenado regenerativo</td></tr><tr><td class='c'><b>1.2</b></td><td>Laboratorios de materiales y esfuerzos; simuladores de palancas y poleas</td></tr><tr><td class='c'><b>2.1</b></td><td>Diseño del chasis y elección justificada de la transmisión</td></tr><tr><td class='c'><b>2.2</b></td><td>Lista de materiales justificada y plan de trabajo</td></tr><tr><td class='c'><b>3.1</b></td><td>Construcción del chasis, ejes, volante y transmisión</td></tr><tr><td class='c'><b>4.1</b></td><td>Plano del coche y memoria con cálculos y pruebas</td></tr><tr><td class='c'><b>6.1–6.3</b></td><td>Entrega digital de fichas y memoria; carpeta con fotos y datos</td></tr><tr><td class='c'><b>7.1</b></td><td>Movilidad sostenible y reciclaje de materiales</td></tr></table></div>
+    </details>
+  </div>
+  <div class="units"><a class="u" href="ud3/"><b>U3 · Materiales Técnicos</b><span>U3 · Technical Materials</span></a><a class="u" href="ud4/"><b>U4 · Estructuras y Mecanismos</b><span>U4 · Structures and Mechanisms</span></a></div>
+</section>
+<section class="tri" aria-labelledby="t3">
+  <h2 id="t3"><span class="num">3.ª evaluación</span> <span class="mes">abril–junio</span></h2>
+  <div class="sa">
+    <div class="kicker">Situación de aprendizaje 3 · <i>A sustainable fair</i></div>
+    <h3>Una feria sostenible</h3>
+    <p class="reto">¿Podemos construir una atracción de feria que funcione solo con energía del sol y se encienda y apague sola?</p>
+    <p><b>Producto final:</b> Tío vivo movido por una placa solar y un motor, automatizado con un sensor y el material de robótica de Código Escuela 4.0, y su memoria técnica.</p>
+    <div class="odsrow"><span class="ods">ODS 7 Energía asequible y no contaminante</span><span class="ods">ODS 11 Ciudades y comunidades sostenibles</span><span class="ods">ODS 13 Acción por el clima</span></div>
+    <details><summary>Ver la situación de aprendizaje completa</summary>
+      <h4>Objetivos</h4><ol><li>Montar e interpretar circuitos eléctricos sencillos y medir con el polímetro.</li><li>Explicar cómo una placa solar transforma la luz en electricidad.</li><li>Construir la estructura giratoria aplicando estructuras y transmisión del movimiento.</li><li>Diseñar algoritmos y programarlos en Scratch y en la plataforma de robótica.</li><li>Automatizar la atracción con un sensor de luz.</li><li>Usar los dispositivos de forma segura y proteger los datos.</li></ol>
+      <h4>Fases del proyecto</h4><div class="ts"><table><tr><th>Fase</th><th>Sesiones</th><th>Qué se hace</th></tr><tr><td><b>1. Punto de partida</b></td><td class='c'>1</td><td>Fotos de una feria de noche y encargo del ayuntamiento imaginario.</td></tr><tr><td><b>2. Aprender electricidad</b></td><td class='c'>5–6</td><td>Apartados, fichas y simulador de la app U5; montajes con pilas, motor y polímetro.</td></tr><tr><td><b>3. Diseñar y construir</b></td><td class='c'>6–8</td><td>Plano, estructura giratoria, transmisión, placa solar, motor e interruptor.</td></tr><tr><td><b>4. Aprender a programar</b></td><td class='c'>5–6</td><td>App U6: algoritmos, diagramas de flujo, Scratch y seguridad digital.</td></tr><tr><td><b>5. Automatizar</b></td><td class='c'>3–4</td><td>Programa que pone en marcha el motor con luz suficiente; pruebas y depuración.</td></tr><tr><td><b>6. Presentar la feria</b></td><td class='c'>2</td><td>Feria sostenible con todas las atracciones, autoevaluación y coevaluación.</td></tr></table></div>
+      <h4>Criterios de evaluación y evidencias</h4><div class="ts"><table><tr><th>Criterio</th><th>Cómo se demuestra</th></tr><tr><td class='c'><b>1.2</b></td><td>Simulador de circuitos y análisis de una placa solar</td></tr><tr><td class='c'><b>1.3</b></td><td>Seguridad de dispositivos y datos</td></tr><tr><td class='c'><b>2.1</b></td><td>Diseño del tío vivo y de su circuito</td></tr><tr><td class='c'><b>2.2</b></td><td>Lista de componentes y plan de trabajo por roles</td></tr><tr><td class='c'><b>3.1</b></td><td>Montaje de estructura, transmisión y circuito con seguridad</td></tr><tr><td class='c'><b>4.1</b></td><td>Esquema eléctrico normalizado y memoria final</td></tr><tr><td class='c'><b>5.1</b></td><td>Diagrama de flujo y programa en Scratch</td></tr><tr><td class='c'><b>5.2</b></td><td>Programa que controla el motor según el sensor de luz</td></tr><tr><td class='c'><b>6.1–6.3</b></td><td>Entrega digital de fichas, memoria y programa; carpeta con copia</td></tr><tr><td class='c'><b>7.1</b></td><td>Comparación de fuentes de energía y propuesta de feria sostenible</td></tr></table></div>
+    </details>
+  </div>
+  <div class="units"><div class="u soon" aria-disabled="true"><b>U5 · Electricidad</b><span>Próximamente · Coming soon</span></div><div class="u soon" aria-disabled="true"><b>U6 · Pensamiento computacional, entorno digital y robótica</b><span>Próximamente · Coming soon</span></div></div>
+</section>
 </main>
 <!-- ===== Sello de identidad (pie de página + ventana) — autocontenido, no depende del resto de la app ===== -->
 <style>
@@ -104,4 +175,5 @@ a.u b{color:var(--navy);font-size:1.1rem} a.u span{color:#5b6876;font-size:.92re
 </script>
 <!-- ===== fin del sello ===== -->
 
+<script>addEventListener("beforeprint",function(){document.querySelectorAll("main details").forEach(function(d){d.open=true;});});</script>
 </body></html>
