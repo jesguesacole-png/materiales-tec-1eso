@@ -307,6 +307,12 @@ a.ev-home:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
 .ev-tbl th small{color:#fff; opacity:.85}
 .ev-c{text-align:center; vertical-align:middle!important; width:92px}
 .ev-yes{color:#1e8e45; font-size:1.25rem; font-weight:700}
+.ev-comp td{background:#eef3fb; color:var(--navy); font-size:.85rem!important; font-weight:600}
+.comp-list{padding-left:0; list-style:none; margin:0}
+.comp-list li{border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin:6px 0; font-size:.93rem; break-inside:avoid}
+.comp-list li.on{border-left:6px solid var(--navy); background:#f6f9fd}
+.comp-list li.off{color:var(--muted)}
+.comp-tag{display:inline-block; margin-top:4px; background:var(--navy); color:#fff; border-radius:999px; padding:1px 10px; font-size:.8rem; font-weight:700}
 .ev-where{font-size:.82rem; color:var(--muted); margin-top:2px}
 @media print{ .ev-part,.ev-tbl th{-webkit-print-color-adjust:exact; print-color-adjust:exact} .ev-tbl tr{break-inside:avoid} }
 .txt-state{background:#f3f6fa; border:1px solid var(--line); border-radius:10px; padding:8px 12px; font-size:.93rem}
@@ -4436,6 +4442,30 @@ const CE = {
   "6.3":{es:"Organizar la información de manera estructurada, aplicando técnicas de almacenamiento seguro.", en:"Organise information in a structured way, applying safe storage techniques."},
   "7.1":{es:"Reconocer la influencia de la actividad tecnológica en la sociedad y en la sostenibilidad ambiental a lo largo de su historia, identificando sus aportaciones y repercusiones y valorando su importancia para el desarrollo sostenible.", en:"Recognise the influence of technological activity on society and on environmental sustainability throughout history, identifying its contributions and effects and valuing its importance for sustainable development."}
 };
+const COMP = {
+  1:{es:"Buscar y seleccionar la información adecuada proveniente de diversas fuentes, de manera crítica y segura, aplicando procesos de investigación, métodos de análisis de productos y experimentando con herramientas de simulación, para definir problemas tecnológicos e iniciar procesos de creación de soluciones a partir de la información obtenida.",
+     en:"Search for and select suitable information from different sources, critically and safely, applying research processes, product-analysis methods and experimenting with simulation tools, in order to define technological problems and start creating solutions from the information obtained."},
+  2:{es:"Abordar problemas tecnológicos con autonomía y actitud creativa, aplicando conocimientos interdisciplinares y trabajando de forma cooperativa y colaborativa, para diseñar y planificar soluciones a un problema o necesidad de forma eficaz, innovadora y sostenible.",
+     en:"Tackle technological problems autonomously and creatively, applying interdisciplinary knowledge and working cooperatively and collaboratively, in order to design and plan solutions to a problem or need in an effective, innovative and sustainable way."},
+  3:{es:"Aplicar de forma apropiada y segura distintas técnicas y conocimientos interdisciplinares utilizando operadores, sistemas tecnológicos y herramientas, teniendo en cuenta la planificación y el diseño previo, para construir o fabricar soluciones tecnológicas y sostenibles que den respuesta a necesidades en diferentes contextos.",
+     en:"Apply different techniques and interdisciplinary knowledge properly and safely, using operators, technological systems and tools and taking into account the previous planning and design, in order to build or make sustainable technological solutions that meet needs in different contexts."},
+  4:{es:"Describir, representar e intercambiar ideas o soluciones a problemas tecnológicos o digitales, utilizando medios de representación, simbología y vocabulario adecuados, así como los instrumentos y recursos disponibles y valorando la utilidad de las herramientas digitales, para comunicar y difundir información y propuestas.",
+     en:"Describe, represent and exchange ideas or solutions to technological or digital problems, using suitable means of representation, symbols and vocabulary, as well as the instruments and resources available and valuing the usefulness of digital tools, in order to communicate and share information and proposals."},
+  5:{es:"Desarrollar algoritmos y aplicaciones informáticas en distintos entornos, aplicando los principios del pensamiento computacional e incorporando las tecnologías emergentes, para crear soluciones a problemas concretos, automatizar procesos y aplicarlos en sistemas de control o en robótica.",
+     en:"Develop algorithms and computer applications in different environments, applying the principles of computational thinking and incorporating emerging technologies, in order to create solutions to specific problems, automate processes and apply them in control systems or robotics."},
+  6:{es:"Comprender los fundamentos del funcionamiento de los dispositivos y aplicaciones habituales de su entorno digital de aprendizaje, analizando sus componentes y funciones y ajustándolos a sus necesidades, para hacer un uso más eficiente y seguro de los mismos y para detectar y resolver problemas técnicos sencillos.",
+     en:"Understand the basics of how the usual devices and applications of their digital learning environment work, analysing their components and functions and adapting them to their needs, in order to use them more efficiently and safely and to detect and solve simple technical problems."},
+  7:{es:"Hacer un uso responsable y ético de la tecnología, mostrando interés por un desarrollo sostenible, identificando sus repercusiones y valorando la contribución de las tecnologías emergentes, para identificar las aportaciones y el impacto del desarrollo tecnológico en la sociedad y en el entorno.",
+     en:"Use technology responsibly and ethically, showing interest in sustainable development, identifying its effects and valuing the contribution of emerging technologies, in order to identify the contributions and impact of technological development on society and the environment."}
+};
+function compHTML(L){
+  const es=L==="es", used=new Set(ceList().map(c=>c.split(".")[0]));
+  return `<h3>${es?"Competencias específicas de la materia":"Specific competences of the subject"}</h3>
+    <p class="muted">${es?"Son las siete competencias de Tecnología y Digitalización (Decreto 235/2022, Región de Murcia). Los criterios de evaluación de arriba se agrupan en ellas. Las marcadas en color se trabajan en esta unidad; las demás, en otras unidades del curso."
+      :"These are the seven competences of Technology and Digitalisation (Decree 235/2022, Region of Murcia). The assessment criteria above are grouped under them. The ones in colour are worked on in this unit; the others, in other units of the year."}</p>
+    <ol class="comp-list">${Object.keys(COMP).map(n=>{ const on=used.has(n), crit=ceList().filter(c=>c.split(".")[0]===n);
+      return `<li class="${on?"on":"off"}"><b>CE ${n}.</b> ${esc(COMP[n][L])}${on?` <span class="comp-tag">${es?"En esta unidad":"In this unit"}: ${crit.map(c=>es?"criterio "+c:"criterion "+c).join(", ")}</span>`:""}</li>`; }).join("")}</ol>`;
+}
 const EVAL_PARTS = [
   { id:"T", pct:25, ico:"🔨", es:"Trabajo de taller", en:"Workshop work",
     des:{es:"Construcción del proyecto en el taller: uso correcto de materiales, herramientas y máquinas, organización del trabajo en equipo y normas de seguridad.", en:"Building the project in the workshop: correct use of materials, tools and machines, organisation of teamwork and safety rules."} },
@@ -4459,7 +4489,7 @@ function evalTableHTML(L){
   const es=L==="es";
   return `<div class="doc tbl-scroll"><table class="ev-tbl">
     <tr><th>${es?"Criterio de evaluación":"Assessment criterion"}</th>${EVAL_PARTS.map(p=>`<th class="ev-c">${p.ico}<br>${esc(p[L])}<br><small>${p.pct}%</small></th>`).join("")}</tr>
-    ${ceList().map(c=>`<tr><td><b>CE ${esc(c)}.</b> ${esc((CE[c]||{})[L]||"")}${(()=>{ const s=SECTIONS.filter(x=>((EVAL.sec||{})[x.id]||[]).includes(c)).map(x=>SECTIONS.indexOf(x)+1); return s.length ? `<div class="ev-where">${es?"Apartados":"Sections"}: ${s.join(", ")}</div>` : ""; })()}</td>
+    ${ceList().map((c,i,a)=>(i===0||a[i-1].split(".")[0]!==c.split(".")[0] ? `<tr class="ev-comp"><td colspan="${EVAL_PARTS.length+1}">${es?"Competencia específica":"Specific competence"} ${c.split(".")[0]}: ${esc((COMP[c.split(".")[0]]||{})[L]||"")}</td></tr>` : "")+`<tr><td><b>${es?"Criterio":"Criterion"} ${esc(c)}.</b> ${esc((CE[c]||{})[L]||"")}${(()=>{ const s=SECTIONS.filter(x=>((EVAL.sec||{})[x.id]||[]).includes(c)).map(x=>SECTIONS.indexOf(x)+1); return s.length ? `<div class="ev-where">${es?"Apartados":"Sections"}: ${s.join(", ")}</div>` : ""; })()}</td>
       ${EVAL_PARTS.map(p=>`<td class="ev-c">${EVAL.crit[c].includes(p.id)?`<span class="ev-yes" aria-label="${es?"sí":"yes"}">✔</span>`:""}</td>`).join("")}</tr>`).join("")}
   </table></div>`;
 }
@@ -4472,7 +4502,8 @@ function evalSectionHTML(L, forPrint){
     <h3>${es?"Criterios de evaluación que se trabajan en esta unidad":"Assessment criteria worked on in this unit"}</h3>
     <p class="muted">${es?"La tabla indica en qué parte se evalúa cada criterio.":"The table shows in which part each criterion is assessed."}</p>
     ${evalTableHTML(L)}
-    ${EVAL.note ? `<div class="note" style="margin-top:12px">${EVAL.note[L]}</div>` : ""}`;
+    ${EVAL.note ? `<div class="note" style="margin-top:12px">${EVAL.note[L]}</div>` : ""}
+    ${compHTML(L)}`;
 }
 function renderEval(){
   const v=$("#view-evaluacion");
