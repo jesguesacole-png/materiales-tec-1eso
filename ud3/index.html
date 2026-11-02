@@ -2858,11 +2858,11 @@ var qrcode = function() {
    PUBLIC_URL: your published address (e.g. "https://user.github.io/repo/"). The QR of every
              hand-in points there, even when the page is opened as a local file on a Chromebook.
              If empty, the QR uses the current address (and is left out when opened as a local file).
-   TEACHER_PIN: PIN to unlock the language of a device (teacher page).
+   PIN_HASH: hash of the teacher PIN (build.py computes it from TEACHER_PIN in build.json; the PIN itself is not in the page).
    BIL_HELP: true = in bilingual mode, the Contents tab offers a "see in Spanish" button per section
              (worksheets, practice, exam and flashcards stay in English only). false = English only everywhere.
    ========================================================= */
-const CONFIG = /*@@CONFIG@@*/{"ENDPOINT": "", "PASS": 80, "SALT": "TecDig1ESO-2026", "TEACHER_PIN": "1234", "BIL_HELP": true, "PUBLIC_URL": ""};
+const CONFIG = /*@@CONFIG@@*/{"ENDPOINT": "", "PASS": 80, "SALT": "SPJAX", "BIL_HELP": true, "PIN_HASH": "lb121trl5z", "PUBLIC_URL": ""};
 /* =========================================================
    1. UI STRINGS
    ========================================================= */
@@ -2921,7 +2921,7 @@ const UI = {
     nothingOpen:"Todavía no hay contenido desbloqueado.", examLocked:"El examen se desbloquea con su propio código cuando el profesor lo indique.",
     progressTitle:"Tu progreso", progressTxt:"{n} de {t} sesiones desbloqueadas", openCodeBtn:"🔑 Introducir código",
     nbTitle:"✏️ En tu cuaderno", teacherMode:"Modo profesor", teacherTitle:"Modo profesor",
-    teacherHelp:"Con el PIN, este dispositivo ve toda la unidad, puede cambiar de idioma y muestra los códigos de cada sesión. Úsalo solo en tu ordenador.",
+    teacherHelp:"Modo profesor activo: este dispositivo ve toda la unidad, puede cambiar de idioma y muestra los códigos de cada sesión. Se desactiva al cerrar el navegador o al pulsar «Salir del modo profesor».",
     teacherOn:"Activar modo profesor", teacherOff:"Salir del modo profesor", codesTitle:"Códigos de desbloqueo de esta unidad",
     codesHelp:"Da a cada grupo el código de su idioma. El primer código en inglés que introduce un alumno deja su dispositivo fijo en inglés.",
     codeEs:"Código grupo español", codeEn:"Código grupo bilingüe (inglés)", resetUnl:"Borrar desbloqueos de este dispositivo",
@@ -3022,7 +3022,7 @@ const UI = {
     nothingOpen:"No content has been unlocked yet.", examLocked:"The exam is unlocked with its own code when your teacher says so.",
     progressTitle:"Your progress", progressTxt:"{n} of {t} lessons unlocked", openCodeBtn:"🔑 Enter a code",
     nbTitle:"✏️ In your notebook", teacherMode:"Teacher mode", teacherTitle:"Teacher mode",
-    teacherHelp:"With the PIN, this device sees the whole unit, can switch language and shows the code for each lesson. Use it only on your own computer.",
+    teacherHelp:"Teacher mode is on: this device sees the whole unit, can switch language and shows the code for each lesson. It switches off when the browser is closed or when you press \"Turn off teacher mode\".",
     teacherOn:"Turn on teacher mode", teacherOff:"Turn off teacher mode", codesTitle:"Unlock codes for this unit",
     codesHelp:"Give each group the code for its language. The first English code a student types locks their device in English.",
     codeEs:"Spanish group code", codeEn:"Bilingual group code (English)", resetUnl:"Clear unlocks on this device",
@@ -5170,9 +5170,12 @@ function fmtPts(n){ return (Math.round(n*100)/100).toLocaleString(LANG==="es"?"e
 const SHARED_KEYS = new Set(["lock","teacher","ident","dev"]); // shared by all units on the same site
 const store = {
   key(k){ return (SHARED_KEYS.has(k) ? "tyd1_" : UNIT.key+"_") + k; },
-  get(k,d){ try{ const v=localStorage.getItem(store.key(k)); return v===null?d:JSON.parse(v);}catch(e){return d;} },
-  set(k,v){ try{ if(v===null||v===undefined) localStorage.removeItem(store.key(k)); else localStorage.setItem(store.key(k), JSON.stringify(v)); }catch(e){} }
+  /* teacher mode lives in sessionStorage: it ends when the browser (or the tab) is closed */
+  box(k){ return k==="teacher" ? sessionStorage : localStorage; },
+  get(k,d){ try{ const v=store.box(k).getItem(store.key(k)); return v===null?d:JSON.parse(v);}catch(e){return d;} },
+  set(k,v){ try{ if(v===null||v===undefined) store.box(k).removeItem(store.key(k)); else store.box(k).setItem(store.key(k), JSON.stringify(v)); }catch(e){} }
 };
+try{ localStorage.removeItem("tyd1_teacher"); }catch(e){}   // older versions kept teacher mode for ever
 let TEACHER = store.get("teacher", false) === true;
 /* Bilingual lock: opening the page once with ?grupo=bilingue fixes this device in English.
    Only the teacher can undo it (teacher page + PIN). */
@@ -6058,8 +6061,34 @@ function renderCuaderno(){
 }
 
 // ---------- PROFESOR (not linked in the menu) ----------
+/* teacher PIN: only its hash is in the page; after 3 wrong tries the device has to wait (30 s, 1 min, 2 min… up to 15 min) */
+function pinCheck(v, msgEl){
+  const K="tyd1_pinwait", now=Date.now(); let w={n:0,until:0};
+  try{ w=JSON.parse(localStorage.getItem(K))||w; }catch(e){}
+  const es=LANG==="es";
+  if(w.until>now){ const s=Math.ceil((w.until-now)/1000); if(msgEl) msgEl.textContent=es?`Demasiados intentos. Espera ${s} s.`:`Too many attempts. Wait ${s} s.`; return false; }
+  const ok = !!CONFIG.PIN_HASH && cyrb53(CONFIG.SALT+"|pin|"+String(v).trim()).toString(36)===CONFIG.PIN_HASH;
+  if(ok){ try{ localStorage.removeItem(K); }catch(e){} return true; }
+  w.n=(w.n||0)+1; if(w.n>=3) w.until=now+Math.min(900,30*Math.pow(2,w.n-3))*1000;
+  try{ localStorage.setItem(K, JSON.stringify(w)); }catch(e){}
+  if(msgEl) msgEl.textContent=T("badPin")+(w.n>=3?(es?` Espera ${Math.round((w.until-now)/1000)} s para volver a intentarlo.`:` Wait ${Math.round((w.until-now)/1000)} s before trying again.`):"");
+  return false;
+}
 function renderProfesor(){
   const v=$("#view-profesor"), L=LANG;
+  if(!TEACHER){   // the teacher page only opens with the PIN
+    const es=L==="es";
+    v.innerHTML = `<h2>${T("profTitle")}</h2><div class="card" style="max-width:460px">
+      <h3 style="margin-top:0">🔒 ${es?"Acceso solo para el profesorado":"Teachers only"}</h3>
+      <p class="muted" style="margin-top:0">${es?"Introduce el PIN de profesor. El modo profesor se desactiva al cerrar el navegador.":"Enter the teacher PIN. Teacher mode switches off when the browser is closed."}</p>
+      <div class="row"><label class="field">PIN<input type="password" id="pvTPin" inputmode="numeric" autocomplete="off" style="min-width:120px;width:160px"></label>
+      <button class="btn" type="button" id="pvTOn" style="margin-top:18px">${es?"Entrar":"Enter"}</button></div>
+      <p id="pvTMsg" class="muted" role="status" style="margin:8px 0 0"></p></div>`;
+    const go=()=>{ if(!pinCheck($("#pvTPin").value, $("#pvTMsg"))) return; TEACHER=true; store.set("teacher",true); applyStaticI18n(); renderProfesor(); };
+    $("#pvTOn").onclick=go; $("#pvTPin").onkeydown=e=>{ if(e.key==="Enter"){ e.preventDefault(); go(); } };
+    setTimeout(()=>{ const i=$("#pvTPin"); if(i) i.focus(); },50);
+    return;
+  }
   let params={}; try{ const h=location.hash.split("?")[1]||""; params=Object.fromEntries(new URLSearchParams(h)); }catch(e){}
   v.innerHTML = `<h2 class="no-print">${T("profTitle")}</h2>
   <div class="card no-print" style="margin-bottom:16px">
@@ -6081,10 +6110,9 @@ function renderProfesor(){
     <h3 style="margin-top:0">${T("lockTitle")}</h3>
     <p style="margin-top:0">${T("lockState")}: <b>${LOCK?T("lockedEn"):T("unlocked")}</b> · ${T("device")}: <b>${DEVICE}</b></p>
     <div class="row">
-      <label class="field">PIN<input type="password" id="pvPin" autocomplete="off" style="min-width:120px;width:140px"></label>
-      <button class="btn" type="button" id="pvLock" style="margin-top:18px">🔒 ${T("lockBtn")}</button>
-      <button class="btn ghost" type="button" id="pvUnlock" style="margin-top:18px">🔓 ${T("unlockBtn")}</button>
-      <span id="pvLockMsg" class="muted" style="margin-top:18px" role="status"></span>
+      <button class="btn" type="button" id="pvLock">🔒 ${T("lockBtn")}</button>
+      <button class="btn ghost" type="button" id="pvUnlock">🔓 ${T("unlockBtn")}</button>
+      <span id="pvLockMsg" class="muted" role="status"></span>
     </div>
   </div>
   <div class="card no-print" style="margin-bottom:16px">
@@ -6115,10 +6143,10 @@ function renderProfesor(){
   };
   $("#pvGo").onclick=run;
   if(TEACHER) txtBind(v);
-  const tOn=$("#pvTOn"); if(tOn) tOn.onclick=()=>{ if($("#pvTPin").value!==String(CONFIG.TEACHER_PIN)){ $("#pvTMsg").textContent=T("badPin"); return; } TEACHER=true; store.set("teacher",true); applyStaticI18n(); renderProfesor(); };
-  const tOff=$("#pvTOff"); if(tOff) tOff.onclick=()=>{ TEACHER=false; store.set("teacher",null); if(LOCK){ LANG=LOCK; } applyStaticI18n(); renderProfesor(); };
+  const tOn=$("#pvTOn"); if(tOn) tOn.onclick=()=>{ if(!pinCheck($("#pvTPin").value, $("#pvTMsg"))) return; TEACHER=true; store.set("teacher",true); applyStaticI18n(); renderProfesor(); };
+  const tOff=$("#pvTOff"); if(tOff) tOff.onclick=()=>{ TEACHER=false; store.set("teacher",null); if(LOCK){ LANG=LOCK; } applyStaticI18n(); location.hash="#inicio"; };
   $("#pvReset").onclick=()=>{ UNL={}; store.set("unl",null); $("#pvTMsg").textContent=T("resetDone"); };
-  const pinOK=()=>{ if($("#pvPin").value===String(CONFIG.TEACHER_PIN)) return true; $("#pvLockMsg").textContent=T("badPin"); return false; };
+  const pinOK=()=>TEACHER;
   $("#pvLock").onclick=()=>{ if(!pinOK()) return; store.set("lock","en"); LOCK="en"; LANG="en"; store.set("lang","en"); applyStaticI18n(); renderProfesor(); };
   $("#pvUnlock").onclick=()=>{ if(!pinOK()) return; store.set("lock",null); LOCK=null; applyStaticI18n(); renderProfesor(); };
   const pp=$("#pvPrint"); if(pp) pp.onclick=()=>window.print();
