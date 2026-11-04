@@ -1377,8 +1377,9 @@ function cleanMeta(m){ var o={}; if(!m||typeof m!=='object') return o;
   if(m.hide&&typeof m.hide==='object'){ var h={}; HIDE_KEYS.forEach(function(k){ if(m.hide[k]===true) h[k]=true; });
     if(Array.isArray(m.hide.steps)){ var ids=DEF.es.steps.map(function(x){ return x.id; }).slice(1); h.steps=m.hide.steps.filter(function(x,i,a){ return typeof x==='string'&&ids.indexOf(x)>=0&&a.indexOf(x)===i; }); }
     o.hide=h; }
+  if(m.pass&&typeof m.pass==='object'&&/^[0-9a-f]{16,64}$/.test(m.pass.s)&&/^[0-9a-f]{64}$/.test(m.pass.h)&&m.pass.n>=1000&&m.pass.n<=200000&&m.pass.n%1===0) o.pass={s:m.pass.s,h:m.pass.h,n:m.pass.n};
   return o; }
-function mergeMeta(r,m){ if(!m) return; if(m.lang) r.lang=m.lang; if(m.opts){ r.opts=r.opts||{}; Object.keys(m.opts).forEach(function(k){ r.opts[k]=m.opts[k].slice(); }); } if(m.hide) r.hide=clone(m.hide); }
+function mergeMeta(r,m){ if(!m) return; if(m.lang) r.lang=m.lang; if(m.opts){ r.opts=r.opts||{}; Object.keys(m.opts).forEach(function(k){ r.opts[k]=m.opts[k].slice(); }); } if(m.hide) r.hide=clone(m.hide); if(m.pass) r.pass=clone(m.pass); }
 function mergeLayers(a,b){ var r=emptyLayer(); [a,b].forEach(function(x){ if(!x) return; mergeMeta(r.meta,x.meta); ['es','en'].forEach(function(l){ Object.keys(x[l]).forEach(function(p){ r[l][p]=x[l][p]; }); }); }); return r; }
 var EMB=emptyLayer(), FILEO=null, DRAFT=null, FILE_STATUS='pending';
 function published(){ return mergeLayers(EMB,FILEO); }
@@ -1869,6 +1870,68 @@ function missingIdx(scores,n){ var m=[]; for(var i=0;i<n;i++) if(!(scores[i]>0))
 /* ===================================================================
    12. PANEL DEL PROFESOR (#profesor)
    =================================================================== */
+/* SHA-256 en JavaScript puro (funciona también sin https y al abrir el archivo desde el ordenador) */
+function sha256hex(str){
+  var bytes=unescape(encodeURIComponent(str)), n=bytes.length, i, j;
+  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  var words=[]; for(i=0;i<n;i++) words[i>>2]|=bytes.charCodeAt(i)<<(24-(i%4)*8);
+  words[n>>2]|=0x80<<(24-(n%4)*8);
+  var len=((n+8)>>6<<4)+16; for(i=words.length;i<len;i++) words[i]=words[i]|0;
+  words[len-1]=n*8; words[len-2]=Math.floor(n*8/4294967296);
+  var W=new Array(64);
+  for(i=0;i<len;i+=16){
+    var a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+    for(j=0;j<64;j++){
+      if(j<16) W[j]=words[i+j]|0;
+      else{ var x=W[j-15], y=W[j-2];
+        var s0=((x>>>7)|(x<<25))^((x>>>18)|(x<<14))^(x>>>3), s1=((y>>>17)|(y<<15))^((y>>>19)|(y<<13))^(y>>>10);
+        W[j]=(W[j-16]+s0+W[j-7]+s1)|0; }
+      var S1=((e>>>6)|(e<<26))^((e>>>11)|(e<<21))^((e>>>25)|(e<<7)), ch=(e&f)^(~e&g), t1=(h+S1+ch+K[j]+W[j])|0;
+      var S0=((a>>>2)|(a<<30))^((a>>>13)|(a<<19))^((a>>>22)|(a<<10)), mj=(a&b)^(a&c)^(b&c), t2=(S0+mj)|0;
+      h=g; g=f; f=e; e=(d+t1)|0; d=c; c=b; b=a; a=(t1+t2)|0;
+    }
+    H[0]=(H[0]+a)|0; H[1]=(H[1]+b)|0; H[2]=(H[2]+c)|0; H[3]=(H[3]+d)|0; H[4]=(H[4]+e)|0; H[5]=(H[5]+f)|0; H[6]=(H[6]+g)|0; H[7]=(H[7]+h)|0;
+  }
+  var out=''; for(i=0;i<8;i++) out+=('00000000'+(H[i]>>>0).toString(16)).slice(-8); return out;
+}
+
+/* ---------- Contraseña del panel del profesor ----------
+   No se guarda la contraseña: solo una huella cifrada (SHA-256 repetido, con sal), que va en textos.json. */
+var PKEY='opitec-122979-prof', tFails=0, tWaitUntil=0, tUnlocked=null;
+function passInfo(){ return effective().meta.pass||null; }
+function passHash(pwd,salt,n){ var h=sha256hex(salt+':'+pwd); for(var i=1;i<n;i++) h=sha256hex(h+':'+salt); return h; }
+function newSalt(){ var a=new Uint8Array(16), hex=''; try{ crypto.getRandomValues(a); }catch(e){ for(var i=0;i<16;i++) a[i]=Math.floor(Math.random()*256); } for(var j=0;j<16;j++) hex+=('0'+a[j].toString(16)).slice(-2); return hex; }
+function isUnlocked(){ var p=passInfo(); if(!p) return false; if(tUnlocked===p.h) return true; try{ if(sessionStorage.getItem(PKEY)===p.h){ tUnlocked=p.h; return true; } }catch(e){} return false; }
+function unlockNow(){ var p=passInfo(); if(!p) return; tUnlocked=p.h; try{ sessionStorage.setItem(PKEY,p.h); }catch(e){} }
+function lockNow(){ tUnlocked=null; try{ sessionStorage.removeItem(PKEY); }catch(e){} }
+function setPassword(pwd){ var salt=newSalt(), n=5000; ensureDraft(); DRAFT.meta.pass={s:salt,h:passHash(pwd,salt,n),n:n}; saveDraft(); rebuild(); unlockNow(); }
+function passUnpublished(){ var a=DRAFT&&DRAFT.meta.pass, b=published().meta.pass; return !!a&&(!b||b.h!==a.h); }
+function passFields(prefix){ return '<div class="grid2" style="max-width:720px"><div class="field"><label for="'+prefix+'1">Contraseña nueva</label><input type="password" id="'+prefix+'1" class="inp" autocomplete="new-password" minlength="6" maxlength="100"></div><div class="field"><label for="'+prefix+'2">Repite la contraseña</label><input type="password" id="'+prefix+'2" class="inp" autocomplete="new-password" minlength="6" maxlength="100"></div></div>'; }
+function readNewPass(prefix,msgId){
+  var a=document.getElementById(prefix+'1').value, b=document.getElementById(prefix+'2').value;
+  if(a.length<6){ flash(msgId,'La contraseña debe tener al menos 6 caracteres.',true); return null; }
+  if(a!==b){ flash(msgId,'Las dos contraseñas no coinciden.',true); return null; }
+  return a;
+}
+function renderTeacherGate(){
+  elWrap.className='wrap single';
+  var p=passInfo(), h='<article class="card"><header class="page-head"><div class="phase">Modo profesor</div><h1>Panel del profesor</h1>';
+  if(!p&&FILE_STATUS==='pending'){ elWrap.innerHTML=h+'<p>Comprobando la configuración…</p></header></article>'; return; }
+  if(p){
+    h+='<p>Escribe la contraseña para entrar.</p></header><div class="body"><form class="panel-sec" id="tLogin" autocomplete="off" novalidate>'+
+      '<div class="field" style="max-width:420px"><label for="tPass">Contraseña</label><input type="password" id="tPass" class="inp" autocomplete="current-password" maxlength="100"></div>'+
+      '<div class="row"><button class="btn main" type="submit">Entrar</button><button class="btn ghost" type="button" data-view="guide">Volver a la guía</button></div><p class="msg" id="tLoginMsg" role="status"></p>'+
+      '<p class="note" style="margin:0">¿La has olvidado? En GitHub, abre textos.json, borra el bloque "pass" y guarda los cambios (Commit). Al volver a entrar podrás crear otra.</p></form></div></article>';
+    pendingFocus=pendingFocus||'tPass';
+  } else {
+    h+='<p>Antes de empezar, crea una contraseña para que el alumnado no pueda entrar en el panel.</p></header><div class="body"><form class="panel-sec" id="tCreate" autocomplete="off" novalidate>'+passFields('tNew')+
+      '<div class="row"><button class="btn main" type="submit">Crear la contraseña y entrar</button><button class="btn ghost" type="button" data-view="guide">Volver a la guía</button></div><p class="msg" id="tCreateMsg" role="status"></p>'+
+      '<div class="box info"><p style="margin:0">Mínimo 6 caracteres. Al principio solo protege el panel en este navegador. Para que lo proteja en todos los ordenadores, después ve a «Publicar los cambios» y sube textos.json a GitHub.</p></div></form></div></article>';
+    pendingFocus=pendingFocus||'tNew1';
+  }
+  elWrap.innerHTML=h;
+}
 var tsub='edit', tgid='s0', tlang='es', TGROUPS=[], tgk=0;
 function tGroup(){ var g=SCHEMA.filter(function(x){ return x.id===tgid; })[0]; if(!g){ g=SCHEMA[0]; tgid=g.id; } return g; }
 function groupLabel(g){ return g.step!=null&&g.id.charAt(0)==='s'?(g.step+'. '+CUR.es.steps[g.step].title):g.label; }
@@ -1912,17 +1975,19 @@ function readField(f){
 function figPreview(k){ FIG_LANG=tlang; var s; try{ s=FIG[k](); } finally{ FIG_LANG=null; } return s; }
 function tStatusHTML(){
   var n=layerCount(effective());
+  var pw=passUnpublished()?' · <span class="warnTxt">la contraseña todavía no está publicada: ahora solo protege este navegador</span>':'';
   var txt=DRAFT?('Borrador en este navegador: <b>'+n+'</b> textos cambiados'+(isUnpublished()?' · <span class="warnTxt">tiene cambios sin publicar</span>':' · igual que lo publicado')):('Sin borrador. Estás viendo los textos publicados ('+n+' cambiados respecto al original).');
-  return '<p class="tstatus" id="tstatus">'+txt+'</p>';
+  return '<p class="tstatus" id="tstatus">'+txt+pw+'</p>';
 }
 function updateStatusLine(){ var s=document.getElementById('tstatus'); if(s) s.outerHTML=tStatusHTML(); }
 function renderTeacher(){
+  if(!isUnlocked()) return renderTeacherGate();
   elWrap.className='wrap single wide';
   var h='<article class="card tcard"><header class="page-head"><div class="phase">Modo profesor</div><h1>Panel del profesor</h1><p>Cambia los textos de la guía, revisa la evaluación de los grupos y publica los cambios para el alumnado.</p></header><div class="body">';
   h+='<div class="seg subtabs" role="group" aria-label="Secciones del panel">'+[['edit','Editar textos'],['opts','Opciones del alumnado'],['eval','Evaluación de los grupos'],['pub','Publicar los cambios']].map(function(x){ return '<button type="button" data-tsub="'+x[0]+'" aria-pressed="'+(tsub===x[0])+'">'+x[1]+'</button>'; }).join('')+'</div>';
   h+=tStatusHTML();
   h+=(tsub==='edit'?tEditHTML():tsub==='opts'?tOptsHTML():tsub==='eval'?tEvalHTML():tPubHTML());
-  h+='<div class="row"><button class="btn ghost small" type="button" data-view="guide">Salir del panel del profesor</button></div></div></article>';
+  h+='<div class="row"><button class="btn ghost small" type="button" data-view="guide">Salir del panel del profesor</button><button class="btn ghost small" type="button" id="tLock">Bloquear el panel</button></div></div></article>';
   elWrap.innerHTML=h;
 }
 function tEditHTML(){
@@ -1981,7 +2046,7 @@ function tPubHTML(){
   h+='<section class="panel-sec"><h2 class="sec" style="margin:0">Publicar en GitHub (recomendado)</h2><ol class="tsteps"><li>Pulsa <b>Descargar textos.json</b>.</li><li>En tu repositorio de GitHub, pulsa <b>Add file → Upload files</b>, arrastra <b>textos.json</b> y pulsa <b>Commit changes</b>. Tiene que quedar en la misma carpeta que index.html.</li><li>Espera uno o dos minutos y recarga la web: el alumnado verá los textos nuevos.</li><li>Cuando lo compruebes, pulsa <b>Descartar el borrador</b> aquí abajo para ver lo mismo que el alumnado.</li></ol><p class="note" style="margin:0">Ventaja: si más adelante cambias index.html por una versión nueva, tus textos se mantienen.</p><div class="row"><button class="btn main" type="button" id="tExportJson">Descargar textos.json</button></div></section>';
   h+='<section class="panel-sec"><h2 class="sec" style="margin:0">Otra opción: un solo archivo</h2><p class="note" style="margin:0">Descarga un index.html que ya lleva tus textos dentro. Sirve para Google Sites o para usarlo sin internet. Si en GitHub también hay un textos.json, mandan los textos de textos.json.</p><div class="row"><button class="btn ghost" type="button" id="tExportHtml">Descargar index.html con los textos dentro</button></div></section>';
   h+='<section class="panel-sec"><h2 class="sec" style="margin:0">Más opciones</h2><div class="row"><button class="btn ghost small" type="button" id="tImportJson">Cargar un textos.json para seguir editándolo</button><button class="btn danger small" type="button" id="tDiscard"'+(DRAFT?'':' disabled')+'>Descartar el borrador</button><button class="btn danger small" type="button" id="tResetAll">Volver todos los textos al original</button></div>'+
-    '<p class="note" style="margin:0">«Descartar el borrador» borra de este navegador los cambios que no has publicado. «Volver todos los textos al original» deja el borrador sin cambios: después publícalo para que el alumnado vea otra vez los textos originales.</p><p class="msg" id="tPubMsg" role="status"></p></section>';
+    '<p class="note" style="margin:0">«Descartar el borrador» borra de este navegador los cambios que no has publicado (también una contraseña nueva que no hayas publicado). «Volver todos los textos al original» deja el borrador sin cambios: después publícalo para que el alumnado vea otra vez los textos originales.</p><p class="msg" id="tPubMsg" role="status"></p></section>';
   return h;
 }
 function optCount(a){ return a&&a.length?'('+a.length+(a.length===1?' opción)':' opciones)'):'(escritura libre)'; }
@@ -1995,6 +2060,7 @@ function tOptsHTML(){
     '<div class="pills">'+[['diary','Diario de taller'],['memo','Memoria técnica'],['eval','Evaluación (pestaña entera)'],['self','Autoevaluación'],['peer','Coevaluación']].map(function(o){ return '<label class="pill"><input type="checkbox" data-hide="'+o[0]+'"'+(hd[o[0]]?'':' checked')+'>'+o[1]+'</label>'; }).join('')+'</div>'+
     '<h3 class="sub" style="margin:4px 0 0">Pasos de la guía</h3><div class="pills">'+CUR.es.steps.map(function(x,i){ if(i===0) return ''; return '<label class="pill"><input type="checkbox" data-hidestep="'+x.id+'"'+((hd.steps||[]).indexOf(x.id)>=0?'':' checked')+'>'+i+'. '+md(x.title)+'</label>'; }).join('')+'</div>'+
     '<p class="note" style="margin:0">El paso 0 siempre se muestra. Los pasos ocultos tampoco cuentan para la barra de progreso ni aparecen en el diario ni en la memoria.</p></section>';
+  h+='<form class="panel-sec" id="tChange" autocomplete="off" novalidate><h2 class="sec" style="margin:0">Contraseña del panel</h2><p class="note" style="margin:0">Para cambiarla, escribe la nueva dos veces. Después publica textos.json para que valga en todos los ordenadores.</p>'+passFields('tChg')+'<div class="row"><button class="btn ghost" type="submit">Cambiar la contraseña</button></div><p class="msg" id="tChgMsg" role="status"></p></form>';
   h+='<p class="note" style="margin:0">Estos cambios se publican igual que los textos: en «Publicar los cambios», con textos.json.</p>';
   return h;
 }
@@ -2153,6 +2219,7 @@ document.addEventListener('click',function(e){
       if(!left) finish(); else ids.forEach(function(id){ imgPut(id,pk.imgs[id],function(ok){ if(!ok) bad++; if(--left===0) finish(); }); }); } return; }
   if((el=e.target.closest('#wipeBtn'))){ twoStep(el,'wipe',t('wipeSure'),function(){ var keep=clone(S); D=blankData(); D.settings=keep; S=D.settings; evalSelf=evalRater=null; editing=null; save(); gcImgs(); render(); flash('backupMsg',t('wiped')); }); return; }
   /* profesor */
+  if((el=e.target.closest('#tLock'))){ lockNow(); render(); return; }
   if((el=e.target.closest('[data-tsub]'))){ tsub=el.getAttribute('data-tsub'); render(); return; }
   if((el=e.target.closest('[data-tg]'))){ tgid=el.getAttribute('data-tg'); render(); scrollToTMain(); return; }
   if((el=e.target.closest('[data-tlang]'))){ tlang=el.getAttribute('data-tlang'); render(); return; }
@@ -2172,6 +2239,17 @@ document.addEventListener('click',function(e){
   if((el=e.target.closest('#tCsv'))){ if(!download('evaluacion-'+todayISO()+'.csv','text/csv;charset=utf-8',buildCsv())) flash('tEvalMsg','No se ha podido descargar desde este visor.',true); return; }
 });
 
+document.addEventListener('submit',function(e){
+  var f=e.target; if(!f||!f.id) return;
+  if(f.id==='tLogin'){ e.preventDefault();
+    var now=Date.now(); if(now<tWaitUntil){ flash('tLoginMsg','Demasiados intentos. Espera '+Math.ceil((tWaitUntil-now)/1000)+' segundos.',true); return; }
+    var p=passInfo(), inp=document.getElementById('tPass'); if(!p||!inp) return;
+    if(passHash(inp.value,p.s,p.n)===p.h){ tFails=0; unlockNow(); render(); window.scrollTo({top:0}); }
+    else { tFails++; inp.value=''; inp.focus(); if(tFails>=5){ tWaitUntil=Date.now()+30000; tFails=0; flash('tLoginMsg','Contraseña incorrecta. Espera 30 segundos antes de volver a intentarlo.',true); } else flash('tLoginMsg','Contraseña incorrecta.',true); }
+    return; }
+  if(f.id==='tCreate'){ e.preventDefault(); if(passInfo()) return; var np=readNewPass('tNew','tCreateMsg'); if(np==null) return; setPassword(np); tsub='pub'; render(); flash('tPubMsg','Contraseña creada. Ahora descarga textos.json y súbelo a GitHub para que proteja el panel en todos los ordenadores.'); return; }
+  if(f.id==='tChange'){ e.preventDefault(); if(!isUnlocked()) return; var cp=readNewPass('tChg','tChgMsg'); if(cp==null) return; setPassword(cp); render(); flash('tChgMsg','Contraseña cambiada. Publica textos.json para que valga en todos los ordenadores.'); return; }
+});
 document.addEventListener('change',function(e){
   var tg=e.target;
   if(tg.id==='msel'){ goStep(parseInt(tg.value,10),true); return; }

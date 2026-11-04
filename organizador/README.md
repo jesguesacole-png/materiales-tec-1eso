@@ -32,6 +32,18 @@ Añade al final de la dirección:
 - `#diario`, `#memoria` y `#evaluacion` abren esas pestañas.
 - `#profesor` abre el **panel del profesor**. No aparece en los menús del alumnado.
 
+## Panel del profesor: contraseña
+
+El panel está protegido con contraseña.
+
+1. **La primera vez** que abras `#profesor`, te pedirá crear una (mínimo 6 caracteres).
+2. **Publícala:** ve a **Publicar los cambios**, descarga `textos.json` y súbelo a GitHub. Hasta entonces solo protege tu navegador, y el panel te lo recuerda.
+3. **En cada visita** el panel pide la contraseña. Queda abierto hasta que cierres el navegador o pulses **Bloquear el panel**. Tras 5 intentos fallidos hay que esperar 30 segundos.
+4. **Para cambiarla:** en **Opciones del alumnado → Contraseña del panel**. Después vuelve a publicar `textos.json`.
+5. **Si la olvidas:** en GitHub abre `textos.json`, pulsa el lápiz, borra el bloque `"pass": { … }` (y la coma que lo separa del anterior) y guarda con **Commit changes**. Al entrar podrás crear otra.
+
+La contraseña no se guarda en ningún sitio: en `textos.json` solo va una huella cifrada de la que no se puede sacar la contraseña. Aun así, es una web sin servidor: protege el panel frente al alumnado, pero un alumno con conocimientos avanzados de informática podría saltársela desde las herramientas del navegador. Aunque lo hiciera, solo cambiaría su propio navegador. Elige una contraseña que no uses en otros sitios.
+
 ## Panel del profesor: cambiar textos
 
 Abre `https://TU-USUARIO.github.io/organizador-taller/#profesor`.
@@ -86,7 +98,6 @@ No hay servidor ni cuentas de usuario. El diario, la memoria, la evaluación, la
 - Para pasar imágenes al alumnado sin usar el móvil: compártelas (por ejemplo, por Classroom), las descargan en el ordenador y las suben con «+ Añadir imágenes».
 - Si dos grupos usan el mismo ordenador y el mismo navegador, comparten los datos.
 - **Privacidad de la coevaluación:** al guardarla, las respuestas dejan de verse. Pero, como todo está en el mismo ordenador, un compañero que pulse «Cambiar mis respuestas» con el nombre de otro podría verlas. No es un sistema seguro: para coevaluaciones delicadas, conviene que cada alumno la haga en un momento en que el resto no esté delante.
-- El panel del profesor no tiene contraseña: solo está escondido. Si un alumno entra en `#profesor` y cambia textos, solo afecta a su navegador.
 
 ## Imprimir la memoria y guardarla en PDF
 
