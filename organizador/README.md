@@ -7,14 +7,15 @@ Funciona en cualquier navegador, en ordenador y en móvil. Toda la web está en 
 ## Qué incluye
 
 - **Guía paso a paso** (15 pasos): dibujos a color ampliables, instrucciones numeradas, avisos de seguridad, trucos, vocabulario y casillas de comprobación en cada paso.
-- **Diario de taller**: una entrada por sesión, con fecha, pasos trabajados, qué se hizo, problemas, soluciones, reparto de tareas y valoración.
-- **Memoria técnica**: guion de 11 apartados. Se rellena en parte sola con la guía, el diario y la autoevaluación. Se puede imprimir o guardar en PDF, descargar para editar en Word y copiar como texto.
+- **Diario de taller**: una entrada por sesión, con fecha, pasos trabajados, qué se hizo, problemas, soluciones, reparto de tareas, valoración y hasta 4 imágenes (por ejemplo, fotos o dibujos que les mande el profesor).
+- **Memoria técnica**: guion de 11 apartados. Se rellena en parte sola con la guía, el diario (también sus imágenes) y la autoevaluación. En «Planos y dibujos» pueden subir hasta 8 planos o dibujos propios, además de los dibujos de la guía, que se pueden quitar. Se puede imprimir o guardar en PDF, descargar para editar en Word y copiar como texto.
 - **Evaluación**:
   - **Autoevaluación**: cada alumno valora su trabajo con una escala de 1 a 4 y responde «lo que mejor he hecho» y «lo que tengo que mejorar».
   - **Coevaluación**: cada alumno valora a cada compañero del grupo y deja un comentario positivo y un consejo. Al guardarla, las respuestas dejan de verse en pantalla.
 - **Idiomas**: por defecto se ve en **español con el inglés debajo**, para aprender el vocabulario. En Ajustes se puede elegir solo español o solo inglés.
 - **Ajustes**: tamaño del texto (4 niveles), modo claro u oscuro, 5 combinaciones de colores (incluida una de alto contraste) y texto más espaciado para facilitar la lectura.
-- **Panel del profesor**: para cambiar los textos, ver los resultados de la evaluación y publicar los cambios.
+- **Panel del profesor**: para cambiar los textos, crear listas para elegir, ocultar partes, ver los resultados de la evaluación y publicar los cambios.
+- **Sello**: en el pie, la cruz ✝ con «Una inspiración, un don y un servicio» abre la dedicatoria.
 
 ## Publicarlo con GitHub Pages
 
@@ -57,6 +58,16 @@ Con `textos.json` aparte, si más adelante subes una versión nueva de `index.ht
 
 En el mismo apartado puedes elegir el **idioma inicial** con el que se abre la web para el alumnado.
 
+## Panel del profesor: opciones del alumnado
+
+En **Opciones del alumnado**:
+
+- **Idioma inicial** con el que se abre la web.
+- **Listas para elegir**: escribe una opción por línea en *Profesor/a*, *Curso y grupo*, *Centro* o *Nombre del grupo*. El alumnado tendrá que elegir en un desplegable en lugar de escribir. Si dejas la casilla vacía, podrán escribir libremente. No pongas aquí nombres de alumnos: `textos.json` es público en GitHub.
+- **Partes visibles**: desmarca el diario, la memoria, la autoevaluación, la coevaluación o pasos concretos de la guía si no se van a trabajar. No se borra nada: al volver a marcarlo, aparece otra vez con lo que hubiera guardado. Los pasos ocultos no cuentan para la barra de progreso ni aparecen en el diario ni en la memoria, que se renumera sola.
+
+Todo esto se publica igual que los textos, dentro de `textos.json`.
+
 ## Panel del profesor: resultados de la evaluación
 
 En **Evaluación de los grupos** verás, para cada alumno, la media de su autoevaluación, la media de la coevaluación que ha recibido y cuántos compañeros le han evaluado. En «Detalle» verás cada criterio y los comentarios de sus compañeros, con su nombre.
@@ -69,9 +80,10 @@ Escala por defecto: 1 = Todavía no · 2 = A veces · 3 = Casi siempre · 4 = Si
 
 ## Dónde se guardan los datos del alumnado
 
-No hay servidor ni cuentas de usuario. El diario, la memoria, la evaluación, las fotos, las casillas y los ajustes se guardan **solo en el navegador del ordenador que se está usando**.
+No hay servidor ni cuentas de usuario. El diario, la memoria, la evaluación, las imágenes, las casillas y los ajustes se guardan **solo en el navegador del ordenador que se está usando**. Las imágenes van en un almacén aparte del navegador (IndexedDB), con mucho más espacio. Se reducen a 1280 px antes de guardarse.
 
-- Si un grupo cambia de ordenador, o los ordenadores del aula se borran al apagarse, debe pulsar **Guardar copia (archivo)** al acabar la sesión y **Cargar copia** en la siguiente.
+- Si un grupo cambia de ordenador, o los ordenadores del aula se borran al apagarse, debe pulsar **Guardar copia (archivo)** al acabar la sesión y **Cargar copia** en la siguiente. La copia incluye las imágenes, así que puede ocupar unos megas.
+- Para pasar imágenes al alumnado sin usar el móvil: compártelas (por ejemplo, por Classroom), las descargan en el ordenador y las suben con «+ Añadir imágenes».
 - Si dos grupos usan el mismo ordenador y el mismo navegador, comparten los datos.
 - **Privacidad de la coevaluación:** al guardarla, las respuestas dejan de verse. Pero, como todo está en el mismo ordenador, un compañero que pulse «Cambiar mis respuestas» con el nombre de otro podría verlas. No es un sistema seguro: para coevaluaciones delicadas, conviene que cada alumno la haga en un momento en que el resto no esté delante.
 - El panel del profesor no tiene contraseña: solo está escondido. Si un alumno entra en `#profesor` y cambia textos, solo afecta a su navegador.
