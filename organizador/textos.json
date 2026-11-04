@@ -2,12 +2,14 @@
   "v": 1,
   "meta": {
     "opts": {
-      "teacher": [
-        "Javier G",
-        "Andrés L",
-        "Maria Ángeles",
-        "Pedro R",
-        "Jesús G"
+      "name": [
+        "Mesa 1",
+        "Mesa 2",
+        "Mesa 3",
+        "Mesa 5",
+        "Mesa 6",
+        "Mesa 7",
+        "Mesa 8"
       ],
       "course": [
         "1º ESO A BIL",
@@ -24,15 +26,18 @@
       "school": [
         "Colegio San Vicente de Paúl de Cartagena"
       ],
-      "name": [
-        "Mesa 1",
-        "Mesa 2",
-        "Mesa 3",
-        "Mesa 5",
-        "Mesa 6",
-        "Mesa 7",
-        "Mesa 8"
+      "teacher": [
+        "Javier G",
+        "Andrés L",
+        "Maria Ángeles",
+        "Pedro R",
+        "Jesús G"
       ]
+    },
+    "pass": {
+      "s": "a6df97449884ee4c52b9d04070d1b4f2",
+      "h": "0d7fb0c14aac500d40885e8b3dbe3c697f106cee0543c1ba44bd8920bda3f866",
+      "n": 5000
     }
   },
   "es": {},
