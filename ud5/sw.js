@@ -1,5 +1,5 @@
 /* offline cache for one unit — network first, cache as fallback */
-const VERSION = "ud5-32738654";
+const VERSION = "ud5-14924226";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith("ud5-") && k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

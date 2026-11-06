@@ -38,7 +38,7 @@ h1{font-size:2.2rem} h2{font-size:1.75rem} h3{font-size:1.3rem} h4{font-size:1.1
 p{margin:0 0 .8em}
 button{font:inherit; cursor:pointer}
 button:focus-visible, summary:focus-visible, select:focus-visible, input:focus-visible{outline:3px solid var(--orange); outline-offset:2px}
-.wrap{max-width:1040px; margin:0 auto; padding:0 16px}
+.wrap{max-width:1680px; margin:0 auto; padding:0 24px}
 
 /* ---------- header / nav ---------- */
 header.top{background:var(--navy); color:#fff; position:sticky; top:0; z-index:20; box-shadow:0 2px 8px rgba(0,0,0,.18)}
@@ -59,6 +59,9 @@ body.lang-locked .lang{display:none}
 .code-msg{margin-top:6px; font-weight:700}
 .code-msg.ok{color:var(--green)} .code-msg.ko{color:var(--red)}
 .locked-sec{display:flex; align-items:center; gap:12px; background:#f1f4f8; border:1px dashed var(--line); border-radius:var(--radius); padding:14px 18px; margin-bottom:10px; color:var(--muted)}
+.vis-cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:8px 24px}
+.vis-list{list-style:none; padding:0; margin:6px 0 0} .vis-list li{margin:3px 0}
+.vis-row{display:flex; gap:8px; align-items:flex-start; cursor:pointer} .vis-row input{width:18px; height:18px; margin-top:2px; flex:none}
 .locked-sec .num{flex:none; width:34px; height:34px; border-radius:8px; background:#c3cdd8; color:#fff; display:grid; place-items:center; font-family:var(--font-head); font-size:1.1rem}
 .locked-sec b{font-family:var(--font-head); font-size:1.25rem; color:#7a8794}
 .fcard.locked{opacity:.6}
@@ -373,6 +376,7 @@ a.ev-home:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
 
 @media (max-width:760px){
   body{font-size:16px}
+  .wrap{padding:0 16px}
   header.top{position:static}
   .brand b{font-size:1.1rem}
   .hero{grid-template-columns:1fr}
@@ -4744,7 +4748,7 @@ const TXT = (function(){
   const K = UNIT.key+"_";
   const read = k=>{ try{ const v=localStorage.getItem(K+k); return v ? JSON.parse(v) : null; }catch(e){ return null; } };
   const valid = f=>!!(f && typeof f==="object" && f.unidad===UNIT.code && Array.isArray(f.cambios));
-  let teacher=false; try{ teacher = localStorage.getItem("tyd1_teacher")==="true"; }catch(e){}
+  let teacher=false; try{ teacher = sessionStorage.getItem("tyd1_teacher")==="true"; }catch(e){}
   const pub = read("txtPub"), draft = teacher ? read("txtDraft") : null;
   const usingDraft = valid(draft);
   const active = usingDraft ? draft : (valid(pub) ? pub : null);
@@ -4762,12 +4766,13 @@ const TXT = (function(){
       walk.stack.pop();
     };
     walk.stack=[];
-    walk(TOPICS, ["TOPICS"], ()=>false);
+    // the full lists (also when some sections are hidden) so the paths of the changes never shift
+    walk(typeof ALL_TOPICS!=="undefined" ? ALL_TOPICS : TOPICS, ["TOPICS"], ()=>false);
     walk(RAW_Q, ["RAW_Q"], p=>p.length===3 && p[2]==="0");
     if(typeof MODEL_Q!=="undefined") walk(MODEL_Q, ["MODEL_Q"], ()=>false);
     walk(FICHA_DEF, ["FICHA_DEF"], ()=>false);
-    if(typeof GUIDE!=="undefined") walk(GUIDE, ["GUIDE"], p=>p.length===5 && p[2]==="e" && p[4]==="0");
-    SECTIONS.forEach(s=>["es","en"].forEach(l=>{
+    if(typeof GUIDE!=="undefined") walk(typeof ALL_GUIDE!=="undefined" ? ALL_GUIDE : GUIDE, ["GUIDE"], p=>p.length===5 && p[2]==="e" && p[4]==="0");
+    (typeof ALL_SECS!=="undefined" ? ALL_SECS : SECTIONS).forEach(s=>["es","en"].forEach(l=>{
       const o=s[l]; if(!o) return;
       out.push({path:`SEC.${s.id}.${l}.title`, get:()=>o.title, set:v=>{ o.title=v; }, html:false, sec:s.id});
       out.push({path:`SEC.${s.id}.${l}.html`, get:()=>o.html(), html:true, sec:s.id});
@@ -4781,7 +4786,7 @@ const TXT = (function(){
     const src = sources();
     src.forEach(e=>{
       if(e.html){
-        const [_, id, l] = e.path.split("."), o = SECTIONS.find(s=>s.id===id)[l], orig = o.html;
+        const [_, id, l] = e.path.split("."), o = (typeof ALL_SECS!=="undefined" ? ALL_SECS : SECTIONS).find(s=>s.id===id)[l], orig = o.html;
         const mine = rules.filter(c=>applies(c, e.path)); if(!mine.length) return;
         o.html = (...a)=>mine.reduce((h,c)=>repHTML(h,c.f,c.r), orig(...a));
       } else {
@@ -4791,10 +4796,37 @@ const TXT = (function(){
       }
     });
   }
-  return { K, valid, pub, draft, usingDraft, active, rules, sources, clean,
+  const hidden = active && Array.isArray(active.ocultos) ? active.ocultos.filter(x=>typeof x==="string" && x) : [];
+  return { K, valid, pub, draft, usingDraft, active, rules, hidden, sources, clean,
     textOf: e=> e.html ? e.get().split(/(<[^>]*>)/).filter((x,i)=>i%2===0).join("") : e.get(),
     findIn: (e,f)=> e.html ? e.get().split(/(<[^>]*>)/).some((x,i)=>i%2===0 && x.includes(f)) : e.get().includes(f) };
 })();
+/* ---------- HIDDEN SECTIONS AND TABS ----------
+   The teacher can hide content sections and workshop tabs (teacher page). The list travels in textos.json as "ocultos"
+   (section ids, and "tab:<id>" for tabs). A hidden section disappears everywhere for everyone: contents, its ficha,
+   its questions (practice, flashcards, exams), the notebook guide and the notes; the rest are renumbered in order.
+   Session keys (unlock codes) and ficha numbers (delivery codes) keep the ORIGINAL order, so they never change. */
+var ALL_SECS = SECTIONS.slice(), ALL_TOPICS = TOPICS.slice(), ALL_GUIDE = (typeof GUIDE!=="undefined") ? GUIDE.slice() : [];   // var: TXT.sources() checks them with typeof
+const HIDDEN = (function(){
+  const ids = new Set(TXT.hidden);
+  if(ALL_SECS.every(s=>ids.has(s.id))) ALL_SECS.forEach(s=>ids.delete(s.id));   // never hide every section
+  return ids;
+})();
+const isHiddenSec = id => HIDDEN.has(id) && ALL_SECS.some(s=>s.id===id);
+const cutHidden = (arr, idOf) => { for(let i=arr.length-1;i>=0;i--) if(HIDDEN.has(idOf(arr[i]))) arr.splice(i,1); };
+cutHidden(SECTIONS, s=>s.id);
+cutHidden(TOPICS, t=>t.id);
+if(typeof GUIDE!=="undefined") cutHidden(GUIDE, g=>g.sec);
+var UNIT_TABS_ALL = (UNIT.tabs||[]).slice();
+if(UNIT.tabs) cutHidden(UNIT.tabs, tb=>"tab:"+tb.id);
+/* a tab whose section is hidden opens with the nearest visible section before it (or after it) */
+function visibleSecFor(id){
+  if(!isHiddenSec(id)) return id;
+  const i = ALL_SECS.findIndex(s=>s.id===id);
+  for(let k=i-1;k>=0;k--) if(!HIDDEN.has(ALL_SECS[k].id)) return ALL_SECS[k].id;
+  for(let k=i+1;k<ALL_SECS.length;k++) if(!HIDDEN.has(ALL_SECS[k].id)) return ALL_SECS[k].id;
+  return id;
+}
 /* ---------- ASSESSMENT: criteria of the subject (Región de Murcia) and the four parts of the mark ---------- */
 const CE = {
   "1.1":{es:"Definir problemas o necesidades planteadas, buscando y contrastando información procedente de diferentes fuentes de manera crítica y segura, evaluando su fiabilidad y pertinencia.", en:"Define the problems or needs set out, searching for and comparing information from different sources critically and safely, assessing how reliable and relevant it is."},
@@ -4852,6 +4884,7 @@ const CE_HOW = {
   "6.3":{es:"Se evalúa a lo largo de todo el curso: guardar las fotos y documentos del proyecto en una carpeta ordenada, con nombres claros, y tener una copia de seguridad.", en:"Assessed throughout the year: saving the project photos and documents in a tidy folder, with clear names, and keeping a backup copy."}
 };
 const EVAL = UNIT.evaluation || null;      // {crit:{"1.1":"MFE",...}, sec:{sectionId:["1.1",...]}, note:{es,en}}
+if(EVAL && EVAL.sec) HIDDEN.forEach(id=>{ delete EVAL.sec[id]; });
 const ceList = ()=> EVAL ? Object.keys(EVAL.crit).sort((a,b)=>parseFloat(a)-parseFloat(b) || a.localeCompare(b,undefined,{numeric:true})) : [];
 function ceChips(list, L){
   if(!list || !list.length) return "";
@@ -4911,7 +4944,7 @@ FICHA_DEF.forEach(f=>{ f.ids = f.items.map(it=>{
   return addQ(Object.assign({t:f.sec}, it), "ficha");
 }); });
 /* questions used for study (practice, flashcards, exam, notes): everything except ficha-only items */
-const STUDY = QUESTIONS.filter(q=>q.src!=="ficha");
+const STUDY = QUESTIONS.filter(q=>q.src!=="ficha" && !HIDDEN.has(q.t));
 
 /* ---------- answer checking (case, accents and punctuation are ignored) ---------- */
 function norm(s){
@@ -5017,7 +5050,9 @@ const $ = (s,el=document)=>el.querySelector(s);
 const $$ = (s,el=document)=>Array.from(el.querySelectorAll(s));
 
 /* ---------- progressive unlocking by codes ---------- */
-const SESSIONS = (UNIT.sessions || SECTIONS.map(s=>({secs:[s.id]}))).map((x,i)=>Object.assign({key:"s"+(i+1), n:i+1}, x));
+const SESSIONS = (UNIT.sessions || ALL_SECS.map(s=>({secs:[s.id]})))
+  .map((x,i)=>Object.assign({key:"s"+(i+1)}, x, {secs:x.secs.filter(id=>!HIDDEN.has(id))}))   // key from the original order: codes never change
+  .filter(x=>x.secs.length).map((x,i)=>Object.assign(x, {n:i+1}));
 const SEC_SESSION = {}; SESSIONS.forEach(ss=>ss.secs.forEach(id=>SEC_SESSION[id]=ss.key));
 let UNL = store.get("unl", {}); if(!UNL || typeof UNL!=="object") UNL={};
 const CODE_ABC = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -5608,7 +5643,9 @@ function fd(num){
   return fs.data[num];
 }
 const saveFichas = ()=>store.set("fichas", fs.data);
-const FICHAS = FICHA_DEF.map((f,i)=>({num:i+1, sec:f.sec, ids:f.ids}));
+const FICHAS = FICHA_DEF.map((f,i)=>({num:i+1, sec:f.sec, ids:f.ids, hidden:HIDDEN.has(f.sec)}));
+FICHAS.filter(f=>!f.hidden).forEach((f,i)=>{ f.lab=i+1; });   // number shown to students (hidden fichas are skipped)
+const FICHAS_VIS = FICHAS.filter(f=>!f.hidden);
 function fichaScore(num){
   const f=FICHAS[num-1], d=fd(num);
   let got=0, max=0;
@@ -5637,11 +5674,11 @@ function renderFichas(){
     <p style="margin-top:0">${T("fichasIntro")}</p>
     ${identHTML()}
   </div>
-  <div class="fgrid">${FICHAS.map(f=>{
-    if(!secOpen(f.sec)) return `<div class="card fcard locked"><div class="fnum">${T("ficha")} ${f.num}</div><h3>${esc(fichaTitle(f,L))}</h3><div class="muted">🔒 ${T("lockedSec")}</div></div>`;
+  <div class="fgrid">${FICHAS_VIS.map(f=>{
+    if(!secOpen(f.sec)) return `<div class="card fcard locked"><div class="fnum">${T("ficha")} ${f.lab}</div><h3>${esc(fichaTitle(f,L))}</h3><div class="muted">🔒 ${T("lockedSec")}</div></div>`;
     const d=fd(f.num), st=fichaStatus(f.num), sc=fichaScore(f.num);
     return `<div class="card fcard st-${st}">
-      <div class="fnum">${T("ficha")} ${f.num}</div>
+      <div class="fnum">${T("ficha")} ${f.lab}</div>
       <h3>${esc(fichaTitle(f,L))}</h3>
       <div class="muted">${f.ids.length} ${T("activities")}</div>
       ${EVAL && (EVAL.sec||{})[f.sec] ? `<div class="ce-line">${ceChips(EVAL.sec[f.sec],L)}</div>` : ""}
@@ -5709,7 +5746,7 @@ function renderFicha(num){
   v.innerHTML = `
   <div class="no-print">
     <button class="btn ghost" type="button" id="fBack">◀ ${T("allFichas")}</button>
-    <h2 style="margin-top:12px">${T("ficha")} ${num}: ${esc(sec[L].title)}</h2>
+    <h2 style="margin-top:12px">${T("ficha")} ${f.lab||num}: ${esc(sec[L].title)}</h2>
     <div class="card" style="margin-bottom:14px">${identHTML()}</div>
     <h3 class="step-h"><span>1</span> ${T("step1")}</h3>
     <details class="sec" open><summary><span class="num">${SECTIONS.indexOf(sec)+1}</span>${esc(sec[L].title)}</summary><div class="sec-body doc">${sec[L].html()}${nbBoxHTML(sec.id,L)}</div></details>
@@ -5755,7 +5792,7 @@ function reportHTML(num, date){
   return { code, url, html:`
   <div class="rep-head">
     <div><div class="muted">${esc(T("subject"))} · ${esc(T("unitTitle"))}</div>
-      <h1>${T("ficha")} ${num}: ${esc(fichaTitle(f,L))}</h1></div>
+      <h1>${T("ficha")} ${f.lab||num}: ${esc(fichaTitle(f,L))}</h1></div>
   </div>
   <div class="rep-top">
     <table class="rep-data">
@@ -5799,7 +5836,7 @@ function makeDelivery(num){
   }
   const safe = s=>norm(s).replace(/ /g,"_").slice(0,40);
   const oldTitle=document.title;
-  document.title = `${UNIT.code}_Ficha${String(num).padStart(2,"0")}_${safe(fs.ident.name)}_${safe(fs.ident.group)}`;
+  document.title = `${UNIT.code}_Ficha${String(FICHAS[num-1].lab||num).padStart(2,"0")}_${safe(fs.ident.name)}_${safe(fs.ident.group)}`;
   document.body.classList.add("printing-report");
   const restore=()=>{ document.title=oldTitle; document.body.classList.remove("printing-report"); window.removeEventListener("afterprint",restore); };
   window.addEventListener("afterprint",restore);
@@ -5851,9 +5888,9 @@ function renderCuaderno(){
       <p style="margin-top:18px">${T("teacherSign")}: ______________________ &nbsp; ${T("date")}: ____________</p></div>
     </section>`;
   } else {
-    const list = (cu.ficha==="all" ? FICHAS : [FICHAS[+cu.ficha-1]]).filter(f=>secOpen(f.sec));
+    const list = (cu.ficha==="all" ? FICHAS_VIS : [FICHAS[+cu.ficha-1]]).filter(f=>f && !f.hidden && secOpen(f.sec));
     body = !list.length ? lockedCardHTML(T("nothingOpen")) : list.map(f=>{ const sec=secById(f.sec);
-      return `<section class="paper doc">${sheetHead(`${T("ficha")} ${f.num}: ${esc(sec[L].title)}`)}
+      return `<section class="paper doc">${sheetHead(`${T("ficha")} ${f.lab||f.num}: ${esc(sec[L].title)}`)}
         ${cu.withText ? `<div class="paper-text"><h3>${T("step1")}</h3>${sec[L].html()}</div><h3>${T("step2")}</h3>` : `<p class="muted">${T("paperRead")} ${SECTIONS.indexOf(sec)+1}.</p>`}
         ${f.ids.map((id,k)=>paperQHTML(QUESTIONS[id],k,L)).join("")}</section>`; }).join("");
   }
@@ -5864,7 +5901,7 @@ function renderCuaderno(){
       <fieldset><legend>${T("cuWhat")}</legend>
         <label><input type="radio" name="cum" value="guide"${cu.mode==="guide"?" checked":""}> ${T("guideTitle")}</label>
         <label><input type="radio" name="cum" value="paper"${cu.mode==="paper"?" checked":""}> ${T("paperFichas")}</label></fieldset>
-      ${cu.mode==="paper"?`<label class="field">${T("ficha")}<select id="cuF"><option value="all">${T("allFichas")}</option>${FICHAS.filter(f=>secOpen(f.sec)).map(f=>`<option value="${f.num}"${String(f.num)===String(cu.ficha)?" selected":""}>${f.num}. ${esc(fichaTitle(f,L))}</option>`).join("")}</select></label>
+      ${cu.mode==="paper"?`<label class="field">${T("ficha")}<select id="cuF"><option value="all">${T("allFichas")}</option>${FICHAS_VIS.filter(f=>secOpen(f.sec)).map(f=>`<option value="${f.num}"${String(f.num)===String(cu.ficha)?" selected":""}>${f.num}. ${esc(fichaTitle(f,L))}</option>`).join("")}</select></label>
       <label style="margin-top:22px"><input type="checkbox" id="cuTxt"${cu.withText?" checked":""}> ${T("withText")}</label>`:""}
       <fieldset><legend>${T("printMode")}</legend>
         <label><input type="radio" name="cub" value="color"${!cu.bw?" checked":""}> ${T("color")}</label>
@@ -5928,7 +5965,7 @@ function renderProfesor(){
       <div class="doc tbl-scroll"><table class="codes-tbl"><tr><th>${T("session")}</th><th>${T("codeEs")}</th><th>${T("codeEn")}</th></tr>
       ${UNLOCK_KEYS.map(k=>`<tr><td>${esc(keyLabel(k))}</td><td class="code">${unlockCode(k,"es")}</td><td class="code">${unlockCode(k,"en")}</td></tr>`).join("")}</table></div>` : ""}
   </div>
-  ${TEACHER ? txtPanelHTML() : ""}
+  ${TEACHER ? visPanelHTML() + txtPanelHTML() : ""}
   <div class="card no-print" style="margin-bottom:16px">
     <h3 style="margin-top:0">${T("lockTitle")}</h3>
     <p style="margin-top:0">${T("lockState")}: <b>${LOCK?T("lockedEn"):T("unlocked")}</b> · ${T("device")}: <b>${DEVICE}</b></p>
@@ -5951,7 +5988,7 @@ function renderProfesor(){
   </div>
   ${!TEACHER ? "" : `<div class="card">
     <div class="row no-print" style="justify-content:space-between"><h3 style="margin:0">${T("keyTitle")}</h3><button class="btn ghost" type="button" id="pvPrint">🖨️ ${T("printBtn")}</button></div>
-    <div class="doc">${FICHAS.map(f=>`<h3>${T("ficha")} ${f.num}: ${esc(fichaTitle(f,L))}</h3>${f.ids.map((id,k)=>{ const q=QUESTIONS[id];
+    <div class="doc">${FICHAS_VIS.map(f=>`<h3>${T("ficha")} ${f.lab}: ${esc(fichaTitle(f,L))}</h3>${f.ids.map((id,k)=>{ const q=QUESTIONS[id];
       return `<div class="bank-q"><b>${k+1}. ${esc(promptText(q,L))}</b> <span class="muted">(${fmtPts(q.pts)} ${T("ptsShort")})</span>${fcExtra(q,L)}<br>✔ ${esc(answerText(q,L))}</div>`; }).join("")}`).join("")}</div>
   </div>`}`;
   $("#pvC").value=params.c||""; $("#pvN").value=params.n||""; $("#pvG").value=params.g||"";
@@ -5959,13 +5996,13 @@ function renderProfesor(){
     const r=decodeCode($("#pvC").value, $("#pvN").value, $("#pvG").value), out=$("#pvOut"), loc=L==="es"?"es-ES":"en-GB";
     if(!r.ok){ out.innerHTML=`<div class="fb ko">${T("badCode")}</div>`; return; }
     out.innerHTML = `<div class="fb ${r.valid?"ok":"ko"}"><b>${r.valid?T("validYes"):T("validNo")}</b>
-      <ul style="margin:6px 0 0"><li>${T("ficha")} ${r.f}: ${esc(fichaTitle(FICHAS[r.f-1],L))}</li>
+      <ul style="margin:6px 0 0"><li>${T("ficha")} ${FICHAS[r.f-1].lab||r.f}: ${esc(fichaTitle(FICHAS[r.f-1],L))}</li>
       <li>${T("finalMark")}: <b>${(r.score/10).toLocaleString(loc)}</b> / 10 · ${T("firstTry")}: ${(r.first/10).toLocaleString(loc)} · ${T("attempts")}: ${r.att}</li>
       <li>${T("deliveredAt")}: ${r.date.toLocaleString(loc)}</li><li>${T("device")}: <b>${r.dev}</b></li><li>${T("langDone")}: <b>${r.lang==="en"?"English":"Español"}</b></li></ul>
       <p style="margin:6px 0 0" class="muted">${T("verifyNote")}</p></div>`;
   };
   $("#pvGo").onclick=run;
-  if(TEACHER) txtBind(v);
+  if(TEACHER){ visBind(v); txtBind(v); }
   const tOn=$("#pvTOn"); if(tOn) tOn.onclick=()=>{ if(!pinCheck($("#pvTPin").value, $("#pvTMsg"))) return; TEACHER=true; store.set("teacher",true); applyStaticI18n(); renderProfesor(); };
   const tOff=$("#pvTOff"); if(tOff) tOff.onclick=()=>{ TEACHER=false; store.set("teacher",null); if(LOCK){ LANG=LOCK; } applyStaticI18n(); location.hash="#inicio"; };
   $("#pvReset").onclick=()=>{ UNL={}; store.set("unl",null); $("#pvTMsg").textContent=T("resetDone"); };
@@ -6038,13 +6075,14 @@ function txtPlace(path, L){
   const es=L==="es", p=path.split("."), n=k=>+p[k]+1;
   const part = {q:es?"enunciado":"question", o:es?"opciones":"options", x:es?"explicación":"explanation", items:es?"elementos":"items", opts:es?"opciones":"options",
     blanks:es?"respuesta de un hueco":"gap answer", model:es?"respuesta modelo":"model answer", groups:es?"ideas clave":"key ideas", e:"", title:es?"título":"title", html:es?"texto":"text"};
-  const secName = id=>{ const i=SECTIONS.findIndex(s=>s.id===id); return `${i+1}. ${SECTIONS[i][L].title}`; };
+  const secName = id=>{ const i=SECTIONS.findIndex(s=>s.id===id); if(i>=0) return `${i+1}. ${SECTIONS[i][L].title}`;
+    const h=ALL_SECS.find(s=>s.id===id); return h ? `${h[L].title} (${es?"oculto":"hidden"})` : id; };
   if(p[0]==="SEC") return `${es?"Contenidos":"Contents"} · ${secName(p[1])} · ${part[p[3]]}`;
   if(p[0]==="TOPICS") return `${es?"Nombre del apartado":"Section name"} ${n(1)}`;
   if(p[0]==="RAW_Q"){ const k=+p[2]; return `${es?"Banco de preguntas":"Question bank"} nº ${n(1)} · ${k===1||k===2?part.q:k===3?(+p[3]===0?(es?"opción correcta":"correct option"):(es?"opción incorrecta":"wrong option")):part.x}`; }
   if(p[0]==="MODEL_Q") return `${es?"Examen modelo, pregunta":"Model exam, question"} ${MODEL_Q[+p[1]].n} · ${part[p[2]]||p[2]}`;
   if(p[0]==="FICHA_DEF") return `${es?"Ficha":"Worksheet"} ${n(1)}, ${es?"actividad":"activity"} ${n(3)} · ${part[p[4]]||p[4]}`;
-  if(p[0]==="GUIDE") return `${es?"Guía del cuaderno":"Notebook guide"} · ${secName(GUIDE[+p[1]].sec)}`;
+  if(p[0]==="GUIDE") return `${es?"Guía del cuaderno":"Notebook guide"} · ${secName(ALL_GUIDE[+p[1]].sec)}`;
   return path;
 }
 function txtLang(path){
@@ -6058,13 +6096,39 @@ function txtLang(path){
   if(p.includes("es")) return "es"; if(p.includes("en")) return "en";
   return /^[01]$/.test(last) ? (last==="0"?"es":"en") : "—";
 }
-function txtSave(list){
-  const f = { unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:list };
+function txtSave(list, ocultos){
+  const f = { unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:list, ocultos:(ocultos||TXT.hidden).slice() };
   try{ localStorage.setItem(TXT.K+"txtDraft", JSON.stringify(f)); }catch(e){}
   try{ sessionStorage.setItem("txtScroll","1"); }catch(e){}
   location.reload();
 }
 function txtDraftList(){ return TXT.usingDraft ? TXT.clean(TXT.draft.cambios).slice() : (TXT.valid(TXT.pub) ? TXT.clean(TXT.pub.cambios).slice() : []); }
+/* teacher: choose which sections and workshop tabs the students see (published in textos.json as "ocultos") */
+const ALL_TABS = (typeof UNIT_TABS_ALL!=="undefined") ? UNIT_TABS_ALL : [];
+function visPanelHTML(){
+  const es=LANG==="es", L=LANG, pubH = TXT.valid(TXT.pub) && Array.isArray(TXT.pub.ocultos) ? TXT.pub.ocultos.length : 0;
+  const row=(id, label, extra)=>`<li><label class="vis-row"><input type="checkbox" data-vis="${esc(id)}"${TXT.hidden.includes(id)?"":" checked"}> ${label}${extra||""}</label></li>`;
+  return `<div class="card no-print" id="visBox" style="margin-bottom:16px">
+    <h3 style="margin-top:0">👁️ ${es?"Qué ve el alumnado":"What the students see"}</h3>
+    <p class="muted" style="margin-top:0">${es
+      ? "Desmarca un apartado para ocultarlo. Desaparece del todo: de Contenidos, de Fichas, del Cuaderno, de los Apuntes y de las preguntas de Práctica, Flashcards y Examen. Los demás apartados se renumeran solos y mantienen su orden. Los códigos de desbloqueo y los de entrega de fichas no cambian. Para que lo vean los alumnos, descarga el <b>textos.json</b> (más abajo) y súbelo a GitHub, igual que las correcciones de textos."
+      : "Untick a section to hide it. It disappears completely: from Contents, Worksheets, Notebook, Notes and from the Practice, Flashcards and Exam questions. The other sections are renumbered and keep their order. Unlock codes and worksheet delivery codes do not change. For the students to see it, download <b>textos.json</b> (below) and upload it to GitHub, like the text corrections."}</p>
+    <div class="vis-cols"><div><b>${es?"Apartados":"Sections"}</b><ul class="vis-list">${ALL_SECS.map((s,i)=>row(s.id, `${i+1}. ${esc(s[L].title)}`)).join("")}</ul></div>
+    ${ALL_TABS.length ? `<div><b>${es?"Pestañas de talleres y laboratorios":"Workshop and lab tabs"}</b><ul class="vis-list">${ALL_TABS.map(tb=>row("tab:"+tb.id, `${tb.icon||"⭐"} ${esc(tb[L])}`)).join("")}</ul></div>` : ""}</div>
+    <div class="row" style="margin-top:10px"><button class="btn green" type="button" id="visSave">💾 ${es?"Guardar y ver cómo queda":"Save and preview"}</button><span id="visMsg" class="muted" role="status"></span></div>
+    <p class="muted" style="margin:8px 0 0">${TXT.hidden.length ? `${es?"Ahora mismo hay":"Right now there are"} <b>${TXT.hidden.length}</b> ${es?(TXT.hidden.length===1?"elemento oculto":"elementos ocultos"):(TXT.hidden.length===1?"hidden item":"hidden items")} ${TXT.usingDraft?(es?"en tu borrador (solo en este dispositivo hasta que publiques el textos.json)":"in your draft (only on this device until you publish textos.json)"):(es?"en el archivo publicado":"in the published file")}.` : (es?"Ahora mismo se ve todo.":"Everything is visible right now.")}${pubH && TXT.usingDraft ? ` ${es?"En el archivo publicado hay":"The published file hides"} ${pubH}${es?" ocultos.":"."}` : ""}</p>
+  </div>`;
+}
+function visBind(v){
+  const es=LANG==="es", box=$("#visBox",v); if(!box) return;
+  $("#visSave",box).onclick=()=>{
+    const off=$$("input[data-vis]",box).filter(c=>!c.checked).map(c=>c.dataset.vis);
+    if(ALL_SECS.every(s=>off.includes(s.id))){ $("#visMsg",box).textContent=es?"Tiene que quedar al menos un apartado visible.":"At least one section must stay visible."; return; }
+    try{ sessionStorage.setItem("visScroll","1"); }catch(e){}
+    txtSave(txtDraftList(), off);
+  };
+  try{ if(sessionStorage.getItem("visScroll")){ sessionStorage.removeItem("visScroll"); sessionStorage.removeItem("txtScroll"); setTimeout(()=>box.scrollIntoView({block:"start"}),60); } }catch(e){}
+}
 function txtPanelHTML(){
   const es=LANG==="es", pubN = TXT.valid(TXT.pub) ? TXT.clean(TXT.pub.cambios).length : 0, list = TXT.active ? TXT.rules : [];
   const fmt = d=>{ try{ return new Date(d).toLocaleString(es?"es-ES":"en-GB"); }catch(e){ return ""; } };
@@ -6087,7 +6151,7 @@ function txtPanelHTML(){
         <span class="muted">· ${c.only ? (c.only.length===1 ? esc(txtPlace(c.only[0],LANG)) : `${c.only.length} ${es?"sitios":"places"}`) : (es?"en todo el material":"everywhere")}</span>
         <button type="button" class="btn ghost txt-del" data-del="${i}" aria-label="${es?"Quitar este cambio":"Remove this change"}">🗑️</button></li>`).join("")}</ol>` : `<p class="muted" style="margin:0">${es?"Ninguno.":"None."}</p>`}
     <div class="row" style="margin-top:12px">
-      <button class="btn green" type="button" id="txtDown"${list.length?"":" disabled"}>⬇️ ${es?"Descargar textos.json":"Download textos.json"}</button>
+      <button class="btn green" type="button" id="txtDown"${list.length||TXT.hidden.length?"":" disabled"}>⬇️ ${es?"Descargar textos.json":"Download textos.json"}</button>
       <label class="btn ghost" style="cursor:pointer">⬆️ ${es?"Abrir un textos.json":"Open a textos.json"}<input type="file" id="txtUp" accept=".json,application/json" hidden></label>
       ${TXT.usingDraft ? `<button class="btn ghost" type="button" id="txtDiscard">${es?"Descartar el borrador (volver al publicado)":"Discard the draft (back to the published file)"}</button>` : ""}
       <span id="txtMsg" class="muted" role="status"></span>
@@ -6129,7 +6193,7 @@ function txtBind(v){
   if(txtUI.q) search();
   $$("[data-del]",box).forEach(b=>b.onclick=()=>{ const list=txtDraftList(); list.splice(+b.dataset.del,1); txtSave(list); });
   $("#txtDown",box).onclick=()=>{
-    const f={ unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:TXT.rules };
+    const f={ unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:TXT.rules, ocultos:TXT.hidden.slice() };
     const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(f,null,1)],{type:"application/json"})); a.download="textos.json";
     document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
     msg.textContent=es?"Descargado. Ahora súbelo a la carpeta de la unidad en GitHub.":"Downloaded. Now upload it to the unit's folder on GitHub."; };
@@ -6137,7 +6201,7 @@ function txtBind(v){
     rd.onload=()=>{ let f=null; try{ f=JSON.parse(rd.result); }catch(err){}
       if(!f || !Array.isArray(f.cambios)){ msg.textContent=es?"Ese archivo no es un textos.json válido.":"That file is not a valid textos.json."; return; }
       if(f.unidad!==UNIT.code){ msg.textContent=(es?"Ese archivo es de otra unidad: ":"That file belongs to another unit: ")+(f.unidad||"?"); return; }
-      txtSave(TXT.clean(f.cambios)); };
+      txtSave(TXT.clean(f.cambios), Array.isArray(f.ocultos) ? f.ocultos.filter(x=>typeof x==="string") : []); };
     rd.readAsText(file); };
   const dis=$("#txtDiscard",box); if(dis) dis.onclick=()=>{ if(!confirm(es?"¿Descartar el borrador de este dispositivo?":"Discard the draft on this device?")) return; try{ localStorage.removeItem(TXT.K+"txtDraft"); sessionStorage.setItem("txtScroll","1"); }catch(e){} location.reload(); };
   try{ if(sessionStorage.getItem("txtScroll")){ sessionStorage.removeItem("txtScroll"); setTimeout(()=>box.scrollIntoView({block:"start"}),60); } }catch(e){}
@@ -6164,7 +6228,8 @@ const VIEWS = {inicio:renderHome, evaluacion:renderEval, contenidos:renderConten
   const a=document.createElement("a"); a.href="#"+tb.id; a.dataset.view=tb.id; a.dataset.i18n="tab_"+tb.id; a.textContent=tb.es;
   const ref=document.querySelector(`nav.tabs a[data-view="${tb.after||"apuntes"}"]`); if(ref) ref.after(a); else $("nav.tabs").appendChild(a);
   const sec=document.createElement("section"); sec.className="view"; sec.id="view-"+tb.id; $("main").appendChild(sec);
-  VIEWS[tb.id]=()=>{ const el=$("#view-"+tb.id); if(tb.sec && !secOpen(tb.sec)){ el.innerHTML=`<h2>${T("tab_"+tb.id)}</h2>`+lockedCardHTML(); bindOpenCode(el); return; } tb.render(el); };
+  const gate = tb.sec ? visibleSecFor(tb.sec) : null;
+  VIEWS[tb.id]=()=>{ const el=$("#view-"+tb.id); if(gate && !secOpen(gate)){ el.innerHTML=`<h2>${T("tab_"+tb.id)}</h2>`+lockedCardHTML(); bindOpenCode(el); return; } tb.render(el); };
 });
 window.addEventListener("beforeprint", ()=>{
   if(currentView==="fichas" && fs.open){ const r=$("#fReport"); if(r && !r.innerHTML.trim() && fd(fs.open).attempts && fs.ident.name && fs.ident.group) r.innerHTML = reportHTML(fs.open, new Date()).html; }
