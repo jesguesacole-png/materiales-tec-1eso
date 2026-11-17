@@ -422,7 +422,7 @@ a.ev-home:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
         <button type="button" data-lang="es" aria-pressed="true">ES</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
-      <span class="lang-badge" title="Bilingual group">🇬🇧 English</span>
+      <span class="lang-badge" id="langBadge" title="Bilingual group">🇬🇧 English</span>
       <span class="teacher-badge" id="teacherBadge" hidden>👩‍🏫 <span data-i18n="teacherMode">Modo profesor</span></span>
       <button type="button" class="key-btn" id="keyBtn" aria-expanded="false" aria-controls="codePanel">🔑 <span data-i18n="codeBtn">Código</span></button>
     </div>
@@ -2919,7 +2919,7 @@ const UI = {
 
     navEval:"Evaluación", codeBtn:"Código", codePrompt:"Escribe el código que te ha dado tu profesor:", codeGo:"Desbloquear",
     codeOk:"✔ Desbloqueado: {x}", codeAlready:"Ya tenías desbloqueado: {x}", codeBad:"✘ Código no válido para esta unidad. Revísalo.",
-    codeEnLock:"Este dispositivo queda en inglés (grupo bilingüe).", codeEsOnEn:"✘ Este código es del grupo en español. Pide a tu profesor el código en inglés.",
+    allKey:"Toda la unidad (abre todo y fija el idioma)", codeEnOnEs:"✘ Este código es del grupo en inglés. Pide a tu profesor el código en español.", codeEsLock:"Este dispositivo queda en español.", lockedEs:"bloqueado en español", lockEsBtn:"Bloquear en español", codeEnLock:"Este dispositivo queda en inglés (grupo bilingüe).", codeEsOnEn:"✘ Este código es del grupo en español. Pide a tu profesor el código en inglés.",
     session:"Sesión", examKey:"Examen", lockedSec:"Bloqueado · pide el código a tu profesor",
     lockedView:"Esta parte todavía no está desbloqueada.", lockedViewHelp:"Cuando tu profesor te dé el código, pulsa 🔑 Código (arriba) y escríbelo.",
     nothingOpen:"Todavía no hay contenido desbloqueado.", examLocked:"El examen se desbloquea con su propio código cuando el profesor lo indique.",
@@ -3020,7 +3020,7 @@ const UI = {
 
     navEval:"Assessment", codeBtn:"Code", codePrompt:"Type the code your teacher gave you:", codeGo:"Unlock",
     codeOk:"✔ Unlocked: {x}", codeAlready:"You had already unlocked: {x}", codeBad:"✘ This code is not valid for this unit. Check it.",
-    codeEnLock:"This device stays in English (bilingual group).", codeEsOnEn:"✘ This code is for the Spanish group. Ask your teacher for the English code.",
+    allKey:"Whole unit (opens everything and fixes the language)", codeEnOnEs:"✘ This code is for the English group. Ask your teacher for the Spanish code.", codeEsLock:"This device stays in Spanish.", lockedEs:"locked in Spanish", lockEsBtn:"Lock in Spanish", codeEnLock:"This device stays in English (bilingual group).", codeEsOnEn:"✘ This code is for the Spanish group. Ask your teacher for the English code.",
     session:"Lesson", examKey:"Exam", lockedSec:"Locked · ask your teacher for the code",
     lockedView:"This part is not unlocked yet.", lockedViewHelp:"When your teacher gives you the code, press 🔑 Code (at the top) and type it.",
     nothingOpen:"No content has been unlocked yet.", examLocked:"The exam is unlocked with its own code when your teacher says so.",
@@ -3095,7 +3095,7 @@ const UNIT = {
 /* assessment: criteria of this unit, where each one is assessed (T taller · M memoria técnica · F tareas de clase/fichas · E prueba escrita)
    and the criteria of each content section (also shown on its ficha) */
 UNIT.evaluation = {
-  crit: { "1.1":"MF", "1.2":"FE", "2.2":"TMFE", "3.1":"TFE", "4.1":"M", "7.1":"MFE" , "6.1":"F", "6.2":"M", "6.3":"M" },
+  crit: { "1.1":"TMFE", "1.2":"TMFE", "2.2":"TMFE", "3.1":"TMFE", "4.1":"TMFE", "7.1":"TMFE" , "6.1":"TMFE", "6.2":"TMFE", "6.3":"TMFE" },
   sec: { raw:["1.2"], phys:["1.2"], mech:["1.2"], wood:["1.2"], wood2:["2.2","3.1","7.1"], metals:["1.2","7.1"],
          nonfer:["1.2","3.1","7.1"], plastics:["1.2","7.1"], stone:["1.2","7.1"], textiles:["1.2","7.1"],
          project:["1.1","2.2","3.1","4.1"], summary:["1.2","2.2","7.1"] },
@@ -4974,7 +4974,8 @@ const TXT = (function(){
     });
   }
   const hidden = active && Array.isArray(active.ocultos) ? active.ocultos.filter(x=>typeof x==="string" && x) : [];
-  return { K, valid, pub, draft, usingDraft, active, rules, hidden, sources, clean,
+  const open = !!(active && active.abierto===true);
+  return { K, valid, pub, draft, usingDraft, active, rules, hidden, open, sources, clean,
     textOf: e=> e.html ? e.get().split(/(<[^>]*>)/).filter((x,i)=>i%2===0).join("") : e.get(),
     findIn: (e,f)=> e.html ? e.get().split(/(<[^>]*>)/).some((x,i)=>i%2===0 && x.includes(f)) : e.get().includes(f) };
 })();
@@ -5045,14 +5046,14 @@ function compHTML(L){
       return `<li class="${on?"on":"off"}"><b>CE ${n}.</b> ${esc(COMP[n][L])}${on?` <span class="comp-tag">${es?"En esta unidad":"In this unit"}: ${crit.map(c=>es?"criterio "+c:"criterion "+c).join(", ")}</span>`:""}</li>`; }).join("")}</ol>`;
 }
 const EVAL_PARTS = [
-  { id:"T", pct:25, ico:"🔨", es:"Trabajo de taller", en:"Workshop work",
-    des:{es:"Construcción del proyecto en el taller: uso correcto de materiales, herramientas y máquinas, organización del trabajo en equipo y normas de seguridad.", en:"Building the project in the workshop: correct use of materials, tools and machines, organisation of teamwork and safety rules."} },
+  { id:"T", pct:25, ico:"🔨", es:"Diario de aprendizaje (cuaderno) y trabajo de taller", en:"Learning journal (notebook) and workshop work",
+    des:{es:"Tu cuaderno de clase (apuntes, dibujos y actividades de cada apartado, que se corrige con su rúbrica) y la construcción del proyecto en el taller: uso correcto y seguro de materiales, herramientas y máquinas y organización del trabajo en equipo.", en:"Your class notebook (notes, drawings and activities for each section, marked with its rubric) and building the project in the workshop: correct and safe use of materials, tools and machines and organisation of teamwork."} },
   { id:"M", pct:25, ico:"📁", es:"Memoria técnica", en:"Technical report",
-    des:{es:"Toda la documentación del proyecto: definición del problema, búsqueda de información, bocetos, planos, lista de materiales, planificación y conclusiones.", en:"All the project documents: definition of the problem, research, sketches, drawings, list of materials, planning and conclusions."} },
-  { id:"F", pct:25, ico:"✏️", es:"Tareas de clase", en:"Class tasks",
-    des:{es:"Las fichas de esta web (el PDF de cada ficha que entregas en Classroom) y el trabajo diario de clase.", en:"The worksheets on this website (the PDF of each worksheet you hand in on Classroom) and the daily class work."} },
-  { id:"E", pct:25, ico:"📝", es:"Prueba escrita", en:"Written test",
-    des:{es:"El examen de la unidad. Puedes prepararlo con Práctica, Flashcards y el Examen de esta web.", en:"The unit test. You can prepare it with Practice, Flashcards and the Exam on this website."} }
+    des:{es:"Toda la documentación del proyecto: definición del problema, búsqueda de información, bocetos, planos, lista de materiales, planificación, pruebas y conclusiones.", en:"All the project documents: definition of the problem, research, sketches, drawings, list of materials, planning, tests and conclusions."} },
+  { id:"F", pct:25, ico:"✏️", es:"Tarea extensa de unidad", en:"Extended unit task",
+    des:{es:"Las fichas de esta web (el PDF de cada ficha que entregas en Classroom) y las prácticas con simuladores, laboratorios y programación.", en:"The worksheets on this website (the PDF of each worksheet you hand in on Classroom) and the practicals with simulators, labs and programming."} },
+  { id:"E", pct:25, ico:"📝", es:"Cuestionario o prueba oral", en:"Quiz or oral test",
+    des:{es:"El cuestionario (examen) de la unidad, escrito u oral. Puedes prepararlo con Práctica, Flashcards y el Examen de esta web.", en:"The unit quiz (test), written or oral. You can prepare it with Practice, Flashcards and the Exam on this website."} }
 ];
 /* criteria assessed all year round through everyday digital work (shown when a unit lists them but no section does) */
 const CE_HOW = {
@@ -5214,8 +5215,9 @@ let TEACHER = store.get("teacher", false) === true;
    Only the teacher can undo it (teacher page + PIN). */
 let LOCK = (function(){
   try{ const g=(new URLSearchParams(location.search).get("grupo")||"").toLowerCase();
-       if(g==="bilingue"||g==="bilingüe"||g==="bil"||g==="bilingual") store.set("lock","en"); }catch(e){}
-  const l = store.get("lock", null); return l==="en" ? "en" : null;
+       if(g==="bilingue"||g==="bilingüe"||g==="bil"||g==="bilingual"||g==="en"||g==="ingles"||g==="inglés"||g==="english") store.set("lock","en");
+       else if(g==="es"||g==="espanol"||g==="español"||g==="castellano"||g==="spanish") store.set("lock","es"); }catch(e){}
+  const l = store.get("lock", null); return (l==="en"||l==="es") ? l : null;
 })();
 let LANG = (function(){
   if(LOCK && !TEACHER) return LOCK;
@@ -5245,9 +5247,9 @@ function unlockCode(key, lang){
   for(let i=0;i<5;i++){ c += CODE_ABC[h % CODE_ABC.length]; h = Math.floor(h / CODE_ABC.length); }
   return c;
 }
-const UNLOCK_KEYS = SESSIONS.map(s=>s.key).concat(["ex"]);
-function keyLabel(k){ if(k==="ex") return T("examKey"); const ss=SESSIONS.find(x=>x.key===k); return `${T("session")} ${ss.n}: ${ss.secs.map(id=>SECTIONS.find(s=>s.id===id)[LANG].title).join(" + ")}`; }
-const isOpen = k => TEACHER || !!UNL[k];
+const UNLOCK_KEYS = SESSIONS.map(s=>s.key).concat(["ex","todo"]);
+function keyLabel(k){ if(k==="ex") return T("examKey"); if(k==="todo") return T("allKey"); const ss=SESSIONS.find(x=>x.key===k); return `${T("session")} ${ss.n}: ${ss.secs.map(id=>SECTIONS.find(s=>s.id===id)[LANG].title).join(" + ")}`; }
+const isOpen = k => TEACHER || TXT.open || !!UNL.todo || !!UNL[k];
 const secOpen = id => isOpen(SEC_SESSION[id]);
 const openSecs = () => SECTIONS.filter(s=>secOpen(s.id));
 const studyOpen = () => STUDY.filter(q=>secOpen(q.t));
@@ -5256,10 +5258,12 @@ function tryCode(raw){
   for(const k of UNLOCK_KEYS) for(const lang of ["es","en"]){
     if(c && c===unlockCode(k,lang)){
       if(lang==="es" && LOCK==="en" && !TEACHER) return {ok:false, msg:T("codeEsOnEn")};
+      if(lang==="en" && LOCK==="es" && !TEACHER) return {ok:false, msg:T("codeEnOnEs")};
       const already = !!UNL[k];
       UNL[k]=true; store.set("unl",UNL);
       let extra="";
       if(lang==="en" && !TEACHER && LOCK!=="en"){ LOCK="en"; store.set("lock","en"); LANG="en"; store.set("lang","en"); extra=" "+UI.en.codeEnLock; }
+      else if(k==="todo" && lang==="es" && !TEACHER && LOCK!=="es"){ LOCK="es"; store.set("lock","es"); LANG="es"; store.set("lang","es"); extra=" "+UI.es.codeEsLock; }
       return {ok:true, msg:(already?T("codeAlready"):T("codeOk")).replace("{x}", keyLabel(k)) + extra};
     }
   }
@@ -5347,7 +5351,7 @@ function renderContents(){
       <div class="locked-sec"><span class="num">${i+1}</span><div><b>${s[LANG].title}</b><br>🔒 ${T("lockedSec")}</div></div>` : `
       <details class="sec" data-sid="${s.id}"${openSections.has(s.id)?" open":""}>
         <summary><span class="num">${i+1}</span>${s[LANG].title}</summary>
-        <div class="sec-body doc">${LOCK && !TEACHER && CONFIG.BIL_HELP ? `<button type="button" class="btn ghost es-help" data-esh="${s.id}">🇪🇸 Ver en español</button>`:""}${EVAL && (EVAL.sec||{})[s.id] ? `<p class="ce-line">${LANG==="es"?"Criterios de evaluación":"Assessment criteria"}: ${ceChips(EVAL.sec[s.id],LANG)}</p>` : ""}<div class="sec-inner">${s[LANG].html()}</div>${nbBoxHTML(s.id,LANG)}</div>
+        <div class="sec-body doc">${LOCK==="en" && !TEACHER && CONFIG.BIL_HELP ? `<button type="button" class="btn ghost es-help" data-esh="${s.id}">🇪🇸 Ver en español</button>`:""}${EVAL && (EVAL.sec||{})[s.id] ? `<p class="ce-line">${LANG==="es"?"Criterios de evaluación":"Assessment criteria"}: ${ceChips(EVAL.sec[s.id],LANG)}</p>` : ""}<div class="sec-inner">${s[LANG].html()}</div>${nbBoxHTML(s.id,LANG)}</div>
       </details>`).join("")}`;
   $$("details.sec",v).forEach(d=>d.addEventListener("toggle",()=>{ d.open?openSections.add(d.dataset.sid):openSections.delete(d.dataset.sid); }));
   $("#accOpen").onclick = ()=> $$("details.sec",v).forEach(d=>d.open=true);
@@ -5980,9 +5984,9 @@ function reportHTML(num, date){
       <tr><th>${T("firstTry")}</th><td>${((d.first||0)/10).toLocaleString(loc,{maximumFractionDigits:1})} / 10</td></tr>
       <tr><th>${T("finalMark")}</th><td><b>${(sc.pct/10).toLocaleString(loc,{maximumFractionDigits:1})} / 10</b> (${fmtPts(sc.got)} / ${fmtPts(sc.max)} ${T("ptsShort")})</td></tr>
       <tr><th>${T("workTime")}</th><td>≈ ${mins} min</td></tr>
-      ${EVAL && (EVAL.sec||{})[f.sec] ? `<tr><th>${L==="es"?"Criterios de evaluación":"Assessment criteria"}</th><td>${EVAL.sec[f.sec].map(c=>"CE "+esc(c)).join(", ")} · ${L==="es"?"Tareas de clase (25 %)":"Class tasks (25 %)"}</td></tr>` : ""}
+      ${EVAL && (EVAL.sec||{})[f.sec] ? `<tr><th>${L==="es"?"Criterios de evaluación":"Assessment criteria"}</th><td>${EVAL.sec[f.sec].map(c=>"CE "+esc(c)).join(", ")} · ${L==="es"?"Tarea extensa de unidad (25 %)":"Extended unit task (25 %)"}</td></tr>` : ""}
       <tr><th>${T("device")}</th><td>${DEVICE}</td></tr>
-      <tr><th>${T("langDone")}</th><td>${L==="en"?"English":"Español"}${LOCK?` (${T("bilMode")})`:""}</td></tr>
+      <tr><th>${T("langDone")}</th><td>${L==="en"?"English":"Español"}${LOCK==="en"?` (${T("bilMode")})`:""}</td></tr>
     </table>
     <div class="rep-code">${qr}<div class="code">${fmtCode(code)}</div><div class="muted" style="font-size:.8rem">${T("codeHelp")}</div></div>
   </div>
@@ -6142,12 +6146,13 @@ function renderProfesor(){
       <div class="doc tbl-scroll"><table class="codes-tbl"><tr><th>${T("session")}</th><th>${T("codeEs")}</th><th>${T("codeEn")}</th></tr>
       ${UNLOCK_KEYS.map(k=>`<tr><td>${esc(keyLabel(k))}</td><td class="code">${unlockCode(k,"es")}</td><td class="code">${unlockCode(k,"en")}</td></tr>`).join("")}</table></div>` : ""}
   </div>
-  ${TEACHER ? visPanelHTML() + txtPanelHTML() : ""}
+  ${TEACHER ? stuPanelHTML() + visPanelHTML() + txtPanelHTML() : ""}
   <div class="card no-print" style="margin-bottom:16px">
     <h3 style="margin-top:0">${T("lockTitle")}</h3>
-    <p style="margin-top:0">${T("lockState")}: <b>${LOCK?T("lockedEn"):T("unlocked")}</b> · ${T("device")}: <b>${DEVICE}</b></p>
+    <p style="margin-top:0">${T("lockState")}: <b>${LOCK==="en"?T("lockedEn"):(LOCK==="es"?T("lockedEs"):T("unlocked"))}</b> · ${T("device")}: <b>${DEVICE}</b></p>
     <div class="row">
       <button class="btn" type="button" id="pvLock">🔒 ${T("lockBtn")}</button>
+      <button class="btn" type="button" id="pvLockEs">🔒 ${T("lockEsBtn")}</button>
       <button class="btn ghost" type="button" id="pvUnlock">🔓 ${T("unlockBtn")}</button>
       <span id="pvLockMsg" class="muted" role="status"></span>
     </div>
@@ -6179,12 +6184,13 @@ function renderProfesor(){
       <p style="margin:6px 0 0" class="muted">${T("verifyNote")}</p></div>`;
   };
   $("#pvGo").onclick=run;
-  if(TEACHER){ visBind(v); txtBind(v); }
+  if(TEACHER){ stuBind(v); visBind(v); txtBind(v); }
   const tOn=$("#pvTOn"); if(tOn) tOn.onclick=()=>{ if(!pinCheck($("#pvTPin").value, $("#pvTMsg"))) return; TEACHER=true; store.set("teacher",true); applyStaticI18n(); renderProfesor(); };
   const tOff=$("#pvTOff"); if(tOff) tOff.onclick=()=>{ TEACHER=false; store.set("teacher",null); if(LOCK){ LANG=LOCK; } applyStaticI18n(); location.hash="#inicio"; };
   $("#pvReset").onclick=()=>{ UNL={}; store.set("unl",null); $("#pvTMsg").textContent=T("resetDone"); };
   const pinOK=()=>TEACHER;
   $("#pvLock").onclick=()=>{ if(!pinOK()) return; store.set("lock","en"); LOCK="en"; LANG="en"; store.set("lang","en"); applyStaticI18n(); renderProfesor(); };
+  $("#pvLockEs").onclick=()=>{ if(!pinOK()) return; store.set("lock","es"); LOCK="es"; LANG="es"; store.set("lang","es"); applyStaticI18n(); renderProfesor(); };
   $("#pvUnlock").onclick=()=>{ if(!pinOK()) return; store.set("lock",null); LOCK=null; applyStaticI18n(); renderProfesor(); };
   const pp=$("#pvPrint"); if(pp) pp.onclick=()=>window.print();
   if(params.c) run();
@@ -6273,13 +6279,50 @@ function txtLang(path){
   if(p.includes("es")) return "es"; if(p.includes("en")) return "en";
   return /^[01]$/.test(last) ? (last==="0"?"es":"en") : "—";
 }
-function txtSave(list, ocultos){
-  const f = { unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:list, ocultos:(ocultos||TXT.hidden).slice() };
+function txtSave(list, ocultos, abierto){
+  const f = { unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:list, ocultos:(ocultos||TXT.hidden).slice(), abierto:(abierto===undefined ? TXT.open : !!abierto) };
   try{ localStorage.setItem(TXT.K+"txtDraft", JSON.stringify(f)); }catch(e){}
   try{ sessionStorage.setItem("txtScroll","1"); }catch(e){}
   location.reload();
 }
 function txtDraftList(){ return TXT.usingDraft ? TXT.clean(TXT.draft.cambios).slice() : (TXT.valid(TXT.pub) ? TXT.clean(TXT.pub.cambios).slice() : []); }
+/* teacher: open the whole unit to every student (published in textos.json as "abierto") and fix each group's language */
+function stuPanelHTML(){
+  const es=LANG==="es";
+  const base = location.href.split("#")[0].split("?")[0];
+  const lnk = g => base + "?grupo=" + g;
+  const pubOpen = TXT.valid(TXT.pub) && TXT.pub.abierto===true;
+  return `<div class="card no-print" id="stuBox" style="margin-bottom:16px">
+    <h3 style="margin-top:0">🔓 ${es?"Acceso del alumnado":"Student access"}</h3>
+    <label class="vis-row" style="font-weight:600"><input type="checkbox" id="stuOpen"${TXT.open?" checked":""}> ${es?"Abrir toda la unidad a todo el alumnado (sin códigos)":"Open the whole unit to every student (no codes)"}</label>
+    <p class="muted" style="margin:6px 0 0">${es
+      ? "Con esta casilla marcada, el alumnado ve todos los apartados, fichas, prácticas y el examen sin introducir códigos. Para que llegue a los alumnos, guarda y publica el <b>textos.json</b> (más abajo), igual que las correcciones de textos y los apartados ocultos."
+      : "With this box ticked, students see every section, worksheet, practice and the exam without codes. For it to reach the students, save and publish <b>textos.json</b> (below), like the text corrections and hidden sections."}</p>
+    <div class="row" style="margin-top:10px"><button class="btn green" type="button" id="stuSave">💾 ${es?"Guardar y ver cómo queda":"Save and preview"}</button><span id="stuMsg" class="muted" role="status"></span></div>
+    <p class="muted" style="margin:8px 0 0">${es?"Ahora mismo":"Right now"}: <b>${TXT.open?(es?"todo abierto":"everything open"):(es?"apertura por códigos":"opened by codes")}</b> ${TXT.usingDraft?(es?"en tu borrador (solo en este dispositivo hasta que publiques el textos.json)":"in your draft (only on this device until you publish textos.json)"):(es?"en el archivo publicado":"in the published file")}${TXT.usingDraft && pubOpen!==TXT.open ? ` · ${es?"publicado":"published"}: ${pubOpen?(es?"todo abierto":"everything open"):(es?"por códigos":"by codes")}` : ""}.</p>
+    <h4 style="margin:16px 0 6px">${es?"Idioma de cada grupo":"Language of each group"}</h4>
+    <p class="muted" style="margin:0 0 8px">${es
+      ? "Cada alumno abre <b>una vez</b> el enlace de su grupo (por ejemplo, desde Classroom). Su dispositivo queda fijado en ese idioma y ya no puede cambiarlo; solo el profesor puede deshacerlo desde esta página (tarjeta «Idioma de este dispositivo»)."
+      : "Each student opens their group's link <b>once</b> (for example, from Classroom). Their device is fixed in that language and cannot change it; only the teacher can undo it from this page (card «Language of this device»)."}</p>
+    <div class="stu-links">
+      <div class="row"><b style="min-width:150px">🇪🇸 ${es?"Grupo en español":"Spanish group"}</b><input type="text" readonly value="${esc(lnk("es"))}" style="flex:1;min-width:220px"><button class="btn ghost" type="button" data-stucopy="${esc(lnk("es"))}">📋 ${es?"Copiar":"Copy"}</button></div>
+      <div class="row" style="margin-top:6px"><b style="min-width:150px">🇬🇧 ${es?"Grupo en inglés":"English group"}</b><input type="text" readonly value="${esc(lnk("en"))}" style="flex:1;min-width:220px"><button class="btn ghost" type="button" data-stucopy="${esc(lnk("en"))}">📋 ${es?"Copiar":"Copy"}</button></div>
+    </div>
+    <p class="muted" style="margin:8px 0 0">${es
+      ? "Otra opción, sin publicar nada: da a cada grupo el código «Toda la unidad» de la tabla de códigos. El código en español abre todo y fija el dispositivo en español; el código en inglés abre todo y lo fija en inglés."
+      : "Another option, without publishing anything: give each group the «Whole unit» code from the codes table. The Spanish code opens everything and fixes the device in Spanish; the English code opens everything and fixes it in English."}</p>
+  </div>`;
+}
+function stuBind(v){
+  const es=LANG==="es", box=$("#stuBox",v); if(!box) return;
+  $("#stuSave",box).onclick=()=>{ try{ sessionStorage.setItem("stuScroll","1"); }catch(e){} txtSave(txtDraftList(), undefined, $("#stuOpen",box).checked); };
+  $$("[data-stucopy]",box).forEach(b=>b.onclick=()=>{
+    const t=b.dataset.stucopy, done=()=>{ $("#stuMsg",box).textContent=es?"Enlace copiado.":"Link copied."; };
+    try{ navigator.clipboard.writeText(t).then(done, ()=>{ const i=b.previousElementSibling; i.select(); try{ document.execCommand("copy"); done(); }catch(e){} }); }
+    catch(e){ const i=b.previousElementSibling; i.select(); try{ document.execCommand("copy"); done(); }catch(e2){} }
+  });
+  try{ if(sessionStorage.getItem("stuScroll")){ sessionStorage.removeItem("stuScroll"); sessionStorage.removeItem("txtScroll"); setTimeout(()=>box.scrollIntoView({block:"start"}),60); } }catch(e){}
+}
 /* teacher: choose which sections and workshop tabs the students see (published in textos.json as "ocultos") */
 const ALL_TABS = (typeof UNIT_TABS_ALL!=="undefined") ? UNIT_TABS_ALL : [];
 function visPanelHTML(){
@@ -6328,7 +6371,7 @@ function txtPanelHTML(){
         <span class="muted">· ${c.only ? (c.only.length===1 ? esc(txtPlace(c.only[0],LANG)) : `${c.only.length} ${es?"sitios":"places"}`) : (es?"en todo el material":"everywhere")}</span>
         <button type="button" class="btn ghost txt-del" data-del="${i}" aria-label="${es?"Quitar este cambio":"Remove this change"}">🗑️</button></li>`).join("")}</ol>` : `<p class="muted" style="margin:0">${es?"Ninguno.":"None."}</p>`}
     <div class="row" style="margin-top:12px">
-      <button class="btn green" type="button" id="txtDown"${list.length||TXT.hidden.length?"":" disabled"}>⬇️ ${es?"Descargar textos.json":"Download textos.json"}</button>
+      <button class="btn green" type="button" id="txtDown"${list.length||TXT.hidden.length||TXT.open?"":" disabled"}>⬇️ ${es?"Descargar textos.json":"Download textos.json"}</button>
       <label class="btn ghost" style="cursor:pointer">⬆️ ${es?"Abrir un textos.json":"Open a textos.json"}<input type="file" id="txtUp" accept=".json,application/json" hidden></label>
       ${TXT.usingDraft ? `<button class="btn ghost" type="button" id="txtDiscard">${es?"Descartar el borrador (volver al publicado)":"Discard the draft (back to the published file)"}</button>` : ""}
       <span id="txtMsg" class="muted" role="status"></span>
@@ -6370,7 +6413,7 @@ function txtBind(v){
   if(txtUI.q) search();
   $$("[data-del]",box).forEach(b=>b.onclick=()=>{ const list=txtDraftList(); list.splice(+b.dataset.del,1); txtSave(list); });
   $("#txtDown",box).onclick=()=>{
-    const f={ unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:TXT.rules, ocultos:TXT.hidden.slice() };
+    const f={ unidad:UNIT.code, titulo:UNIT.title.es, fecha:new Date().toISOString(), cambios:TXT.rules, ocultos:TXT.hidden.slice(), abierto:TXT.open };
     const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([JSON.stringify(f,null,1)],{type:"application/json"})); a.download="textos.json";
     document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
     msg.textContent=es?"Descargado. Ahora súbelo a la carpeta de la unidad en GitHub.":"Downloaded. Now upload it to the unit's folder on GitHub."; };
@@ -6378,7 +6421,7 @@ function txtBind(v){
     rd.onload=()=>{ let f=null; try{ f=JSON.parse(rd.result); }catch(err){}
       if(!f || !Array.isArray(f.cambios)){ msg.textContent=es?"Ese archivo no es un textos.json válido.":"That file is not a valid textos.json."; return; }
       if(f.unidad!==UNIT.code){ msg.textContent=(es?"Ese archivo es de otra unidad: ":"That file belongs to another unit: ")+(f.unidad||"?"); return; }
-      txtSave(TXT.clean(f.cambios), Array.isArray(f.ocultos) ? f.ocultos.filter(x=>typeof x==="string") : []); };
+      txtSave(TXT.clean(f.cambios), Array.isArray(f.ocultos) ? f.ocultos.filter(x=>typeof x==="string") : [], f.abierto===true); };
     rd.readAsText(file); };
   const dis=$("#txtDiscard",box); if(dis) dis.onclick=()=>{ if(!confirm(es?"¿Descartar el borrador de este dispositivo?":"Discard the draft on this device?")) return; try{ localStorage.removeItem(TXT.K+"txtDraft"); sessionStorage.setItem("txtScroll","1"); }catch(e){} location.reload(); };
   try{ if(sessionStorage.getItem("txtScroll")){ sessionStorage.removeItem("txtScroll"); setTimeout(()=>box.scrollIntoView({block:"start"}),60); } }catch(e){}
@@ -6417,6 +6460,7 @@ function applyStaticI18n(){
   $$("[data-i18n]").forEach(el=>{ el.textContent = T(el.dataset.i18n); });
   $$(".lang button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.lang===LANG)));
   document.body.classList.toggle("lang-locked", !!LOCK && !TEACHER);
+  { const lb=$("#langBadge"); if(lb){ lb.textContent = LOCK==="es" ? "🇪🇸 Español" : "🇬🇧 English"; lb.title = LOCK==="es" ? "Grupo en español" : "Bilingual group"; } }
   $("#teacherBadge").hidden = !TEACHER;
   document.title = T("unitTitle");
 }
