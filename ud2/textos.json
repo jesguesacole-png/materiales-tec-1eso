@@ -1,11 +1,12 @@
 {
  "unidad": "U2",
  "titulo": "U2 · Expresión y Comunicación Gráfica",
- "fecha": "2026-11-18T23:37:13.392Z",
+ "fecha": "2026-11-18T23:48:22.009Z",
  "cambios": [],
  "ocultos": [
   "cad",
-  "project"
+  "project",
+  "summary"
  ],
- "abierto": false
+ "abierto": true
 }
